@@ -7,7 +7,7 @@ import { TaxisPage } from '@/pages/TaxisPage';
 import { DriversPage } from '@/pages/DriversPage';
 import { SettingsPage } from '@/pages/SettingsPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
-import { Navbar } from '@/features/ui/Navbar';
+import { Navbar } from '@/features/navigation/Navbar';
 
 export function App() {
   return (

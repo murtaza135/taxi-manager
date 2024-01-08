@@ -33,7 +33,9 @@ module.exports = {
     'object-curly-newline': ['error', {
       'ImportDeclaration': { 'multiline': true, 'minProperties': 8 },
       'ExportDeclaration': { 'multiline': true, 'minProperties': 8 }
-    }]
+    }],
+    'react/jsx-props-no-spreading': "off",
+    'react/require-default-props': "off"
   },
   settings: {
     "import/resolver": {
