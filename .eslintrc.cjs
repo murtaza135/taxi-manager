@@ -29,7 +29,11 @@ module.exports = {
     }],
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
-    'linebreak-style': 'off'
+    'linebreak-style': 'off',
+    'object-curly-newline': ['error', {
+      'ImportDeclaration': { 'multiline': true, 'minProperties': 8 },
+      'ExportDeclaration': { 'multiline': true, 'minProperties': 8 }
+    }]
   },
   settings: {
     "import/resolver": {

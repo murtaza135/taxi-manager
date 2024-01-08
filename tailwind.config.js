@@ -10,13 +10,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: colors.teal
+        primary: colors.green,
+        dark: colors.zinc,
+        light: colors.slate
       },
       fontFamily: {
-        cursive: ['cursive']
+        cursive: ['cursive'],
+        roboto: ['Roboto', 'sans-serif']
       },
     },
   },
   plugins: [],
-}
-
+};
