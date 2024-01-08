@@ -47,7 +47,9 @@
 
 body,
 #root {
-  @apply h-full;
-  @apply min-h-dvh;
   @apply font-roboto;
+  @apply min-h-dvh;
+  @apply h-dvh;
+  @apply flex;
+  @apply flex-col;
 }
