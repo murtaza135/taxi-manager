@@ -48,8 +48,5 @@
 body,
 #root {
   @apply font-roboto;
-  @apply min-h-dvh;
-  @apply h-dvh;
-  @apply flex;
-  @apply flex-col;
+  @apply h-full;
 }
