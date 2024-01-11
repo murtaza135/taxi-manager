@@ -4,24 +4,29 @@ import { MdFace6 } from 'react-icons/md';
 import { LiaFileContractSolid } from 'react-icons/lia';
 import { RiMoneyPoundCircleFill } from 'react-icons/ri';
 import { useLocation } from 'wouter';
+import { IoMdSettings } from 'react-icons/io';
 import { NavLink } from './NavLink';
+import { useNav } from '../hooks/useNav';
+import { cn } from '@/util/cn';
 
 export function Sidebar() {
   const [location] = useLocation();
+  const { isOpen } = useNav();
 
   return (
-    <div className="hidden sm:flex flex-col md:min-w-64 h-dvh sticky top-0">
-      <div className="text-4xl md:text-3xl font-cursive flex items-center gap-3 min-h-20 self-center md:self-start">
+    <div className={cn('sm:flex flex-col min-w-64 sm:min-w-fit md:min-w-64 h-dvh fixed sm:sticky top-0 left-0 overflow-y-auto no-scrollbar overflow-x-clip pt-5 sm:pt-0 pb-5 z-40 bg-light-100 dark:bg-dark-800 sm:bg-transparent sm:dark:bg-transparent', isOpen ? 'flex' : 'hidden')}>
+      <div className="text-3xl sm:text-4xl md:text-3xl font-cursive flex items-center self-center md:self-start gap-3 min-h-20">
         <FaCarAlt />
-        <p className="hidden md:inline text-2xl">Taxi Manager</p>
+        <p className="inline sm:hidden md:inline text-2xl">Taxi Manager</p>
       </div>
 
-      <div className="bg-light-100 dark:bg-dark-800 rounded-lg min-h-[87dvh] py-12 flex flex-col gap-4">
+      <div className="bg-light-100 dark:bg-dark-800 rounded-lg pt-12 sm:py-8 flex flex-col gap-4 flex-1">
         <NavLink href="/" icon={<TiHome />} active={location === '/'} text="Dashboard" />
         <NavLink href="/rent" icon={<RiMoneyPoundCircleFill />} active={location === '/rent'} text="Rent" />
         <NavLink href="/hires" icon={<LiaFileContractSolid />} active={location === '/hires'} text="Hires" />
         <NavLink href="/taxis" icon={<FaCarSide />} active={location === '/taxis'} text="Taxis" />
         <NavLink href="/drivers" icon={<MdFace6 />} active={location === '/drivers'} text="Drivers" />
+        <NavLink href="/settings" icon={<IoMdSettings />} active={location === '/settings'} text="Settings" className="mt-auto" />
       </div>
     </div>
   );

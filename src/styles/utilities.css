@@ -1,0 +1,29 @@
+@layer utilities {
+  .center {
+    @apply grid;
+    @apply place-items-center;
+  }
+}
+
+@layer utilities {
+  .container-fluid {
+    width: 100%;
+    max-width: 1375px;
+  }
+}
+
+/*
+    https://github.com/tailwindlabs/tailwindcss/discussions/2394
+    https://github.com/tailwindlabs/tailwindcss/pull/5732
+*/
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}

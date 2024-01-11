@@ -1,5 +1,5 @@
 import * as SwitchPrimitives from '@radix-ui/react-switch';
-import { useDarkMode } from './useDarkMode';
+import { useDarkMode } from '../hooks/useDarkMode';
 import { cn } from '@/util/cn';
 
 type Props = {
