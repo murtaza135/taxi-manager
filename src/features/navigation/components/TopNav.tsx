@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/features/ui/DropdownMenu';
 
-export function Navbar() {
+export function TopNav() {
   const { toggle: toggleNav } = useNav();
   const { title } = useNavTitle();
   const { isDarkMode, toggle: toggleDarkMode } = useDarkMode();

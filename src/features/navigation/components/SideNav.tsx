@@ -9,7 +9,7 @@ import { NavLink } from './NavLink';
 import { useNav } from '../hooks/useNav';
 import { cn } from '@/util/cn';
 
-export function Sidebar() {
+export function SideNav() {
   const [location] = useLocation();
   const { isOpen, close } = useNav();
 

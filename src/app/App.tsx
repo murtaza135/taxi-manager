@@ -7,17 +7,17 @@ import { TaxisPage } from '@/pages/TaxisPage';
 import { DriversPage } from '@/pages/DriversPage';
 import { SettingsPage } from '@/pages/SettingsPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
-import { Navbar } from '@/features/navigation/components/Navbar';
-import { Sidebar } from '@/features/navigation/components/Sidebar';
+import { TopNav } from '@/features/navigation/components/TopNav';
+import { SideNav } from '@/features/navigation/components/SideNav';
 import { NavBackdrop } from '@/features/navigation/components/NavBackdrop';
 
 export function App() {
   return (
     <div className="min-h-dvh bg-light-200 text-dark-900 dark:bg-dark-900 dark:text-light-100">
       <div className="container-fluid mx-auto px-5 flex gap-10">
-        <Sidebar />
+        <SideNav />
         <div className="w-full mb-12">
-          <Navbar />
+          <TopNav />
           <Switch>
             <Route path="/login" component={LoginPage} />
             <Route path="/" component={DashboardPage} />
