@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 import * as React from 'react';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
-
 import { cn } from '@/util/cn';
 
 const Avatar = React.forwardRef<
@@ -38,7 +37,7 @@ const AvatarFallback = React.forwardRef<
   <AvatarPrimitive.Fallback
     ref={ref}
     className={cn(
-      'flex h-full w-full items-center justify-center rounded-full bg-light-primary dark:bg-dark-primary translate-y-0.5',
+      'flex h-full w-full items-center justify-center rounded-full bg-light-primary dark:bg-dark-primary translate-y-0.5 text-sm font-medium dark:font-normal',
       className,
     )}
     {...props}

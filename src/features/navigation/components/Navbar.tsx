@@ -1,7 +1,6 @@
 import { IoSearchOutline, IoMenu } from 'react-icons/io5';
 import { useLocation } from 'wouter';
-import { DarkModeButton } from '@/features/darkmode/components/DarkModeButton';
-// import { Avatar } from '@/features/ui/Avatar2';
+import { Switch } from '@/features/ui/Switch';
 import { Avatar, AvatarFallback, AvatarImage } from '@/features/ui/Avatar';
 import { useNav } from '../hooks/useNav';
 import { useNavTitle } from '../hooks/useNavTitle';
@@ -18,7 +17,7 @@ import {
 export function Navbar() {
   const { toggle: toggleNav } = useNav();
   const { title } = useNavTitle();
-  const { toggle: toggleDarkMode } = useDarkMode();
+  const { isDarkMode, toggle: toggleDarkMode } = useDarkMode();
   const [, setLocation] = useLocation();
 
   const handleToggleDarkMode = (
@@ -44,8 +43,8 @@ export function Navbar() {
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar className="hover:opacity-65 transition-opacity">
-              <AvatarImage src="/src/assets/" alt="User" />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarImage src="" alt="user" />
+              <AvatarFallback>Cn</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
 
@@ -54,11 +53,11 @@ export function Navbar() {
             <DropdownMenuSeparator />
 
             <DropdownMenuItem
-              className="flex gap-4 justify-center items-center"
+              className="flex gap-2 justify-center items-center"
               onClick={handleToggleDarkMode}
             >
-              <p className="translate-y-0.5">Darkmode</p>
-              <DarkModeButton />
+              <p className="translate-y-[1px]">Darkmode</p>
+              <Switch checked={isDarkMode} />
             </DropdownMenuItem>
 
             <DropdownMenuItem onClick={() => setLocation('/settings')}>Settings</DropdownMenuItem>
