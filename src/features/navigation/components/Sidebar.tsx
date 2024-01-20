@@ -3,7 +3,7 @@ import { TiHome } from 'react-icons/ti';
 import { MdFace6 } from 'react-icons/md';
 import { LiaFileContractSolid } from 'react-icons/lia';
 import { RiMoneyPoundCircleFill } from 'react-icons/ri';
-import { useLocation } from 'wouter';
+import { useLocation, Link } from 'wouter';
 import { IoMdSettings } from 'react-icons/io';
 import { NavLink } from './NavLink';
 import { useNav } from '../hooks/useNav';
@@ -11,14 +11,14 @@ import { cn } from '@/util/cn';
 
 export function Sidebar() {
   const [location] = useLocation();
-  const { isOpen } = useNav();
+  const { isOpen, close } = useNav();
 
   return (
     <div className={cn('sm:flex flex-col min-w-64 sm:min-w-fit md:min-w-64 h-dvh fixed sm:sticky top-0 left-0 overflow-y-auto no-scrollbar overflow-x-clip pt-5 sm:pt-0 pb-5 z-40 bg-light-100 dark:bg-dark-800 sm:bg-transparent sm:dark:bg-transparent shadow-lg sm:shadow-none', isOpen ? 'flex' : 'hidden')}>
-      <div className="text-3xl sm:text-4xl md:text-3xl font-cursive flex items-center self-center md:self-start gap-3 min-h-20">
+      <Link href="/" onClick={() => close()} className="text-3xl sm:text-4xl md:text-3xl font-cursive flex items-center self-center md:self-start gap-3 min-h-20 hover:opacity-65 transition-opacity">
         <FaCarAlt />
         <p className="inline sm:hidden md:inline text-2xl">Taxi Manager</p>
-      </div>
+      </Link>
 
       <div className="bg-light-100 dark:bg-dark-800 rounded-lg pt-12 sm:py-8 flex flex-col gap-4 flex-1">
         <NavLink href="/" icon={<TiHome />} active={location === '/'} text="Dashboard" />
