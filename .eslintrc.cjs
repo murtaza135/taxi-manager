@@ -35,7 +35,8 @@ module.exports = {
       'ExportDeclaration': { 'multiline': true, 'minProperties': 8 }
     }],
     'react/jsx-props-no-spreading': "off",
-    'react/require-default-props': "off"
+    'react/require-default-props': "off",
+    "react/prop-types": "off"
   },
   settings: {
     "import/resolver": {
