@@ -10,6 +10,9 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 import { TopNav } from '@/features/navigation/components/TopNav';
 import { SideNav } from '@/features/navigation/components/SideNav';
 import { NavBackdrop } from '@/features/navigation/components/NavBackdrop';
+import { applyTheme } from '@/features/darkmode/util/applyTheme';
+
+applyTheme();
 
 export function App() {
   return (

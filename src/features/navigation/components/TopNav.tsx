@@ -4,7 +4,7 @@ import { Switch } from '@/features/ui/Switch';
 import { Avatar, AvatarFallback, AvatarImage } from '@/features/ui/Avatar';
 import { useNav } from '../hooks/useNav';
 import { useNavTitle } from '../hooks/useNavTitle';
-import { useDarkMode } from '@/features/darkmode/hooks/useDarkMode';
+import { darkmodeHooks } from '@/features/darkmode/state/darkmodeStore';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,14 +17,15 @@ import {
 export function TopNav() {
   const { toggle: toggleNav } = useNav();
   const { title } = useNavTitle();
-  const { isDarkMode, toggle: toggleDarkMode } = useDarkMode();
+  const isDarkmode = darkmodeHooks.useIsDarkmode();
+  const toggleDarkmode = darkmodeHooks.useToggle();
   const [, setLocation] = useLocation();
 
   const handleToggleDarkMode = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
     event.preventDefault();
-    toggleDarkMode();
+    toggleDarkmode();
   };
 
   return (
@@ -57,7 +58,7 @@ export function TopNav() {
               onClick={handleToggleDarkMode}
             >
               <p className="translate-y-[1px]">Darkmode</p>
-              <Switch checked={isDarkMode} />
+              <Switch checked={isDarkmode} />
             </DropdownMenuItem>
 
             <DropdownMenuItem onClick={() => setLocation('/settings')}>Settings</DropdownMenuItem>

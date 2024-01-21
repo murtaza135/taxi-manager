@@ -4,21 +4,26 @@ import { mountStoreDevtool } from 'simple-zustand-devtools';
 import { config } from '@/app/config';
 import { capitalise } from '@/util/capitalise';
 
-type PersistOptions =
-  | { persist: true; persistKey: string; }
-  | { persist?: false; persistKey?: string; };
+type PersistOptions<S> =
+  | { persist: true; persistKey: string; partialize?: (state: S) => unknown; }
+  | { persist?: false; persistKey?: string; partialize?: (state: S) => unknown; };
 
-export type CreateStoreOptions = PersistOptions & {
+export type CreateStoreOptions<S> = PersistOptions<S> & {
   devtoolsStoreName: string;
 };
 
-export function createStore<S extends object>(slice: StateCreator<S>, options: CreateStoreOptions) {
+export function createStore<S extends object>(
+  slice: StateCreator<S>,
+  options: CreateStoreOptions<S>,
+) {
   const useStore = (function createStoreWithPersist() {
     if (options.persist) {
       return create<S>()(
         persist(
           (...a) => ({ ...slice(...a) }),
-          { name: options.persistKey },
+          options.partialize
+            ? { name: options.persistKey, partialize: options.partialize }
+            : { name: options.persistKey },
         ),
       );
     }
