@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { titleHooks } from '../state/titleStore';
+import { titleHooks } from '@/features/title/state/titleStore';
 import { config } from '@/app/config';
 
 type Props = {
