@@ -1,5 +1,5 @@
 import { ReactNode, useEffect } from 'react';
-import { useNav } from '../hooks/useNav';
+import { navHooks } from '../state/navStore';
 import { cn } from '@/util/cn';
 
 type Props = {
@@ -7,7 +7,8 @@ type Props = {
 };
 
 export function NavBackdrop({ children }: Props) {
-  const { isOpen, close } = useNav();
+  const isOpen = navHooks.useIsOpen();
+  const close = navHooks.useClose();
 
   // stop the body from scrolling when the backdrop is open
   useEffect(() => {

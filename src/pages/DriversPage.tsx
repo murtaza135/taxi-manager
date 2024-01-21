@@ -1,9 +1,10 @@
-import { useNavTitleValue } from '@/features/navigation/hooks/useNavTitleValue';
+import { Title } from '@/features/title/components/Title';
 
 export function DriversPage() {
-  useNavTitleValue('Drivers');
-
   return (
-    <div>DriversPage</div>
+    <>
+      <Title title="Drivers" />
+      <div>DriversPage</div>
+    </>
   );
 }

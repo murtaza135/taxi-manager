@@ -1,9 +1,10 @@
-import { useNavTitleValue } from '@/features/navigation/hooks/useNavTitleValue';
+import { Title } from '@/features/title/components/Title';
 
 export function HiresPage() {
-  useNavTitleValue('Hires');
-
   return (
-    <div>HiresPage</div>
+    <>
+      <Title title="Hires" />
+      <div>HiresPage</div>
+    </>
   );
 }

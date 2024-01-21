@@ -2,8 +2,8 @@ import { IoSearchOutline, IoMenu } from 'react-icons/io5';
 import { useLocation } from 'wouter';
 import { Switch } from '@/features/ui/Switch';
 import { Avatar, AvatarFallback, AvatarImage } from '@/features/ui/Avatar';
-import { useNav } from '../hooks/useNav';
-import { useNavTitle } from '../hooks/useNavTitle';
+import { navHooks } from '../state/navStore';
+import { titleHooks } from '@/features/title/state/titleStore';
 import { darkmodeHooks } from '@/features/darkmode/state/darkmodeStore';
 import {
   DropdownMenu,
@@ -15,8 +15,8 @@ import {
 } from '@/features/ui/DropdownMenu';
 
 export function TopNav() {
-  const { toggle: toggleNav } = useNav();
-  const { title } = useNavTitle();
+  const toggleNav = navHooks.useToggle();
+  const title = titleHooks.useTitle();
   const isDarkmode = darkmodeHooks.useIsDarkmode();
   const toggleDarkmode = darkmodeHooks.useToggle();
   const [, setLocation] = useLocation();

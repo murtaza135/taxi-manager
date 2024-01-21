@@ -6,12 +6,13 @@ import { RiMoneyPoundCircleFill } from 'react-icons/ri';
 import { useLocation, Link } from 'wouter';
 import { IoMdSettings } from 'react-icons/io';
 import { NavLink } from './NavLink';
-import { useNav } from '../hooks/useNav';
+import { navHooks } from '../state/navStore';
 import { cn } from '@/util/cn';
 
 export function SideNav() {
   const [location] = useLocation();
-  const { isOpen, close } = useNav();
+  const isOpen = navHooks.useIsOpen();
+  const close = navHooks.useClose();
 
   return (
     <div className={cn('sm:flex flex-col min-w-64 sm:min-w-fit md:min-w-64 h-dvh fixed sm:sticky top-0 left-0 overflow-y-auto no-scrollbar overflow-x-clip pt-5 sm:pt-0 pb-5 z-40 bg-light-100 dark:bg-dark-800 sm:bg-transparent sm:dark:bg-transparent shadow-lg sm:shadow-none', isOpen ? 'flex' : 'hidden')}>

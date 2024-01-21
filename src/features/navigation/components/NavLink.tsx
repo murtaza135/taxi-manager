@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Link } from 'wouter';
 import { cn } from '@/util/cn';
-import { useNav } from '../hooks/useNav';
+import { navHooks } from '../state/navStore';
 
 type Props = {
   text?: string;
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export function NavLink({ text, href, icon, active, className }: Props) {
-  const { close } = useNav();
+  const close = navHooks.useClose();
 
   return (
     <Link href={href} onClick={() => close()} className={cn('text-xl border-l-[6px] border-transparent transition-opacity', !!active && 'border-primary-700 dark:border-primary-600 text-primary-700 dark:text-primary-600', !active && 'hover:opacity-50', className)}>
