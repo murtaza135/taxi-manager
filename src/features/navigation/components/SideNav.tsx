@@ -1,18 +1,18 @@
-import { FaCarAlt, FaCarSide } from 'react-icons/fa';
+import { FaCarSide } from 'react-icons/fa';
 import { TiHome } from 'react-icons/ti';
 import { BsPersonCircle } from 'react-icons/bs';
 import { IoMdSettings } from 'react-icons/io';
 import { LiaFileContractSolid } from 'react-icons/lia';
 import { RiMoneyPoundCircleFill } from 'react-icons/ri';
 import { useTransition, animated } from '@react-spring/web';
-import { useLocation, Link } from 'wouter';
+import { useLocation } from 'wouter';
 import { NavLink } from './NavLink';
 import { navHooks } from '../state/navStore';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
+import { NavLogo } from './NavLogo';
 
 export function SideNav() {
   const [location] = useLocation();
-  const close = navHooks.useClose();
   const isMobileNavOpen = navHooks.useIsOpen();
   const sm = useBreakpoint('sm');
   const isNavOpen = isMobileNavOpen || sm; // nav should always be open if greater than the `sm` breakpoint
@@ -27,14 +27,7 @@ export function SideNav() {
     isOpen
       ? (
         <animated.nav aria-label="primary" style={style} className="flex flex-col min-w-64 sm:min-w-fit md:min-w-64 h-dvh fixed sm:sticky top-0 left-0 overflow-y-auto no-scrollbar overflow-x-clip pt-5 sm:pt-0 pb-5 z-40 bg-light-1 dark:bg-dark-1 sm:bg-transparent sm:dark:bg-transparent shadow-lg sm:shadow-none">
-          <Link href="/" onClick={() => close()} className="text-3xl sm:text-4xl md:text-3xl font-cursive flex items-center self-center md:self-start gap-3 min-h-20 hover:opacity-65 transition-opacity">
-            <span className="text-primary-2 dark:text-primary-1"><FaCarAlt /></span>
-            <p className="inline sm:hidden md:inline text-2xl">
-              Taxi
-              {' '}
-              <span className="text-primary-2 dark:text-primary-1">Manager</span>
-            </p>
-          </Link>
+          <NavLogo />
 
           <div className="bg-light-1 dark:bg-dark-1 rounded-lg pt-12 sm:py-8 flex flex-col gap-4 flex-1">
             <NavLink href="/" icon={<TiHome />} active={location === '/'} text="Dashboard" />
