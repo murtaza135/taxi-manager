@@ -1,5 +1,5 @@
 export function MobileNav() {
   return (
-    <div>MobileNav</div>
+    <nav aria-label="mobile-only">MobileNav</nav>
   );
 }

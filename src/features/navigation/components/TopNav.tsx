@@ -42,7 +42,7 @@ export function TopNav() {
         <IoSearchOutline className="text-2xl cursor-pointer hover:opacity-75 transition-opacity" />
 
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger className="outline-none">
             <Avatar className="hover:opacity-65 transition-opacity">
               <AvatarImage src="" alt="user" />
               <AvatarFallback>Cn</AvatarFallback>
