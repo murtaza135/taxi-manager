@@ -16,7 +16,7 @@ applyTheme();
 
 export function App() {
   return (
-    <div className="min-h-dvh bg-light-200 text-dark-900 dark:bg-dark-900 dark:text-light-100">
+    <div className="min-h-dvh bg-light-2 dark:bg-dark-2 text-dark-2 dark:text-light-1">
       <div className="container-fluid mx-auto px-5 flex gap-10">
         <SideNav />
         <div className="w-full mb-12">

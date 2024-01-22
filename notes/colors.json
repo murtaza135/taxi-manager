@@ -1,5 +1,5 @@
 {
-  "primary": ["green-700"],
-  "dark": ["dark-900", "dark-800"],
-  "light": ["light-200", "light-100"]
+  "primary": ["rose-500", "rose-900"],
+  "dark": ["dark-800", "dark-900"],
+  "light": ["light-100", "light-200"]
 }

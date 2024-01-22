@@ -29,7 +29,7 @@ export function TopNav() {
   };
 
   return (
-    <div className="flex justify-between items-center gap-4 min-h-20 sticky top-0 left-0 z-20 bg-light-200 dark:bg-dark-900">
+    <div className="flex justify-between items-center gap-4 min-h-20 sticky top-0 left-0 z-20 bg-light-2 dark:bg-dark-2 text-primary-2 dark:text-primary-1">
       <div>
         <IoMenu
           className="sm:hidden text-3xl cursor-pointer hover:opacity-75 transition-opacity"
