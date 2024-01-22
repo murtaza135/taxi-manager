@@ -1,11 +1,11 @@
 import { FaCarAlt, FaCarSide } from 'react-icons/fa';
 import { TiHome } from 'react-icons/ti';
-import { MdFace6 } from 'react-icons/md';
+import { BsPersonCircle } from 'react-icons/bs';
+import { IoMdSettings } from 'react-icons/io';
 import { LiaFileContractSolid } from 'react-icons/lia';
 import { RiMoneyPoundCircleFill } from 'react-icons/ri';
-import { useLocation, Link } from 'wouter';
-import { IoMdSettings } from 'react-icons/io';
 import { useTransition, animated } from '@react-spring/web';
+import { useLocation, Link } from 'wouter';
 import { NavLink } from './NavLink';
 import { navHooks } from '../state/navStore';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
@@ -41,7 +41,7 @@ export function SideNav() {
             <NavLink href="/rent" icon={<RiMoneyPoundCircleFill />} active={location === '/rent'} text="Rent" />
             <NavLink href="/hires" icon={<LiaFileContractSolid />} active={location === '/hires'} text="Hires" />
             <NavLink href="/taxis" icon={<FaCarSide />} active={location === '/taxis'} text="Taxis" />
-            <NavLink href="/drivers" icon={<MdFace6 />} active={location === '/drivers'} text="Drivers" />
+            <NavLink href="/drivers" icon={<BsPersonCircle />} active={location === '/drivers'} text="Drivers" />
             <NavLink href="/settings" icon={<IoMdSettings />} active={location === '/settings'} text="Settings" className="mt-auto" />
           </div>
         </animated.nav>
