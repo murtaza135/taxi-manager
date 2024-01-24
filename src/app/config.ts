@@ -2,7 +2,6 @@ export const config = {
   ...import.meta.env,
   APP_NAME: 'Taxi Manager',
   BREAKPOINTS: {
-    zero: '0px',
     sm: '640px',
     md: '768px',
     lg: '1024px',

@@ -11,7 +11,7 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "@/features",
+    "components": "@",
     "utils": "@/util/cn"
   }
 }

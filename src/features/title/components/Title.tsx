@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { titleHooks } from '@/features/title/state/titleStore';
+import { useTitleStore, useTitleActions } from '@/features/title/state/titleStore';
 import { config } from '@/app/config';
 
 type Props = {
@@ -7,16 +7,19 @@ type Props = {
 };
 
 export function Title({ title }: Props) {
-  const setTitle = titleHooks.useSetTitle();
+  const { setTitle } = useTitleActions();
 
+  // set title in titleStore
   useEffect(() => {
+    const oldTitle = useTitleStore.getState().title;
     setTitle(title);
 
     return () => {
-      setTitle('');
+      setTitle(oldTitle);
     };
   }, [title, setTitle]);
 
+  // set the document title
   useEffect(() => {
     const oldTitle = document.title;
     document.title = `${title} | ${config.APP_NAME}`;

@@ -1,35 +1,40 @@
 import { StateCreator } from 'zustand';
-import { createStore, createHooks } from '@/util/createStore';
-import { applyDarkClass } from '../util/applyDarkClass';
-import { prefersColorSchemeDark } from '../util/prefersColorSchemeDark';
+import { applyDarkClass } from '@/features/darkmode/utils/applyDarkClass';
+import { isPrefersColorSchemeDark } from '@/features/darkmode/utils/isPrefersColorSchemeDark';
+import { createStore, createHooks } from '@/utils/createStore';
 
 type DarkmodeStore = {
   isDarkmode: boolean;
-  enable: () => void;
-  disable: () => void;
-  toggle: () => void;
+  darkmodeActions: {
+    enableDarkmode: () => void;
+    disableDarkmode: () => void;
+    toggleDarkmode: () => void;
+  };
 };
 
 const darkmodeStore: StateCreator<DarkmodeStore> = (set, get) => ({
-  isDarkmode: prefersColorSchemeDark(),
-  enable() {
-    set(() => ({ isDarkmode: true }));
-    applyDarkClass(true);
-  },
-  disable() {
-    set(() => ({ isDarkmode: true }));
-    applyDarkClass(false);
-  },
-  toggle() {
-    set((state) => ({ isDarkmode: !state.isDarkmode }));
-    const { isDarkmode } = get();
-    applyDarkClass(isDarkmode);
+  isDarkmode: isPrefersColorSchemeDark(),
+  darkmodeActions: {
+    enableDarkmode() {
+      set(() => ({ isDarkmode: true }));
+      applyDarkClass(true);
+    },
+    disableDarkmode() {
+      set(() => ({ isDarkmode: true }));
+      applyDarkClass(false);
+    },
+    toggleDarkmode() {
+      set((state) => ({ isDarkmode: !state.isDarkmode }));
+      const { isDarkmode } = get();
+      applyDarkClass(isDarkmode);
+    },
   },
 });
 
-export const useDarkmodeStore = createStore(
-  darkmodeStore,
-  { devtoolsStoreName: 'darkmode', persist: true, persistKey: 'darkmode' },
-);
+export const useDarkmodeStore = createStore(darkmodeStore, {
+  devtoolsStoreName: 'darkmode',
+  persist: true,
+  persistKey: 'darkmode',
+});
 
-export const darkmodeHooks = createHooks(useDarkmodeStore);
+export const { useIsDarkmode, useDarkmodeActions } = createHooks(useDarkmodeStore);

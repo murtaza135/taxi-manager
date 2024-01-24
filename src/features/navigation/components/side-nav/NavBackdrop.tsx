@@ -1,29 +1,29 @@
 import { ReactNode, useEffect } from 'react';
-import { navHooks } from '../state/navStore';
-import { cn } from '@/util/cn';
+import { useIsNavOpen, useNavActions } from '@/features/navigation/state/navStore';
+import { cn } from '@/utils/cn';
 
 type Props = {
   children?: ReactNode;
 };
 
 export function NavBackdrop({ children }: Props) {
-  const isOpen = navHooks.useIsOpen();
-  const close = navHooks.useClose();
+  const isNavOpen = useIsNavOpen();
+  const { closeNav } = useNavActions();
 
   // stop the body from scrolling when the backdrop is open
   useEffect(() => {
-    if (isOpen) {
+    if (isNavOpen) {
       document.body.classList.add('overflow-hidden');
     } else {
       document.body.classList.remove('overflow-hidden');
     }
-  }, [isOpen]);
+  }, [isNavOpen]);
 
   return (
     <div
-      onClick={() => close()}
+      onClick={() => closeNav()}
       role="none"
-      className={cn('sm:hidden fixed top-0 left-0 w-dvw h-dvh backdrop-blur-sm z-30 touch-none overflow-hidden', isOpen ? 'block' : 'hidden')}
+      className={cn('sm:hidden fixed top-0 left-0 w-dvw h-dvh backdrop-blur-sm z-30 touch-none overflow-hidden', isNavOpen ? 'block' : 'hidden')}
     >
       {children}
     </div>

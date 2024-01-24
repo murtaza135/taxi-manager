@@ -8,18 +8,18 @@
 @layer utilities {
   .container-fluid {
     width: 100%;
-    max-width: 1375px;
+    max-width: 1536px;
   }
 }
 
-/*
+@layer utilities {
+  /*
     https://github.com/tailwindlabs/tailwindcss/discussions/2394
     https://github.com/tailwindlabs/tailwindcss/pull/5732
-*/
-@layer utilities {
-  /* Chrome, Safari and Opera */
+  */
+
   .no-scrollbar::-webkit-scrollbar {
-    display: none;
+    display: none; /* Chrome, Safari and Opera */
   }
 
   .no-scrollbar {

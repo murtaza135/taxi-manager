@@ -1,0 +1,21 @@
+import { Link } from 'wouter';
+import { FaCarAlt } from 'react-icons/fa';
+import { useNavActions } from '@/features/navigation/state/navStore';
+import { config } from '@/app/config';
+
+const [appNameFirst, ...appNameRest] = config.APP_NAME.split(' ');
+const appNameSecond = appNameRest[0] as string | undefined;
+
+export function NavLogo() {
+  const { closeNav } = useNavActions();
+
+  return (
+    <Link href="/" onClick={() => closeNav()}>
+      <div className="text-2xl font-cursive flex items-center self-center gap-2 min-h-20 hover:opacity-65 transition-opacity cursor-pointer">
+        <p className="inline sm:hidden md:inline">{appNameFirst}</p>
+        <span className="text-4xl text-primary-2 dark:text-primary-1"><FaCarAlt /></span>
+        {!!appNameSecond && <p className="inline sm:hidden md:inline">{appNameSecond}</p>}
+      </div>
+    </Link>
+  );
+}

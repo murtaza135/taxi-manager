@@ -1,14 +1,18 @@
 import { StateCreator } from 'zustand';
-import { createStore, createHooks } from '@/util/createStore';
+import { createStore, createHooks } from '@/utils/createStore';
 
 type TitleStore = {
   title: string;
-  setTitle: (title: string) => void;
+  titleActions: {
+    setTitle: (title: string) => void;
+  };
 };
 
 const titleStore: StateCreator<TitleStore> = (set) => ({
   title: '',
-  setTitle: (title) => set(() => ({ title })),
+  titleActions: {
+    setTitle: (title) => set(() => ({ title })),
+  },
 });
 
 export const useTitleStore = createStore(
@@ -16,4 +20,4 @@ export const useTitleStore = createStore(
   { devtoolsStoreName: 'title' },
 );
 
-export const titleHooks = createHooks(useTitleStore);
+export const { useTitle, useTitleActions } = createHooks(useTitleStore);

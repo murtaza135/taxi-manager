@@ -1,23 +1,24 @@
 import { StateCreator } from 'zustand';
-import { createStore, createHooks } from '@/util/createStore';
+import { createStore, createHooks } from '@/utils/createStore';
 
 type NavStore = {
-  isOpen: boolean;
-  open: () => void;
-  close: () => void;
-  toggle: () => void;
+  isNavOpen: boolean;
+  navActions: {
+    openNav: () => void;
+    closeNav: () => void;
+    toggleNav: () => void;
+  };
 };
 
 const navStore: StateCreator<NavStore> = (set) => ({
-  isOpen: false,
-  open: () => set(() => ({ isOpen: true })),
-  close: () => set(() => ({ isOpen: false })),
-  toggle: () => set((state) => ({ isOpen: !state.isOpen })),
+  isNavOpen: false,
+  navActions: {
+    openNav: () => set(() => ({ isNavOpen: true })),
+    closeNav: () => set(() => ({ isNavOpen: false })),
+    toggleNav: () => set((state) => ({ isNavOpen: !state.isNavOpen })),
+  },
 });
 
-export const useNavStore = createStore(
-  navStore,
-  { devtoolsStoreName: 'nav' },
-);
+export const useNavStore = createStore(navStore, { devtoolsStoreName: 'nav' });
 
-export const navHooks = createHooks(useNavStore);
+export const { useIsNavOpen, useNavActions } = createHooks(useNavStore);
