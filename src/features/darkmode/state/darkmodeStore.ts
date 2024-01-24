@@ -35,6 +35,7 @@ export const useDarkmodeStore = createStore(darkmodeStore, {
   devtoolsStoreName: 'darkmode',
   persist: true,
   persistKey: 'darkmode',
+  partialize: ({ darkmodeActions, ...rest }) => rest,
 });
 
 export const { useIsDarkmode, useDarkmodeActions } = createHooks(useDarkmodeStore);

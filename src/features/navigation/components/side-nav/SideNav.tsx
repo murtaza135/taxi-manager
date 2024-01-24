@@ -18,9 +18,9 @@ export function SideNav() {
   const isNavOpen = isMobileNavOpen || sm; // nav should always be open if greater than the `sm` breakpoint
 
   const transitions = useTransition([isNavOpen], {
-    from: { transform: sm ? 'translateX(0rem)' : 'translateX(-16rem)' },
-    enter: { transform: 'translateX(0rem)' },
-    leave: { transform: 'translateX(-16rem)' },
+    from: { transform: sm ? 'translateX(0%)' : 'translateX(-100%)' },
+    enter: { transform: 'translateX(0%)' },
+    leave: { transform: 'translateX(-100%)' },
   });
 
   return transitions((style, isOpen) => (
