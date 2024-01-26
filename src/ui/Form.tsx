@@ -39,7 +39,7 @@ const Form = React.forwardRef<
   React.HTMLAttributes<HTMLFormElement>
 >(({ className, ...props }, ref) => (
   <form
-    className={cn('', className)}
+    className={cn('bg-light-1 dark:bg-dark-1 p-4 rounded', className)}
     ref={ref}
     {...props}
   />

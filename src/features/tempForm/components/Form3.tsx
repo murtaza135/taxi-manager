@@ -15,7 +15,7 @@ import { FormSchema3 } from '@/features/tempForm/schema';
 import { useMultiStepForm } from '@/features/tempForm/setupForm';
 
 export function Form3() {
-  const { nextStep, updateFormState, submitForm } = useMultiStepForm();
+  const { nextStep, updateFormState } = useMultiStepForm();
 
   const form = useZodForm({
     schema: FormSchema3,
@@ -24,10 +24,11 @@ export function Form3() {
     },
   });
 
-  const onSubmit = form.handleSubmit(async (data) => {
+  const onSubmit = form.handleSubmit((data) => {
     console.log(data);
     updateFormState(data);
-    await submitForm();
+    // nextStep();
+    console.log('complete');
   });
 
   return (

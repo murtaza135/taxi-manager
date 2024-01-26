@@ -11,7 +11,6 @@ export function Form() {
         { title: 'form2', component: <Form2 /> },
         { title: 'form3', component: <Form3 /> },
       ]}
-      onSubmit={(data) => console.log(data)}
     />
   );
 }
