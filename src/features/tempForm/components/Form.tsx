@@ -6,6 +6,7 @@ import { Form3 } from '@/features/tempForm/components/Form3';
 export function Form() {
   return (
     <MultiStepForm
+      bounce
       steps={[
         { title: 'form1', component: <Form1 /> },
         { title: 'form2', component: <Form2 /> },

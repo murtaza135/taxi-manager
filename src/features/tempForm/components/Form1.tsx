@@ -15,7 +15,7 @@ import { FormSchema1 } from '@/features/tempForm/schema';
 import { useMultiStepForm } from '@/features/tempForm/setupForm';
 
 export function Form1() {
-  const { nextStep, updateFormState } = useMultiStepForm();
+  const { prevStep, nextStep, updateFormState } = useMultiStepForm();
 
   const form = useZodForm({
     schema: FormSchema1,
@@ -50,6 +50,7 @@ export function Form1() {
           )}
         />
         <Button type="submit">Submit</Button>
+        <Button type="button" onClick={() => prevStep()}>Prev</Button>
         <Button type="button" onClick={() => nextStep()}>Next</Button>
       </Form>
     </FormProvider>
