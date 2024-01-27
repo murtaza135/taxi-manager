@@ -49,9 +49,11 @@ export function Form1() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
-        <Button type="button" onClick={() => prevStep()}>Prev</Button>
-        <Button type="button" onClick={() => nextStep()}>Next</Button>
+        <div className="flex flex-wrap gap-3">
+          <Button variant="default" type="submit">Submit</Button>
+          <Button variant="danger" type="button" onClick={() => prevStep()}>Prev</Button>
+          <Button variant="outline" type="button">Test1</Button>
+        </div>
       </Form>
     </FormProvider>
   );

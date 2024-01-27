@@ -2,6 +2,10 @@ import { Form } from '@/features/tempForm/components/Form';
 
 export function LoginPage() {
   return (
-    <Form />
+    <div className="flex flex-col gap-5">
+      <Form />
+      <Form />
+      <Form />
+    </div>
   );
 }
