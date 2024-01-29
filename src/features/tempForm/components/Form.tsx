@@ -2,7 +2,7 @@ import { MultiStepForm } from '@/features/tempForm/setupForm';
 import { Form1 } from '@/features/tempForm/components/Form1';
 import { Form2 } from '@/features/tempForm/components/Form2';
 import { Form3 } from '@/features/tempForm/components/Form3';
-import { TempFormStepper } from '@/features/tempForm/components/TempFormStepper';
+import { Stepper } from '@/ui/Stepper';
 
 export function Form() {
   return (
@@ -14,9 +14,9 @@ export function Form() {
           { title: 'form2', component: <Form2 /> },
           { title: 'form3', component: <Form3 /> },
         ]}
-        render={(form) => (
+        render={({ form, steps, currentStep }) => (
           <>
-            <TempFormStepper />
+            <Stepper steps={steps} currentStep={currentStep} />
             {form}
           </>
         )}

@@ -1,26 +1,13 @@
-import { ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 
-type StepperProps = {
-  children?: ReactNode;
-};
-
-export function Stepper({ children }: StepperProps) {
-  return (
-    <ol className="flex flex-wrap">
-      {children}
-    </ol>
-  );
-}
-
-type StepperItemProps = {
+type StepperItemProps<TStepTitle extends string = string> = {
   step: number;
-  title?: string,
+  title?: TStepTitle,
   complete?: boolean;
   hideLine?: boolean;
 };
 
-export function StepperItem({ step, title, complete, hideLine }: StepperItemProps) {
+function StepperItem({ step, title, complete, hideLine }: StepperItemProps) {
   return (
     <li className="flex-1 flex flex-col justify-center items-center text-center gap-2">
       <div className="relative w-full center">
@@ -47,5 +34,26 @@ export function StepperItem({ step, title, complete, hideLine }: StepperItemProp
 
       {!!title && <p className="text-primary-dark dark:text-primary-light">{title}</p>}
     </li>
+  );
+}
+
+type StepperProps<TStepTitle extends string = string> = {
+  steps: TStepTitle[];
+  currentStep: number;
+};
+
+export function Stepper({ steps, currentStep }: StepperProps) {
+  return (
+    <ol className="flex flex-wrap">
+      {steps.map((step, index) => (
+        <StepperItem
+          key={step}
+          title={step}
+          step={index + 1}
+          complete={index < currentStep}
+          hideLine={index === steps.length - 1}
+        />
+      ))}
+    </ol>
   );
 }

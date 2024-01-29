@@ -18,12 +18,18 @@ type MultiStepFormProps<TStepTitle extends string> = {
   steps: Step<TStepTitle>[];
   startStepNumber?: number;
   bounce?: boolean;
-  render?: (form: ReactNode) => ReactNode;
+  render?: (args: RenderFnArgs<TStepTitle>) => ReactNode;
 };
 
 type Step<TStepTitle extends string> = {
   title: TStepTitle;
   component: ReactNode;
+};
+
+type RenderFnArgs<TStepTitle extends string> = {
+  form: ReactNode;
+  steps: TStepTitle[];
+  currentStep: number;
 };
 
 export function createMultiStepForm<
@@ -100,7 +106,7 @@ export function createMultiStepForm<
       stepNumber, setStep, prevStep, nextStep, formState, updateFormState,
     }), [stepNumber, setStep, prevStep, nextStep, formState, updateFormState]);
 
-    const transitionElement = transitions((style, stepNumberProp) => (
+    const transitionForm = transitions((style, stepNumberProp) => (
       <animated.div style={style} className="center">
         {steps[stepNumberProp].component}
       </animated.div>
@@ -108,7 +114,15 @@ export function createMultiStepForm<
 
     return (
       <MultiStepFormContext.Provider value={value}>
-        {render ? render(transitionElement) : transitionElement}
+        {
+          render
+            ? render({
+              form: transitionForm,
+              steps: steps.map((step) => step.title),
+              currentStep: stepNumber,
+            })
+            : transitionForm
+        }
       </MultiStepFormContext.Provider>
     );
   }
