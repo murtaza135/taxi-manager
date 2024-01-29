@@ -10,22 +10,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: colors.sky,
-        achromatic: colors.zinc,
-        "primary-light": colors.sky[300],
-        "primary-dark": colors.sky[600],
-        "achromatic-light": colors.white,
-        "achromatic-dark": colors.zinc[800],
-        "scene-light": colors.sky[100],
-        "scene-dark": "#121212",
-        dark: colors.zinc,
-        light: colors.slate,
-        "primary-1": colors.sky[300],
-        "primary-2": colors.sky[600],
-        "dark-1": colors.zinc[800],
-        "dark-2": "#121212",
-        "light-1": colors.white,
-        "light-2": colors.sky[100],
+        primary: {
+          ...colors.sky,
+          light: colors.sky[300],
+          dark: colors.sky[600]
+        },
+        achromatic: {
+          ...colors.zinc,
+          light: colors.white,
+          dark: colors.zinc[800]
+        },
+        scene: {
+          light: colors.sky[100],
+          dark: "#121212"
+        }
       },
       fontFamily: {
         cursive: ['cursive'],

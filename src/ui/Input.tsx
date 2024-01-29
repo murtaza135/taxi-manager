@@ -20,7 +20,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {!!icon && <i className="text-sm">{icon}</i>}
         <input
           type={type}
-          className="w-full outline-none text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium bg-transparent placeholder:text-dark-500 disabled:cursor-not-allowed disabled:opacity-50 dark:placeholder:text-zinc-400"
+          className="w-full outline-none text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium bg-transparent placeholder:text-achromatic-500 disabled:cursor-not-allowed disabled:opacity-50 dark:placeholder:text-achromatic-400"
           ref={ref}
           {...props}
         />
