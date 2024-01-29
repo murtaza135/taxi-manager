@@ -1,15 +1,9 @@
-import { FaUser } from 'react-icons/fa';
 import { Button } from '@/ui/Button';
 import {
   FormProvider,
   Form,
   FormTitle,
-  FormControl,
-  FormDescription,
   FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
   FormGroup,
   useZodForm,
 } from '@/ui/Form';
@@ -36,27 +30,22 @@ export function Form1() {
   return (
     <FormProvider {...form}>
       <Form onSubmit={onSubmit} className="w-full max-w-[32rem] space-y-4">
-        <FormTitle className="text-3xl">Login Forms</FormTitle>
+        <FormTitle>User Form</FormTitle>
+
         <FormField
           control={form.control}
           name="username1"
           render={({ field }) => (
-            <FormGroup label="Username">
-              <Input placeholder="shadcn" {...field} />
+            <FormGroup label="Username 1">
+              <Input placeholder="Username 1" {...field} />
             </FormGroup>
           )}
         />
-        <FormField
-          control={form.control}
-          name="username1"
-          render={({ field }) => (
-            <FormGroup label="Username">
-              <Input placeholder="shadcn" {...field} />
-            </FormGroup>
-          )}
-        />
+
         <div className="flex flex-wrap gap-3">
-          <Button variant="default" type="submit" className="flex-grow">Submit</Button>
+          <Button variant="default" type="submit">Submit</Button>
+          <Button type="button" onClick={() => prevStep()}>Prev</Button>
+          <Button type="button" onClick={() => nextStep()}>Next</Button>
         </div>
       </Form>
     </FormProvider>

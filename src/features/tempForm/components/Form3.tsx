@@ -2,13 +2,10 @@ import { Button } from '@/ui/Button';
 import {
   FormProvider,
   Form,
-  FormControl,
-  FormDescription,
   FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
   useZodForm,
+  FormGroup,
+  FormTitle,
 } from '@/ui/Form';
 import { Input } from '@/ui/Input';
 import { FormSchema3 } from '@/features/tempForm/schema';
@@ -27,32 +24,28 @@ export function Form3() {
   const onSubmit = form.handleSubmit((data) => {
     console.log(data);
     updateFormState(data);
-    // nextStep();
-    console.log('complete');
   });
 
   return (
     <FormProvider {...form}>
-      <Form onSubmit={onSubmit} className="w-full space-y-6">
+      <Form onSubmit={onSubmit} className="w-full max-w-[32rem] space-y-4">
+        <FormTitle>User Form</FormTitle>
+
         <FormField
           control={form.control}
           name="username3"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username3</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+            <FormGroup label="Username 3">
+              <Input placeholder="Username 3" {...field} />
+            </FormGroup>
           )}
         />
-        <Button type="submit">Submit</Button>
-        <Button type="button" onClick={() => prevStep()}>Prev</Button>
-        <Button type="button" onClick={() => nextStep()}>Next</Button>
+
+        <div className="flex flex-wrap gap-3">
+          <Button type="submit">Submit</Button>
+          <Button type="button" onClick={() => prevStep()}>Prev</Button>
+          <Button type="button" onClick={() => nextStep()}>Next</Button>
+        </div>
       </Form>
     </FormProvider>
   );

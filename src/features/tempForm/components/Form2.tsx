@@ -2,13 +2,10 @@ import { Button } from '@/ui/Button';
 import {
   FormProvider,
   Form,
-  FormControl,
-  FormDescription,
   FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
   useZodForm,
+  FormGroup,
+  FormTitle,
 } from '@/ui/Form';
 import { Input } from '@/ui/Input';
 import { FormSchema2 } from '@/features/tempForm/schema';
@@ -32,26 +29,24 @@ export function Form2() {
 
   return (
     <FormProvider {...form}>
-      <Form onSubmit={onSubmit} className="w-full space-y-6">
+      <Form onSubmit={onSubmit} className="w-full max-w-[32rem] space-y-4">
+        <FormTitle>User Form</FormTitle>
+
         <FormField
           control={form.control}
           name="username2"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username2</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+            <FormGroup label="Username 2">
+              <Input placeholder="Username 2" {...field} />
+            </FormGroup>
           )}
         />
-        <Button type="submit">Submit</Button>
-        <Button type="button" onClick={() => prevStep()}>Prev</Button>
-        <Button type="button" onClick={() => nextStep()}>Next</Button>
+
+        <div className="flex flex-wrap gap-3">
+          <Button type="submit">Submit</Button>
+          <Button type="button" onClick={() => prevStep()}>Prev</Button>
+          <Button type="button" onClick={() => nextStep()}>Next</Button>
+        </div>
       </Form>
     </FormProvider>
   );
