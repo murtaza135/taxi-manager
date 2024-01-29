@@ -12,7 +12,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const { error } = useFormField();
     return (
       <div className={cn(
-        'flex items-center gap-2 h-10 w-full rounded-md border border-primary-dark bg-achromatic-light px-3 py-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-primary-light dark:bg-achromatic-dark',
+        'flex items-center gap-2 h-10 w-full rounded-lg border border-primary-dark bg-achromatic-light px-3 py-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-primary-light dark:bg-achromatic-dark',
         error && 'border-2',
         className,
       )}

@@ -39,12 +39,26 @@ const Form = React.forwardRef<
   React.HTMLAttributes<HTMLFormElement>
 >(({ className, ...props }, ref) => (
   <form
-    className={cn('bg-achromatic-light dark:bg-achromatic-dark text-primary-dark dark:text-primary-light p-4 rounded', className)}
+    className={cn('bg-achromatic-light dark:bg-achromatic-dark text-primary-dark dark:text-primary-light px-7 py-6 rounded-lg', className)}
     ref={ref}
     {...props}
   />
 ));
 Form.displayName = 'Form';
+
+const FormTitle = React.forwardRef<
+  HTMLHeadingElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, children, ...props }, ref) => (
+  <h2
+    className={cn('text-center text-2xl font-semibold', className)}
+    ref={ref}
+    {...props}
+  >
+    {children}
+  </h2>
+));
+FormTitle.displayName = 'FormTitle';
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -197,15 +211,34 @@ const FormMessage = React.forwardRef<
 });
 FormMessage.displayName = 'FormMessage';
 
+type FormGroupProps = {
+  label?: string;
+  description?: string;
+  children: React.ReactNode;
+};
+
+function FormGroup({ label, description, children }: FormGroupProps) {
+  return (
+    <FormItem>
+      {!!label && <FormLabel>{label}</FormLabel>}
+      <FormControl>{children}</FormControl>
+      {!!description && <FormDescription>{description}</FormDescription>}
+      <FormMessage />
+    </FormItem>
+  );
+}
+
 export {
   useZodForm,
   useFormField,
   FormProvider,
   Form,
+  FormTitle,
   FormItem,
   FormLabel,
   FormControl,
   FormDescription,
   FormMessage,
   FormField,
+  FormGroup,
 };
