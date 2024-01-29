@@ -15,10 +15,10 @@ export function Form() {
           { title: 'form3', component: <Form3 /> },
         ]}
         render={({ form, steps, currentStep }) => (
-          <>
+          <div className="flex flex-col self-center gap-12 w-full max-w-[32rem]">
             <Stepper steps={steps} currentStep={currentStep} />
             {form}
-          </>
+          </div>
         )}
       />
     </div>
