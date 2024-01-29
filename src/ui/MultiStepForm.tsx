@@ -18,6 +18,7 @@ type MultiStepFormProps<TStepTitle extends string> = {
   steps: Step<TStepTitle>[];
   startStepNumber?: number;
   bounce?: boolean;
+  render?: (form: ReactNode) => ReactNode;
 };
 
 type Step<TStepTitle extends string> = {
@@ -44,7 +45,7 @@ export function createMultiStepForm<
   }
 
   function MultiStepForm(
-    { steps, startStepNumber, bounce }: MultiStepFormProps<TStepTitle>,
+    { steps, startStepNumber, bounce, render }: MultiStepFormProps<TStepTitle>,
   ) {
     const [formState, setFormState] = useState<Partial<TFormState>>({});
     const [stepNumber, setStepNumber] = useState(startStepNumber ?? 0);
@@ -58,9 +59,6 @@ export function createMultiStepForm<
       leave: direction === 'forward'
         ? { opacity: 0, transform: 'translate3d(-50%,0,0)' }
         : { opacity: 0, transform: 'translate3d(50%,0,0)' },
-      // from: { opacity: 0, transform: 'scale3d(0%,0%,0%)' },
-      // enter: { opacity: 1, transform: 'scale3d(100%,100%,100%)' },
-      // leave: { opacity: 0, transform: 'scale3d(0%,0%,0%)' },
       exitBeforeEnter: true,
       config: bounce ? { tension: 100, friction: 12, mass: 1 } : {},
     });
@@ -102,13 +100,15 @@ export function createMultiStepForm<
       stepNumber, setStep, prevStep, nextStep, formState, updateFormState,
     }), [stepNumber, setStep, prevStep, nextStep, formState, updateFormState]);
 
+    const transitionElement = transitions((style, stepNumberProp) => (
+      <animated.div style={style} className="center">
+        {steps[stepNumberProp].component}
+      </animated.div>
+    ));
+
     return (
       <MultiStepFormContext.Provider value={value}>
-        {transitions((style, stepNumberProp) => (
-          <animated.div style={style} className="center">
-            {steps[stepNumberProp].component}
-          </animated.div>
-        ))}
+        {render ? render(transitionElement) : transitionElement}
       </MultiStepFormContext.Provider>
     );
   }
