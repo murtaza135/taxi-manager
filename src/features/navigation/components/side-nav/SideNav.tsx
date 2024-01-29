@@ -28,11 +28,11 @@ export function SideNav() {
       <animated.nav
         aria-label="primary"
         style={style}
-        className="flex flex-col min-w-64 sm:min-w-fit md:min-w-64 h-dvh fixed sm:sticky top-0 left-0 overflow-y-auto no-scrollbar overflow-x-clip pt-5 sm:pt-0 pb-5 z-40 bg-light-1 dark:bg-dark-1 sm:bg-transparent sm:dark:bg-transparent shadow-lg sm:shadow-none"
+        className="flex flex-col min-w-64 sm:min-w-fit md:min-w-64 h-dvh fixed sm:sticky top-0 left-0 overflow-y-auto no-scrollbar overflow-x-clip pt-5 sm:pt-0 pb-5 z-40 bg-achromatic-light dark:bg-achromatic-dark sm:bg-transparent sm:dark:bg-transparent shadow-lg sm:shadow-none"
       >
         <NavLogo />
 
-        <div className="bg-light-1 dark:bg-dark-1 rounded-lg pt-12 sm:py-8 flex flex-col gap-4 flex-1">
+        <div className="bg-achromatic-light dark:bg-achromatic-dark rounded-lg pt-12 sm:py-8 flex flex-col gap-4 flex-1">
           <NavLink href="/" icon={<TiHome />} active={location === '/'} text="Dashboard" />
           <NavLink href="/rent" icon={<RiMoneyPoundCircleFill />} active={location === '/rent'} text="Rent" />
           <NavLink href="/hires" icon={<LiaFileContractSolid />} active={location === '/hires'} text="Hires" />

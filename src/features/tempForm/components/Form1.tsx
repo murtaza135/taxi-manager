@@ -33,7 +33,7 @@ export function Form1() {
 
   return (
     <FormProvider {...form}>
-      <Form onSubmit={onSubmit} className="w-2/3 space-y-6">
+      <Form onSubmit={onSubmit} className="w-full max-w-[32rem] space-y-6">
         <FormField
           control={form.control}
           name="username1"

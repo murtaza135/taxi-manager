@@ -10,7 +10,7 @@ export function TopNav() {
   const title = useTitle();
 
   return (
-    <div className="flex justify-between items-center gap-4 min-h-20 sticky top-0 left-0 z-20 bg-light-2 dark:bg-dark-2 text-primary-2 dark:text-primary-1">
+    <div className="flex justify-between items-center gap-4 min-h-20 sticky top-0 left-0 z-20 bg-scene-light dark:bg-scene-dark text-primary-dark dark:text-primary-light">
       <div>
         <IoMenu
           className="sm:hidden text-3xl cursor-pointer hover:opacity-75 transition-opacity"

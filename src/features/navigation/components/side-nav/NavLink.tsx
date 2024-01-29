@@ -18,7 +18,7 @@ export function NavLink({ text, href, icon, active, className }: Props) {
     <Link
       href={href}
       onClick={() => closeNav()}
-      className={cn('text-xl border-l-[6px] transition-opacity', !!active && 'border-primary-2 dark:border-primary-1 text-primary-2 dark:text-primary-1', !active && 'border-transparent hover:opacity-50', className)}
+      className={cn('text-xl border-l-[6px] transition-opacity', !!active && 'border-primary-dark dark:border-primary-light text-primary-dark dark:text-primary-light', !active && 'border-transparent hover:opacity-50', className)}
     >
       {/* the Link does not want to render its `a` tag without some other content inside it */}
       {' '}

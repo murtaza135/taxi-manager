@@ -33,7 +33,7 @@ export function Form3() {
 
   return (
     <FormProvider {...form}>
-      <Form onSubmit={onSubmit} className="w-2/3 space-y-6">
+      <Form onSubmit={onSubmit} className="w-full space-y-6">
         <FormField
           control={form.control}
           name="username3"
