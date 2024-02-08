@@ -19,7 +19,7 @@ export function App() {
     <div className="min-h-dvh font-roboto bg-scene-light dark:bg-scene-dark text-achromatic-dark dark:text-achromatic-light">
       <div className="container-fluid mx-auto px-5 flex gap-10">
         <SideNav />
-        <div className="w-full mb-12">
+        <div className="mb-12 w-full overflow-hidden">
           <TopNav />
           <Switch>
             <Route path="/login" component={LoginPage} />
