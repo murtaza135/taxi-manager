@@ -40,11 +40,12 @@ function StepperItem({ step, title, complete, hideLine }: StepperItemProps) {
 type StepperProps<TStepTitle extends string = string> = {
   steps: TStepTitle[];
   currentStep: number;
+  className?: string;
 };
 
-export function Stepper({ steps, currentStep }: StepperProps) {
+export function Stepper({ steps, currentStep, className }: StepperProps) {
   return (
-    <ol className="flex flex-wrap">
+    <ol className={cn('flex flex-wrap', className)}>
       {steps.map((step, index) => (
         <StepperItem
           key={step}
