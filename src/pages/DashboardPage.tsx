@@ -7,6 +7,8 @@ import { data } from '@/features/tempTable/data';
 import { DataTablePagination } from '@/features/tempTable/Pagination';
 import { DataTableViewOptions } from '@/features/tempTable/ColumnToggle';
 import { DataTableSearch } from '@/features/tempTable/DataTableSearch';
+import { DataTableNav } from '@/features/tempTable/DataTableNav';
+import { Separator } from '@/ui/Separator';
 
 export function DashboardPage() {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -29,12 +31,15 @@ export function DashboardPage() {
   return (
     <>
       <Title title="Dashboard" />
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-3">
+        {/* <div className="flex justify-between items-center">
           <DataTableSearch table={table} column="email" />
           <DataTableViewOptions table={table} />
-        </div>
+        </div> */}
+        <DataTableNav table={table} column="email" />
+        <Separator />
         <DataTable table={table} />
+        <Separator />
         <DataTablePagination table={table} />
       </div>
     </>
