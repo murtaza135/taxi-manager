@@ -33,50 +33,6 @@ export const columns: ColumnDef<Payment>[] = [
     header: 'ID',
   },
   {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
-  {
     accessorKey: 'status',
     header: 'Status',
   },
@@ -100,7 +56,7 @@ export const columns: ColumnDef<Payment>[] = [
     },
   },
   {
-    id: 'actions',
+    id: 'options',
     cell: ({ row }) => {
       const payment = row.original;
 

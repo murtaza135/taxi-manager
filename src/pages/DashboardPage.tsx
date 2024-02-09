@@ -40,7 +40,7 @@ export function DashboardPage() {
         <DataTableNav table={table} column="email" />
         <Separator />
         {/* <DataTable table={table} /> */}
-        <DataGrid />
+        <DataGrid table={table} />
         <Separator />
         <DataTablePagination table={table} />
       </div>
