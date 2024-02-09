@@ -6,9 +6,6 @@ export function DataGrid() {
       <DataGridCard />
       <DataGridCard />
       <DataGridCard />
-      <DataGridCard />
-      <DataGridCard />
-      <DataGridCard />
     </div>
   );
 }
