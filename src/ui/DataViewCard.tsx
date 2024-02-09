@@ -6,7 +6,7 @@ type Props<TData extends RowData> = {
   dataRow: Row<TData>;
 };
 
-export function DataGridCard<TData extends RowData>({ headerRow, dataRow }: Props<TData>) {
+export function DataViewCard<TData extends RowData>({ headerRow, dataRow }: Props<TData>) {
   // console.log(data.getVisibleCells()[0].column.id);
 
   const optionsCell = dataRow.getVisibleCells().filter((cell) => cell.column.id === 'options')[0];

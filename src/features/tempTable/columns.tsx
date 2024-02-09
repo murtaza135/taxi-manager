@@ -9,9 +9,7 @@ import {
   DropdownMenuTrigger,
 } from '@/ui/DropdownMenu';
 import { Button } from '@/ui/Button';
-import { DataTableColumnHeader } from '@/features/tempTable/ColumnHeader';
-import { DataTableHeaderCheckbox } from '@/features/tempTable/DataTableHeaderCheckbox';
-import { DataTableCellCheckbox } from '@/features/tempTable/DataTableCellCheckbox';
+import { DataViewCheckbox, DataViewHeader } from '@/ui/DataView';
 
 export type Payment = {
   id: string;
@@ -23,8 +21,8 @@ export type Payment = {
 export const columns: ColumnDef<Payment>[] = [
   {
     id: 'select',
-    header: ({ table }) => <DataTableHeaderCheckbox table={table} />,
-    cell: ({ row }) => <DataTableCellCheckbox row={row} />,
+    header: ({ table }) => <DataViewCheckbox.Header table={table} />,
+    cell: ({ row }) => <DataViewCheckbox.Row row={row} />,
     enableSorting: false,
     enableHiding: false,
   },
@@ -38,9 +36,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
   {
     accessorKey: 'email',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Emails" />
-    ),
+    header: ({ column }) => <DataViewHeader column={column} header="Email" />,
   },
   {
     accessorKey: 'amount',

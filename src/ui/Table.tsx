@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/indent */
 import * as React from 'react';
-import { Table as ReactTable, RowData as ReactTableRowData, flexRender } from '@tanstack/react-table';
 import { cn } from '@/utils/cn';
 
 const Table = React.forwardRef<
@@ -106,61 +105,6 @@ const TableCaption = React.forwardRef<
 ));
 TableCaption.displayName = 'TableCaption';
 
-type DataTableProps<TData extends ReactTableRowData> = {
-  table: ReactTable<TData>;
-};
-
-function DataTable<TData extends ReactTableRowData>({ table }: DataTableProps<TData>) {
-  // eslint-disable-next-line no-underscore-dangle
-  const columnDefs = table._getColumnDefs();
-
-  return (
-    <div className="rounded-md overflow-auto w-full">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columnDefs.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
-  );
-}
-
 export {
   Table,
   TableHeader,
@@ -170,5 +114,4 @@ export {
   TableRow,
   TableCell,
   TableCaption,
-  DataTable,
 };

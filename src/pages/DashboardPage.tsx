@@ -1,16 +1,13 @@
 import { useReactTable, getCoreRowModel, getPaginationRowModel, getSortedRowModel, SortingState, ColumnFiltersState, getFilteredRowModel } from '@tanstack/react-table';
 import { useState } from 'react';
 import { Title } from '@/features/title/components/Title';
-import { DataTable } from '@/ui/Table';
+// import { DataTable } from '@/ui/Table';
+import { DataViewTable, DataViewGrid, DataViewSearchFilter, DataViewTopBar, DataViewPagination } from '@/ui/DataView';
 import { columns } from '@/features/tempTable/columns';
 import { data } from '@/features/tempTable/data';
-import { DataTablePagination } from '@/features/tempTable/Pagination';
-import { DataTableViewOptions } from '@/features/tempTable/ColumnToggle';
-import { DataTableSearch } from '@/features/tempTable/DataTableSearch';
-import { DataTableNav } from '@/features/tempTable/DataTableNav';
 import { Separator } from '@/ui/Separator';
-import { DataGrid } from '@/features/tempTable/DataGrid';
-import { DataGridCard } from '@/features/tempTable/DataGridCard';
+// import { DataGrid } from '@/features/tempTable/DataGrid';
+import { DataViewCard } from '@/ui/DataViewCard';
 
 export function DashboardPage() {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -34,21 +31,17 @@ export function DashboardPage() {
     <div>
       <Title title="Dashboard" />
       <div className="flex flex-col gap-3">
-        {/* <div className="flex justify-between items-center">
-          <DataTableSearch table={table} column="email" />
-          <DataTableViewOptions table={table} />
-        </div> */}
-        <DataTableNav table={table} column="email" />
+        <DataViewTopBar table={table} column="email" />
         <Separator />
-        {/* <DataTable table={table} /> */}
-        <DataGrid
+        {/* <DataViewTable table={table} /> */}
+        <DataViewGrid
           table={table}
           render={(headers, dataRow) => (
-            <DataGridCard headerRow={headers} dataRow={dataRow} />
+            <DataViewCard headerRow={headers} dataRow={dataRow} />
           )}
         />
         <Separator />
-        <DataTablePagination table={table} />
+        <DataViewPagination table={table} />
       </div>
     </div>
   );
