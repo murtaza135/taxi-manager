@@ -2,14 +2,14 @@ import { IoEllipsisVertical } from 'react-icons/io5';
 import { Header, Row, RowData, flexRender } from '@tanstack/react-table';
 
 type Props<TData extends RowData> = {
-  headers: Header<TData, unknown>[];
-  data: Row<TData>;
+  headerRow: Header<TData, unknown>[];
+  dataRow: Row<TData>;
 };
 
-export function DataGridCard<TData extends RowData>({ data, headers }: Props<TData>) {
+export function DataGridCard<TData extends RowData>({ headerRow, dataRow }: Props<TData>) {
   // console.log(data.getVisibleCells()[0].column.id);
 
-  const optionsCell = data.getVisibleCells().filter((cell) => cell.column.id === 'options')[0];
+  const optionsCell = dataRow.getVisibleCells().filter((cell) => cell.column.id === 'options')[0];
 
   return (
     <div className="h-full min-h-[27rem] rounded-lg overflow-hidden bg-achromatic-light dark:bg-achromatic-dark">
@@ -29,12 +29,15 @@ export function DataGridCard<TData extends RowData>({ data, headers }: Props<TDa
         </div>
 
         <div className="space-y-3">
-          {data.getVisibleCells()
+          {dataRow.getVisibleCells()
             .filter((cell) => cell.column.id !== 'options')
             .map((cell, index) => (
               <div key={cell.id}>
                 <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-light/50">
-                  {flexRender(headers[index].column.columnDef.header, headers[index].getContext())}
+                  {flexRender(
+                    headerRow[index].column.columnDef.header,
+                    headerRow[index].getContext(),
+                  )}
                 </div>
                 <div>{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>
               </div>

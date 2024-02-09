@@ -10,6 +10,7 @@ import { DataTableSearch } from '@/features/tempTable/DataTableSearch';
 import { DataTableNav } from '@/features/tempTable/DataTableNav';
 import { Separator } from '@/ui/Separator';
 import { DataGrid } from '@/features/tempTable/DataGrid';
+import { DataGridCard } from '@/features/tempTable/DataGridCard';
 
 export function DashboardPage() {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -40,7 +41,12 @@ export function DashboardPage() {
         <DataTableNav table={table} column="email" />
         <Separator />
         {/* <DataTable table={table} /> */}
-        <DataGrid table={table} />
+        <DataGrid
+          table={table}
+          render={(headers, dataRow) => (
+            <DataGridCard headerRow={headers} dataRow={dataRow} />
+          )}
+        />
         <Separator />
         <DataTablePagination table={table} />
       </div>
