@@ -9,6 +9,7 @@ import { DataTableViewOptions } from '@/features/tempTable/ColumnToggle';
 import { DataTableSearch } from '@/features/tempTable/DataTableSearch';
 import { DataTableNav } from '@/features/tempTable/DataTableNav';
 import { Separator } from '@/ui/Separator';
+import { DataGrid } from '@/features/tempTable/DataGrid';
 
 export function DashboardPage() {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -38,7 +39,8 @@ export function DashboardPage() {
         </div> */}
         <DataTableNav table={table} column="email" />
         <Separator />
-        <DataTable table={table} />
+        {/* <DataTable table={table} /> */}
+        <DataGrid />
         <Separator />
         <DataTablePagination table={table} />
       </div>
