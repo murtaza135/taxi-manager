@@ -19,7 +19,7 @@ export type Payment = {
   email: string;
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns1: ColumnDef<Payment>[] = [
   {
     id: 'select',
     header: ({ table }) => <DataViewCheckbox.Header table={table} />,
@@ -81,3 +81,64 @@ export const columns: ColumnDef<Payment>[] = [
     },
   },
 ];
+
+export const columns2: ColumnDef<Payment>[] = [
+  {
+    accessorKey: 'id',
+    header: 'ID',
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email',
+  },
+  {
+    accessorKey: 'amount',
+    header: 'Amount',
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue('amount'));
+      const formatted = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(amount);
+
+      return formatted;
+    },
+  },
+  {
+    id: 'options',
+    cell: ({ row }) => {
+      const payment = row.original;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div className="translate-y-3 cursor-pointer hover:opacity-70 transition-opacity">
+              <span className="sr-only">Options</span>
+              <IoEllipsisVertical />
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(payment.id)}
+            >
+              Copy payment ID
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>View customer</DropdownMenuItem>
+            <DropdownMenuItem>View payment details</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
+];
+
+export const columns = {
+  table: columns1,
+  grid: columns2,
+} as const;

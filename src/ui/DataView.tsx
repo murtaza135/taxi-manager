@@ -1,4 +1,5 @@
 /* eslint-disable no-nested-ternary */ // TODO remove
+import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
 import {
   Table as ReactTable,
   Header as ReactTableHeader,
@@ -7,7 +8,6 @@ import {
   Column as ReactTableColumn,
   flexRender,
 } from '@tanstack/react-table';
-import { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoSearchSharp } from 'react-icons/io5';
 import { BiSortDown } from 'react-icons/bi';
@@ -21,6 +21,7 @@ import {
   CaretSortIcon,
   EyeNoneIcon,
 } from '@radix-ui/react-icons';
+import { FiLayout } from 'react-icons/fi';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
 import { FormProvider } from '@/ui/Form';
 import { Input } from '@/ui/Input';
@@ -42,6 +43,44 @@ import {
 } from '@/ui/Select';
 import { Checkbox } from '@/ui/Checkbox';
 import { cn } from '@/utils/cn';
+
+const DATA_VIEW_LAYOUTS = ['table', 'grid'] as const;
+export type DataViewLayout = typeof DATA_VIEW_LAYOUTS[number];
+
+type DataViewContextValue = {
+  layout: DataViewLayout;
+  setLayout: (layout: DataViewLayout) => void;
+};
+
+const DataViewContext = createContext<DataViewContextValue>(
+  null as unknown as DataViewContextValue,
+);
+
+function useDataView() {
+  const context = useContext(DataViewContext);
+
+  if (context === undefined) {
+    throw new Error('No DataView context provided');
+  }
+
+  return context;
+}
+
+type DataViewProps = {
+  children: ReactNode;
+};
+
+function DataView({ children }: DataViewProps) {
+  const [layout, setLayout] = useState<DataViewLayout>('table');
+
+  const value = useMemo(() => ({ layout, setLayout }), [layout, setLayout]);
+
+  return (
+    <DataViewContext.Provider value={value}>
+      {children}
+    </DataViewContext.Provider>
+  );
+}
 
 type DataViewTableProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
@@ -187,13 +226,43 @@ function DataViewColumnVisibilityToggle<TData extends ReactTableRowData>(
   );
 }
 
+type DataViewLayoutDropdownProps = {
+  onChangeLayout: (layout: DataViewLayout) => void;
+};
+
+function DataViewLayoutDropdown(
+  { onChangeLayout }: DataViewLayoutDropdownProps,
+) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <i className="cursor-pointer hover:opacity-70 transition-opacity text-xl"><FiLayout /></i>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-[150px]">
+        <DropdownMenuLabel>Select Layout</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {DATA_VIEW_LAYOUTS.map((layout) => (
+          <DropdownMenuItem
+            key={layout}
+            className="capitalize"
+            onClick={() => onChangeLayout(layout)}
+          >
+            {layout}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 type DataViewTopBarProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
   column: string;
+  onChangeLayout?: (layout: DataViewLayout) => void;
 };
 
 function DataViewTopBar<TData extends ReactTableRowData>(
-  { table, column }: DataViewTopBarProps<TData>,
+  { table, column, onChangeLayout }: DataViewTopBarProps<TData>,
 ) {
   return (
     <div className="flex justify-between items-center gap-4">
@@ -205,6 +274,8 @@ function DataViewTopBar<TData extends ReactTableRowData>(
         <Button size="circle-sm" className="text-2xl translate-y-[1px] text-achromatic-dark bg-transparent dark:bg-transparent dark:text-achromatic-light/70">
           <BiSortDown />
         </Button>
+
+        {onChangeLayout && <DataViewLayoutDropdown onChangeLayout={onChangeLayout} />}
 
         <Button size="circle-sm" className="text-xl">+</Button>
       </div>
@@ -396,6 +467,8 @@ const DataViewCheckbox = {
 };
 
 export {
+  useDataView,
+  DataView,
   DataViewTable,
   DataViewGrid,
   DataViewSearchFilter,
