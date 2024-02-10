@@ -32,7 +32,7 @@ export function DashboardPage() {
     <div>
       <Title title="Dashboard" />
       <div className="flex flex-col gap-3">
-        <DataViewTopBar table={table} column="email" onChangeLayout={setLayout} />
+        <DataViewTopBar table={table} column="email" layout={layout} onChangeLayout={setLayout} />
         <Separator />
         {layout === 'table'
           ? <DataViewTable table={table} />

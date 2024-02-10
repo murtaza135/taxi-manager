@@ -33,6 +33,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
 } from '@/ui/DropdownMenu';
 import {
   Select,
@@ -191,12 +193,12 @@ function DataViewSearchFilter<TData extends ReactTableRowData>(
   );
 }
 
-type DataViewColumnVisibilityToggleProps<TData extends ReactTableRowData> = {
+type DataViewColumnVisibilityDropdownProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
 };
 
-function DataViewColumnVisibilityToggle<TData extends ReactTableRowData>(
-  { table }: DataViewColumnVisibilityToggleProps<TData>,
+function DataViewColumnVisibilityDropdown<TData extends ReactTableRowData>(
+  { table }: DataViewColumnVisibilityDropdownProps<TData>,
 ) {
   return (
     <DropdownMenu>
@@ -227,12 +229,20 @@ function DataViewColumnVisibilityToggle<TData extends ReactTableRowData>(
 }
 
 type DataViewLayoutDropdownProps = {
+  layout: DataViewLayout;
   onChangeLayout: (layout: DataViewLayout) => void;
 };
 
 function DataViewLayoutDropdown(
-  { onChangeLayout }: DataViewLayoutDropdownProps,
+  { layout, onChangeLayout }: DataViewLayoutDropdownProps,
 ) {
+  const [position, setPosition] = useState<DataViewLayout>(layout);
+
+  function handleValueChange(value: DataViewLayout) {
+    setPosition(value);
+    onChangeLayout(value);
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -241,15 +251,20 @@ function DataViewLayoutDropdown(
       <DropdownMenuContent align="end" className="w-[150px]">
         <DropdownMenuLabel>Select Layout</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {DATA_VIEW_LAYOUTS.map((layout) => (
-          <DropdownMenuItem
-            key={layout}
-            className="capitalize"
-            onClick={() => onChangeLayout(layout)}
-          >
-            {layout}
-          </DropdownMenuItem>
-        ))}
+        <DropdownMenuRadioGroup
+          value={position}
+          onValueChange={(value) => handleValueChange(value as DataViewLayout)}
+        >
+          {DATA_VIEW_LAYOUTS.map((layoutValue) => (
+            <DropdownMenuRadioItem
+              key={layoutValue}
+              className="capitalize"
+              value={layoutValue}
+            >
+              {layoutValue}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -258,24 +273,27 @@ function DataViewLayoutDropdown(
 type DataViewTopBarProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
   column: string;
+  layout?: DataViewLayout;
   onChangeLayout?: (layout: DataViewLayout) => void;
 };
 
 function DataViewTopBar<TData extends ReactTableRowData>(
-  { table, column, onChangeLayout }: DataViewTopBarProps<TData>,
+  { table, column, layout, onChangeLayout }: DataViewTopBarProps<TData>,
 ) {
   return (
     <div className="flex justify-between items-center gap-4">
       <DataViewSearchFilter table={table} column={column} />
 
       <div className="flex gap-3 items-center">
-        <DataViewColumnVisibilityToggle table={table} />
+        <DataViewColumnVisibilityDropdown table={table} />
 
         <Button size="circle-sm" className="text-2xl translate-y-[1px] text-achromatic-dark bg-transparent dark:bg-transparent dark:text-achromatic-light/70">
           <BiSortDown />
         </Button>
 
-        {onChangeLayout && <DataViewLayoutDropdown onChangeLayout={onChangeLayout} />}
+        {(layout && onChangeLayout) && (
+          <DataViewLayoutDropdown layout={layout} onChangeLayout={onChangeLayout} />
+        )}
 
         <Button size="circle-sm" className="text-xl">+</Button>
       </div>
@@ -472,7 +490,7 @@ export {
   DataViewTable,
   DataViewGrid,
   DataViewSearchFilter,
-  DataViewColumnVisibilityToggle,
+  DataViewColumnVisibilityDropdown,
   DataViewTopBar,
   DataViewPagination,
   DataViewCheckbox,
