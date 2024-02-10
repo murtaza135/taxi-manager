@@ -266,13 +266,13 @@ function DataViewTopBar<TData extends ReactTableRowData>(
       <div className="flex gap-3 items-center">
         <DataViewColumnVisibilityDropdown table={table} />
 
-        <Button size="circle-sm" className="text-2xl translate-y-[1px] text-achromatic-dark bg-transparent dark:bg-transparent dark:text-achromatic-light/70">
+        <Button variant="ghost" size="auto" className="text-2xl translate-y-[1px] text-achromatic-dark dark:text-achromatic-light/70">
           <BiSortDown />
         </Button>
 
         {layout && <DataViewLayoutDropdown layout={layout} onChangeLayout={onChangeLayout} />}
 
-        <Button size="circle-sm" className="text-xl">+</Button>
+        <Button size="sm" shape="circle" className="text-xl">+</Button>
       </div>
     </div>
   );
@@ -422,9 +422,9 @@ function DataViewHeader<TData extends ReactTableRowData, TValue = unknown>(
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            variant="outline"
-            size="sm"
-            className="-ml-3 h-8 data-[state=open]:bg-accent"
+            variant="ghost"
+            size="auto"
+            className="data-[state=open]:bg-accent"
           >
             <span>{header}</span>
             {column.getIsSorted() === 'desc' ? (

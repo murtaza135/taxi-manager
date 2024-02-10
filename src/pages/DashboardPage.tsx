@@ -17,6 +17,7 @@ import { data } from '@/features/tempTable/data';
 import { Separator } from '@/ui/Separator';
 // import { DataGrid } from '@/features/tempTable/DataGrid';
 import { DataViewCard } from '@/ui/DataViewCard';
+import { Button } from '@/ui/Button';
 
 export function DashboardPage() {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -60,6 +61,12 @@ export function DashboardPage() {
         />
         <Separator />
         <DataViewPagination table={table} />
+      </div>
+
+      <div className="mt-8 flex gap-4 max-w-80">
+        <Button variant="danger" size="sm" shape="circle">
+          Hi
+        </Button>
       </div>
     </div>
   );
