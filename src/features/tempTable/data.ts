@@ -19,4 +19,58 @@ export const data: Payment[] = [
     status: 'success',
     email: 'm2@example.com',
   },
+  {
+    id: '728ed530',
+    amount: 120,
+    status: 'success',
+    email: 'm2@example.com',
+  },
+  {
+    id: '728ed530',
+    amount: 120,
+    status: 'success',
+    email: 'm2@example.com',
+  },
+  {
+    id: '728ed530',
+    amount: 120,
+    status: 'success',
+    email: 'm2@example.com',
+  },
+  {
+    id: '728ed530',
+    amount: 120,
+    status: 'success',
+    email: 'm2@example.com',
+  },
+  {
+    id: '728ed530',
+    amount: 120,
+    status: 'success',
+    email: 'm2@example.com',
+  },
+  {
+    id: '728ed530',
+    amount: 120,
+    status: 'success',
+    email: 'm2@example.com',
+  },
+  {
+    id: '728ed530',
+    amount: 120,
+    status: 'success',
+    email: 'm2@example.com',
+  },
+  {
+    id: '728ed530',
+    amount: 120,
+    status: 'success',
+    email: 'm2@example.com',
+  },
+  {
+    id: '728ed530',
+    amount: 120,
+    status: 'success',
+    email: 'm2@example.com',
+  },
 ];

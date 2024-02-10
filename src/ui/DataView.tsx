@@ -328,7 +328,7 @@ function DataViewPagination<TData extends ReactTableRowData>(
         </div>
         <div className="flex items-center space-x-2">
           <Button
-            variant="outline"
+            variant="ghost"
             className="hidden h-8 w-8 p-0 lg:flex"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
@@ -337,7 +337,7 @@ function DataViewPagination<TData extends ReactTableRowData>(
             <RiArrowLeftDoubleFill className="h-4 w-4" />
           </Button>
           <Button
-            variant="outline"
+            variant="ghost"
             className="h-8 w-8 p-0"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
@@ -346,7 +346,7 @@ function DataViewPagination<TData extends ReactTableRowData>(
             <FaChevronLeft className="h-4 w-4" />
           </Button>
           <Button
-            variant="outline"
+            variant="ghost"
             className="h-8 w-8 p-0"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
@@ -355,7 +355,7 @@ function DataViewPagination<TData extends ReactTableRowData>(
             <FaChevronRight className="h-4 w-4" />
           </Button>
           <Button
-            variant="outline"
+            variant="ghost"
             className="hidden h-8 w-8 p-0 lg:flex"
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
