@@ -10,7 +10,6 @@ import {
   DataViewTopBar,
   DataViewPagination,
   DataViewLayoutType,
-  useDataViewLayout,
   DataViewLayout,
 } from '@/ui/DataView';
 import { columns, columns1, columns2 } from '@/features/tempTable/columns';
@@ -23,8 +22,7 @@ export function DashboardPage() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
-  // const [layout, setLayout] = useState<DataViewLayoutType>('table');
-  const [layout, setLayout] = useDataViewLayout('table');
+  const [layout, setLayout] = useState<DataViewLayoutType>('table');
   const [globalFilter, setGlobalFilter] = useState('');
 
   const table = useReactTable({
@@ -45,7 +43,13 @@ export function DashboardPage() {
     <div>
       <Title title="Dashboard" />
       <div className="flex flex-col gap-3">
-        <DataViewTopBar table={table} layout={layout} onChangeLayout={setLayout} filter={globalFilter} onChangeFilter={setGlobalFilter} />
+        <DataViewTopBar
+          table={table}
+          layout={layout}
+          onChangeLayout={setLayout}
+          filter={globalFilter}
+          onChangeFilter={setGlobalFilter}
+        />
         <Separator />
         <DataViewLayout
           layout={layout}

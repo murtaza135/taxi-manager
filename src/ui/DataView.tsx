@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */ // TODO remove
-import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import {
   Table as ReactTable,
   Header as ReactTableHeader,
@@ -46,13 +46,10 @@ import {
 } from '@/ui/Select';
 import { Checkbox } from '@/ui/Checkbox';
 import { cn } from '@/utils/cn';
+import { OptionalObject } from '@/types/utils';
 
 const DATA_VIEW_LAYOUTS = ['table', 'grid'] as const;
 export type DataViewLayoutType = typeof DATA_VIEW_LAYOUTS[number];
-
-function useDataViewLayout(initial: DataViewLayoutType) {
-  return useState<DataViewLayoutType>(initial);
-}
 
 type DataViewTableProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
@@ -118,10 +115,10 @@ function DataViewGrid<TData extends ReactTableRowData>(
   { table, render }: DataViewGridProps<TData>,
 ) {
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(13rem,1fr))] gap-4">
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
       {table.getRowModel().rows?.length ? (
         table.getRowModel().rows.map((row) => (
-          <div key={row.id} className="">
+          <div key={row.id}>
             {render(table.getLeafHeaders(), row)}
           </div>
         ))
@@ -148,14 +145,12 @@ function DataViewLayout<TData extends ReactTableRowData>(
   return <DataViewTable table={table} />;
 }
 
-type DataViewSearchFilterProps<TData extends ReactTableRowData> = {
+type DataViewSearchFilterProps = {
   filter: string;
   onChangeFilter: (filter: string) => void;
 };
 
-function DataViewSearchFilter<TData extends ReactTableRowData>(
-  { filter, onChangeFilter }: DataViewSearchFilterProps<TData>,
-) {
+function DataViewSearchFilter({ filter, onChangeFilter }: DataViewSearchFilterProps) {
   const form = useForm();
 
   return (
@@ -249,24 +244,24 @@ function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdo
 
 type DataViewTopBarProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
-  layout?: undefined;
-  onChangeLayout?: undefined;
-  filter: string;
-  onChangeFilter: (filter: string) => void;
-} | {
-  table: ReactTable<TData>;
+} & OptionalObject<{
   layout: DataViewLayoutType;
   onChangeLayout: (layout: DataViewLayoutType) => void;
+}> & OptionalObject<{
   filter: string;
   onChangeFilter: (filter: string) => void;
-};
+}>;
 
 function DataViewTopBar<TData extends ReactTableRowData>(
   { table, layout, onChangeLayout, filter, onChangeFilter }: DataViewTopBarProps<TData>,
 ) {
   return (
     <div className="flex justify-between items-center gap-4">
-      <DataViewSearchFilter filter={filter} onChangeFilter={onChangeFilter} />
+      {
+        typeof filter !== 'undefined'
+          ? <DataViewSearchFilter filter={filter} onChangeFilter={onChangeFilter} />
+          : <div />
+      }
 
       <div className="flex gap-3 items-center">
         <DataViewColumnVisibilityDropdown table={table} />
@@ -467,7 +462,6 @@ const DataViewCheckbox = {
 };
 
 export {
-  useDataViewLayout,
   DataViewTable,
   DataViewGrid,
   DataViewLayout,
