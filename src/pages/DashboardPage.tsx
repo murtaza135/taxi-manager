@@ -10,7 +10,6 @@ import {
   DataViewPagination,
   DataViewLayoutType,
   useDataViewLayout,
-  DataView,
   DataViewLayout,
 } from '@/ui/DataView';
 import { columns, columns1, columns2 } from '@/features/tempTable/columns';
@@ -24,11 +23,11 @@ export function DashboardPage() {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
   // const [layout, setLayout] = useState<DataViewLayoutType>('table');
-  const dataViewLayout = useDataViewLayout('table');
+  const [layout, setLayout] = useDataViewLayout('table');
 
   const table = useReactTable({
     data,
-    columns: columns[dataViewLayout.layout],
+    columns: columns[layout],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -43,36 +42,17 @@ export function DashboardPage() {
     <div>
       <Title title="Dashboard" />
       <div className="flex flex-col gap-3">
-        <DataView dataViewLayout={dataViewLayout}>
-          <DataViewTopBar table={table} column="email" />
-          {/* <DataViewTopBar table={table} column="email" layout={dataViewLayout.layout} onChangeLayout={dataViewLayout.setLayout} /> */}
-          <Separator />
-          <DataViewLayout
-            table={table}
-            renderGrid={(headers, dataRow) => (
-              <DataViewCard headerRow={headers} dataRow={dataRow} />
-            )}
-          />
-          {/* {dataViewLayout.layout === 'table'
-            ? <DataViewTable table={table} />
-            : (
-              <DataViewGrid
-                table={table}
-                render={(headers, dataRow) => (
-                  <DataViewCard headerRow={headers} dataRow={dataRow} />
-                )}
-              />
-            )} */}
-          {/* <DataViewTable table={table} /> */}
-          {/* <DataViewGrid
+        <DataViewTopBar table={table} column="email" layout={layout} onChangeLayout={setLayout} />
+        <Separator />
+        <DataViewLayout
+          layout={layout}
           table={table}
-          render={(headers, dataRow) => (
+          renderGridCard={(headers, dataRow) => (
             <DataViewCard headerRow={headers} dataRow={dataRow} />
           )}
-        /> */}
-          <Separator />
-          <DataViewPagination table={table} />
-        </DataView>
+        />
+        <Separator />
+        <DataViewPagination table={table} />
       </div>
     </div>
   );
