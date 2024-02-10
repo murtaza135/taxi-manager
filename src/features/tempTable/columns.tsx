@@ -26,6 +26,7 @@ export const columns1: ColumnDef<Payment>[] = [
     cell: ({ row }) => <DataViewCheckbox.Row row={row} />,
     enableSorting: false,
     enableHiding: false,
+    enableGlobalFilter: false,
   },
   {
     accessorKey: 'id',
@@ -34,6 +35,7 @@ export const columns1: ColumnDef<Payment>[] = [
   {
     accessorKey: 'status',
     header: 'Status',
+    enableGlobalFilter: false,
   },
   {
     accessorKey: 'email',
@@ -51,6 +53,7 @@ export const columns1: ColumnDef<Payment>[] = [
 
       return formatted;
     },
+    enableGlobalFilter: false,
   },
   {
     id: 'options',

@@ -149,26 +149,22 @@ function DataViewLayout<TData extends ReactTableRowData>(
 }
 
 type DataViewSearchFilterProps<TData extends ReactTableRowData> = {
-  table: ReactTable<TData>;
-  column: string;
+  filter: string;
+  onChangeFilter: (filter: string) => void;
 };
 
 function DataViewSearchFilter<TData extends ReactTableRowData>(
-  { table, column }: DataViewSearchFilterProps<TData>,
+  { filter, onChangeFilter }: DataViewSearchFilterProps<TData>,
 ) {
-  const form = useForm({
-    defaultValues: {
-      filter: '',
-    },
-  });
+  const form = useForm();
 
   return (
     <FormProvider {...form}>
       <Input
-        name="filter"
-        placeholder={`Filter ${column}...`}
-        value={(table.getColumn(column)?.getFilterValue() as string) ?? ''}
-        onChange={(event) => table.getColumn(column)?.setFilterValue(event.target.value)}
+        name="search"
+        placeholder="Search..."
+        value={filter}
+        onChange={(event) => onChangeFilter(event.target.value)}
         icon={<IoSearchSharp />}
         className="max-w-40 py-[6px] border-none"
       />
@@ -253,22 +249,24 @@ function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdo
 
 type DataViewTopBarProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
-  column: string;
   layout?: undefined;
   onChangeLayout?: undefined;
+  filter: string;
+  onChangeFilter: (filter: string) => void;
 } | {
   table: ReactTable<TData>;
-  column: string;
   layout: DataViewLayoutType;
   onChangeLayout: (layout: DataViewLayoutType) => void;
+  filter: string;
+  onChangeFilter: (filter: string) => void;
 };
 
 function DataViewTopBar<TData extends ReactTableRowData>(
-  { table, column, layout, onChangeLayout }: DataViewTopBarProps<TData>,
+  { table, layout, onChangeLayout, filter, onChangeFilter }: DataViewTopBarProps<TData>,
 ) {
   return (
     <div className="flex justify-between items-center gap-4">
-      <DataViewSearchFilter table={table} column={column} />
+      <DataViewSearchFilter filter={filter} onChangeFilter={onChangeFilter} />
 
       <div className="flex gap-3 items-center">
         <DataViewColumnVisibilityDropdown table={table} />

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { useReactTable, getCoreRowModel, getPaginationRowModel, getSortedRowModel, SortingState, ColumnFiltersState, getFilteredRowModel } from '@tanstack/react-table';
 import { useState } from 'react';
 import { Title } from '@/features/title/components/Title';
@@ -24,6 +25,7 @@ export function DashboardPage() {
   const [rowSelection, setRowSelection] = useState({});
   // const [layout, setLayout] = useState<DataViewLayoutType>('table');
   const [layout, setLayout] = useDataViewLayout('table');
+  const [globalFilter, setGlobalFilter] = useState('');
 
   const table = useReactTable({
     data,
@@ -35,14 +37,15 @@ export function DashboardPage() {
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
-    state: { sorting, columnFilters, rowSelection },
+    onGlobalFilterChange: setGlobalFilter,
+    state: { sorting, columnFilters, rowSelection, globalFilter },
   });
 
   return (
     <div>
       <Title title="Dashboard" />
       <div className="flex flex-col gap-3">
-        <DataViewTopBar table={table} column="email" layout={layout} onChangeLayout={setLayout} />
+        <DataViewTopBar table={table} layout={layout} onChangeLayout={setLayout} filter={globalFilter} onChangeFilter={setGlobalFilter} />
         <Separator />
         <DataViewLayout
           layout={layout}
