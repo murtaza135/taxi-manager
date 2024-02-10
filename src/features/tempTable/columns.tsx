@@ -60,7 +60,7 @@ export const columns1: ColumnDef<Payment>[] = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div className="translate-y-3 cursor-pointer hover:opacity-70 transition-opacity">
+            <div className="cursor-pointer hover:opacity-70 transition-opacity">
               <span className="sr-only">Options</span>
               <IoEllipsisVertical />
             </div>

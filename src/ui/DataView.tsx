@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */ // TODO remove
 import { ReactNode, createContext, useContext, useMemo, useState } from 'react';
 import {
@@ -47,18 +48,24 @@ import { Checkbox } from '@/ui/Checkbox';
 import { cn } from '@/utils/cn';
 
 const DATA_VIEW_LAYOUTS = ['table', 'grid'] as const;
-export type DataViewLayout = typeof DATA_VIEW_LAYOUTS[number];
+export type DataViewLayoutType = typeof DATA_VIEW_LAYOUTS[number];
+
+function useDataViewLayout(initial: DataViewLayoutType) {
+  const [layout, setLayout] = useState<DataViewLayoutType>(initial);
+  const dataViewLayout = useMemo(() => ({ layout, setLayout }), [layout, setLayout]);
+  return dataViewLayout;
+}
 
 type DataViewContextValue = {
-  layout: DataViewLayout;
-  setLayout: (layout: DataViewLayout) => void;
+  layout: DataViewLayoutType;
+  setLayout: (layout: DataViewLayoutType) => void;
 };
 
 const DataViewContext = createContext<DataViewContextValue>(
   null as unknown as DataViewContextValue,
 );
 
-function useDataView() {
+function useDataViewContext() {
   const context = useContext(DataViewContext);
 
   if (context === undefined) {
@@ -70,15 +77,18 @@ function useDataView() {
 
 type DataViewProps = {
   children: ReactNode;
+  dataViewLayout: {
+    layout: DataViewLayoutType;
+    setLayout: (layout: DataViewLayoutType) => void;
+  };
 };
 
-function DataView({ children }: DataViewProps) {
-  const [layout, setLayout] = useState<DataViewLayout>('table');
-
-  const value = useMemo(() => ({ layout, setLayout }), [layout, setLayout]);
+function DataView({ children, dataViewLayout }: DataViewProps) {
+  // const [layout, setLayout] = useState<DataViewLayoutType>('table');
+  // const value = useMemo(() => ({ layout, setLayout }), [layout, setLayout]);
 
   return (
-    <DataViewContext.Provider value={value}>
+    <DataViewContext.Provider value={dataViewLayout}>
       {children}
     </DataViewContext.Provider>
   );
@@ -165,6 +175,23 @@ function DataViewGrid<TData extends ReactTableRowData>(
   );
 }
 
+type DataViewLayoutProps<TData extends ReactTableRowData> = {
+  table: ReactTable<TData>;
+  renderGrid: (headers: ReactTableHeader<TData, unknown>[], data: ReactTableRow<TData>) => ReactNode;
+};
+
+function DataViewLayout<TData extends ReactTableRowData>(
+  { table, renderGrid }: DataViewLayoutProps<TData>,
+) {
+  const { layout } = useDataViewContext();
+
+  if (layout === 'grid') {
+    return <DataViewGrid table={table} render={renderGrid} />;
+  }
+
+  return <DataViewTable table={table} />;
+}
+
 type DataViewSearchFilterProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
   column: string;
@@ -228,19 +255,18 @@ function DataViewColumnVisibilityDropdown<TData extends ReactTableRowData>(
   );
 }
 
-type DataViewLayoutDropdownProps = {
-  layout: DataViewLayout;
-  onChangeLayout: (layout: DataViewLayout) => void;
-};
+// type DataViewLayoutDropdownProps = {
+//   layout: DataViewLayoutType;
+//   onChangeLayout: (layout: DataViewLayoutType) => void;
+// };
 
-function DataViewLayoutDropdown(
-  { layout, onChangeLayout }: DataViewLayoutDropdownProps,
-) {
-  const [position, setPosition] = useState<DataViewLayout>(layout);
+function DataViewLayoutDropdown() {
+  const { layout, setLayout } = useDataViewContext();
+  const [position, setPosition] = useState<DataViewLayoutType>(layout);
 
-  function handleValueChange(value: DataViewLayout) {
+  function handleValueChange(value: DataViewLayoutType) {
     setPosition(value);
-    onChangeLayout(value);
+    setLayout(value);
   }
 
   return (
@@ -253,7 +279,7 @@ function DataViewLayoutDropdown(
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
           value={position}
-          onValueChange={(value) => handleValueChange(value as DataViewLayout)}
+          onValueChange={(value) => handleValueChange(value as DataViewLayoutType)}
         >
           {DATA_VIEW_LAYOUTS.map((layoutValue) => (
             <DropdownMenuRadioItem
@@ -273,12 +299,12 @@ function DataViewLayoutDropdown(
 type DataViewTopBarProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
   column: string;
-  layout?: DataViewLayout;
-  onChangeLayout?: (layout: DataViewLayout) => void;
+  // layout?: DataViewLayoutType;
+  // onChangeLayout?: (layout: DataViewLayoutType) => void;
 };
 
 function DataViewTopBar<TData extends ReactTableRowData>(
-  { table, column, layout, onChangeLayout }: DataViewTopBarProps<TData>,
+  { table, column }: DataViewTopBarProps<TData>,
 ) {
   return (
     <div className="flex justify-between items-center gap-4">
@@ -291,9 +317,10 @@ function DataViewTopBar<TData extends ReactTableRowData>(
           <BiSortDown />
         </Button>
 
-        {(layout && onChangeLayout) && (
+        <DataViewLayoutDropdown />
+        {/* {(layout && onChangeLayout) && (
           <DataViewLayoutDropdown layout={layout} onChangeLayout={onChangeLayout} />
-        )}
+        )} */}
 
         <Button size="circle-sm" className="text-xl">+</Button>
       </div>
@@ -485,10 +512,12 @@ const DataViewCheckbox = {
 };
 
 export {
-  useDataView,
+  useDataViewContext, // TODO remove?
+  useDataViewLayout,
   DataView,
   DataViewTable,
   DataViewGrid,
+  DataViewLayout,
   DataViewSearchFilter,
   DataViewColumnVisibilityDropdown,
   DataViewTopBar,
