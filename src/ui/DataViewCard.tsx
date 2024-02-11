@@ -1,4 +1,6 @@
 import { Header, Row, RowData, flexRender } from '@tanstack/react-table';
+import chunk from 'lodash/chunk';
+import partition from 'lodash/partition';
 
 type Props<TData extends RowData> = {
   headerRow: Header<TData, unknown>[];
@@ -10,6 +12,9 @@ export function DataViewCard<TData extends RowData>({ headerRow, dataRow }: Prop
 
   const optionsCell = dataRow.getVisibleCells().filter((cell) => cell.column.id === 'options')[0];
 
+  const [options, data] = partition(dataRow.getVisibleCells(), (cell) => cell.column.id === 'options');
+  const gridData = chunk(data, 2);
+
   return (
     <div className="h-full min-h-[27rem] rounded-lg overflow-hidden bg-achromatic-light dark:bg-achromatic-dark">
       <div className="h-28 mb-16 relative">
@@ -20,13 +25,44 @@ export function DataViewCard<TData extends RowData>({ headerRow, dataRow }: Prop
         </span>
       </div>
 
-      <div className="px-6 pb-10 pt-4 space-y-6">
+      <div className="px-6 pb-8 pt-4 space-y-10">
         <div className="text-center">
           <p className="text-2xl font-semibold">Jane Doe</p>
           <p className="text-achromatic-dark/50 dark:text-achromatic-light/50">AB20 1CD</p>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
+          {gridData
+            .map((cell, index) => (
+              <div key={cell[0].id} className="grid grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] gap-x-10 gap-y-4 text-center">
+                <div>
+                  <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-light/50">
+                    {flexRender(
+                      headerRow[index * 2].column.columnDef.header,
+                      headerRow[index * 2].getContext(),
+                    )}
+                  </div>
+                  <div className="text-ellipsis overflow-hidden">
+                    {flexRender(cell[0].column.columnDef.cell, cell[0].getContext())}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-light/50">
+                    {flexRender(
+                      headerRow[index * 2 + 1].column.columnDef.header,
+                      headerRow[index * 2 + 1].getContext(),
+                    )}
+                  </div>
+                  <div className="text-ellipsis overflow-hidden">
+                    {flexRender(cell[1].column.columnDef.cell, cell[1].getContext())}
+                  </div>
+                </div>
+              </div>
+            ))}
+        </div>
+
+        {/* <div className="space-y-3">
           {dataRow.getVisibleCells()
             .filter((cell) => cell.column.id !== 'options')
             .map((cell, index) => (
@@ -40,7 +76,7 @@ export function DataViewCard<TData extends RowData>({ headerRow, dataRow }: Prop
                 <div>{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>
               </div>
             ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

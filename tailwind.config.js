@@ -29,6 +29,9 @@ export default {
         cursive: ['cursive'],
         roboto: ['Roboto', 'sans-serif']
       },
+      screens: {
+        xs: "425px"
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
