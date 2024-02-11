@@ -52,7 +52,6 @@ export function DashboardPage() {
             <DataViewCard headerRow={headers} dataRow={dataRow} />
           )}
         />
-        <Separator />
         <DataViewPagination table={table} />
       </div>
     </div>

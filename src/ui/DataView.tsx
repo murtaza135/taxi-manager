@@ -1,6 +1,4 @@
-/* eslint-disable max-len */
-/* eslint-disable no-nested-ternary */ // TODO remove
-import { ReactNode, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import {
   Table as ReactTable,
   Header as ReactTableHeader,
@@ -9,7 +7,6 @@ import {
   Column as ReactTableColumn,
   flexRender,
 } from '@tanstack/react-table';
-import { useForm } from 'react-hook-form';
 import { IoSearchSharp } from 'react-icons/io5';
 import { BiSortDown } from 'react-icons/bi';
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
@@ -23,8 +20,8 @@ import {
   EyeNoneIcon,
 } from '@radix-ui/react-icons';
 import { FiLayout } from 'react-icons/fi';
+import { MdOutlineClose } from 'react-icons/md';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
-import { FormProvider } from '@/ui/Form';
 import { Input } from '@/ui/Input';
 import { Button } from '@/ui/Button';
 import {
@@ -46,7 +43,7 @@ import {
 } from '@/ui/Select';
 import { Checkbox } from '@/ui/Checkbox';
 import { cn } from '@/utils/cn';
-import { OptionalObject } from '@/types/utils';
+import { OptionalGroup } from '@/types/utils';
 
 const DATA_VIEW_LAYOUTS = ['table', 'grid'] as const;
 export type DataViewLayoutType = typeof DATA_VIEW_LAYOUTS[number];
@@ -96,7 +93,7 @@ function DataViewTable<TData extends ReactTableRowData>({ table }: DataViewTable
           ) : (
             <TableRow>
               <TableCell colSpan={columnDefs.length} className="h-24 text-center">
-                No results.
+                No Results.
               </TableCell>
             </TableRow>
           )}
@@ -114,17 +111,21 @@ type DataViewGridProps<TData extends ReactTableRowData> = {
 function DataViewGrid<TData extends ReactTableRowData>(
   { table, render }: DataViewGridProps<TData>,
 ) {
+  if (!table.getRowModel().rows?.length) {
+    return (
+      <div>
+        <p className="w-full h-24 p-4 center text-sm rounded-lg transition-colors bg-achromatic-light hover:bg-achromatic-light/50 dark:bg-achromatic-dark dark:hover:bg-achromatic-dark/50">No Results.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
-      {table.getRowModel().rows?.length ? (
-        table.getRowModel().rows.map((row) => (
-          <div key={row.id}>
-            {render(table.getLeafHeaders(), row)}
-          </div>
-        ))
-      ) : (
-        <p>No results.</p>
-      )}
+      {table.getRowModel().rows.map((row) => (
+        <div key={row.id}>
+          {render(table.getLeafHeaders(), row)}
+        </div>
+      ))}
     </div>
   );
 }
@@ -132,7 +133,10 @@ function DataViewGrid<TData extends ReactTableRowData>(
 type DataViewLayoutProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
   layout: DataViewLayoutType;
-  renderGridCard: (headers: ReactTableHeader<TData, unknown>[], data: ReactTableRow<TData>) => ReactNode;
+  renderGridCard: (
+    headers: ReactTableHeader<TData, unknown>[],
+    data: ReactTableRow<TData>
+  ) => ReactNode;
 };
 
 function DataViewLayout<TData extends ReactTableRowData>(
@@ -151,19 +155,33 @@ type DataViewSearchFilterProps = {
 };
 
 function DataViewSearchFilter({ filter, onChangeFilter }: DataViewSearchFilterProps) {
-  const form = useForm();
+  const ref = useRef<HTMLInputElement | null>(null);
+
+  function handleClearSearchFilter() {
+    onChangeFilter('');
+    ref.current?.focus();
+  }
 
   return (
-    <FormProvider {...form}>
+    <div className="flex gap-2 py-1.5 px-3 rounded-lg bg-achromatic-light dark:bg-achromatic-dark">
       <Input
         name="search"
         placeholder="Search..."
         value={filter}
         onChange={(event) => onChangeFilter(event.target.value)}
         icon={<IoSearchSharp />}
-        className="max-w-40 py-[6px] border-none"
+        className="min-w-8 max-w-36 p-0 border-none rounded-none bg-transparent dark:bg-transparent"
+        ref={ref}
       />
-    </FormProvider>
+      <Button
+        variant="ghost"
+        size="auto"
+        className="translate-y-[0px]"
+        onClick={() => handleClearSearchFilter()}
+      >
+        <MdOutlineClose />
+      </Button>
+    </div>
   );
 }
 
@@ -177,10 +195,16 @@ function DataViewColumnVisibilityDropdown<TData extends ReactTableRowData>(
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <i className="cursor-pointer hover:opacity-70 transition-opacity text-xl"><RxMixerHorizontal /></i>
+        <Button
+          variant="ghost"
+          size="auto"
+          className="text-xl"
+        >
+          <RxMixerHorizontal />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[150px]">
-        <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+        <DropdownMenuLabel>Toggle Columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
           .getAllColumns()
@@ -202,6 +226,21 @@ function DataViewColumnVisibilityDropdown<TData extends ReactTableRowData>(
   );
 }
 
+type DataViewSortDropdownProps = {
+  sort: boolean;
+  onChangeSort: boolean;
+};
+
+function DataViewSortDropdown({ sort, onChangeSort }: DataViewSortDropdownProps) {
+  const temp = sort;
+
+  return (
+    <Button variant="ghost" size="auto" className="text-2xl translate-y-[1px] text-achromatic-dark dark:text-achromatic-light/70">
+      <BiSortDown />
+    </Button>
+  );
+}
+
 type DataViewLayoutDropdownProps = {
   layout: DataViewLayoutType;
   onChangeLayout: (layout: DataViewLayoutType) => void;
@@ -218,7 +257,13 @@ function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdo
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <i className="cursor-pointer hover:opacity-70 transition-opacity text-xl"><FiLayout /></i>
+        <Button
+          variant="ghost"
+          size="auto"
+          className="text-xl"
+        >
+          <FiLayout />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[150px]">
         <DropdownMenuLabel>Select Layout</DropdownMenuLabel>
@@ -244,10 +289,10 @@ function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdo
 
 type DataViewTopBarProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
-} & OptionalObject<{
+} & OptionalGroup<{
   layout: DataViewLayoutType;
   onChangeLayout: (layout: DataViewLayoutType) => void;
-}> & OptionalObject<{
+}> & OptionalGroup<{
   filter: string;
   onChangeFilter: (filter: string) => void;
 }>;
@@ -265,14 +310,9 @@ function DataViewTopBar<TData extends ReactTableRowData>(
 
       <div className="flex gap-3 items-center">
         <DataViewColumnVisibilityDropdown table={table} />
-
-        <Button variant="ghost" size="auto" className="text-2xl translate-y-[1px] text-achromatic-dark dark:text-achromatic-light/70">
-          <BiSortDown />
-        </Button>
-
+        <DataViewSortDropdown sort onChangeSort />
         {layout && <DataViewLayoutDropdown layout={layout} onChangeLayout={onChangeLayout} />}
-
-        <Button size="sm" shape="circle" className="text-xl">+</Button>
+        <Button size="sm" shape="circle" className="text-xl ml-2">+</Button>
       </div>
     </div>
   );
@@ -287,7 +327,7 @@ function DataViewPagination<TData extends ReactTableRowData>(
 ) {
   return (
     <div className="flex items-center justify-between px-2">
-      <div className="flex-1 text-sm text-muted-foreground">
+      <div className="flex-1 text-sm">
         {table.getFilteredSelectedRowModel().rows.length}
         {' '}
         of
@@ -427,11 +467,9 @@ function DataViewHeader<TData extends ReactTableRowData, TValue = unknown>(
             className="data-[state=open]:bg-accent"
           >
             <span>{header}</span>
-            {column.getIsSorted() === 'desc' ? (
-              <ArrowDownIcon className="ml-2 h-4 w-4" />
-            ) : column.getIsSorted() === 'asc' ? (
-              <ArrowUpIcon className="ml-2 h-4 w-4" />
-            ) : (
+            {column.getIsSorted() === 'desc' && <ArrowDownIcon className="ml-2 h-4 w-4" />}
+            {column.getIsSorted() === 'asc' && <ArrowUpIcon className="ml-2 h-4 w-4" />}
+            {(column.getIsSorted() !== 'desc' && column.getIsSorted() !== 'asc') && (
               <CaretSortIcon className="ml-2 h-4 w-4" />
             )}
           </Button>

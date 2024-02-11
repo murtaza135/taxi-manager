@@ -218,10 +218,12 @@ type FormGroupProps = {
 };
 
 function FormGroup({ label, description, children }: FormGroupProps) {
+  const { error } = useFormField();
+
   return (
     <FormItem>
       {!!label && <FormLabel>{label}</FormLabel>}
-      <FormControl>{children}</FormControl>
+      <FormControl className={cn(error && 'border-2')}>{children}</FormControl>
       {!!description && <FormDescription>{description}</FormDescription>}
       <FormMessage />
     </FormItem>

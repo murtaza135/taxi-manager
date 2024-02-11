@@ -43,7 +43,7 @@ export function Form1() {
         />
 
         <div className="flex flex-wrap gap-3">
-          <Button variant="default" type="submit">Submit</Button>
+          <Button type="submit">Submit</Button>
           <Button type="button" onClick={() => prevStep()}>Prev</Button>
           <Button type="button" onClick={() => nextStep()}>Next</Button>
         </div>
