@@ -50,8 +50,8 @@ export function DashboardPage() {
         <DataViewLayout
           layout={layout}
           table={table}
-          renderGridCard={(headers, dataRow) => (
-            <DataViewCard headerRow={headers} dataRow={dataRow} />
+          renderGridCard={(table2, headers, dataRow) => (
+            <DataViewCard table={table2} headerRow={headers} dataRow={dataRow} />
           )}
         />
         {/* <DataViewPagination table={table} /> */}

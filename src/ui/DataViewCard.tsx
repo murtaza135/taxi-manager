@@ -1,15 +1,18 @@
-import { Header, Row, RowData, flexRender } from '@tanstack/react-table';
+import { Table, Header, Row, RowData, flexRender } from '@tanstack/react-table';
 import chunk from 'lodash/chunk';
 import partition from 'lodash/partition';
+import keyBy from 'lodash/keyBy';
 
 type Props<TData extends RowData> = {
+  table: Table<TData>;
   headerRow: Header<TData, unknown>[];
   dataRow: Row<TData>;
 };
 
-export function DataViewCard<TData extends RowData>({ headerRow, dataRow }: Props<TData>) {
+export function DataViewCard<TData extends RowData>({ table, headerRow, dataRow }: Props<TData>) {
   // console.log(dataRow.getVisibleCells()[0].column);
 
+  const headers = keyBy(headerRow, (header) => header.id);
   const optionsCell = dataRow.getVisibleCells().filter((cell) => cell.column.id === 'options')[0];
 
   const [options, data] = partition(dataRow.getVisibleCells(), (cell) => cell.column.id === 'options');
@@ -33,13 +36,13 @@ export function DataViewCard<TData extends RowData>({ headerRow, dataRow }: Prop
 
         <div className="space-y-4">
           {gridData
-            .map((cell, index) => (
+            .map((cell) => (
               <div key={cell[0].id} className="grid grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] gap-x-10 gap-y-4 text-center">
                 <div>
                   <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-light/50">
                     {flexRender(
-                      headerRow[index * 2].column.columnDef.header,
-                      headerRow[index * 2].getContext(),
+                      headers[cell[0].column.id].column.columnDef.header,
+                      headers[cell[0].column.id].getContext(),
                     )}
                   </div>
                   <div className="text-ellipsis overflow-hidden">
@@ -47,17 +50,19 @@ export function DataViewCard<TData extends RowData>({ headerRow, dataRow }: Prop
                   </div>
                 </div>
 
-                <div>
-                  <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-light/50">
-                    {flexRender(
-                      headerRow[index * 2 + 1].column.columnDef.header,
-                      headerRow[index * 2 + 1].getContext(),
-                    )}
+                {cell[1] && (
+                  <div>
+                    <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-light/50">
+                      {flexRender(
+                        headers[cell[1].column.id].column.columnDef.header,
+                        headers[cell[1].column.id].getContext(),
+                      )}
+                    </div>
+                    <div className="text-ellipsis overflow-hidden">
+                      {flexRender(cell[1].column.columnDef.cell, cell[1].getContext())}
+                    </div>
                   </div>
-                  <div className="text-ellipsis overflow-hidden">
-                    {flexRender(cell[1].column.columnDef.cell, cell[1].getContext())}
-                  </div>
-                </div>
+                )}
               </div>
             ))}
         </div>

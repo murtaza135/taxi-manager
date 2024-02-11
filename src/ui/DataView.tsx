@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { ReactNode, useRef, useState } from 'react';
 import {
   Table as ReactTable,
@@ -106,7 +107,7 @@ function DataViewTable<TData extends ReactTableRowData>({ table }: DataViewTable
 
 type DataViewGridProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
-  render: (headers: ReactTableHeader<TData, unknown>[], data: ReactTableRow<TData>) => ReactNode;
+  render: (table: ReactTable<TData>, headers: ReactTableHeader<TData, unknown>[], data: ReactTableRow<TData>) => ReactNode;
 };
 
 function DataViewGrid<TData extends ReactTableRowData>(
@@ -115,7 +116,9 @@ function DataViewGrid<TData extends ReactTableRowData>(
   if (!table.getRowModel().rows?.length) {
     return (
       <div>
-        <p className="w-full h-24 p-4 center text-sm rounded-lg transition-colors bg-achromatic-light hover:bg-achromatic-light/50 dark:bg-achromatic-dark dark:hover:bg-achromatic-dark/50">No Results.</p>
+        <p className="w-full h-24 p-4 center text-sm rounded-lg transition-colors bg-achromatic-light hover:bg-achromatic-light/50 dark:bg-achromatic-dark dark:hover:bg-achromatic-dark/50">
+          No Results.
+        </p>
       </div>
     );
   }
@@ -124,7 +127,7 @@ function DataViewGrid<TData extends ReactTableRowData>(
     <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
       {table.getRowModel().rows.map((row) => (
         <div key={row.id}>
-          {render(table.getLeafHeaders(), row)}
+          {render(table, table.getLeafHeaders(), row)}
         </div>
       ))}
     </div>
@@ -135,6 +138,7 @@ type DataViewLayoutProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
   layout: DataViewLayoutType;
   renderGridCard: (
+    table: ReactTable<TData>,
     headers: ReactTableHeader<TData, unknown>[],
     data: ReactTableRow<TData>
   ) => ReactNode;
