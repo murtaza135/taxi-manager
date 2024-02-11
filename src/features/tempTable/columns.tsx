@@ -54,6 +54,7 @@ export const columns1: ColumnDef<Payment>[] = [
       return formatted;
     },
     enableGlobalFilter: false,
+    sortDescFirst: false,
   },
   {
     id: 'options',

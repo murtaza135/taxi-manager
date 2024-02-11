@@ -19,6 +19,7 @@ import {
   CaretSortIcon,
   EyeNoneIcon,
 } from '@radix-ui/react-icons';
+import { Check } from 'lucide-react';
 import { FiLayout } from 'react-icons/fi';
 import { MdOutlineClose } from 'react-icons/md';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
@@ -198,13 +199,13 @@ function DataViewColumnVisibilityDropdown<TData extends ReactTableRowData>(
         <Button
           variant="ghost"
           size="auto"
-          className="text-xl"
+          className="text-xl translate-y-[1px]"
         >
           <RxMixerHorizontal />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[150px]">
-        <DropdownMenuLabel>Toggle Columns</DropdownMenuLabel>
+      <DropdownMenuContent align="end" className="min-w-[150px]">
+        <DropdownMenuLabel>Show/Hide Columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
           .getAllColumns()
@@ -226,18 +227,60 @@ function DataViewColumnVisibilityDropdown<TData extends ReactTableRowData>(
   );
 }
 
-type DataViewSortDropdownProps = {
-  sort: boolean;
-  onChangeSort: boolean;
+type DataViewSortDropdownProps<TData extends ReactTableRowData> = {
+  table: ReactTable<TData>;
 };
 
-function DataViewSortDropdown({ sort, onChangeSort }: DataViewSortDropdownProps) {
-  const temp = sort;
+function DataViewColumnSortDropdown<TData extends ReactTableRowData>(
+  { table }: DataViewSortDropdownProps<TData>,
+) {
+  const columns = table.getAllColumns().filter((column) => column.getCanSort());
+  const areAllColumnsNotSorted = columns.every((column) => (
+    column.getIsSorted() !== 'desc' && column.getIsSorted() !== 'asc'
+  ));
+
+  if (!columns.length) {
+    return null;
+  }
 
   return (
-    <Button variant="ghost" size="auto" className="text-2xl translate-y-[1px] text-achromatic-dark dark:text-achromatic-light/70">
-      <BiSortDown />
-    </Button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="auto"
+          className="text-2xl translate-y-[1px]"
+        >
+          <BiSortDown />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[150px]">
+        <DropdownMenuLabel>Sort Columns</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {columns.map((column) => (
+          <DropdownMenuItem
+            key={column.id}
+            className="capitalize py-1.5 px-2 flex gap-2"
+            onClick={() => column.toggleSorting()}
+          >
+            {column.getIsSorted() === 'desc' && <ArrowDownIcon className="h-4 w-4" />}
+            {column.getIsSorted() === 'asc' && <ArrowUpIcon className="h-4 w-4" />}
+            {(column.getIsSorted() !== 'desc' && column.getIsSorted() !== 'asc') && (
+              <span className="h-4 w-4" />
+            )}
+            {column.id}
+          </DropdownMenuItem>
+        ))}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          className="capitalize py-1.5 px-2 flex gap-2"
+          onClick={() => table.resetSorting()}
+        >
+          {areAllColumnsNotSorted ? <Check className="h-4 w-4" /> : <div className="h-4 w-4" />}
+          Clear
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
@@ -265,7 +308,7 @@ function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdo
           <FiLayout />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[150px]">
+      <DropdownMenuContent align="end" className="min-w-[150px]">
         <DropdownMenuLabel>Select Layout</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
@@ -289,6 +332,8 @@ function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdo
 
 type DataViewTopBarProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
+  showSortButton?: boolean;
+  showVisibilityButton?: boolean;
 } & OptionalGroup<{
   layout: DataViewLayoutType;
   onChangeLayout: (layout: DataViewLayoutType) => void;
@@ -297,9 +342,15 @@ type DataViewTopBarProps<TData extends ReactTableRowData> = {
   onChangeFilter: (filter: string) => void;
 }>;
 
-function DataViewTopBar<TData extends ReactTableRowData>(
-  { table, layout, onChangeLayout, filter, onChangeFilter }: DataViewTopBarProps<TData>,
-) {
+function DataViewTopBar<TData extends ReactTableRowData>({
+  table,
+  showSortButton,
+  showVisibilityButton,
+  layout,
+  onChangeLayout,
+  filter,
+  onChangeFilter,
+}: DataViewTopBarProps<TData>) {
   return (
     <div className="flex justify-between items-center gap-4">
       {
@@ -309,8 +360,8 @@ function DataViewTopBar<TData extends ReactTableRowData>(
       }
 
       <div className="flex gap-3 items-center">
-        <DataViewColumnVisibilityDropdown table={table} />
-        <DataViewSortDropdown sort onChangeSort />
+        {showVisibilityButton && <DataViewColumnVisibilityDropdown table={table} />}
+        {showSortButton && <DataViewColumnSortDropdown table={table} />}
         {layout && <DataViewLayoutDropdown layout={layout} onChangeLayout={onChangeLayout} />}
         <Button size="sm" shape="circle" className="text-xl ml-2">+</Button>
       </div>
@@ -464,7 +515,6 @@ function DataViewHeader<TData extends ReactTableRowData, TValue = unknown>(
           <Button
             variant="ghost"
             size="auto"
-            className="data-[state=open]:bg-accent"
           >
             <span>{header}</span>
             {column.getIsSorted() === 'desc' && <ArrowDownIcon className="ml-2 h-4 w-4" />}
@@ -505,6 +555,8 @@ export {
   DataViewLayout,
   DataViewSearchFilter,
   DataViewColumnVisibilityDropdown,
+  DataViewColumnSortDropdown,
+  DataViewLayoutDropdown,
   DataViewTopBar,
   DataViewPagination,
   DataViewCheckbox,

@@ -39,6 +39,8 @@ export function DashboardPage() {
       <div className="flex flex-col gap-3">
         <DataViewTopBar
           table={table}
+          showSortButton
+          showVisibilityButton
           layout={layout}
           onChangeLayout={setLayout}
           filter={globalFilter}
