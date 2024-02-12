@@ -10,16 +10,20 @@ import {
   DropdownMenuTrigger,
 } from '@/ui/DropdownMenu';
 import { Button } from '@/ui/Button';
-import { DataViewCheckbox, DataViewHeader } from '@/ui/DataView';
+import { DataViewCheckbox, DataViewHeader, DataViewCardMainDataMapper } from '@/ui/DataView';
+import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 
-export type Payment = {
+export type Driver = {
   id: string;
-  amount: number;
-  status: 'pending' | 'processing' | 'success' | 'failed';
+  name: string;
   email: string;
+  phoneNumber: string;
+  taxiNumberPlate: string;
+  avatar?: string;
+  image?: string;
 };
 
-export const columns1: ColumnDef<Payment>[] = [
+export const tableColumns: ColumnDef<Driver>[] = [
   {
     id: 'select',
     header: ({ table }) => <DataViewCheckbox.Header table={table} />,
@@ -33,33 +37,36 @@ export const columns1: ColumnDef<Payment>[] = [
     header: 'ID',
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
-    enableGlobalFilter: false,
+    accessorKey: 'avatar',
+    header: 'Avatar',
+    cell: ({ row }) => (
+      <Avatar className="hover:opacity-65 transition-opacity">
+        <AvatarImage src={row.getValue('avatar')} alt="user" />
+        <AvatarFallback className="dark:text-achromatic-light">Cn</AvatarFallback>
+      </Avatar>
+    ),
+  },
+  {
+    accessorKey: 'name',
+    header: ({ column }) => <DataViewHeader column={column} header="Name" />,
   },
   {
     accessorKey: 'email',
     header: ({ column }) => <DataViewHeader column={column} header="Email" />,
   },
   {
-    accessorKey: 'amount',
-    header: 'Amount',
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue('amount'));
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(amount);
-
-      return formatted;
-    },
+    accessorKey: 'phoneNumber',
+    header: 'Phone Number',
     enableGlobalFilter: false,
-    sortDescFirst: false,
+  },
+  {
+    accessorKey: 'taxiNumberPlate',
+    header: ({ column }) => <DataViewHeader column={column} header="Vehicle" />,
   },
   {
     id: 'options',
     cell: ({ row }) => {
-      const payment = row.original;
+      const driver = row.original;
 
       return (
         <DropdownMenu>
@@ -72,13 +79,10 @@ export const columns1: ColumnDef<Payment>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(driver.id)}
             >
-              Copy payment ID
+              Copy Driver ID
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -86,41 +90,47 @@ export const columns1: ColumnDef<Payment>[] = [
   },
 ];
 
-export const columns2: ColumnDef<Payment>[] = [
+export const gridColumns: ColumnDef<Driver>[] = [
   {
-    accessorKey: 'id',
-    header: 'ID',
+    accessorKey: 'avatar',
+    header: 'Avatar',
+    // cell: ({ row }) => (
+    //   <Avatar className="hover:opacity-65 transition-opacity">
+    //     <AvatarImage src={row.getValue('avatar')} alt="user" />
+    //     <AvatarFallback className="dark:text-achromatic-light">Cn</AvatarFallback>
+    //   </Avatar>
+    // ),
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
+    accessorKey: 'image',
+    header: 'Image',
+  },
+  {
+    accessorKey: 'name',
+    header: 'Name',
   },
   {
     accessorKey: 'email',
     header: 'Email',
   },
   {
-    accessorKey: 'amount',
-    header: 'Amount',
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue('amount'));
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(amount);
-
-      return formatted;
-    },
+    accessorKey: 'phoneNumber',
+    header: 'Phone Number',
+    enableGlobalFilter: false,
+  },
+  {
+    accessorKey: 'taxiNumberPlate',
+    header: 'Vehicle',
   },
   {
     id: 'options',
     cell: ({ row }) => {
-      const payment = row.original;
+      const driver = row.original;
 
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div className="translate-y-3 cursor-pointer hover:opacity-70 transition-opacity">
+            <div className="cursor-pointer hover:opacity-70 transition-opacity">
               <span className="sr-only">Options</span>
               <IoEllipsisVertical />
             </div>
@@ -128,13 +138,10 @@ export const columns2: ColumnDef<Payment>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(driver.id)}
             >
-              Copy payment ID
+              Copy Driver ID
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -142,7 +149,15 @@ export const columns2: ColumnDef<Payment>[] = [
   },
 ];
 
+export const mapper: DataViewCardMainDataMapper = {
+  title: 'name',
+  subtitle: 'taxiNumberPlate',
+  avatar: 'avatar',
+  options: 'options',
+  image: 'image',
+} as const;
+
 export const columns = {
-  table: columns1,
-  grid: columns2,
+  table: tableColumns,
+  grid: gridColumns,
 } as const;

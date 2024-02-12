@@ -1,17 +1,16 @@
-import { Table, Header, Row, RowData, flexRender } from '@tanstack/react-table';
+import { Header, Row, RowData, flexRender } from '@tanstack/react-table';
 import chunk from 'lodash/chunk';
 import partition from 'lodash/partition';
 import keyBy from 'lodash/keyBy';
 
-type Props<TData extends RowData> = {
-  table: Table<TData>;
+type DataViewCardProps<TData extends RowData> = {
   headerRow: Header<TData, unknown>[];
   dataRow: Row<TData>;
 };
 
-export function DataViewCard<TData extends RowData>({ table, headerRow, dataRow }: Props<TData>) {
-  // console.log(dataRow.getVisibleCells()[0].column);
-
+export function DataViewCard<TData extends RowData>(
+  { headerRow, dataRow }: DataViewCardProps<TData>,
+) {
   const headers = keyBy(headerRow, (header) => header.id);
   const optionsCell = dataRow.getVisibleCells().filter((cell) => cell.column.id === 'options')[0];
 
@@ -66,22 +65,6 @@ export function DataViewCard<TData extends RowData>({ table, headerRow, dataRow 
               </div>
             ))}
         </div>
-
-        {/* <div className="space-y-3">
-          {dataRow.getVisibleCells()
-            .filter((cell) => cell.column.id !== 'options')
-            .map((cell, index) => (
-              <div key={cell.id}>
-                <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-light/50">
-                  {flexRender(
-                    headerRow[index].column.columnDef.header,
-                    headerRow[index].getContext(),
-                  )}
-                </div>
-                <div>{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>
-              </div>
-            ))}
-        </div> */}
       </div>
     </div>
   );

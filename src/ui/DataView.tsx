@@ -6,6 +6,7 @@ import {
   Row as ReactTableRow,
   RowData as ReactTableRowData,
   Column as ReactTableColumn,
+  Cell as ReactTableCell,
   flexRender,
 } from '@tanstack/react-table';
 import { IoSearchSharp } from 'react-icons/io5';
@@ -23,6 +24,10 @@ import {
 import { Check } from 'lucide-react';
 import { FiLayout } from 'react-icons/fi';
 import { MdOutlineClose } from 'react-icons/md';
+import chunk from 'lodash/chunk';
+import partition from 'lodash/partition';
+import keyBy from 'lodash/keyBy';
+import mapValues from 'lodash/mapValues';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
 import { Input } from '@/ui/Input';
 import { Button } from '@/ui/Button';
@@ -105,13 +110,109 @@ function DataViewTable<TData extends ReactTableRowData>({ table }: DataViewTable
   );
 }
 
+type DataViewCardCellPair<TData extends ReactTableRowData> = [
+  ReactTableCell<TData, unknown>,
+  ReactTableCell<TData, unknown> | undefined,
+];
+
+export type DataViewCardMainDataMapper = {
+  image?: string;
+  avatar?: string;
+  title?: string;
+  subtitle?: string;
+  options?: string;
+};
+
+type DataViewCardProps<TData extends ReactTableRowData> = {
+  headers: Record<string, ReactTableHeader<TData, unknown>>;
+  row: ReactTableRow<TData>;
+  mapper?: DataViewCardMainDataMapper;
+};
+
+function DataViewCard<TData extends ReactTableRowData>(
+  { headers, row, mapper = {} }: DataViewCardProps<TData>,
+) {
+  // TODO comment on whats going on here
+  const mapperValues = Object.values(mapper);
+  const [mainDataCells, listDataCells] = partition(row.getVisibleCells(), (cell) => mapperValues.includes(cell.column.id));
+  const mainDataCellsObject = keyBy(mainDataCells, (cell) => cell.column.id);
+  const mainDataCellsMap = mapValues(mapper, (value) => (value ? mainDataCellsObject[value] : undefined));
+  const listDataCellPairs = chunk(listDataCells, 2) as DataViewCardCellPair<TData>[];
+
+  return (
+    <div className="h-full min-h-[27rem] rounded-lg overflow-hidden bg-achromatic-light dark:bg-achromatic-dark">
+      <div className="h-28 mb-16 relative">
+        {mainDataCellsMap.image
+          ? <img src={mainDataCellsMap.image.renderValue() as string} alt="sea" className="object-cover object-center h-full w-full" />
+          : <div className="h-full w-full bg-primary-dark dark:bg-primary-light" />}
+
+        {mainDataCellsMap.avatar
+          ? <img src="/src/assets/images/person.jpg" alt="person" className="h-32 w-32 object-cover object-center rounded-full absolute top-full left-1/2 -translate-x-16 -translate-y-16 border-0 border-achromatic-light dark:border-achromatic-dark" />
+          : <div className="h-32 w-32 object-cover object-center rounded-full absolute top-full left-1/2 -translate-x-16 -translate-y-16 border-0 border-achromatic-light dark:border-achromatic-dark" />}
+
+        {!!mainDataCellsMap.options && (
+          <span className="absolute top-full right-0 -translate-x-2 translate-y-2">
+            {flexRender(
+              mainDataCellsMap.options.column.columnDef.cell,
+              mainDataCellsMap.options.getContext(),
+            )}
+          </span>
+        )}
+      </div>
+
+      <div className="px-6 pb-8 pt-4 space-y-10">
+        <div className="text-center">
+          {!!mainDataCellsMap.title && <p className="text-2xl font-semibold">{mainDataCellsMap.title.renderValue() as string}</p>}
+          {!!mainDataCellsMap.subtitle && <p className="text-achromatic-dark/50 dark:text-achromatic-light/50">{mainDataCellsMap.subtitle.renderValue() as string}</p>}
+        </div>
+
+        <div className="space-y-4">
+          {listDataCellPairs
+            .map(([cellA, cellB]) => (
+              <div
+                key={`${cellA.id}-${cellB?.id}`}
+                className="grid grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] gap-x-10 gap-y-4 text-center"
+              >
+                <div>
+                  <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-light/50">
+                    {flexRender(
+                      headers[cellA.column.id].column.columnDef.header,
+                      headers[cellA.column.id].getContext(),
+                    )}
+                  </div>
+                  <div className="text-ellipsis overflow-hidden">
+                    {flexRender(cellA.column.columnDef.cell, cellA.getContext())}
+                  </div>
+                </div>
+
+                {cellB && (
+                  <div>
+                    <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-light/50">
+                      {flexRender(
+                        headers[cellB.column.id].column.columnDef.header,
+                        headers[cellB.column.id].getContext(),
+                      )}
+                    </div>
+                    <div className="text-ellipsis overflow-hidden">
+                      {flexRender(cellB.column.columnDef.cell, cellB.getContext())}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 type DataViewGridProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
-  render: (table: ReactTable<TData>, headers: ReactTableHeader<TData, unknown>[], data: ReactTableRow<TData>) => ReactNode;
+  mapper?: DataViewCardMainDataMapper;
 };
 
 function DataViewGrid<TData extends ReactTableRowData>(
-  { table, render }: DataViewGridProps<TData>,
+  { table, mapper }: DataViewGridProps<TData>,
 ) {
   if (!table.getRowModel().rows?.length) {
     return (
@@ -123,12 +224,12 @@ function DataViewGrid<TData extends ReactTableRowData>(
     );
   }
 
+  const headers: Record<string, ReactTableHeader<TData, unknown>> = keyBy(table.getLeafHeaders(), (header) => header.id);
+
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
       {table.getRowModel().rows.map((row) => (
-        <div key={row.id}>
-          {render(table, table.getLeafHeaders(), row)}
-        </div>
+        <DataViewCard key={row.id} row={row} headers={headers} mapper={mapper} />
       ))}
     </div>
   );
@@ -137,18 +238,14 @@ function DataViewGrid<TData extends ReactTableRowData>(
 type DataViewLayoutProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
   layout: DataViewLayoutType;
-  renderGridCard: (
-    table: ReactTable<TData>,
-    headers: ReactTableHeader<TData, unknown>[],
-    data: ReactTableRow<TData>
-  ) => ReactNode;
+  mapper?: DataViewCardMainDataMapper;
 };
 
 function DataViewLayout<TData extends ReactTableRowData>(
-  { table, layout, renderGridCard }: DataViewLayoutProps<TData>,
+  { table, layout, mapper }: DataViewLayoutProps<TData>,
 ) {
   if (layout === 'grid') {
-    return <DataViewGrid table={table} render={renderGridCard} />;
+    return <DataViewGrid table={table} mapper={mapper} />;
   }
 
   return <DataViewTable table={table} />;

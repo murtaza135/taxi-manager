@@ -7,7 +7,7 @@ import {
   DataViewLayoutType,
   DataViewLayout,
 } from '@/ui/DataView';
-import { columns } from '@/features/tempTable/columns';
+import { columns, mapper } from '@/features/tempTable/columns';
 import { data } from '@/features/tempTable/data';
 import { Separator } from '@/ui/Separator';
 import { DataViewCard } from '@/ui/DataViewCard';
@@ -50,9 +50,7 @@ export function DashboardPage() {
         <DataViewLayout
           layout={layout}
           table={table}
-          renderGridCard={(table2, headers, dataRow) => (
-            <DataViewCard table={table2} headerRow={headers} dataRow={dataRow} />
-          )}
+          mapper={mapper}
         />
         {/* <DataViewPagination table={table} /> */}
       </div>
