@@ -18,7 +18,7 @@ export type Driver = {
   name: string;
   email: string;
   phoneNumber: string;
-  taxiNumberPlate: string;
+  taxi: string;
   avatar?: string;
   image?: string;
 };
@@ -60,8 +60,8 @@ export const tableColumns: ColumnDef<Driver>[] = [
     enableGlobalFilter: false,
   },
   {
-    accessorKey: 'taxiNumberPlate',
-    header: ({ column }) => <DataViewHeader column={column} header="Vehicle" />,
+    accessorKey: 'taxi',
+    header: ({ column }) => <DataViewHeader column={column} header="Taxi" />,
   },
   {
     id: 'options',
@@ -119,8 +119,8 @@ export const gridColumns: ColumnDef<Driver>[] = [
     enableGlobalFilter: false,
   },
   {
-    accessorKey: 'taxiNumberPlate',
-    header: 'Vehicle',
+    accessorKey: 'taxi',
+    header: 'Taxi',
   },
   {
     id: 'options',
@@ -151,7 +151,7 @@ export const gridColumns: ColumnDef<Driver>[] = [
 
 export const mapper: DataViewCardMainDataMapper = {
   title: 'name',
-  subtitle: 'taxiNumberPlate',
+  subtitle: 'taxi',
   avatar: 'avatar',
   options: 'options',
   image: 'image',

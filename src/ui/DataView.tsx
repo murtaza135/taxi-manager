@@ -1,5 +1,4 @@
-/* eslint-disable max-len */
-import { ReactNode, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   Table as ReactTable,
   Header as ReactTableHeader,
@@ -28,6 +27,7 @@ import chunk from 'lodash/chunk';
 import partition from 'lodash/partition';
 import keyBy from 'lodash/keyBy';
 import mapValues from 'lodash/mapValues';
+import { capitalCase } from 'change-case';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
 import { Input } from '@/ui/Input';
 import { Button } from '@/ui/Button';
@@ -134,9 +134,15 @@ function DataViewCard<TData extends ReactTableRowData>(
 ) {
   // TODO comment on whats going on here
   const mapperValues = Object.values(mapper);
-  const [mainDataCells, listDataCells] = partition(row.getVisibleCells(), (cell) => mapperValues.includes(cell.column.id));
+  const [mainDataCells, listDataCells] = partition(
+    row.getVisibleCells(),
+    (cell) => mapperValues.includes(cell.column.id),
+  );
   const mainDataCellsObject = keyBy(mainDataCells, (cell) => cell.column.id);
-  const mainDataCellsMap = mapValues(mapper, (value) => (value ? mainDataCellsObject[value] : undefined));
+  const mainDataCellsMap = mapValues(
+    mapper,
+    (value) => (value ? mainDataCellsObject[value] : undefined),
+  );
   const listDataCellPairs = chunk(listDataCells, 2) as DataViewCardCellPair<TData>[];
 
   return (
@@ -224,7 +230,10 @@ function DataViewGrid<TData extends ReactTableRowData>(
     );
   }
 
-  const headers: Record<string, ReactTableHeader<TData, unknown>> = keyBy(table.getLeafHeaders(), (header) => header.id);
+  const headers: Record<string, ReactTableHeader<TData, unknown>> = keyBy(
+    table.getLeafHeaders(),
+    (header) => header.id,
+  );
 
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
@@ -320,7 +329,7 @@ function DataViewColumnVisibilityDropdown<TData extends ReactTableRowData>(
               checked={column.getIsVisible()}
               onCheckedChange={(value) => column.toggleVisibility(!!value)}
             >
-              {column.id}
+              {capitalCase(column.id)}
             </DropdownMenuCheckboxItem>
           ))}
       </DropdownMenuContent>
@@ -369,7 +378,7 @@ function DataViewColumnSortDropdown<TData extends ReactTableRowData>(
             {(column.getIsSorted() !== 'desc' && column.getIsSorted() !== 'asc') && (
               <span className="h-4 w-4" />
             )}
-            {column.id}
+            {capitalCase(column.id)}
           </DropdownMenuItem>
         ))}
         <DropdownMenuSeparator />
@@ -422,7 +431,7 @@ function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdo
               className="capitalize"
               value={layoutValue}
             >
-              {layoutValue}
+              {capitalCase(layoutValue)}
             </DropdownMenuRadioItem>
           ))}
         </DropdownMenuRadioGroup>
