@@ -16,7 +16,7 @@ applyTheme();
 
 export function App() {
   return (
-    <div className="min-h-dvh font-roboto bg-scene-light dark:bg-scene-dark text-achromatic-dark dark:text-achromatic-light">
+    <>
       <div className="container-fluid mx-auto px-5 flex gap-10">
         <SideNav />
         <div className="pb-12 w-full h-full overflow-clip">
@@ -34,6 +34,6 @@ export function App() {
         </div>
       </div>
       <NavBackdrop />
-    </div>
+    </>
   );
 }

@@ -28,7 +28,7 @@ export function SideNav() {
       <animated.nav
         aria-label="primary"
         style={style}
-        className="flex flex-col min-w-64 sm:min-w-fit md:min-w-64 h-dvh fixed sm:sticky top-0 left-0 overflow-y-auto no-scrollbar overflow-x-clip pt-5 sm:pt-0 pb-5 z-40 bg-achromatic-light dark:bg-achromatic-dark sm:bg-transparent sm:dark:bg-transparent shadow-lg sm:shadow-none"
+        className="flex flex-col min-w-64 sm:min-w-fit md:min-w-64 h-dvh fixed sm:sticky top-0 left-0 overflow-y-auto no-scrollbar overflow-x-clip pt-5 sm:pt-0 pb-5 z-40 bg-achromatic-light dark:bg-achromatic-dark sm:bg-transparent sm:dark:bg-transparent shadow-xl sm:shadow-none shadow-scene-dark/60"
       >
         <NavLogo />
 

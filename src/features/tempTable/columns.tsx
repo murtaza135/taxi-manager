@@ -129,7 +129,7 @@ export const gridColumns: ColumnDef<Driver>[] = [
 
       return (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild className="translate-x-2">
             <div className="cursor-pointer hover:opacity-70 transition-opacity">
               <span className="sr-only">Options</span>
               <IoEllipsisVertical />

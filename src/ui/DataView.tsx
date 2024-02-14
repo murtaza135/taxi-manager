@@ -51,6 +51,7 @@ import {
 import { Checkbox } from '@/ui/Checkbox';
 import { cn } from '@/utils/cn';
 import { OptionalGroup } from '@/types/utils';
+import { Avatar, AvatarImage } from '@/ui/Avatar';
 
 const DATA_VIEW_LAYOUTS = ['table', 'grid'] as const;
 export type DataViewLayoutType = typeof DATA_VIEW_LAYOUTS[number];
@@ -64,7 +65,7 @@ function DataViewTable<TData extends ReactTableRowData>({ table }: DataViewTable
   const columnDefs = table._getColumnDefs();
 
   return (
-    <div className="rounded-md overflow-auto w-full">
+    <div className="rounded-md overflow-auto w-full scrollbar">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -133,6 +134,7 @@ function DataViewCard<TData extends ReactTableRowData>(
   { headers, row, mapper = {} }: DataViewCardProps<TData>,
 ) {
   // TODO comment on whats going on here
+  // TODO change cell.renderValue() to row.getValue("<id>")?
   const mapperValues = Object.values(mapper);
   const [mainDataCells, listDataCells] = partition(
     row.getVisibleCells(),
@@ -145,19 +147,25 @@ function DataViewCard<TData extends ReactTableRowData>(
   );
   const listDataCellPairs = chunk(listDataCells, 2) as DataViewCardCellPair<TData>[];
 
+  const imageRenderValue = mainDataCellsMap.image?.renderValue<string>();
+  const avatarRenderValue = mainDataCellsMap.avatar?.renderValue<string>();
+
   return (
-    <div className="h-full min-h-[27rem] rounded-lg overflow-hidden bg-achromatic-light dark:bg-achromatic-dark">
-      <div className="h-28 mb-16 relative">
-        {mainDataCellsMap.image
-          ? <img src={mainDataCellsMap.image.renderValue() as string} alt="sea" className="object-cover object-center h-full w-full" />
+    <div className="h-full min-h-[20rem] rounded-lg overflow-hidden transition-colors bg-achromatic-light hover:bg-achromatic-light/35 dark:bg-achromatic-dark dark:hover:bg-achromatic-dark/35">
+      <div className={cn('h-28 relative', !!avatarRenderValue && 'mb-16')}>
+        {imageRenderValue
+          ? <img src={imageRenderValue} alt="card background" className="object-cover object-center h-full w-full" />
           : <div className="h-full w-full bg-primary-dark dark:bg-primary-light" />}
 
-        {mainDataCellsMap.avatar
-          ? <img src="/src/assets/images/person.jpg" alt="person" className="h-32 w-32 object-cover object-center rounded-full absolute top-full left-1/2 -translate-x-16 -translate-y-16 border-0 border-achromatic-light dark:border-achromatic-dark" />
-          : <div className="h-32 w-32 object-cover object-center rounded-full absolute top-full left-1/2 -translate-x-16 -translate-y-16 border-0 border-achromatic-light dark:border-achromatic-dark" />}
+        {!!avatarRenderValue
+          && (
+            <Avatar className="h-32 w-32 rounded-full absolute top-full left-1/2 -translate-x-16 -translate-y-16">
+              <AvatarImage src={avatarRenderValue} alt="avatar" />
+            </Avatar>
+          )}
 
         {!!mainDataCellsMap.options && (
-          <span className="absolute top-full right-0 -translate-x-2 translate-y-2">
+          <span className="absolute top-full right-0 -translate-x-4 translate-y-4">
             {flexRender(
               mainDataCellsMap.options.column.columnDef.cell,
               mainDataCellsMap.options.getContext(),
@@ -168,8 +176,8 @@ function DataViewCard<TData extends ReactTableRowData>(
 
       <div className="px-6 pb-8 pt-4 space-y-10">
         <div className="text-center">
-          {!!mainDataCellsMap.title && <p className="text-2xl font-semibold">{mainDataCellsMap.title.renderValue() as string}</p>}
-          {!!mainDataCellsMap.subtitle && <p className="text-achromatic-dark/50 dark:text-achromatic-light/50">{mainDataCellsMap.subtitle.renderValue() as string}</p>}
+          {!!mainDataCellsMap.title && <p className="text-2xl font-semibold">{mainDataCellsMap.title.renderValue<string>()}</p>}
+          {!!mainDataCellsMap.subtitle && <p className="text-achromatic-dark/50 dark:text-achromatic-light/50">{mainDataCellsMap.subtitle.renderValue<string>()}</p>}
         </div>
 
         <div className="space-y-4">
@@ -287,7 +295,6 @@ function DataViewSearchFilter({ filter, onChangeFilter }: DataViewSearchFilterPr
       <Button
         variant="ghost"
         size="auto"
-        className="translate-y-[0px]"
         onClick={() => handleClearSearchFilter()}
       >
         <MdOutlineClose />
