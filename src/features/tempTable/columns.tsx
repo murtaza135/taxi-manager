@@ -1,15 +1,12 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal } from 'lucide-react';
 import { IoEllipsisVertical } from 'react-icons/io5';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/DropdownMenu';
-import { Button } from '@/ui/Button';
 import { DataViewCheckbox, DataViewHeader, DataViewCardMainDataMapper } from '@/ui/DataView';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 

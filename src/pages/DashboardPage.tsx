@@ -10,7 +10,6 @@ import {
 import { columns, mapper } from '@/features/tempTable/columns';
 import { data } from '@/features/tempTable/data';
 import { Separator } from '@/ui/Separator';
-import { DataViewCard } from '@/ui/DataViewCard';
 
 export function DashboardPage() {
   const [sorting, setSorting] = useState<SortingState>([]);

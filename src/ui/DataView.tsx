@@ -14,12 +14,7 @@ import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import { RxMixerHorizontal } from 'react-icons/rx';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { RiArrowLeftDoubleFill, RiArrowRightDoubleFill } from 'react-icons/ri';
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  CaretSortIcon,
-  EyeNoneIcon,
-} from '@radix-ui/react-icons';
+import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon, EyeNoneIcon } from '@radix-ui/react-icons';
 import { Check } from 'lucide-react';
 import { FiLayout } from 'react-icons/fi';
 import { MdOutlineClose } from 'react-icons/md';
@@ -49,9 +44,9 @@ import {
   SelectValue,
 } from '@/ui/Select';
 import { Checkbox } from '@/ui/Checkbox';
+import { Avatar, AvatarImage } from '@/ui/Avatar';
 import { cn } from '@/utils/cn';
 import { OptionalGroup } from '@/types/utils';
-import { Avatar, AvatarImage } from '@/ui/Avatar';
 
 const DATA_VIEW_LAYOUTS = ['table', 'grid'] as const;
 export type DataViewLayoutType = typeof DATA_VIEW_LAYOUTS[number];
