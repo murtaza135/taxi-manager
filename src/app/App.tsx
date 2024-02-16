@@ -19,7 +19,7 @@ export function App() {
     <>
       <div className="container-fluid mx-auto px-5 flex gap-10">
         <SideNav />
-        <div className="pb-12 w-full h-full overflow-clip">
+        <div className="pb-12 w-full h-dvh overflow-clip">
           <TopNav />
           <Switch>
             <Route path="/login" component={LoginPage} />
