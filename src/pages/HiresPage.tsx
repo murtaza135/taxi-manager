@@ -27,7 +27,7 @@ export function HiresPage() {
   return (
     <>
       <Title title="Hires" />
-      <div className="h-full">
+      <div>
         <Tabs value={`${tab}`} onValueChange={setTabIndex}>
           <TabsList>
             <TabsTrigger value="0">Account</TabsTrigger>
@@ -40,20 +40,14 @@ export function HiresPage() {
           <TabsContent value="password">Change your password here.</TabsContent>
         </Tabs>
 
-        <Carousel setApi={setApi} className="h-full [&>div]:h-full">
-          <CarouselContent className="h-full">
-            <CarouselItem>
-              <div className="center">0</div>
-            </CarouselItem>
-            <CarouselItem>
-              <div className="center">1</div>
-            </CarouselItem>
-            <CarouselItem>
-              <div className="center">2</div>
-            </CarouselItem>
+        <Carousel setApi={setApi}>
+          <CarouselContent>
+            <CarouselItem>0</CarouselItem>
+            <CarouselItem>1</CarouselItem>
+            <CarouselItem>2</CarouselItem>
+            <CarouselItem>3</CarouselItem>
+            <CarouselItem>4</CarouselItem>
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
         </Carousel>
       </div>
     </>
