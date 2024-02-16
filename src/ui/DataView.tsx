@@ -18,11 +18,13 @@ import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon, EyeNoneIcon } from '@radix-u
 import { Check } from 'lucide-react';
 import { FiLayout } from 'react-icons/fi';
 import { MdOutlineClose } from 'react-icons/md';
+import { TiEye } from 'react-icons/ti';
 import chunk from 'lodash/chunk';
 import partition from 'lodash/partition';
 import keyBy from 'lodash/keyBy';
 import mapValues from 'lodash/mapValues';
 import { capitalCase } from 'change-case';
+import { Link } from 'wouter';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
 import { Input } from '@/ui/Input';
 import { Button } from '@/ui/Button';
@@ -656,6 +658,27 @@ function DataViewHeader<TData extends ReactTableRowData, TValue = unknown>(
   );
 }
 
+type DataViewOpenPageProps = {
+  href: string;
+  className?: string;
+};
+
+function DataViewOpenPage(
+  { href, className }: DataViewOpenPageProps,
+) {
+  return (
+    <Link href={href}>
+      <Button
+        variant="ghost"
+        size="auto"
+        className={cn('text-2xl text-primary-dark dark:text-achromatic-500', className)}
+      >
+        <TiEye />
+      </Button>
+    </Link>
+  );
+}
+
 const DataViewCheckbox = {
   Header: DataViewHeaderCheckbox,
   Row: DataViewRowCheckbox,
@@ -673,4 +696,5 @@ export {
   DataViewPagination,
   DataViewCheckbox,
   DataViewHeader,
+  DataViewOpenPage,
 };

@@ -29,6 +29,8 @@ export function App() {
             <Route path="/taxis" component={TaxisPage} />
             <Route path="/drivers" component={DriversPage} />
             <Route path="/settings" component={SettingsPage} />
+            {/* TODO remove */}
+            <Route path="/temp/:id" component={RentPage} />
             <Route component={NotFoundPage} />
           </Switch>
         </div>

@@ -7,7 +7,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/ui/DropdownMenu';
-import { DataViewCheckbox, DataViewHeader, DataViewCardMainDataMapper } from '@/ui/DataView';
+import { DataViewCheckbox, DataViewHeader, DataViewCardMainDataMapper, DataViewOpenPage } from '@/ui/DataView';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 
 export type Driver = {
@@ -25,6 +25,14 @@ export const tableColumns: ColumnDef<Driver>[] = [
     id: 'select',
     header: ({ table }) => <DataViewCheckbox.Header table={table} />,
     cell: ({ row }) => <DataViewCheckbox.Row row={row} />,
+    enableSorting: false,
+    enableHiding: false,
+    enableGlobalFilter: false,
+  },
+  {
+    id: 'openPage',
+    header: '',
+    cell: () => <DataViewOpenPage href="/temp/1" />,
     enableSorting: false,
     enableHiding: false,
     enableGlobalFilter: false,
