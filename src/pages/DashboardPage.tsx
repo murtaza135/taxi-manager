@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Title } from '@/features/title/components/Title';
 import {
   DataViewTopBar,
-  DataViewPagination,
+  // DataViewPagination,
   DataViewLayoutType,
   DataViewLayout,
 } from '@/ui/DataView';

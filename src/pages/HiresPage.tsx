@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Title } from '@/features/title/components/Title';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/ui/Tabs';
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, CarouselApi } from '@/ui/Carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselApi } from '@/ui/Carousel';
 
 export function HiresPage() {
   const [tab, setTab] = useState(0);
@@ -36,8 +36,8 @@ export function HiresPage() {
             <TabsTrigger value="3">Password</TabsTrigger>
             <TabsTrigger value="4">Password</TabsTrigger>
           </TabsList>
-          <TabsContent value="account">Make changes to your account here.</TabsContent>
-          <TabsContent value="password">Change your password here.</TabsContent>
+          <TabsContent value="0">Make changes to your account here.</TabsContent>
+          <TabsContent value="1">Change your password here.</TabsContent>
         </Tabs>
 
         <Carousel setApi={setApi}>
