@@ -11,12 +11,14 @@ import { Separator } from '@/ui/Separator';
 // TODO add orientation
 
 type Direction = 'forwards' | 'backwards';
+type Orientation = 'horizontal' | 'vertical';
 
 type SlideContextValue = {
   index: number;
   setIndex: React.Dispatch<React.SetStateAction<number>>;
   direction: Direction;
   setDirection: React.Dispatch<React.SetStateAction<Direction>>;
+  orientation: Orientation;
 };
 
 const SlideContext = React.createContext<SlideContextValue>(null as unknown as SlideContextValue);
@@ -35,12 +37,13 @@ type SlideProps = {
   min: number;
   max: number;
   initial?: number;
+  orientation?: Orientation;
 };
 
 const Slide = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & SlideProps
->(({ className, children, min, max, initial, ...props }, ref) => {
+>(({ className, children, min, max, initial, orientation, ...props }, ref) => {
   const [index, setIndexValue] = React.useState(initial ?? min);
   const [direction, setDirection] = React.useState<Direction>('forwards');
 
@@ -52,18 +55,13 @@ const Slide = React.forwardRef<
     }
   }, [setIndexValue, min, max]);
 
-  // const setSlide = React.useCallback((value: React.SetStateAction<number>) => {
-  //   if (typeof value === 'function') {
-  //     setIndexValue((i) => clamp(value(i), min, max));
-  //   } else {
-  //     setIndexValue(clamp(value, min, max));
-  //     setDirection(value < index ? 'backwards' : 'forwards');
-  //   }
-  // }, [setIndexValue, min, max]);
-
   const value = React.useMemo(() => ({
-    index, setIndex, direction, setDirection,
-  }), [index, setIndex, direction, setDirection]);
+    index,
+    setIndex,
+    direction,
+    setDirection,
+    orientation: orientation ?? 'horizontal',
+  }), [index, setIndex, direction, setDirection, orientation]);
 
   return (
     <SlideContext.Provider value={value}>
@@ -79,19 +77,52 @@ const Slide = React.forwardRef<
 });
 Slide.displayName = 'Slide';
 
+const SLIDE_VALUE = 1000;
+
+const slideVectors = {
+  horizontal: {
+    forwards: {
+      enter: { x: SLIDE_VALUE, y: 0 },
+      exit: { x: -SLIDE_VALUE, y: 0 },
+    },
+    backwards: {
+      enter: { x: -SLIDE_VALUE, y: 0 },
+      exit: { x: SLIDE_VALUE, y: 0 },
+    },
+  },
+  vertical: {
+    forwards: {
+      enter: { x: 0, y: SLIDE_VALUE },
+      exit: { x: 0, y: -SLIDE_VALUE },
+    },
+    backwards: {
+      enter: { x: 0, y: -SLIDE_VALUE },
+      exit: { x: 0, y: SLIDE_VALUE },
+    },
+  },
+};
+
+type CustomVariantOptions = {
+  direction: Direction;
+  orientation: Orientation;
+};
+
 const variants: Variants = {
-  enter: (direction: Direction) => ({
-    x: direction === 'forwards' ? 1000 : -1000,
+  enter: ({ orientation, direction }: CustomVariantOptions) => ({
+    x: slideVectors[orientation][direction].enter.x,
+    y: slideVectors[orientation][direction].enter.y,
     opacity: 0,
   }),
   center: {
     zIndex: 1,
     x: 0,
+    y: 0,
     opacity: 1,
   },
-  exit: (direction: Direction) => ({
+  exit: ({ orientation, direction }: CustomVariantOptions) => ({
     zIndex: 0,
-    x: direction === 'backwards' ? 1000 : -1000,
+    x: slideVectors[orientation][direction].exit.x,
+    y: slideVectors[orientation][direction].exit.y,
     opacity: 0,
     transition: {
       opacity: { duration: 0 },
@@ -106,20 +137,21 @@ const SlideContent = React.forwardRef<
   HTMLDivElement,
   HTMLMotionProps<'div'>
 >(({ className, children, ...props }, ref) => {
-  const { index, setIndex, direction, setDirection } = useSlide();
+  const { index, setIndex, direction, setDirection, orientation } = useSlide();
 
   return (
     <LazyMotion>
-      <AnimatePresence initial={false} custom={direction} mode="popLayout">
+      <AnimatePresence initial={false} custom={{ direction, orientation }} mode="popLayout">
         <m.div
           key={index}
-          custom={direction}
+          custom={{ direction, orientation }}
           variants={variants}
           initial="enter"
           animate="center"
           exit="exit"
           transition={{
             x: { type: 'spring', stiffness: 300, damping: 30 },
+            y: { type: 'spring', stiffness: 300, damping: 30 },
             opacity: { duration: 1.5 },
           }}
           drag="x"
