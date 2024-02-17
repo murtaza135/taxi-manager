@@ -4,12 +4,9 @@ import { m, AnimatePresence, HTMLMotionProps, Variants } from 'framer-motion';
 import { LazyMotion } from '@/app/framer-motion/LazyMotion';
 import { cn } from '@/utils/cn';
 import { clamp } from '@/utils/clamp';
-
-// TODO
-// create context provider with root relative div
-// create content component containing the animation related divs
-// create item components that will be children of animation related divs and conditionally render the item based upon state in context
-// additional components can be placed under provider component
+import { Tabs, TabsList, TabsTrigger } from '@/ui/Tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/Select';
+import { Separator } from '@/ui/Separator';
 
 // TODO add orientation
 
@@ -51,9 +48,18 @@ const Slide = React.forwardRef<
     if (typeof value === 'function') {
       setIndexValue((i) => clamp(value(i), min, max));
     } else {
-      setIndexValue((i) => clamp(i + value, min, max));
+      setIndexValue(clamp(value, min, max));
     }
   }, [setIndexValue, min, max]);
+
+  // const setSlide = React.useCallback((value: React.SetStateAction<number>) => {
+  //   if (typeof value === 'function') {
+  //     setIndexValue((i) => clamp(value(i), min, max));
+  //   } else {
+  //     setIndexValue(clamp(value, min, max));
+  //     setDirection(value < index ? 'backwards' : 'forwards');
+  //   }
+  // }, [setIndexValue, min, max]);
 
   const value = React.useMemo(() => ({
     index, setIndex, direction, setDirection,
@@ -63,7 +69,7 @@ const Slide = React.forwardRef<
     <SlideContext.Provider value={value}>
       <div
         ref={ref}
-        className={cn('border-2 border-red-500 cursor-pointer relative w-full h-full', className)}
+        className={cn('relative w-full h-full', className)}
         {...props}
       >
         {children}
@@ -143,7 +149,7 @@ const SlideContent = React.forwardRef<
 SlideContent.displayName = 'SlideContent';
 
 type SlideItemProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   index: number;
 };
 
@@ -157,64 +163,107 @@ function SlideItem({ index, children }: SlideItemProps) {
   );
 }
 
-// -------------------------------------------
+type SlideTabsProps = {
+  children?: React.ReactNode;
+  className?: string;
+};
 
-const SlidingContainer = React.forwardRef<
-  HTMLDivElement,
-  HTMLMotionProps<'div'> // TODO change props to normal div
->(({ className, children, ...props }, ref) => {
-  const [index, setIndex] = React.useState(0);
-  const [direction, setDirection] = React.useState<Direction>('forwards');
+function SlideTabs({ className, children }: SlideTabsProps) {
+  const { index, setIndex, setDirection } = useSlide();
+
+  function handleValueChange(value: string) {
+    const newIndex = Number(value);
+    setIndex(newIndex);
+    setDirection(newIndex < index ? 'backwards' : 'forwards');
+  }
 
   return (
-    <LazyMotion>
-      <div className={cn('border-2 border-red-500 cursor-pointer relative w-full h-full', className)}>
-        <AnimatePresence initial={false} custom={direction} mode="popLayout">
-          <m.div
-            key={index}
-            custom={direction}
-            // layoutId="slide"
-            variants={variants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{
-              x: { type: 'spring', stiffness: 300, damping: 30 },
-              opacity: { duration: 0.2 },
-            }}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.8}
-            onDragEnd={(e, { offset, velocity }) => {
-              const swipe = swipePower(offset.x, velocity.x);
-
-              if (swipe < -swipeConfidenceThreshold) {
-                // paginate(1);
-                setIndex((i) => clamp(i + 1, 0, 10));
-                setDirection('forwards');
-              } else if (swipe > swipeConfidenceThreshold) {
-                // paginate(-1);
-                setIndex((i) => clamp(i - 1, 0, 10));
-                setDirection('backwards');
-              }
-            }}
-            // className={cn('border-2 border-red-500 cursor-pointer absolute w-full h-full', className)}
-            className={cn('absolute w-full h-full')}
-            ref={ref}
-            {...props}
-          >
-            {index}
-          </m.div>
-        </AnimatePresence>
-      </div>
-    </LazyMotion>
+    <Tabs
+      value={`${index}`}
+      onValueChange={(value) => handleValueChange(value)}
+      className={cn('mb-4', className)}
+    >
+      <TabsList>
+        {children}
+      </TabsList>
+    </Tabs>
   );
-});
-SlidingContainer.displayName = 'SlidingContainer';
+}
+
+type SlideTabProps = {
+  index: number;
+  children?: React.ReactNode;
+  className?: string;
+};
+
+function SlideTab({ index, className, children }: SlideTabProps) {
+  return (
+    <TabsTrigger
+      className={cn(className)}
+      value={`${index}`}
+    >
+      {children}
+    </TabsTrigger>
+  );
+}
+
+type SlideSelectProps = {
+  children?: React.ReactNode;
+  className?: string;
+};
+
+function SlideSelect({ className, children }: SlideSelectProps) {
+  const { index, setIndex, setDirection } = useSlide();
+
+  function handleValueChange(value: string) {
+    const newIndex = Number(value);
+    setIndex(newIndex);
+    setDirection(newIndex < index ? 'backwards' : 'forwards');
+  }
+
+  return (
+    <Select
+      value={`${index}`}
+      onValueChange={(value) => handleValueChange(value)}
+    >
+      <SelectTrigger
+        className={cn('max-w-[180px] h-8 mb-3 border-primary-dark dark:border-achromatic-dark', className)}
+      >
+        <SelectValue />
+      </SelectTrigger>
+
+      <SelectContent>
+        {children}
+      </SelectContent>
+
+      <Separator className="mb-4" />
+    </Select>
+  );
+}
+
+type SlideSelectItemProps = {
+  index: number;
+  children?: React.ReactNode;
+  className?: string;
+};
+
+function SlideSelectItem({ index, className, children }: SlideSelectItemProps) {
+  return (
+    <SelectItem
+      className={cn(className)}
+      value={`${index}`}
+    >
+      {children}
+    </SelectItem>
+  );
+}
 
 export {
-  SlidingContainer,
   Slide,
   SlideContent,
   SlideItem,
+  SlideTabs,
+  SlideTab,
+  SlideSelect,
+  SlideSelectItem,
 };
