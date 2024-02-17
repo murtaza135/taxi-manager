@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/indent */
 import * as React from 'react';
-import { m, AnimatePresence, HTMLMotionProps, Variants } from 'framer-motion';
+import { m, AnimatePresence, HTMLMotionProps, Variants, PanInfo } from 'framer-motion';
 import { LazyMotion } from '@/app/framer-motion/LazyMotion';
 import { cn } from '@/utils/cn';
 import { clamp } from '@/utils/clamp';
 import { Tabs, TabsList, TabsTrigger } from '@/ui/Tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/Select';
 import { Separator } from '@/ui/Separator';
-
-// TODO add orientation
 
 type Direction = 'forwards' | 'backwards';
 type Orientation = 'horizontal' | 'vertical';
@@ -21,13 +19,15 @@ type SlideContextValue = {
   orientation: Orientation;
 };
 
-const SlideContext = React.createContext<SlideContextValue>(null as unknown as SlideContextValue);
+const SlideContext = React.createContext<SlideContextValue>(
+  null as unknown as SlideContextValue,
+);
 
-function useSlide() {
+function useSlideContext() {
   const context = React.useContext(SlideContext);
 
   if (context === undefined) {
-    throw new Error('useSlide must be used within <Slide />');
+    throw new Error('useSlideContext must be used within <Slide />');
   }
 
   return context;
@@ -130,14 +130,26 @@ const variants: Variants = {
   }),
 };
 
-const swipeConfidenceThreshold = 10000;
+const SWIPE_CONFIDENCE_THRESHOLD = 10000;
 const swipePower = (offset: number, velocity: number) => Math.abs(offset) * velocity;
 
 const SlideContent = React.forwardRef<
   HTMLDivElement,
   HTMLMotionProps<'div'>
 >(({ className, children, ...props }, ref) => {
-  const { index, setIndex, direction, setDirection, orientation } = useSlide();
+  const { index, setIndex, direction, setDirection, orientation } = useSlideContext();
+
+  function handleDragEnd(_event: Event, { offset, velocity }: PanInfo) {
+    const swipe = swipePower(offset.x, velocity.x);
+
+    if (swipe < -SWIPE_CONFIDENCE_THRESHOLD) {
+      setIndex((i) => i + 1);
+      setDirection('forwards');
+    } else if (swipe > SWIPE_CONFIDENCE_THRESHOLD) {
+      setIndex((i) => i - 1);
+      setDirection('backwards');
+    }
+  }
 
   return (
     <LazyMotion>
@@ -157,17 +169,7 @@ const SlideContent = React.forwardRef<
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.8}
-          onDragEnd={(_event, { offset, velocity }) => {
-            const swipe = swipePower(offset.x, velocity.x);
-
-            if (swipe < -swipeConfidenceThreshold) {
-              setIndex((i) => i + 1);
-              setDirection('forwards');
-            } else if (swipe > swipeConfidenceThreshold) {
-              setIndex((i) => i - 1);
-              setDirection('backwards');
-            }
-          }}
+          onDragEnd={handleDragEnd}
           className={cn('absolute w-full h-full', className)}
           ref={ref}
           {...props}
@@ -186,7 +188,7 @@ type SlideItemProps = {
 };
 
 function SlideItem({ index, children }: SlideItemProps) {
-  const { index: currentIndex } = useSlide();
+  const { index: currentIndex } = useSlideContext();
 
   return (
     index === currentIndex
@@ -201,7 +203,7 @@ type SlideTabsProps = {
 };
 
 function SlideTabs({ className, children }: SlideTabsProps) {
-  const { index, setIndex, setDirection } = useSlide();
+  const { index, setIndex, setDirection } = useSlideContext();
 
   function handleValueChange(value: string) {
     const newIndex = Number(value);
@@ -245,7 +247,7 @@ type SlideSelectProps = {
 };
 
 function SlideSelect({ className, children }: SlideSelectProps) {
-  const { index, setIndex, setDirection } = useSlide();
+  const { index, setIndex, setDirection } = useSlideContext();
 
   function handleValueChange(value: string) {
     const newIndex = Number(value);
