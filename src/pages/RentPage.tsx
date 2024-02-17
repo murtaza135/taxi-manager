@@ -5,7 +5,7 @@ export function RentPage() {
   return (
     <div>
       <Title title="Rent" />
-      <SlidingContainer className="h-full">
+      <SlidingContainer className="h-60">
         lol
       </SlidingContainer>
     </div>
