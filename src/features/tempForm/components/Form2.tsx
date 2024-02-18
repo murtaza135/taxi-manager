@@ -8,11 +8,13 @@ import {
   FormTitle,
 } from '@/ui/Form';
 import { Input } from '@/ui/Input';
-import { FormSchema2 } from '@/features/tempForm/schema';
-import { useMultiStepForm } from '@/features/tempForm/setupForm';
+import { FormSchema2, FormSchemaType } from '@/features/tempForm/schema';
+// import { useMultiStepForm } from '@/features/tempForm/setupForm';
+import { useMultiStepForm } from '@/ui/MultiStepForm2';
 
 export function Form2() {
-  const { prevStep, nextStep, updateFormState } = useMultiStepForm();
+  // const { prevStep, nextStep, updateFormState } = useMultiStepForm();
+  const { setStep, setDirection, updateFormState } = useMultiStepForm<FormSchemaType>();
 
   const form = useZodForm({
     schema: FormSchema2,
@@ -21,14 +23,32 @@ export function Form2() {
     },
   });
 
+  // const onSubmit = form.handleSubmit((data) => {
+  //   console.log(data);
+  //   updateFormState(data);
+  //   nextStep();
+  // });
+
   const onSubmit = form.handleSubmit((data) => {
     console.log(data);
     updateFormState(data);
-    nextStep();
+    setStep((step) => step + 1);
+    setDirection('forwards');
   });
+
+  const prevStep = () => {
+    setStep((step) => step - 1);
+    setDirection('backwards');
+  };
+
+  const nextStep = () => {
+    setStep((step) => step + 1);
+    setDirection('forwards');
+  };
 
   return (
     <FormProvider {...form}>
+      {/* <Form className="w-full max-w-[32rem] space-y-4"> */}
       <Form onSubmit={onSubmit} className="w-full max-w-[32rem] space-y-4">
         <FormTitle>User Form</FormTitle>
 
