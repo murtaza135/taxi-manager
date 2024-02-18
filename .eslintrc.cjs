@@ -38,7 +38,9 @@ module.exports = {
     'react/require-default-props': "off",
     "react/prop-types": "off",
     "max-len": ["error", { "code": 100, "ignoreStrings": true, "ignoreComments": true }],
-    "@typescript-eslint/no-misused-promises": ["error", { "checksVoidReturn": false }]
+    "@typescript-eslint/no-misused-promises": ["error", { "checksVoidReturn": false }],
+    "@typescript-eslint/indent": "off",
+    "indent": "off",
   },
   settings: {
     "import/resolver": {

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
 import { useState, useCallback, Dispatch, SetStateAction } from 'react';
 import { type XOR } from 'ts-essentials';
 import { xor } from '@/utils/xor';

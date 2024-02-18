@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
 import * as React from 'react';
 import { m, AnimatePresence, HTMLMotionProps, Variants, PanInfo } from 'framer-motion';
 import { LazyMotion } from '@/app/framer-motion/LazyMotion';
