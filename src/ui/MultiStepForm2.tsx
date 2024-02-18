@@ -1,20 +1,14 @@
 /* eslint-disable @typescript-eslint/indent */
 import * as React from 'react';
-import { m, AnimatePresence, HTMLMotionProps, Variants, PanInfo } from 'framer-motion';
-import { useState } from 'react';
+import { m, AnimatePresence, HTMLMotionProps, Variants } from 'framer-motion';
 import { LazyMotion } from '@/app/framer-motion/LazyMotion';
 import { cn } from '@/utils/cn';
 import { clamp } from '@/utils/clamp';
-import { Tabs, TabsList, TabsTrigger } from '@/ui/Tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/Select';
-import { Separator } from '@/ui/Separator';
 
 type Direction = 'forwards' | 'backwards';
 type BaseFormState = Record<string, unknown>;
 
-type MultiStepFormContextValue<
-  TFormState extends BaseFormState = BaseFormState,
-> = {
+type MultiStepFormContextValue<TFormState extends BaseFormState = BaseFormState> = {
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
   direction: Direction;
@@ -29,9 +23,7 @@ const MultiStepFormContext = React.createContext<MultiStepFormContextValue>(
   null as unknown as MultiStepFormContextValue,
 );
 
-function useMultiStepForm<
-  TFormState extends BaseFormState = BaseFormState,
->() {
+function useMultiStepForm<TFormState extends BaseFormState = BaseFormState>() {
   const context = React.useContext<MultiStepFormContextValue<TFormState>>(
     MultiStepFormContext as unknown as React.Context<MultiStepFormContextValue<TFormState>>,
   );
@@ -52,9 +44,9 @@ type MultiStepFormProps = {
 };
 
 function MultiStepForm({ min, max, initial, className, children }: MultiStepFormProps) {
-  const [stepValue, setStepValue] = useState(initial ?? min);
-  const [direction, setDirection] = useState<Direction>('forwards');
-  const [formStateObject, setFormStateObject] = useState<Partial<BaseFormState>>({});
+  const [stepValue, setStepValue] = React.useState(initial ?? min);
+  const [direction, setDirection] = React.useState<Direction>('forwards');
+  const [formStateObject, setFormStateObject] = React.useState<Partial<BaseFormState>>({});
 
   const setStep = React.useCallback((value: React.SetStateAction<number>) => {
     if (typeof value === 'function') {
@@ -91,27 +83,65 @@ function MultiStepForm({ min, max, initial, className, children }: MultiStepForm
   );
 }
 
-const MultiStepFormContent = React.forwardRef<
+const variants: Variants = {
+  enter: (direction: Direction) => ({
+    x: direction === 'forwards' ? '100%' : '-100%',
+    opacity: 0,
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: Direction) => ({
+    zIndex: 0,
+    x: direction === 'backwards' ? '100%' : '-100%',
+    opacity: 0,
+    // transition: {
+    //   opacity: { duration: 0.5 },
+    // },
+  }),
+};
+
+const MultiStepFormItems = React.forwardRef<
   HTMLDivElement,
-  // HTMLMotionProps<'div'>
-  React.HTMLAttributes<HTMLDivElement>
+  HTMLMotionProps<'div'>
 >(({ className, children, ...props }, ref) => {
-  const temp = 1;
+  const { step, direction } = useMultiStepForm();
 
   return (
-    <div className={cn('absolute w-full h-full', className)}>
-      {children}
-    </div>
+    <LazyMotion>
+      <AnimatePresence initial={false} custom={direction} mode="popLayout">
+        <m.div
+          key={step}
+          custom={direction}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{
+            x: { type: 'spring', stiffness: 300, damping: 30 },
+            y: { type: 'spring', stiffness: 300, damping: 30 },
+            opacity: { duration: 1 },
+          }}
+          className={cn('absolute w-full h-full', className)}
+          ref={ref}
+          {...props}
+        >
+          {children}
+        </m.div>
+      </AnimatePresence>
+    </LazyMotion>
   );
 });
-MultiStepFormContent.displayName = 'MultiStepFormContent';
+MultiStepFormItems.displayName = 'MultiStepFormItems';
 
-type StepProps = {
+type MultiStepFormItemProps = {
   children?: React.ReactNode;
   step: number;
 };
 
-function Step({ step, children }: StepProps) {
+function MultiStepFormItem({ step, children }: MultiStepFormItemProps) {
   const { step: currentStep } = useMultiStepForm();
 
   return (
@@ -189,8 +219,8 @@ MultiStepFormStepperItem.displayName = 'MultiStepFormStepperItem';
 export {
   useMultiStepForm,
   MultiStepForm,
-  MultiStepFormContent,
-  Step,
+  MultiStepFormItems,
+  MultiStepFormItem,
   MultiStepFormStepper,
   MultiStepFormStepperItem,
 };
