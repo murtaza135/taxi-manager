@@ -10,9 +10,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/ui/Separator';
 
 type Direction = 'forwards' | 'backwards';
+type BaseFormState = Record<string, unknown>;
 
 type MultiStepFormContextValue<
-  TFormState extends Record<string, unknown> = Record<string, unknown>,
+  TFormState extends BaseFormState = BaseFormState,
 > = {
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
@@ -27,7 +28,7 @@ const MultiStepFormContext = React.createContext<MultiStepFormContextValue>(
 );
 
 function useMultiStepForm<
-  TFormState extends Record<string, unknown> = Record<string, unknown>,
+  TFormState extends BaseFormState = BaseFormState,
 >() {
   const context = React.useContext<MultiStepFormContextValue<TFormState>>(
     MultiStepFormContext as unknown as React.Context<MultiStepFormContextValue<TFormState>>,
@@ -40,23 +41,18 @@ function useMultiStepForm<
   return context;
 }
 
-type MultiStepFormProps<
-  TFormState extends Record<string, unknown> = Record<string, unknown>,
-> = {
+type MultiStepFormProps = {
   min: number;
   max: number;
   initial?: number;
-  formState: TFormState;
   className?: string;
   children?: React.ReactNode;
 };
 
-function MultiStepForm<
-  TFormState extends Record<string, unknown> = Record<string, unknown>,
->({ min, max, initial, formState, className, children }: MultiStepFormProps<TFormState>) {
+function MultiStepForm({ min, max, initial, className, children }: MultiStepFormProps) {
   const [stepValue, setStepValue] = useState(initial ?? min);
   const [direction, setDirection] = useState<Direction>('forwards');
-  const [formStateObject, setFormStateObject] = useState<Partial<TFormState>>(formState);
+  const [formStateObject, setFormStateObject] = useState<Partial<BaseFormState>>({});
 
   const setStep = React.useCallback((value: React.SetStateAction<number>) => {
     if (typeof value === 'function') {
@@ -66,7 +62,7 @@ function MultiStepForm<
     }
   }, [setStepValue, min, max]);
 
-  const updateFormState = React.useCallback((state: Partial<TFormState>) => {
+  const updateFormState = React.useCallback((state: Partial<BaseFormState>) => {
     setFormStateObject((currentState) => ({ ...currentState, ...state }));
   }, [setFormStateObject]);
 
@@ -80,7 +76,7 @@ function MultiStepForm<
       updateFormState,
     }),
     [stepValue, setStep, direction, setDirection, formStateObject, updateFormState],
-  ) as MultiStepFormContextValue;
+  );
 
   return (
     <MultiStepFormContext.Provider value={value}>

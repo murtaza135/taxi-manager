@@ -13,7 +13,7 @@ export function NewForm() {
   });
 
   return (
-    <MultiStepForm min={1} max={3} formState={formState}>
+    <MultiStepForm min={1} max={3}>
       <MultiStepFormContent className="flex justify-center items-start">
         <Step step={1}><Form1 /></Step>
         <Step step={2}><Form2 /></Step>
