@@ -1,131 +1,226 @@
-import { ReactNode, createContext, useCallback, useContext, useMemo, useState } from 'react';
-import { useTransition, animated } from '@react-spring/web';
+/* eslint-disable @typescript-eslint/indent */
+import * as React from 'react';
+import { m, AnimatePresence, HTMLMotionProps, Variants } from 'framer-motion';
+import { LazyMotion } from '@/app/framer-motion/LazyMotion';
+import { cn } from '@/utils/cn';
 import { clamp } from '@/utils/clamp';
 
-type MultiStepFormContextValue<
-  TFormState extends Record<string, unknown> = Record<string, unknown>,
-  TStepTitle extends string = string,
-> = {
-  stepNumber: number;
-  setStep: (step: number | TStepTitle) => void;
-  prevStep: () => void;
-  nextStep: () => void;
+type Direction = 'forwards' | 'backwards';
+type BaseFormState = Record<string, unknown>;
+
+type MultiStepFormContextValue<TFormState extends BaseFormState = BaseFormState> = {
+  step: number;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+  direction: Direction;
+  setDirection: React.Dispatch<React.SetStateAction<Direction>>;
   formState: Partial<TFormState>;
   updateFormState: (state: Partial<TFormState>) => void;
+  min: number;
+  max: number;
 };
 
-type MultiStepFormProps<TStepTitle extends string> = {
-  steps: Step<TStepTitle>[];
-  startStepNumber?: number;
-  bounce?: boolean;
-  render?: (args: RenderFnArgs<TStepTitle>) => ReactNode;
-};
+const MultiStepFormContext = React.createContext<MultiStepFormContextValue>(
+  null as unknown as MultiStepFormContextValue,
+);
 
-type Step<TStepTitle extends string> = {
-  title: TStepTitle;
-  component: ReactNode;
-};
-
-type RenderFnArgs<TStepTitle extends string> = {
-  form: ReactNode;
-  steps: TStepTitle[];
-  currentStep: number;
-};
-
-export function createMultiStepForm<
-  TFormState extends Record<string, unknown> = Record<string, unknown>,
-  TStepTitle extends string = string,
->() {
-  const MultiStepFormContext = createContext<MultiStepFormContextValue<TFormState, TStepTitle>>(
-    null as unknown as MultiStepFormContextValue<TFormState, TStepTitle>,
+function useMultiStepFormContext<TFormState extends BaseFormState = BaseFormState>() {
+  const context = React.useContext<MultiStepFormContextValue<TFormState>>(
+    MultiStepFormContext as unknown as React.Context<MultiStepFormContextValue<TFormState>>,
   );
 
-  function useMultiStepForm() {
-    const context = useContext(MultiStepFormContext);
-
-    if (context === undefined) {
-      throw new Error('No MultiStepForm context provided');
-    }
-
-    return context;
+  if (context === undefined) {
+    throw new Error('useMultiStepFormContext must be used within <MultiStepForm />');
   }
 
-  function MultiStepForm(
-    { steps, startStepNumber, bounce, render }: MultiStepFormProps<TStepTitle>,
-  ) {
-    const [formState, setFormState] = useState<Partial<TFormState>>({});
-    const [stepNumber, setStepNumber] = useState(startStepNumber ?? 0);
-    const [direction, setDirection] = useState<'forward' | 'backward'>('forward');
-
-    const transitions = useTransition(stepNumber, {
-      from: direction === 'forward'
-        ? { opacity: 0, transform: 'translate3d(100%,0,0)' }
-        : { opacity: 0, transform: 'translate3d(-100%,0,0)' },
-      enter: { opacity: 1, transform: 'translate3d(0%,0,0)' },
-      leave: direction === 'forward'
-        ? { opacity: 0, transform: 'translate3d(-50%,0,0)' }
-        : { opacity: 0, transform: 'translate3d(50%,0,0)' },
-      exitBeforeEnter: true,
-      config: bounce ? { tension: 100, friction: 12, mass: 1 } : {},
-    });
-
-    const setStep = useCallback((step: number | TStepTitle): void => {
-      if (typeof step === 'number') {
-        if (step < stepNumber) {
-          setDirection('backward');
-        } else {
-          setDirection('forward');
-        }
-        setStepNumber(clamp(step, 0, steps.length));
-      } else {
-        const newStepNumber = steps.findIndex((currentStep) => currentStep.title === step);
-        if (newStepNumber < stepNumber) {
-          setDirection('backward');
-        } else {
-          setDirection('forward');
-        }
-        setStepNumber(newStepNumber);
-      }
-    }, [steps, stepNumber, setStepNumber]);
-
-    const prevStep = useCallback(() => {
-      setDirection('backward');
-      setStepNumber((state) => Math.max(0, state - 1));
-    }, [setDirection, setStepNumber]);
-
-    const nextStep = useCallback(() => {
-      setDirection('forward');
-      setStepNumber((state) => Math.min(steps.length - 1, state + 1));
-    }, [steps, setDirection, setStepNumber]);
-
-    const updateFormState = useCallback((state: Partial<TFormState>) => {
-      setFormState((currentState) => ({ ...currentState, ...state }));
-    }, [setFormState]);
-
-    const value = useMemo(() => ({
-      stepNumber, setStep, prevStep, nextStep, formState, updateFormState,
-    }), [stepNumber, setStep, prevStep, nextStep, formState, updateFormState]);
-
-    const transitionForm = transitions((style, stepNumberProp) => (
-      <animated.div style={style} className="center">
-        {steps[stepNumberProp].component}
-      </animated.div>
-    ));
-
-    return (
-      <MultiStepFormContext.Provider value={value}>
-        {
-          render
-            ? render({
-              form: transitionForm,
-              steps: steps.map((step) => step.title),
-              currentStep: stepNumber,
-            })
-            : transitionForm
-        }
-      </MultiStepFormContext.Provider>
-    );
-  }
-
-  return { useMultiStepForm, MultiStepForm };
+  return context;
 }
+
+type MultiStepFormProps = {
+  min: number;
+  max: number;
+  initial?: number;
+  className?: string;
+  children?: React.ReactNode;
+};
+
+function MultiStepForm({ min, max, initial, className, children }: MultiStepFormProps) {
+  const [stepValue, setStepValue] = React.useState(initial ?? min);
+  const [direction, setDirection] = React.useState<Direction>('forwards');
+  const [formStateObject, setFormStateObject] = React.useState<Partial<BaseFormState>>({});
+
+  const setStep = React.useCallback((value: React.SetStateAction<number>) => {
+    if (typeof value === 'function') {
+      setStepValue((i) => clamp(value(i), min, max));
+    } else {
+      setStepValue(clamp(value, min, max));
+    }
+  }, [setStepValue, min, max]);
+
+  const updateFormState = React.useCallback((state: Partial<BaseFormState>) => {
+    setFormStateObject((currentState) => ({ ...currentState, ...state }));
+  }, [setFormStateObject]);
+
+  const value = React.useMemo(
+    () => ({
+      step: stepValue,
+      setStep,
+      direction,
+      setDirection,
+      formState: formStateObject,
+      updateFormState,
+      min,
+      max,
+    }),
+    [stepValue, setStep, direction, setDirection, formStateObject, updateFormState, min, max],
+  );
+
+  return (
+    <MultiStepFormContext.Provider value={value}>
+      <div className={cn('relative w-full h-full', className)}>
+        {children}
+      </div>
+    </MultiStepFormContext.Provider>
+  );
+}
+
+const variants: Variants = {
+  enter: (direction: Direction) => ({
+    x: direction === 'forwards' ? '100%' : '-100%',
+    opacity: 0,
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: Direction) => ({
+    zIndex: 0,
+    x: direction === 'backwards' ? '100%' : '-100%',
+    opacity: 0,
+    // transition: {
+    //   opacity: { duration: 0.5 },
+    // },
+  }),
+};
+
+const MultiStepFormItems = React.forwardRef<
+  HTMLDivElement,
+  HTMLMotionProps<'div'>
+>(({ className, children, ...props }, ref) => {
+  const { step, direction } = useMultiStepFormContext();
+
+  return (
+    <LazyMotion>
+      <AnimatePresence initial={false} custom={direction} mode="popLayout">
+        <m.div
+          key={step}
+          custom={direction}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{
+            x: { type: 'spring', stiffness: 300, damping: 30 },
+            y: { type: 'spring', stiffness: 300, damping: 30 },
+            opacity: { duration: 1 },
+          }}
+          className={cn('absolute w-full h-full', className)}
+          ref={ref}
+          {...props}
+        >
+          {children}
+        </m.div>
+      </AnimatePresence>
+    </LazyMotion>
+  );
+});
+MultiStepFormItems.displayName = 'MultiStepFormItems';
+
+type MultiStepFormItemProps = {
+  children?: React.ReactNode;
+  step: number;
+};
+
+function MultiStepFormItem({ step, children }: MultiStepFormItemProps) {
+  const { step: currentStep } = useMultiStepFormContext();
+
+  return (
+    step === currentStep
+      ? children
+      : null
+  );
+}
+
+const MultiStepFormStepper = React.forwardRef<
+  HTMLOListElement,
+  React.HTMLAttributes<HTMLOListElement>
+>(({ className, children, ...props }, ref) => {
+  const temp = 1;
+
+  return (
+    <ol
+      ref={ref}
+      className={cn('flex flex-wrap mb-12', className)}
+      {...props}
+    >
+      {children}
+    </ol>
+  );
+});
+MultiStepFormStepper.displayName = 'MultiStepFormStepper';
+
+type MultiStepFormStepperItemProps = {
+  step: number;
+  title?: string;
+};
+
+const MultiStepFormStepperItem = React.forwardRef<
+  HTMLLIElement,
+  React.HTMLAttributes<HTMLLIElement> & MultiStepFormStepperItemProps
+>(({ step, title, className, ...props }, ref) => {
+  const { step: currentStep, max } = useMultiStepFormContext();
+  const hideLine = step === max;
+  const complete = step < currentStep;
+
+  return (
+    <li
+      ref={ref}
+      className={cn('flex-1 flex flex-col justify-center items-center text-center gap-2', className)}
+      {...props}
+    >
+      <div className="relative w-full center">
+        {!hideLine && (
+          <span
+            className={cn(
+              'h-[3px] -translate-y-[1.5px] w-full absolute top-1/2 left-1/2',
+              complete && 'bg-primary-dark dark:bg-primary-light',
+              !complete && 'bg-achromatic-light dark:bg-achromatic-dark',
+            )}
+          />
+        )}
+
+        <span
+          className={cn(
+            'w-9 h-9 rounded-full text-xl font-semibold flex justify-center items-center text-center z-[1]',
+            complete && 'bg-primary-dark dark:bg-primary-light text-achromatic-light dark:text-achromatic-dark',
+            !complete && 'bg-achromatic-light dark:bg-achromatic-dark text-primary-dark dark:text-primary-light',
+          )}
+        >
+          {step}
+        </span>
+      </div>
+
+      {!!title && <p className="text-primary-dark dark:text-primary-light">{title}</p>}
+    </li>
+  );
+});
+MultiStepFormStepperItem.displayName = 'MultiStepFormStepperItem';
+
+export {
+  useMultiStepFormContext,
+  MultiStepForm,
+  MultiStepFormItems,
+  MultiStepFormItem,
+  MultiStepFormStepper,
+  MultiStepFormStepperItem,
+};

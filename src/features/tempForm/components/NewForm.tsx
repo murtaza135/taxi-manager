@@ -1,7 +1,7 @@
 import { Form1 } from '@/features/tempForm/components/Form1';
 import { Form2 } from '@/features/tempForm/components/Form2';
 import { Form3 } from '@/features/tempForm/components/Form3';
-import { MultiStepForm, MultiStepFormItems, MultiStepFormItem, MultiStepFormStepper, MultiStepFormStepperItem } from '@/ui/MultiStepForm2';
+import { MultiStepForm, MultiStepFormItems, MultiStepFormItem, MultiStepFormStepper, MultiStepFormStepperItem } from '@/ui/MultiStepForm';
 
 export function NewForm() {
   return (

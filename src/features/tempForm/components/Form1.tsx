@@ -9,12 +9,10 @@ import {
 } from '@/ui/Form';
 import { Input } from '@/ui/Input';
 import { FormSchema1, FormSchemaType } from '@/features/tempForm/schema';
-// import { useMultiStepForm } from '@/features/tempForm/setupForm';
-import { useMultiStepForm } from '@/ui/MultiStepForm2';
+import { useMultiStepFormContext } from '@/ui/MultiStepForm';
 
 export function Form1() {
-  // const { prevStep, nextStep, updateFormState } = useMultiStepForm();
-  const { setStep, setDirection, updateFormState } = useMultiStepForm<FormSchemaType>();
+  const { setStep, setDirection, updateFormState } = useMultiStepFormContext<FormSchemaType>();
 
   const form = useZodForm({
     schema: FormSchema1,
@@ -22,12 +20,6 @@ export function Form1() {
       username1: '',
     },
   });
-
-  // const onSubmit = form.handleSubmit((data) => {
-  //   console.log(data);
-  //   updateFormState(data);
-  //   nextStep();
-  // });
 
   const onSubmit = form.handleSubmit((data) => {
     console.log(data);
@@ -48,7 +40,6 @@ export function Form1() {
 
   return (
     <FormProvider {...form}>
-      {/* <Form className="w-full max-w-[32rem] space-y-4"> */}
       <Form onSubmit={onSubmit} className="w-full max-w-[32rem] space-y-4">
         <FormTitle>User Form</FormTitle>
 
