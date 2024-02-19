@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import colors from "tailwindcss/colors";
+import plugin from "tailwindcss/plugin";
 
 export default {
   content: [
@@ -53,6 +54,14 @@ export default {
     require('tailwind-scrollbar')({
       nocompatible: true,
       preferredStrategy: 'pseudoelements',
+    }),
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.center': {
+          'display': 'grid',
+          "place-items": "center"
+        }
+      });
     })
   ],
 };

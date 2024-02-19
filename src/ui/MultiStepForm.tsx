@@ -96,9 +96,9 @@ const variants: Variants = {
     zIndex: 0,
     x: direction === 'backwards' ? '100%' : '-100%',
     opacity: 0,
-    // transition: {
-    //   opacity: { duration: 0.5 },
-    // },
+    transition: {
+      opacity: { duration: 0 },
+    },
   }),
 };
 
