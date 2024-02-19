@@ -26,7 +26,7 @@ const TabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      'inline-flex items-center justify-center whitespace-nowrap px-2 pt-2 pb-1 text-sm font-medium ring-offset-achromatic-light transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-achromatic-dark focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 rounded-t-lg border-t-2 border-b border-x border-transparent data-[state=active]:border-primary-dark dark:ring-offset-achromatic-dark dark:focus-visible:ring-achromatic-300 dark:data-[state=active]:border-t-primary-light dark:data-[state=active]:border-b-scene-dark dark:data-[state=active]:border-x-achromatic-dark translate-y-[1px]', // dark:data-[state=active]:border-primary-light
+      'inline-flex items-center justify-center whitespace-nowrap translate-y-[1px] px-2 pt-2 pb-1 text-sm font-medium ring-offset-achromatic-light transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-achromatic-dark focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 rounded-t-lg border-t-2 border-b border-x border-transparent data-[state=active]:border-t-primary-dark data-[state=active]:border-b-scene-light data-[state=active]:border-x-primary-light dark:ring-offset-achromatic-dark dark:focus-visible:ring-achromatic-300 dark:data-[state=active]:border-t-primary-light dark:data-[state=active]:border-b-scene-dark dark:data-[state=active]:border-x-achromatic-dark',
       className,
     )}
     {...props}
