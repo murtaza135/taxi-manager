@@ -75,7 +75,7 @@ function MultiStepForm({ min, max, initial, className, children }: MultiStepForm
 
   return (
     <MultiStepFormContext.Provider value={value}>
-      <div className={cn('relative w-full h-full', className)}>
+      <div className={cn('', className)}>
         {children}
       </div>
     </MultiStepFormContext.Provider>
@@ -123,7 +123,7 @@ const MultiStepFormItems = React.forwardRef<
             y: { type: 'spring', stiffness: 300, damping: 30 },
             opacity: { duration: 1 },
           }}
-          className={cn('absolute w-full h-full', className)}
+          className={cn('', className)}
           ref={ref}
           {...props}
         >

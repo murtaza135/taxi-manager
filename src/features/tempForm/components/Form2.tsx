@@ -26,16 +26,19 @@ export function Form2() {
     updateFormState(data);
     setStep((step) => step + 1);
     setDirection('forwards');
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   });
 
   const prevStep = () => {
     setStep((step) => step - 1);
     setDirection('backwards');
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
   const nextStep = () => {
     setStep((step) => step + 1);
     setDirection('forwards');
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
   return (
