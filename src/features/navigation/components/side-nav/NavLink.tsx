@@ -20,8 +20,6 @@ export function NavLink({ text, to, icon, active, className }: Props) {
       onClick={() => closeNav()}
       className={cn('text-xl border-l-[6px] transition-opacity', !!active && 'border-primary-dark dark:border-primary-light text-primary-dark dark:text-primary-light', !active && 'border-transparent hover:opacity-50', className)}
     >
-      {/* the Link does not want to render its `a` tag without some other content inside it */}
-      {' '}
       <div className="flex items-center gap-4 pl-8 pr-10 md:pr-4 py-2 hover:translate-x-2 transition-transform">
         <i className="text-2xl sm:text-4xl md:text-2xl">{icon}</i>
         <p className="inline sm:hidden md:inline">{text}</p>
