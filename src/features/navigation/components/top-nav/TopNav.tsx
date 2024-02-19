@@ -1,13 +1,22 @@
 import { IoSearchOutline, IoMenu } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
 import { useNavActions } from '@/features/navigation/state/navStore';
 import { useTitle } from '@/features/title/state/titleStore';
 import { UserAvatar } from '@/features/navigation/components/top-nav/UserAvatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/ui/DropdownMenu';
-import { NavDropdownMenuItems } from '@/features/navigation/components/top-nav/NavDropdownMenuItems';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/ui/DropdownMenu';
+import { useIsDarkmode, useDarkmodeActions } from '@/features/darkmode/state/darkmodeStore';
+import { Switch } from '@/ui/Switch';
 
 export function TopNav() {
-  const { toggleNav } = useNavActions();
   const title = useTitle();
+  const isDarkmode = useIsDarkmode();
+  const { toggleDarkmode } = useDarkmodeActions();
+  const { toggleNav } = useNavActions();
+
+  const handleToggleDarkMode = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.preventDefault();
+    toggleDarkmode();
+  };
 
   return (
     <div className="flex justify-between items-center gap-4 min-h-20 sticky top-0 left-0 z-20 bg-scene-light dark:bg-scene-dark text-primary-dark dark:text-primary-light">
@@ -28,7 +37,20 @@ export function TopNav() {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent>
-            <NavDropdownMenuItems />
+            <DropdownMenuLabel>Username</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={handleToggleDarkMode}
+              className="flex gap-2 justify-center items-center"
+            >
+              <p className="translate-y-[1px]">Darkmode</p>
+              <Switch checked={isDarkmode} />
+            </DropdownMenuItem>
+            <Link to="/settings">
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+            </Link>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

@@ -7,7 +7,7 @@ import {
   AccordionNonCollapsibleContent,
 } from '@/ui/Accordion';
 
-export function HiresPage() {
+export default function HiresPage() {
   return (
     <>
       <Title title="Hires" />

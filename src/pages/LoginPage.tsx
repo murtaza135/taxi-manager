@@ -9,7 +9,7 @@ import {
   MultiStepFormStepperItem,
 } from '@/ui/MultiStepForm';
 
-export function LoginPage() {
+export default function LoginPage() {
   return (
     <MultiStepForm min={1} max={3}>
       <MultiStepFormStepper>

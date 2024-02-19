@@ -4,8 +4,8 @@ import { BsPersonCircle } from 'react-icons/bs';
 import { IoMdSettings } from 'react-icons/io';
 import { LiaFileContractSolid } from 'react-icons/lia';
 import { RiMoneyPoundCircleFill } from 'react-icons/ri';
-import { useLocation } from 'wouter';
 import { m, AnimatePresence, PanInfo } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import { NavLogo } from '@/features/navigation/components/side-nav/NavLogo';
 import { NavLink } from '@/features/navigation/components/side-nav/NavLink';
 import { useIsNavOpen, useNavActions } from '@/features/navigation/state/navStore';
@@ -17,7 +17,7 @@ const SWIPE_CONFIDENCE_THRESHOLD = 10000;
 const swipePower = (offset: number, velocity: number) => Math.abs(offset) * velocity;
 
 export function SideNav() {
-  const [location] = useLocation();
+  const { pathname } = useLocation();
   const isMobileNavOpen = useIsNavOpen();
   const { closeNav, openNav } = useNavActions();
   const breakpoint = useBreakpoint('sm');
@@ -37,7 +37,6 @@ export function SideNav() {
     <LazyMotion>
       <AnimatePresence>
         <m.nav
-          initial={{ x: isNavOpen ? 0 : '-15rem', opacity: 0 }}
           animate={{ x: isNavOpen ? 0 : '-15rem', opacity: isNavOpen ? 1 : 0 }}
           transition={{ duration: 0.2 }}
           drag={!breakpoint ? 'x' : false}
@@ -51,12 +50,12 @@ export function SideNav() {
           <NavLogo />
 
           <div className="bg-achromatic-light dark:bg-achromatic-dark rounded-lg pt-12 sm:py-8 flex flex-col gap-4 flex-1">
-            <NavLink href="/" icon={<TiHome />} active={location === '/'} text="Dashboard" />
-            <NavLink href="/rent" icon={<RiMoneyPoundCircleFill />} active={location === '/rent'} text="Rent" />
-            <NavLink href="/hires" icon={<LiaFileContractSolid />} active={location === '/hires'} text="Hires" />
-            <NavLink href="/taxis" icon={<FaCarSide />} active={location === '/taxis'} text="Taxis" />
-            <NavLink href="/drivers" icon={<BsPersonCircle />} active={location === '/drivers'} text="Drivers" />
-            <NavLink href="/settings" icon={<IoMdSettings />} active={location === '/settings'} text="Settings" className="mt-auto" />
+            <NavLink to="/" icon={<TiHome />} active={pathname === '/'} text="Dashboard" />
+            <NavLink to="/rent" icon={<RiMoneyPoundCircleFill />} active={pathname === '/rent'} text="Rent" />
+            <NavLink to="/hires" icon={<LiaFileContractSolid />} active={pathname === '/hires'} text="Hires" />
+            <NavLink to="/taxis" icon={<FaCarSide />} active={pathname === '/taxis'} text="Taxis" />
+            <NavLink to="/drivers" icon={<BsPersonCircle />} active={pathname === '/drivers'} text="Drivers" />
+            <NavLink to="/settings" icon={<IoMdSettings />} active={pathname === '/settings'} text="Settings" className="mt-auto" />
           </div>
         </m.nav>
       </AnimatePresence>

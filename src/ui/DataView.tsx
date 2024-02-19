@@ -24,7 +24,7 @@ import partition from 'lodash/partition';
 import keyBy from 'lodash/keyBy';
 import mapValues from 'lodash/mapValues';
 import { capitalCase } from 'change-case';
-import { Link } from 'wouter';
+import { Link } from 'react-router-dom';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
 import { Input } from '@/ui/Input';
 import { Button } from '@/ui/Button';
@@ -659,15 +659,15 @@ function DataViewHeader<TData extends ReactTableRowData, TValue = unknown>(
 }
 
 type DataViewOpenPageProps = {
-  href: string;
+  to: string;
   className?: string;
 };
 
 function DataViewOpenPage(
-  { href, className }: DataViewOpenPageProps,
+  { to, className }: DataViewOpenPageProps,
 ) {
   return (
-    <Link href={href}>
+    <Link to={to}>
       <Button
         variant="ghost"
         size="auto"

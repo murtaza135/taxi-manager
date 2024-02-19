@@ -32,7 +32,7 @@ export const tableColumns: ColumnDef<Driver>[] = [
   {
     id: 'openPage',
     header: '',
-    cell: () => <DataViewOpenPage href="/temp/1" />,
+    cell: () => <DataViewOpenPage to="/temp/1" />,
     enableSorting: false,
     enableHiding: false,
     enableGlobalFilter: false,

@@ -1,6 +1,6 @@
 import { Title } from '@/features/title/components/Title';
 
-export function SettingsPage() {
+export default function SettingsPage() {
   return (
     <>
       <Title title="Settings" />

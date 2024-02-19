@@ -2,7 +2,7 @@ import { Title } from '@/features/title/components/Title';
 import { Slide, SlideContent, SlideItem, SlideTabs, SlideTab, SlideSelect, SlideSelectItem } from '@/ui/Slide';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 
-export function RentPage() {
+export default function RentPage() {
   const breakpoint = useBreakpoint('xs');
 
   return (

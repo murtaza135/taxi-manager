@@ -1,22 +1,22 @@
 import { ReactNode } from 'react';
-import { Link } from 'wouter';
+import { Link } from 'react-router-dom';
 import { useNavActions } from '@/features/navigation/state/navStore';
 import { cn } from '@/utils/cn';
 
 type Props = {
   text?: string;
-  href: string;
+  to: string;
   icon?: ReactNode;
   active?: boolean;
   className?: string;
 };
 
-export function NavLink({ text, href, icon, active, className }: Props) {
+export function NavLink({ text, to, icon, active, className }: Props) {
   const { closeNav } = useNavActions();
 
   return (
     <Link
-      href={href}
+      to={to}
       onClick={() => closeNav()}
       className={cn('text-xl border-l-[6px] transition-opacity', !!active && 'border-primary-dark dark:border-primary-light text-primary-dark dark:text-primary-light', !active && 'border-transparent hover:opacity-50', className)}
     >

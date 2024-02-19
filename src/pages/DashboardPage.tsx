@@ -11,7 +11,7 @@ import { columns, mapper } from '@/features/tempTable/columns';
 import { data } from '@/features/tempTable/data';
 import { Separator } from '@/ui/Separator';
 
-export function DashboardPage() {
+export default function DashboardPage() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
