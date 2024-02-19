@@ -33,7 +33,7 @@ export default function DashboardPage() {
   });
 
   return (
-    <div>
+    <>
       <Title title="Dashboard" />
       <div className="flex flex-col gap-3">
         <DataViewTopBar
@@ -53,6 +53,6 @@ export default function DashboardPage() {
         />
         {/* <DataViewPagination table={table} /> */}
       </div>
-    </div>
+    </>
   );
 }

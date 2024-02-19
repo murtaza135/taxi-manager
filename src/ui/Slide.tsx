@@ -66,7 +66,7 @@ const Slide = React.forwardRef<
     <SlideContext.Provider value={value}>
       <div
         ref={ref}
-        className={cn('relative w-full h-full', className)}
+        className={cn('', className)}
         {...props}
       >
         {children}
@@ -169,7 +169,7 @@ const SlideContent = React.forwardRef<
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.8}
           onDragEnd={handleDragEnd}
-          className={cn('absolute w-full h-full', className)}
+          className={cn('w-full', className)}
           ref={ref}
           {...props}
         >

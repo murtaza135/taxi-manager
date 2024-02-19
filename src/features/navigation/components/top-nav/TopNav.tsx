@@ -19,7 +19,7 @@ export function TopNav() {
   };
 
   return (
-    <div className="flex justify-between items-center gap-4 pl-0 sm:pl-[8.375rem] md:pl-[17.25rem] w-[min(calc(100%-2.5rem),calc(1536px-2.5rem))] h-20 fixed top-0 sm:left-[max(0,calc(50%-48rem))] z-20 bg-scene-light dark:bg-scene-dark text-primary-dark dark:text-primary-light">
+    <div className="flex justify-between items-center gap-4 pl-0 sm:pl-[8.375rem] md:pl-[17.25rem] w-[min(calc(100%-2.5rem),calc(1536px-2.5rem))] h-20 fixed top-0 left-[max(1.25rem,calc(50%-48rem+1.25rem))] z-20 bg-scene-light dark:bg-scene-dark text-primary-dark dark:text-primary-light">
       <div>
         <IoMenu
           className="sm:hidden text-3xl cursor-pointer hover:opacity-75 transition-opacity"
