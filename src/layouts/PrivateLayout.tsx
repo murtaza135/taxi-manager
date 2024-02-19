@@ -7,14 +7,16 @@ import { TopNav } from '@/features/navigation/components/top-nav/TopNav';
 export function PrivateLayout() {
   return (
     <>
-      <div className="container-fluid mx-auto px-5 flex gap-10">
+      <div className="container-fluid h-dvh mx-auto px-5">
         <SideNav />
-        <div className="pb-5 w-full h-dvh overflow-clip flex flex-col [&>*:last-child]:flex-grow">
-          <TopNav />
-          <Suspense fallback={<p>PrivateLayout Loading...</p>}>
+        {/* <div className="pb-5 w-full h-dvh flex flex-col [&>*:last-child]:flex-grow"> */}
+        <TopNav />
+        <Suspense fallback={<p>PrivateLayout Loading...</p>}>
+          <div className="relative sm:pl-[8.375rem] md:pl-[17.25rem] top-20 pb-5">
             <Outlet />
-          </Suspense>
-        </div>
+          </div>
+        </Suspense>
+        {/* </div> */}
       </div>
       <NavBackdrop />
     </>
