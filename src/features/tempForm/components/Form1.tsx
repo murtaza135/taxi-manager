@@ -53,6 +53,96 @@ export function Form1() {
           )}
         />
 
+        <FormField
+          control={form.control}
+          name="username1"
+          render={({ field }) => (
+            <FormGroup label="Username 1">
+              <Input placeholder="Username 1" {...field} />
+            </FormGroup>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="username1"
+          render={({ field }) => (
+            <FormGroup label="Username 1">
+              <Input placeholder="Username 1" {...field} />
+            </FormGroup>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="username1"
+          render={({ field }) => (
+            <FormGroup label="Username 1">
+              <Input placeholder="Username 1" {...field} />
+            </FormGroup>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="username1"
+          render={({ field }) => (
+            <FormGroup label="Username 1">
+              <Input placeholder="Username 1" {...field} />
+            </FormGroup>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="username1"
+          render={({ field }) => (
+            <FormGroup label="Username 1">
+              <Input placeholder="Username 1" {...field} />
+            </FormGroup>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="username1"
+          render={({ field }) => (
+            <FormGroup label="Username 1">
+              <Input placeholder="Username 1" {...field} />
+            </FormGroup>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="username1"
+          render={({ field }) => (
+            <FormGroup label="Username 1">
+              <Input placeholder="Username 1" {...field} />
+            </FormGroup>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="username1"
+          render={({ field }) => (
+            <FormGroup label="Username 1">
+              <Input placeholder="Username 1" {...field} />
+            </FormGroup>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="username1"
+          render={({ field }) => (
+            <FormGroup label="Username 1">
+              <Input placeholder="Username 1" {...field} />
+            </FormGroup>
+          )}
+        />
+
         <div className="flex flex-wrap gap-3">
           <Button type="submit">Submit</Button>
           <Button type="button" onClick={() => prevStep()}>Prev</Button>

@@ -26,9 +26,95 @@ export default function HiresPage() {
             </AccordionCollapsibleContent>
           </AccordionItem>
           <AccordionItem value="item-3">
-            <AccordionNonCollapsibleContent>
-              Yes. It&apos;s animated by default, but you can disable it if you prefer.
-            </AccordionNonCollapsibleContent>
+            <AccordionTrigger>Is it styled?</AccordionTrigger>
+            <AccordionCollapsibleContent>
+              Yes. It comes with default styles that matches the other
+              components&apos; aesthetic.
+            </AccordionCollapsibleContent>
+          </AccordionItem>
+          <AccordionItem value="item-4">
+            <AccordionTrigger>Is it styled?</AccordionTrigger>
+            <AccordionCollapsibleContent>
+              Yes. It comes with default styles that matches the other
+              components&apos; aesthetic.
+            </AccordionCollapsibleContent>
+          </AccordionItem>
+          <AccordionItem value="item-5">
+            <AccordionTrigger>Is it styled?</AccordionTrigger>
+            <AccordionCollapsibleContent>
+              Yes. It comes with default styles that matches the other
+              components&apos; aesthetic.
+            </AccordionCollapsibleContent>
+          </AccordionItem>
+          <AccordionItem value="item-6">
+            <AccordionTrigger>Is it styled?</AccordionTrigger>
+            <AccordionCollapsibleContent>
+              Yes. It comes with default styles that matches the other
+              components&apos; aesthetic.
+            </AccordionCollapsibleContent>
+          </AccordionItem>
+          <AccordionItem value="item-7">
+            <AccordionTrigger>Is it styled?</AccordionTrigger>
+            <AccordionCollapsibleContent>
+              Yes. It comes with default styles that matches the other
+              components&apos; aesthetic.
+            </AccordionCollapsibleContent>
+          </AccordionItem>
+          <AccordionItem value="item-8">
+            <AccordionTrigger>Is it styled?</AccordionTrigger>
+            <AccordionCollapsibleContent>
+              Yes. It comes with default styles that matches the other
+              components&apos; aesthetic.
+            </AccordionCollapsibleContent>
+          </AccordionItem>
+          <AccordionItem value="item-9">
+            <AccordionTrigger>Is it styled?</AccordionTrigger>
+            <AccordionCollapsibleContent>
+              Yes. It comes with default styles that matches the other
+              components&apos; aesthetic.
+            </AccordionCollapsibleContent>
+          </AccordionItem>
+          <AccordionItem value="item-10">
+            <AccordionTrigger>Is it styled?</AccordionTrigger>
+            <AccordionCollapsibleContent>
+              Yes. It comes with default styles that matches the other
+              components&apos; aesthetic.
+            </AccordionCollapsibleContent>
+          </AccordionItem>
+          <AccordionItem value="item-11">
+            <AccordionTrigger>Is it styled?</AccordionTrigger>
+            <AccordionCollapsibleContent>
+              Yes. It comes with default styles that matches the other
+              components&apos; aesthetic.
+            </AccordionCollapsibleContent>
+          </AccordionItem>
+          <AccordionItem value="item-12">
+            <AccordionTrigger>Is it styled?</AccordionTrigger>
+            <AccordionCollapsibleContent>
+              Yes. It comes with default styles that matches the other
+              components&apos; aesthetic.
+            </AccordionCollapsibleContent>
+          </AccordionItem>
+          <AccordionItem value="item-13">
+            <AccordionTrigger>Is it styled?</AccordionTrigger>
+            <AccordionCollapsibleContent>
+              Yes. It comes with default styles that matches the other
+              components&apos; aesthetic.
+            </AccordionCollapsibleContent>
+          </AccordionItem>
+          <AccordionItem value="item-14">
+            <AccordionTrigger>Is it styled?</AccordionTrigger>
+            <AccordionCollapsibleContent>
+              Yes. It comes with default styles that matches the other
+              components&apos; aesthetic.
+            </AccordionCollapsibleContent>
+          </AccordionItem>
+          <AccordionItem value="item-15">
+            <AccordionTrigger>Is it styled?</AccordionTrigger>
+            <AccordionCollapsibleContent>
+              Yes. It comes with default styles that matches the other
+              components&apos; aesthetic.
+            </AccordionCollapsibleContent>
           </AccordionItem>
         </Accordion>
       </div>
