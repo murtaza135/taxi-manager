@@ -122,19 +122,19 @@ export type DataViewCardMainDataMapper = {
 };
 
 type DataViewCardProps<TData extends ReactTableRowData> = {
-  headers: Record<string, ReactTableHeader<TData, unknown>>;
-  row: ReactTableRow<TData>;
+  headerRow: Record<string, ReactTableHeader<TData, unknown>>;
+  dataRow: ReactTableRow<TData>;
   mapper?: DataViewCardMainDataMapper;
 };
 
 function DataViewCard<TData extends ReactTableRowData>(
-  { headers, row, mapper = {} }: DataViewCardProps<TData>,
+  { headerRow, dataRow, mapper = {} }: DataViewCardProps<TData>,
 ) {
   // TODO comment on whats going on here
   // TODO change cell.renderValue() to row.getValue("<id>")?
   const mapperValues = Object.values(mapper);
   const [mainDataCells, listDataCells] = partition(
-    row.getVisibleCells(),
+    dataRow.getVisibleCells(),
     (cell) => mapperValues.includes(cell.column.id),
   );
   const mainDataCellsObject = keyBy(mainDataCells, (cell) => cell.column.id);
@@ -187,8 +187,8 @@ function DataViewCard<TData extends ReactTableRowData>(
                 <div>
                   <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-light/50">
                     {flexRender(
-                      headers[cellA.column.id].column.columnDef.header,
-                      headers[cellA.column.id].getContext(),
+                      headerRow[cellA.column.id].column.columnDef.header,
+                      headerRow[cellA.column.id].getContext(),
                     )}
                   </div>
                   <div className="text-ellipsis overflow-hidden">
@@ -200,8 +200,8 @@ function DataViewCard<TData extends ReactTableRowData>(
                   <div>
                     <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-light/50">
                       {flexRender(
-                        headers[cellB.column.id].column.columnDef.header,
-                        headers[cellB.column.id].getContext(),
+                        headerRow[cellB.column.id].column.columnDef.header,
+                        headerRow[cellB.column.id].getContext(),
                       )}
                     </div>
                     <div className="text-ellipsis overflow-hidden">
@@ -235,7 +235,7 @@ function DataViewGrid<TData extends ReactTableRowData>(
     );
   }
 
-  const headers: Record<string, ReactTableHeader<TData, unknown>> = keyBy(
+  const headerRow: Record<string, ReactTableHeader<TData, unknown>> = keyBy(
     table.getLeafHeaders(),
     (header) => header.id,
   );
@@ -243,7 +243,7 @@ function DataViewGrid<TData extends ReactTableRowData>(
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
       {table.getRowModel().rows.map((row) => (
-        <DataViewCard key={row.id} row={row} headers={headers} mapper={mapper} />
+        <DataViewCard key={row.id} dataRow={row} headerRow={headerRow} mapper={mapper} />
       ))}
     </div>
   );
@@ -349,8 +349,8 @@ function DataViewColumnSortDropdown<TData extends ReactTableRowData>(
   { table }: DataViewSortDropdownProps<TData>,
 ) {
   const columns = table.getAllColumns().filter((column) => column.getCanSort());
-  const areAllColumnsNotSorted = columns.every((column) => (
-    column.getIsSorted() !== 'desc' && column.getIsSorted() !== 'asc'
+  const isAnyColumnSorted = columns.some((column) => (
+    column.getIsSorted() === 'desc' || column.getIsSorted() === 'asc'
   ));
 
   if (!columns.length) {
@@ -390,7 +390,7 @@ function DataViewColumnSortDropdown<TData extends ReactTableRowData>(
           className="capitalize py-1.5 px-2 flex gap-2"
           onClick={() => table.resetSorting()}
         >
-          {areAllColumnsNotSorted ? <Check className="h-4 w-4" /> : <div className="h-4 w-4" />}
+          {!isAnyColumnSorted ? <Check className="h-4 w-4" /> : <div className="h-4 w-4" />}
           Clear
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -404,10 +404,10 @@ type DataViewLayoutDropdownProps = {
 };
 
 function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdownProps) {
-  const [position, setPosition] = useState<DataViewLayoutType>(layout);
+  const [layoutValue, setLayoutValue] = useState<DataViewLayoutType>(layout);
 
   function handleValueChange(value: DataViewLayoutType) {
-    setPosition(value);
+    setLayoutValue(value);
     onChangeLayout(value);
   }
 
@@ -426,16 +426,16 @@ function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdo
         <DropdownMenuLabel>Select Layout</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
-          value={position}
+          value={layoutValue}
           onValueChange={(value) => handleValueChange(value as DataViewLayoutType)}
         >
-          {DATA_VIEW_LAYOUTS.map((layoutValue) => (
+          {DATA_VIEW_LAYOUTS.map((value) => (
             <DropdownMenuRadioItem
-              key={layoutValue}
+              key={value}
               className="capitalize"
-              value={layoutValue}
+              value={value}
             >
-              {capitalCase(layoutValue)}
+              {capitalCase(value)}
             </DropdownMenuRadioItem>
           ))}
         </DropdownMenuRadioGroup>
@@ -594,16 +594,16 @@ function DataViewHeaderCheckbox<TData extends ReactTableRowData>(
 }
 
 type DataViewRowCheckboxProps<TData extends ReactTableRowData> = {
-  row: ReactTableRow<TData>;
+  dataRow: ReactTableRow<TData>;
 };
 
 function DataViewRowCheckbox<TData extends ReactTableRowData>(
-  { row }: DataViewRowCheckboxProps<TData>,
+  { dataRow }: DataViewRowCheckboxProps<TData>,
 ) {
   return (
     <Checkbox
-      checked={row.getIsSelected()}
-      onCheckedChange={(value) => row.toggleSelected(!!value)}
+      checked={dataRow.getIsSelected()}
+      onCheckedChange={(value) => dataRow.toggleSelected(!!value)}
       aria-label="Select row"
     />
   );
