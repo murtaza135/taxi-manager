@@ -1,6 +1,8 @@
 // type Options = {
-//   //
+//   initial?: number;
+//   min: number;
+//   max: number;
 // };
 
-// export function useSlideSteps({ }: Options) {
+// export function useSlideSteps({ initial, min, max }: Options) {
 // }

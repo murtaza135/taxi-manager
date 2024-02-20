@@ -12,10 +12,13 @@ type Orientation = 'horizontal' | 'vertical';
 
 type SlideContextValue = {
   index: number;
-  setIndex: React.Dispatch<React.SetStateAction<number>>;
   direction: Direction;
-  setDirection: React.Dispatch<React.SetStateAction<Direction>>;
+  setIndex: React.Dispatch<React.SetStateAction<number>>;
+  nextIndex: (value?: number) => void;
+  prevIndex: (value?: number) => void;
   orientation: Orientation;
+  min: number;
+  max: number;
 };
 
 const SlideContext = React.createContext<SlideContextValue>(
@@ -35,32 +38,50 @@ function useSlideContext() {
 type SlideProps = {
   min: number;
   max: number;
+  index?: number;
   initial?: number;
+  onIndexChange?: (index: number) => void;
   orientation?: Orientation;
 };
 
 const Slide = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & SlideProps
->(({ className, children, min, max, initial, orientation, ...props }, ref) => {
-  const [index, setIndexValue] = React.useState(initial ?? min);
+>((
+  { className, children, min, max, initial, orientation, index, onIndexChange, ...props },
+  ref,
+) => {
+  const [internalIndex, setInternalIndex] = React.useState(index ?? initial ?? min);
   const [direction, setDirection] = React.useState<Direction>('forwards');
 
   const setIndex = React.useCallback((value: React.SetStateAction<number>) => {
-    if (typeof value === 'function') {
-      setIndexValue((i) => clamp(value(i), min, max));
-    } else {
-      setIndexValue(clamp(value, min, max));
-    }
-  }, [setIndexValue, min, max]);
+    const newIndexValue = clamp(typeof value === 'function' ? value(internalIndex) : value, min, max);
+    setInternalIndex(newIndexValue);
+    setDirection(newIndexValue >= internalIndex ? 'forwards' : 'backwards');
+    onIndexChange?.(newIndexValue);
+  }, [internalIndex, setInternalIndex, setDirection, onIndexChange, min, max]);
 
-  const value = React.useMemo(() => ({
-    index,
-    setIndex,
-    direction,
-    setDirection,
-    orientation: orientation ?? 'horizontal',
-  }), [index, setIndex, direction, setDirection, orientation]);
+  const nextIndex = React.useCallback((value?: number) => {
+    setIndex((i) => i + (value ?? 1));
+  }, [setIndex]);
+
+  const prevIndex = React.useCallback((value?: number) => {
+    setIndex((i) => i - (value ?? 1));
+  }, [setIndex]);
+
+  const value = React.useMemo(
+    () => ({
+      index: index !== undefined ? index : internalIndex,
+      direction,
+      setIndex,
+      nextIndex,
+      prevIndex,
+      orientation: orientation ?? 'horizontal',
+      min,
+      max,
+    }),
+    [index, internalIndex, direction, setIndex, nextIndex, prevIndex, orientation, min, max],
+  );
 
   return (
     <SlideContext.Provider value={value}>
@@ -136,17 +157,15 @@ const SlideItems = React.forwardRef<
   HTMLDivElement,
   HTMLMotionProps<'div'>
 >(({ className, children, ...props }, ref) => {
-  const { index, setIndex, direction, setDirection, orientation } = useSlideContext();
+  const { index, direction, nextIndex, prevIndex, orientation } = useSlideContext();
 
   function handleDragEnd(_event: Event, { offset, velocity }: PanInfo) {
     const swipe = swipePower(offset.x, velocity.x);
 
     if (swipe < -SWIPE_CONFIDENCE_THRESHOLD) {
-      setIndex((i) => i + 1);
-      setDirection('forwards');
+      nextIndex();
     } else if (swipe > SWIPE_CONFIDENCE_THRESHOLD) {
-      setIndex((i) => i - 1);
-      setDirection('backwards');
+      prevIndex();
     }
   }
 
@@ -202,12 +221,13 @@ type SlideTabsProps = {
 };
 
 function SlideTabs({ className, children }: SlideTabsProps) {
-  const { index, setIndex, setDirection } = useSlideContext();
+  const { index, setIndex } = useSlideContext();
 
   function handleValueChange(value: string) {
     const newIndex = Number(value);
-    setIndex(newIndex);
-    setDirection(newIndex < index ? 'backwards' : 'forwards');
+    if (!Number.isNaN(newIndex)) {
+      setIndex(newIndex);
+    }
   }
 
   return (
@@ -246,12 +266,13 @@ type SlideSelectProps = {
 };
 
 function SlideSelect({ className, children }: SlideSelectProps) {
-  const { index, setIndex, setDirection } = useSlideContext();
+  const { index, setIndex } = useSlideContext();
 
   function handleValueChange(value: string) {
     const newIndex = Number(value);
-    setIndex(newIndex);
-    setDirection(newIndex < index ? 'backwards' : 'forwards');
+    if (!Number.isNaN(newIndex)) {
+      setIndex(newIndex);
+    }
   }
 
   return (

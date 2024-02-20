@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Title } from '@/features/title/components/Title';
 import { Slide, SlideItems, SlideItem, SlideTabs, SlideTab, SlideSelect, SlideSelectItem } from '@/ui/Slide';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
