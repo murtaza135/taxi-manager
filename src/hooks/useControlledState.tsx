@@ -1,10 +1,14 @@
 import { useState, useCallback, Dispatch, SetStateAction } from 'react';
-import { type XOR } from 'ts-essentials';
 
-type UseControlledStateOptions<S> = XOR<
-  { value: S; onValueChange: Dispatch<SetStateAction<S>>; },
-  { defaultValue: S | (() => S); onValueChange?: Dispatch<SetStateAction<S>>; }
->;
+type UseControlledStateOptions<S> = {
+  value: S;
+  onValueChange: Dispatch<SetStateAction<S>>;
+  defaultValue?: S | (() => S);
+} | {
+  value?: undefined;
+  onValueChange?: Dispatch<SetStateAction<S>>;
+  defaultValue: S | (() => S);
+};
 
 export function useControlledState<S>(
   { defaultValue, value: controlledValue, onValueChange }: UseControlledStateOptions<S>,
@@ -17,7 +21,9 @@ export function useControlledState<S>(
 
   // keep track of internal state for uncontrolled components,
   // initially allow undefined
-  const [internalState, setInternalState] = useState<S | undefined>(defaultValue);
+  const [internalState, setInternalState] = useState<S | undefined>(
+    controlledValue !== undefined ? controlledValue : defaultValue,
+  );
 
   // return controlledValue if component is controlled,
   // otherwise return internalState if component is uncontrolled,

@@ -10,7 +10,7 @@ export function ScrollToTopButton() {
       variant="base"
       shape="circle"
       size="md"
-      className="text-lg fixed bottom-8 left-auto right-[max(2rem,calc(50%-48rem+2rem))] z-[100]"
+      className="text-lg fixed bottom-6 left-auto right-[max(2rem,calc(50%-48rem+2rem))] z-[100]"
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >
       <FaArrowUp />
