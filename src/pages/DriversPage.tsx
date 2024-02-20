@@ -1,8 +1,21 @@
+import { useEffect } from 'react';
 import { Title } from '@/features/title/components/Title';
 import { Spinner } from '@/ui/Spinner';
 import { Skeleton } from '@/ui/Skeleton';
+import { useToast, ToastAction } from '@/ui/toast';
 
 export default function DriversPage() {
+  const { toast } = useToast();
+
+  // useEffect(() => {
+  //   toast({
+  //     title: 'Scheduled: Catch up',
+  //     description: 'Friday, February 10, 2023 at 5:57 PM',
+  //     variant: 'destructive',
+  //     action: <ToastAction altText="Try again">Try again</ToastAction>,
+  //   });
+  // }, [toast]);
+
   return (
     <div className="center">
       <Title title="Drivers" />
