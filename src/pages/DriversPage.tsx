@@ -4,6 +4,7 @@ import { Spinner } from '@/ui/Spinner';
 import { Skeleton } from '@/ui/Skeleton';
 import { useToast, ToastAction } from '@/ui/toast';
 import { TooltipWrapper } from '@/ui/Tooltip';
+import { ScrollToTopButton } from '@/features/scroll/ScrollToTopButton';
 
 export default function DriversPage() {
   const { toast } = useToast();
