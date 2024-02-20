@@ -28,14 +28,17 @@ TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 type TooltipWrapperProps = XOR<
   { text: string; },
   { content: React.ReactNode; }
-> & { children?: React.ReactNode; };
+> & {
+  className?: string;
+  children?: React.ReactNode;
+};
 
-function TooltipWrapper({ text, content, children }: TooltipWrapperProps) {
+function TooltipWrapper({ text, content, className, children }: TooltipWrapperProps) {
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>{children}</TooltipTrigger>
-        <TooltipContent>{content ?? text}</TooltipContent>
+        <TooltipContent className={cn(className)}>{content ?? text}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

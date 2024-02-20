@@ -50,6 +50,7 @@ import { Avatar, AvatarImage } from '@/ui/Avatar';
 import { cn } from '@/utils/cn';
 import { OptionalGroup } from '@/types/utils';
 import { Separator } from '@/ui/Separator';
+import { TooltipWrapper } from '@/ui/Tooltip';
 
 const DATA_VIEW_LAYOUTS = ['table', 'grid'] as const;
 export type DataViewLayoutType = typeof DATA_VIEW_LAYOUTS[number];
@@ -671,13 +672,15 @@ function DataViewOpenPage(
 ) {
   return (
     <Link to={to}>
-      <Button
-        variant="ghost"
-        size="auto"
-        className={cn('text-2xl text-primary-dark dark:text-achromatic-500', className)}
-      >
-        <TiEye />
-      </Button>
+      <TooltipWrapper text="Open" className="transition-opacity hover:opacity-70">
+        <Button
+          variant="ghost"
+          size="auto"
+          className={cn('text-2xl', className)}
+        >
+          <TiEye />
+        </Button>
+      </TooltipWrapper>
     </Link>
   );
 }

@@ -132,7 +132,7 @@ const variants: Variants = {
 const SWIPE_CONFIDENCE_THRESHOLD = 10000;
 const swipePower = (offset: number, velocity: number) => Math.abs(offset) * velocity;
 
-const SlideContent = React.forwardRef<
+const SlideItems = React.forwardRef<
   HTMLDivElement,
   HTMLMotionProps<'div'>
 >(({ className, children, ...props }, ref) => {
@@ -179,7 +179,7 @@ const SlideContent = React.forwardRef<
     </LazyMotion>
   );
 });
-SlideContent.displayName = 'SlideContent';
+SlideItems.displayName = 'SlideItems';
 
 type SlideItemProps = {
   children?: React.ReactNode;
@@ -293,7 +293,7 @@ function SlideSelectItem({ index, className, children }: SlideSelectItemProps) {
 
 export {
   Slide,
-  SlideContent,
+  SlideItems,
   SlideItem,
   SlideTabs,
   SlideTab,

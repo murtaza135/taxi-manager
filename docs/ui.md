@@ -419,7 +419,7 @@ export default function Page() {
 import { useState } from "react";
 import {
   Slide,
-  SlideContent,
+  SlideItems,
   SlideItem,
   SlideTabs,
   SlideTab,
@@ -450,12 +450,12 @@ export default function Page() {
           </SlideTabs>
         )}
 
-      <SlideContent className="flex-grow">
+      <SlideItems className="flex-grow">
         <SlideItem index={1}>1</SlideItem>
         <SlideItem index={2}>2</SlideItem>
         <SlideItem index={3}>3</SlideItem>
         <SlideItem index={4}>4</SlideItem>
-      </SlideContent>
+      </SlideItems>
     </Slide>
   );
 }
