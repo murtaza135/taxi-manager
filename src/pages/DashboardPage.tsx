@@ -45,7 +45,6 @@ export default function DashboardPage() {
           filter={globalFilter}
           onChangeFilter={setGlobalFilter}
         />
-        <Separator />
         <DataViewLayout
           layout={layout}
           table={table}

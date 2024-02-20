@@ -260,7 +260,7 @@ function SlideSelect({ className, children }: SlideSelectProps) {
       onValueChange={(value) => handleValueChange(value)}
     >
       <SelectTrigger
-        className={cn('max-w-[180px] h-8 mb-3 border-primary-dark dark:border-achromatic-dark', className)}
+        className={cn('max-w-[180px] h-8 border-primary-dark dark:border-achromatic-dark', className)}
       >
         <SelectValue />
       </SelectTrigger>
@@ -269,7 +269,7 @@ function SlideSelect({ className, children }: SlideSelectProps) {
         {children}
       </SelectContent>
 
-      <Separator className="mb-4" />
+      <Separator className="mt-3 mb-4" />
     </Select>
   );
 }

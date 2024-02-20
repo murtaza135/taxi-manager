@@ -49,6 +49,7 @@ import { Checkbox } from '@/ui/Checkbox';
 import { Avatar, AvatarImage } from '@/ui/Avatar';
 import { cn } from '@/utils/cn';
 import { OptionalGroup } from '@/types/utils';
+import { Separator } from '@/ui/Separator';
 
 const DATA_VIEW_LAYOUTS = ['table', 'grid'] as const;
 export type DataViewLayoutType = typeof DATA_VIEW_LAYOUTS[number];
@@ -131,7 +132,6 @@ function DataViewCard<TData extends ReactTableRowData>(
   { headerRow, dataRow, mapper = {} }: DataViewCardProps<TData>,
 ) {
   // TODO comment on whats going on here
-  // TODO change cell.renderValue() to row.getValue("<id>")?
   const mapperValues = Object.values(mapper);
   const [mainDataCells, listDataCells] = partition(
     dataRow.getVisibleCells(),
@@ -466,19 +466,22 @@ function DataViewTopBar<TData extends ReactTableRowData>({
   onChangeFilter,
 }: DataViewTopBarProps<TData>) {
   return (
-    <div className="flex justify-between items-center gap-4">
-      {
-        typeof filter !== 'undefined'
-          ? <DataViewSearchFilter filter={filter} onChangeFilter={onChangeFilter} />
-          : <div />
-      }
+    <div>
+      <div className="flex justify-between items-center gap-4">
+        {
+          typeof filter !== 'undefined'
+            ? <DataViewSearchFilter filter={filter} onChangeFilter={onChangeFilter} />
+            : <div />
+        }
 
-      <div className="flex gap-3 items-center">
-        {showVisibilityButton && <DataViewColumnVisibilityDropdown table={table} />}
-        {showSortButton && <DataViewColumnSortDropdown table={table} />}
-        {layout && <DataViewLayoutDropdown layout={layout} onChangeLayout={onChangeLayout} />}
-        <Button size="sm" shape="circle" className="text-xl ml-2">+</Button>
+        <div className="flex gap-3 items-center">
+          {showVisibilityButton && <DataViewColumnVisibilityDropdown table={table} />}
+          {showSortButton && <DataViewColumnSortDropdown table={table} />}
+          {layout && <DataViewLayoutDropdown layout={layout} onChangeLayout={onChangeLayout} />}
+          <Button size="sm" shape="circle" className="text-xl ml-2">+</Button>
+        </div>
       </div>
+      <Separator className="mt-3" />
     </div>
   );
 }
@@ -593,12 +596,12 @@ function DataViewHeaderCheckbox<TData extends ReactTableRowData>(
   );
 }
 
-type DataViewRowCheckboxProps<TData extends ReactTableRowData> = {
+type DataViewCellCheckboxProps<TData extends ReactTableRowData> = {
   dataRow: ReactTableRow<TData>;
 };
 
-function DataViewRowCheckbox<TData extends ReactTableRowData>(
-  { dataRow }: DataViewRowCheckboxProps<TData>,
+function DataViewCellCheckbox<TData extends ReactTableRowData>(
+  { dataRow }: DataViewCellCheckboxProps<TData>,
 ) {
   return (
     <Checkbox
@@ -681,7 +684,7 @@ function DataViewOpenPage(
 
 const DataViewCheckbox = {
   Header: DataViewHeaderCheckbox,
-  Row: DataViewRowCheckbox,
+  Cell: DataViewCellCheckbox,
 };
 
 export {

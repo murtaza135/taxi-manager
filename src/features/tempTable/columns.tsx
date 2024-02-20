@@ -24,7 +24,7 @@ export const tableColumns: ColumnDef<Driver>[] = [
   {
     id: 'select',
     header: ({ table }) => <DataViewCheckbox.Header table={table} />,
-    cell: ({ row }) => <DataViewCheckbox.Row dataRow={row} />,
+    cell: ({ row }) => <DataViewCheckbox.Cell dataRow={row} />,
     enableSorting: false,
     enableHiding: false,
     enableGlobalFilter: false,
