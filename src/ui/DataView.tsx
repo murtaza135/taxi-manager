@@ -50,7 +50,7 @@ import { Avatar, AvatarImage } from '@/ui/Avatar';
 import { cn } from '@/utils/cn';
 import { OptionalGroup } from '@/types/utils';
 import { Separator } from '@/ui/Separator';
-import { TooltipWrapper } from '@/ui/Tooltip';
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/ui/Tooltip';
 
 const DATA_VIEW_LAYOUTS = ['table', 'grid'] as const;
 export type DataViewLayoutType = typeof DATA_VIEW_LAYOUTS[number];
@@ -664,24 +664,24 @@ function DataViewHeader<TData extends ReactTableRowData, TValue = unknown>(
 
 type DataViewOpenPageProps = {
   to: string;
-  className?: string;
 };
 
-function DataViewOpenPage(
-  { to, className }: DataViewOpenPageProps,
-) {
+function DataViewOpenPage({ to }: DataViewOpenPageProps) {
   return (
-    <Link to={to}>
-      <TooltipWrapper text="Open" className="transition-opacity hover:opacity-70">
-        <Button
-          variant="ghost"
-          size="auto"
-          className={cn('text-2xl', className)}
-        >
-          <TiEye />
-        </Button>
-      </TooltipWrapper>
-    </Link>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <Link to={to} className="text-2xl transition-opacity hover:opacity-70">
+            <TiEye />
+          </Link>
+        </TooltipTrigger>
+        <TooltipContent>
+          <Link to={to} className="transition-opacity hover:opacity-70">
+            Open
+          </Link>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
