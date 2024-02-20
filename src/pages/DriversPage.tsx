@@ -3,6 +3,7 @@ import { Title } from '@/features/title/components/Title';
 import { Spinner } from '@/ui/Spinner';
 import { Skeleton } from '@/ui/Skeleton';
 import { useToast, ToastAction } from '@/ui/toast';
+import { TooltipWrapper } from '@/ui/Tooltip';
 
 export default function DriversPage() {
   const { toast } = useToast();
@@ -27,6 +28,9 @@ export default function DriversPage() {
           <Skeleton className="w-24 h-4" />
         </div>
       </div> */}
+      {/* <TooltipWrapper text="lol">
+        <p>Hover</p>
+      </TooltipWrapper> */}
     </div>
   );
 }
