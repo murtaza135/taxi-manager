@@ -9,13 +9,14 @@ type BaseFormState = Record<string, unknown>;
 
 type MultiStepFormContextValue<TFormState extends BaseFormState = BaseFormState> = {
   step: number;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
   direction: Direction;
-  setDirection: React.Dispatch<React.SetStateAction<Direction>>;
-  formState: Partial<TFormState>;
-  updateFormState: (state: Partial<TFormState>) => void;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+  nextStep: (value?: number) => void;
+  prevStep: (value?: number) => void;
   min: number;
   max: number;
+  formState: Partial<TFormState>;
+  updateFormState: (state: Partial<TFormState>) => void;
 };
 
 const MultiStepFormContext = React.createContext<MultiStepFormContextValue>(
@@ -38,22 +39,33 @@ type MultiStepFormProps = {
   min: number;
   max: number;
   initial?: number;
+  step?: number;
+  onStepChange?: (index: number) => void;
   className?: string;
   children?: React.ReactNode;
 };
 
-function MultiStepForm({ min, max, initial, className, children }: MultiStepFormProps) {
-  const [stepValue, setStepValue] = React.useState(initial ?? min);
+function MultiStepForm(
+  { min, max, initial, step, onStepChange, className, children }: MultiStepFormProps,
+) {
+  const [internalStep, setInternalStep] = React.useState(step ?? initial ?? min);
   const [direction, setDirection] = React.useState<Direction>('forwards');
   const [formStateObject, setFormStateObject] = React.useState<Partial<BaseFormState>>({});
 
   const setStep = React.useCallback((value: React.SetStateAction<number>) => {
-    if (typeof value === 'function') {
-      setStepValue((i) => clamp(value(i), min, max));
-    } else {
-      setStepValue(clamp(value, min, max));
-    }
-  }, [setStepValue, min, max]);
+    const newStepValue = clamp(typeof value === 'function' ? value(internalStep) : value, min, max);
+    setInternalStep(newStepValue);
+    setDirection(newStepValue >= internalStep ? 'forwards' : 'backwards');
+    onStepChange?.(newStepValue);
+  }, [internalStep, setInternalStep, setDirection, onStepChange, min, max]);
+
+  const nextStep = React.useCallback((value?: number) => {
+    setStep((i) => i + (value ?? 1));
+  }, [setStep]);
+
+  const prevStep = React.useCallback((value?: number) => {
+    setStep((i) => i - (value ?? 1));
+  }, [setStep]);
 
   const updateFormState = React.useCallback((state: Partial<BaseFormState>) => {
     setFormStateObject((currentState) => ({ ...currentState, ...state }));
@@ -61,16 +73,28 @@ function MultiStepForm({ min, max, initial, className, children }: MultiStepForm
 
   const value = React.useMemo(
     () => ({
-      step: stepValue,
-      setStep,
+      step: step !== undefined ? step : internalStep,
       direction,
-      setDirection,
-      formState: formStateObject,
-      updateFormState,
+      setStep,
+      nextStep,
+      prevStep,
       min,
       max,
+      formState: formStateObject,
+      updateFormState,
     }),
-    [stepValue, setStep, direction, setDirection, formStateObject, updateFormState, min, max],
+    [
+      step,
+      internalStep,
+      direction,
+      setStep,
+      nextStep,
+      prevStep,
+      min,
+      max,
+      formStateObject,
+      updateFormState,
+    ],
   );
 
   return (
@@ -121,7 +145,7 @@ const MultiStepFormItems = React.forwardRef<
           transition={{
             x: { type: 'spring', stiffness: 300, damping: 30 },
             y: { type: 'spring', stiffness: 300, damping: 30 },
-            opacity: { duration: 1 },
+            opacity: { duration: 0.5 },
           }}
           className={cn('', className)}
           ref={ref}

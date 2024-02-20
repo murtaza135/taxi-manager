@@ -16,9 +16,9 @@ type SlideContextValue = {
   setIndex: React.Dispatch<React.SetStateAction<number>>;
   nextIndex: (value?: number) => void;
   prevIndex: (value?: number) => void;
-  orientation: Orientation;
   min: number;
   max: number;
+  orientation: Orientation;
 };
 
 const SlideContext = React.createContext<SlideContextValue>(
@@ -38,8 +38,8 @@ function useSlideContext() {
 type SlideProps = {
   min: number;
   max: number;
-  index?: number;
   initial?: number;
+  index?: number;
   onIndexChange?: (index: number) => void;
   orientation?: Orientation;
 };
@@ -48,7 +48,7 @@ const Slide = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & SlideProps
 >((
-  { className, children, min, max, initial, orientation, index, onIndexChange, ...props },
+  { className, children, min, max, initial, index, onIndexChange, orientation, ...props },
   ref,
 ) => {
   const [internalIndex, setInternalIndex] = React.useState(index ?? initial ?? min);
@@ -76,11 +76,11 @@ const Slide = React.forwardRef<
       setIndex,
       nextIndex,
       prevIndex,
-      orientation: orientation ?? 'horizontal',
       min,
       max,
+      orientation: orientation ?? 'horizontal',
     }),
-    [index, internalIndex, direction, setIndex, nextIndex, prevIndex, orientation, min, max],
+    [index, internalIndex, direction, setIndex, nextIndex, prevIndex, min, max, orientation],
   );
 
   return (

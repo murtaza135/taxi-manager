@@ -12,7 +12,7 @@ import { FormSchema3, FormSchemaType } from '@/features/tempForm/schema';
 import { useMultiStepFormContext } from '@/ui/MultiStepForm';
 
 export function Form3() {
-  const { setStep, setDirection, updateFormState } = useMultiStepFormContext<FormSchemaType>();
+  const { nextStep, prevStep, updateFormState } = useMultiStepFormContext<FormSchemaType>();
 
   const form = useZodForm({
     schema: FormSchema3,
@@ -24,20 +24,17 @@ export function Form3() {
   const onSubmit = form.handleSubmit((data) => {
     console.log(data);
     updateFormState(data);
-    setStep((step) => step + 1);
-    setDirection('forwards');
+    nextStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   });
 
-  const prevStep = () => {
-    setStep((step) => step - 1);
-    setDirection('backwards');
+  const goPrevStep = () => {
+    prevStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
-  const nextStep = () => {
-    setStep((step) => step + 1);
-    setDirection('forwards');
+  const goNextStep = () => {
+    nextStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
@@ -58,8 +55,8 @@ export function Form3() {
 
         <div className="flex flex-wrap gap-3">
           <Button type="submit">Submit</Button>
-          <Button type="button" onClick={() => prevStep()}>Prev</Button>
-          <Button type="button" onClick={() => nextStep()}>Next</Button>
+          <Button type="button" onClick={() => goPrevStep()}>Prev</Button>
+          <Button type="button" onClick={() => goNextStep()}>Next</Button>
         </div>
       </Form>
     </FormProvider>
