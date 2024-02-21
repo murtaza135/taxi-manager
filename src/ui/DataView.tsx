@@ -280,24 +280,28 @@ function DataViewSearchFilter({ filter, onChangeFilter }: DataViewSearchFilterPr
   }
 
   return (
-    <div className="flex gap-2 py-1.5 px-3 rounded-lg bg-achromatic-light dark:bg-achromatic-dark">
-      <Input
-        name="search"
-        placeholder="Search..."
-        value={filter}
-        onChange={(event) => onChangeFilter(event.target.value)}
-        icon={<IoSearchSharp />}
-        className="min-w-8 max-w-36 p-0 border-none rounded-none bg-transparent dark:bg-transparent"
-        ref={ref}
-      />
-      <Button
-        variant="ghost"
-        size="auto"
-        onClick={() => handleClearSearchFilter()}
-      >
-        <MdOutlineClose />
-      </Button>
-    </div>
+    <Input
+      name="search"
+      placeholder="Search..."
+      value={filter}
+      onChange={(event) => onChangeFilter(event.target.value)}
+      leftIcon={(
+        <span className="text-sm">
+          <IoSearchSharp />
+        </span>
+      )}
+      rightIcon={(
+        <Button
+          variant="ghost"
+          size="auto"
+          onClick={() => handleClearSearchFilter()}
+        >
+          <MdOutlineClose />
+        </Button>
+      )}
+      className="max-w-40 py-1.5 border-none"
+      ref={ref}
+    />
   );
 }
 

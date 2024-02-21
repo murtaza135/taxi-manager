@@ -108,7 +108,7 @@ function MultiStepForm(
 
 const variants: Variants = {
   enter: (direction: Direction) => ({
-    x: direction === 'forwards' ? '100%' : '-100%',
+    x: direction === 'forwards' ? 1000 : -1000,
     opacity: 0,
   }),
   center: {
@@ -118,7 +118,7 @@ const variants: Variants = {
   },
   exit: (direction: Direction) => ({
     zIndex: 0,
-    x: direction === 'backwards' ? '100%' : '-100%',
+    x: direction === 'backwards' ? 1000 : -1000,
     opacity: 0,
     transition: {
       opacity: { duration: 0 },
