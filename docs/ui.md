@@ -278,14 +278,16 @@ export function LowerLevelComponents() {
 ## Backdrop
 ```tsx
 // @/Page.tsx
-import { useState } from "react";
+import { useState, ReactNode } from "react";
 import { Backdrop } from '@/ui/Backdrop';
 
-export default function Page() {
-  const [isOpen, setIsOpen] = useState();
+export default function Page({ children }: { children: ReactNode }) {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Backdrop isOpen={isOpen} onClose={() => setIsOpen(false)} />
+    <Backdrop isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      {children}
+    </Backdrop>
   )
 }
 ```
