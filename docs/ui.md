@@ -15,6 +15,8 @@
 ```tsx
 // @/columns.tsx
 import { ColumnDef } from '@tanstack/react-table';
+import { Link } from 'react-router-dom';
+import { IoEllipsisVertical } from 'react-icons/io5';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,7 +31,7 @@ import {
   DataViewOpenPage,
 } from '@/ui/DataView';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
-import { IoEllipsisVertical } from 'react-icons/io5';
+import { Button } from '@/ui/Button';
 
 export type CustomData = {
   id: string;
@@ -111,7 +113,7 @@ export const gridColumns: ColumnDef<CustomData>[] = [
     header: 'Avatar',
   },
   {
-    id: 'options',
+    id: 'optionsTop',
     cell: ({ row }) => {
       const data = row.original;
 
@@ -135,12 +137,25 @@ export const gridColumns: ColumnDef<CustomData>[] = [
       );
     },
   },
+  {
+    id: 'optionsBottom',
+    cell: ({ row }) => {
+      const driver = row.original;
+
+      return (
+        <Link to={`/driver/${driver.id}`} className="w-full">
+          <Button className="w-full">Go to Details</Button>
+        </Link>
+      );
+    },
+  },
 ];
 
 export const mapper: DataViewCardMainDataMapper = {
   title: 'name',
   avatar: 'avatar',
-  options: 'options',
+  optionsTop: 'optionsTop',
+  optionsBottom: 'optionsBottom',
   subtitle: 'subtitle', // if you have a subtitle property in ColumnDef
   image: 'image', // if you have an image property in ColumnDef
 } as const;
