@@ -1,11 +1,13 @@
 import { IoSearchOutline, IoMenu } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
+import { IoMdSettings } from 'react-icons/io';
+import { MdLogout } from 'react-icons/md';
+import { BsSunFill, BsMoonStarsFill } from 'react-icons/bs';
 import { useNavActions } from '@/features/navigation/state/navStore';
 import { useTitle } from '@/features/title/state/titleStore';
 import { UserAvatar } from '@/features/navigation/components/top-nav/UserAvatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/ui/DropdownMenu';
 import { useIsDarkmode, useDarkmodeActions } from '@/features/darkmode/state/darkmodeStore';
-import { Switch } from '@/ui/Switch';
 
 export function TopNav() {
   const title = useTitle();
@@ -36,21 +38,25 @@ export function TopNav() {
             <UserAvatar />
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent>
+          <DropdownMenuContent className="min-w-[125px]">
             <DropdownMenuLabel>Username</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={handleToggleDarkMode}
-              className="flex gap-2 justify-center items-center"
+              className="gap-4"
+              icon={(
+                isDarkmode
+                  ? <span className="text-base"><BsMoonStarsFill /></span>
+                  : <BsSunFill />
+              )}
             >
-              <p className="translate-y-[1px]">Darkmode</p>
-              <Switch checked={isDarkmode} />
+              {isDarkmode ? 'Dark Theme' : 'Light Theme'}
             </DropdownMenuItem>
             <Link to="/settings">
-              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem icon={<IoMdSettings />}>Settings</DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem icon={<MdLogout />}>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
