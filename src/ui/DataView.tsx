@@ -144,7 +144,7 @@ function DataViewCard<TData extends ReactTableRowData>(
   const avatarRenderValue = mainDataCellsMap.avatar?.renderValue<string>();
 
   return (
-    <div className="h-full min-h-[20rem] rounded-lg overflow-hidden transition-colors bg-achromatic-light hover:bg-achromatic-light/35 dark:bg-achromatic-dark dark:hover:bg-achromatic-dark/35">
+    <div className="h-full min-h-[20rem] rounded-lg overflow-hidden bg-achromatic-light dark:bg-achromatic-dark">
       <div className={cn('h-28 relative', !!avatarRenderValue && 'mb-16')}>
         {imageRenderValue
           ? <img src={imageRenderValue} alt="card background" className="object-cover object-center h-full w-full" />
