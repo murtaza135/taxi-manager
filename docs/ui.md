@@ -218,6 +218,7 @@ export default function Page() {
         table={table}
         showSortButton
         showVisibilityButton
+        showRoesPerPageButton
         layout={layout}
         onChangeLayout={setLayout}
         filter={globalFilter}
@@ -228,7 +229,12 @@ export default function Page() {
         table={table}
         mapper={mapper}
       />
-      <DataViewPagination table={table} />
+      <DataViewPagination
+        table={table}
+        showSelectedRows
+        showPageCount
+        showPageButtons
+      />
     </div>
   );
 }
@@ -245,6 +251,7 @@ export function LowerLevelComponents() {
       <DataViewSearchFilter filter={filter} onChangeFilter={onChangeFilter} />
       <DataViewColumnVisibilityDropdown table={table} />
       <DataViewColumnSortDropdown table={table} />
+      <DataViewRowsPerPageDropdown table={table} />
       <DataViewLayoutDropdown layout={layout} onChangeLayout={onChangeLayout} />
     </>
   )

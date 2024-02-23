@@ -8,6 +8,7 @@ import {
   Cell as ReactTableCell,
   flexRender,
 } from '@tanstack/react-table';
+import { AiOutlineNumber } from 'react-icons/ai';
 import { IoSearchSharp } from 'react-icons/io5';
 import { BiSortDown } from 'react-icons/bi';
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
@@ -403,6 +404,47 @@ function DataViewColumnSortDropdown<TData extends ReactTableRowData>(
   );
 }
 
+type DataViewRowsPerPageDropdownProps<TData extends ReactTableRowData> = {
+  table: ReactTable<TData>;
+};
+
+function DataViewRowsPerPageDropdown<TData extends ReactTableRowData>(
+  { table }: DataViewRowsPerPageDropdownProps<TData>,
+) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="auto"
+          className="text-xl"
+        >
+          <AiOutlineNumber />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[150px]">
+        <DropdownMenuLabel>Rows Per Page</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup
+          value={`${table.getState().pagination.pageSize}`}
+          onValueChange={(value) => {
+            table.setPageSize(Number(value));
+          }}
+        >
+          {[10, 20, 30, 40, 50].map((pageSize) => (
+            <DropdownMenuRadioItem
+              key={pageSize}
+              value={`${pageSize}`}
+            >
+              {pageSize}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 type DataViewLayoutDropdownProps = {
   layout: DataViewLayoutType;
   onChangeLayout: (layout: DataViewLayoutType) => void;
@@ -453,6 +495,7 @@ type DataViewTopBarProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
   showSortButton?: boolean;
   showVisibilityButton?: boolean;
+  showRoesPerPageButton?: boolean;
 } & OptionalGroup<{
   layout: DataViewLayoutType;
   onChangeLayout: (layout: DataViewLayoutType) => void;
@@ -465,6 +508,7 @@ function DataViewTopBar<TData extends ReactTableRowData>({
   table,
   showSortButton,
   showVisibilityButton,
+  showRoesPerPageButton,
   layout,
   onChangeLayout,
   filter,
@@ -482,6 +526,7 @@ function DataViewTopBar<TData extends ReactTableRowData>({
         <div className="flex gap-3 items-center">
           {showVisibilityButton && <DataViewColumnVisibilityDropdown table={table} />}
           {showSortButton && <DataViewColumnSortDropdown table={table} />}
+          {showRoesPerPageButton && <DataViewRowsPerPageDropdown table={table} />}
           {layout && <DataViewLayoutDropdown layout={layout} onChangeLayout={onChangeLayout} />}
           <Button size="sm" shape="circle" className="text-xl ml-2">+</Button>
         </div>
@@ -493,90 +538,88 @@ function DataViewTopBar<TData extends ReactTableRowData>({
 
 type DataViewPaginationProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
+  showSelectedRows?: boolean;
+  showPageCount?: boolean;
+  showPageButtons?: boolean;
+  className?: string;
 };
 
-function DataViewPagination<TData extends ReactTableRowData>(
-  { table }: DataViewPaginationProps<TData>,
-) {
+function DataViewPagination<TData extends ReactTableRowData>({
+  table,
+  showSelectedRows,
+  showPageCount,
+  showPageButtons,
+  className,
+}: DataViewPaginationProps<TData>) {
   return (
-    <div className="flex items-center justify-between px-2">
-      <div className="flex-1 text-sm">
-        {table.getFilteredSelectedRowModel().rows.length}
-        {' '}
-        of
-        {' '}
-        {table.getFilteredRowModel().rows.length}
-        {' '}
-        row(s) selected.
-      </div>
+    <div className={cn('flex items-center justify-between px-2', className)}>
+      {showSelectedRows
+        ? (
+          <div className="flex-1 text-sm">
+            {table.getFilteredSelectedRowModel().rows.length}
+            {' '}
+            of
+            {' '}
+            {table.getFilteredRowModel().rows.length}
+            {' '}
+            row(s) selected
+          </div>
+        )
+        : <div />}
+
       <div className="flex items-center space-x-6 lg:space-x-8">
-        <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Rows per page</p>
-          <Select
-            value={`${table.getState().pagination.pageSize}`}
-            onValueChange={(value) => {
-              table.setPageSize(Number(value));
-            }}
-          >
-            <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
-            </SelectTrigger>
-            <SelectContent side="top">
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Page
-          {' '}
-          {table.getState().pagination.pageIndex + 1}
-          {' '}
-          of
-          {' '}
-          {table.getPageCount()}
-        </div>
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="ghost"
-            className="hidden h-8 w-8 p-0 lg:flex"
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <span className="sr-only">Go to first page</span>
-            <RiArrowLeftDoubleFill className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            className="h-8 w-8 p-0"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <span className="sr-only">Go to previous page</span>
-            <FaChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            className="h-8 w-8 p-0"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            <span className="sr-only">Go to next page</span>
-            <FaChevronRight className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            className="hidden h-8 w-8 p-0 lg:flex"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
-          >
-            <span className="sr-only">Go to last page</span>
-            <RiArrowRightDoubleFill className="h-4 w-4" />
-          </Button>
-        </div>
+        {showPageCount && (
+          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+            Page
+            {' '}
+            {table.getState().pagination.pageIndex + 1}
+            {' '}
+            of
+            {' '}
+            {table.getPageCount()}
+          </div>
+        )}
+
+        {showPageButtons && (
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              className="hidden h-8 w-8 p-0 lg:flex"
+              onClick={() => table.setPageIndex(0)}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <span className="sr-only">Go to first page</span>
+              <RiArrowLeftDoubleFill className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              className="h-8 w-8 p-0"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <span className="sr-only">Go to previous page</span>
+              <FaChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              className="h-8 w-8 p-0"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              <span className="sr-only">Go to next page</span>
+              <FaChevronRight className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              className="hidden h-8 w-8 p-0 lg:flex"
+              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              disabled={!table.getCanNextPage()}
+            >
+              <span className="sr-only">Go to last page</span>
+              <RiArrowRightDoubleFill className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

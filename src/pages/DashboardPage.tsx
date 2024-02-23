@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Title } from '@/features/title/components/Title';
 import {
   DataViewTopBar,
-  // DataViewPagination,
+  DataViewPagination,
   DataViewLayoutType,
   DataViewLayout,
 } from '@/ui/DataView';
@@ -40,6 +40,7 @@ export default function DashboardPage() {
           table={table}
           showSortButton
           showVisibilityButton
+          showRoesPerPageButton
           layout={layout}
           onChangeLayout={setLayout}
           filter={globalFilter}
@@ -50,7 +51,7 @@ export default function DashboardPage() {
           table={table}
           mapper={mapper}
         />
-        {/* <DataViewPagination table={table} /> */}
+        <DataViewPagination table={table} showSelectedRows />
       </div>
     </>
   );
