@@ -1,5 +1,6 @@
 import { useReactTable, getCoreRowModel, getPaginationRowModel, getSortedRowModel, SortingState, ColumnFiltersState, getFilteredRowModel } from '@tanstack/react-table';
 import { useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 import { Title } from '@/features/title/components/Title';
 import {
   DataViewTopBar,
@@ -9,13 +10,12 @@ import {
 } from '@/ui/DataView';
 import { columns, mapper } from '@/features/tempTable/columns';
 import { data } from '@/features/tempTable/data';
-import { Separator } from '@/ui/Separator';
 
 export default function DashboardPage() {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useLocalStorage<SortingState>('dashboard-dataview-sorting', []);
+  const [columnFilters, setColumnFilters] = useLocalStorage<ColumnFiltersState>('dashboard-dataview-column-filters', []);
   const [rowSelection, setRowSelection] = useState({});
-  const [layout, setLayout] = useState<DataViewLayoutType>('table');
+  const [layout, setLayout] = useLocalStorage<DataViewLayoutType>('dashboard-dataview-layout', 'table');
   const [globalFilter, setGlobalFilter] = useState('');
 
   const table = useReactTable({
