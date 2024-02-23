@@ -6,6 +6,8 @@ type SpinnerProps = {
 
 export function Spinner({ className }: SpinnerProps) {
   return (
-    <span className={cn('spinner relative', className)} />
+    <div className="center w-full h-full flex-grow">
+      <span className={cn('spinner relative', className)} />
+    </div>
   );
 }

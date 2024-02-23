@@ -8,7 +8,7 @@ type BasicContainerProps = {
 
 function BasicContainer({ className, children }: BasicContainerProps) {
   return (
-    <div className={cn('w-full max-w-screen-2xl mx-auto px-5', className)}>
+    <div className={cn('w-full max-w-screen-2xl min-h-dvh mx-auto px-5 flex flex-col', className)}>
       {children}
     </div>
   );

@@ -1,12 +1,14 @@
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
+import { Spinner } from '@/ui/Spinner';
+import { BasicContainer } from '@/ui/Container';
 
 export function PublicLayout() {
   return (
-    <div className="container-fluid mx-auto px-5">
-      <Suspense fallback={<p>PrivateLayout Loading...</p>}>
+    <BasicContainer>
+      <Suspense fallback={<Spinner className="w-28 h-28" />}>
         <Outlet />
       </Suspense>
-    </div>
+    </BasicContainer>
   );
 }
