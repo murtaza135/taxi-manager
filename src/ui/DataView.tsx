@@ -709,11 +709,11 @@ function DataViewHeader<TData extends ReactTableRowData, TValue = unknown>(
   );
 }
 
-type DataViewOpenPageProps = {
+type DataViewOpenPageButtonProps = {
   to: string;
 };
 
-function DataViewOpenPage({ to }: DataViewOpenPageProps) {
+function DataViewOpenPageButton({ to }: DataViewOpenPageButtonProps) {
   return (
     <TooltipProvider>
       <Tooltip>
@@ -744,10 +744,11 @@ export {
   DataViewSearchFilter,
   DataViewColumnVisibilityDropdown,
   DataViewColumnSortDropdown,
+  DataViewRowsPerPageDropdown,
   DataViewLayoutDropdown,
   DataViewTopBar,
   DataViewPagination,
   DataViewCheckbox,
   DataViewHeader,
-  DataViewOpenPage,
+  DataViewOpenPageButton,
 };

@@ -7,7 +7,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/ui/DropdownMenu';
-import { DataViewCheckbox, DataViewHeader, DataViewCardMainDataMapper, DataViewOpenPage } from '@/ui/DataView';
+import { DataViewCheckbox, DataViewHeader, DataViewCardMainDataMapper, DataViewOpenPageButton } from '@/ui/DataView';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 
 export type Driver = {
@@ -32,7 +32,7 @@ export const tableColumns: ColumnDef<Driver>[] = [
   {
     id: 'openPage',
     header: '',
-    cell: () => <DataViewOpenPage to="/temp/1" />,
+    cell: () => <DataViewOpenPageButton to="/temp/1" />,
     enableSorting: false,
     enableHiding: false,
     enableGlobalFilter: false,
