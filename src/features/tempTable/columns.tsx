@@ -47,7 +47,7 @@ export const tableColumns: ColumnDef<Driver>[] = [
     accessorKey: 'avatar',
     header: 'Avatar',
     cell: ({ row }) => (
-      <Avatar className="hover:opacity-65 transition-opacity">
+      <Avatar>
         <AvatarImage src={row.getValue('avatar')} alt="user" />
         <AvatarFallback className="dark:text-achromatic-light">Cn</AvatarFallback>
       </Avatar>
