@@ -28,7 +28,7 @@ import {
   DataViewCheckbox,
   DataViewHeader,
   DataViewCardMainDataMapper,
-  DataViewOpenPage,
+  DataViewOpenPageButton,
 } from '@/ui/DataView';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { Button } from '@/ui/Button';
@@ -52,7 +52,7 @@ export const tableColumns: ColumnDef<CustomData>[] = [
   {
     id: 'openPage',
     header: '',
-    cell: () => <DataViewOpenPage to="/temp/1" />,
+    cell: ({ row }) => <DataViewOpenPageButton to={`/custom/${row.original.id}`} />,
     enableSorting: false,
     enableHiding: false,
     enableGlobalFilter: false,
@@ -69,9 +69,9 @@ export const tableColumns: ColumnDef<CustomData>[] = [
     accessorKey: 'avatar',
     header: 'Avatar',
     cell: ({ row }) => (
-      <Avatar className="hover:opacity-65 transition-opacity">
+      <Avatar>
         <AvatarImage src={row.getValue('avatar')} alt="user" />
-        <AvatarFallback className="dark:text-achromatic-light">Cn</AvatarFallback>
+        <AvatarFallback>Cn</AvatarFallback>
       </Avatar>
     ),
   },
@@ -144,7 +144,7 @@ export const gridColumns: ColumnDef<CustomData>[] = [
 
       return (
         <Link to={`/driver/${driver.id}`} className="w-full">
-          <Button className="w-full">Go to Details</Button>
+          <Button className="w-full">Open</Button>
         </Link>
       );
     },
@@ -169,7 +169,7 @@ export const columns = {
 ```ts
 // @/data.ts
 import { CustomData } from '@/columns';
-import person from '@/person.jpg';
+import person from '@/person.jpg'; // mock image
 
 export const data: CustomData[] = [
   {
@@ -233,7 +233,7 @@ export default function Page() {
         table={table}
         showSortButton
         showVisibilityButton
-        showRoesPerPageButton
+        showRowsPerPageButton
         layout={layout}
         onChangeLayout={setLayout}
         filter={globalFilter}

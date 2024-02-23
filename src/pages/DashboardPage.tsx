@@ -40,7 +40,7 @@ export default function DashboardPage() {
           table={table}
           showSortButton
           showVisibilityButton
-          showRoesPerPageButton
+          showRowsPerPageButton
           layout={layout}
           onChangeLayout={setLayout}
           filter={globalFilter}

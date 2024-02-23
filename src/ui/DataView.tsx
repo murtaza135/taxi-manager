@@ -498,7 +498,7 @@ type DataViewTopBarProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
   showSortButton?: boolean;
   showVisibilityButton?: boolean;
-  showRoesPerPageButton?: boolean;
+  showRowsPerPageButton?: boolean;
 } & OptionalGroup<{
   layout: DataViewLayoutType;
   onChangeLayout: (layout: DataViewLayoutType) => void;
@@ -511,7 +511,7 @@ function DataViewTopBar<TData extends ReactTableRowData>({
   table,
   showSortButton,
   showVisibilityButton,
-  showRoesPerPageButton,
+  showRowsPerPageButton,
   layout,
   onChangeLayout,
   filter,
@@ -529,7 +529,7 @@ function DataViewTopBar<TData extends ReactTableRowData>({
         <div className="flex gap-3 items-center">
           {showVisibilityButton && <DataViewColumnVisibilityDropdown table={table} />}
           {showSortButton && <DataViewColumnSortDropdown table={table} />}
-          {showRoesPerPageButton && <DataViewRowsPerPageDropdown table={table} />}
+          {showRowsPerPageButton && <DataViewRowsPerPageDropdown table={table} />}
           {layout && <DataViewLayoutDropdown layout={layout} onChangeLayout={onChangeLayout} />}
           <Button size="sm" shape="circle" className="text-xl ml-2">+</Button>
         </div>
