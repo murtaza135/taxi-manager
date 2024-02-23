@@ -36,7 +36,7 @@ export function SideNav() {
   }
 
   return (
-    <Backdrop isOpen={isModalOpen} onClose={closeNav}>
+    <Backdrop isOpen={isModalOpen} onClose={closeNav} className="z-40">
       <LazyMotion>
         <AnimatePresence>
           <m.nav
@@ -48,7 +48,7 @@ export function SideNav() {
             onDragEnd={handleDragEnd}
             dragPropagation
             aria-label="primary"
-            className={cn('flex flex-col w-64 sm:w-[7.125rem] md:w-64 h-dvh ml-0 sm:ml-5 pt-5 sm:pt-0 pb-5 fixed top-0 left-0 sm:left-[max(0px,calc(50%-48rem))] right-auto z-[60] overflow-x-clip overflow-y-auto scrollbar-none bg-achromatic-light dark:bg-achromatic-dark sm:bg-transparent sm:dark:bg-transparent shadow-xl sm:shadow-none shadow-scene-dark/60', !isNavOpen && '[&>*]:hidden')}
+            className={cn('flex flex-col w-64 sm:w-[7.125rem] md:w-64 h-dvh ml-0 sm:ml-5 pt-5 sm:pt-0 pb-5 fixed top-0 left-0 sm:left-[max(0px,calc(50%-48rem))] right-auto z-40 overflow-x-clip overflow-y-auto scrollbar-none bg-achromatic-light dark:bg-achromatic-dark sm:bg-transparent sm:dark:bg-transparent shadow-xl sm:shadow-none shadow-scene-dark/60', !isNavOpen && '[&>*]:hidden')}
           >
             <NavLogo />
 
