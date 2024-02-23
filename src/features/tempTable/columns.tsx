@@ -1,5 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { IoEllipsisVertical } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +10,7 @@ import {
 } from '@/ui/DropdownMenu';
 import { DataViewCheckbox, DataViewHeader, DataViewCardMainDataMapper, DataViewOpenPageButton } from '@/ui/DataView';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
+import { Button } from '@/ui/Button';
 
 export type Driver = {
   id: string;
@@ -99,12 +101,6 @@ export const gridColumns: ColumnDef<Driver>[] = [
   {
     accessorKey: 'avatar',
     header: 'Avatar',
-    // cell: ({ row }) => (
-    //   <Avatar className="hover:opacity-65 transition-opacity">
-    //     <AvatarImage src={row.getValue('avatar')} alt="user" />
-    //     <AvatarFallback className="dark:text-achromatic-light">Cn</AvatarFallback>
-    //   </Avatar>
-    // ),
   },
   {
     accessorKey: 'image',
@@ -128,7 +124,7 @@ export const gridColumns: ColumnDef<Driver>[] = [
     header: 'Taxi',
   },
   {
-    id: 'options',
+    id: 'optionsTop',
     cell: ({ row }) => {
       const driver = row.original;
 
@@ -152,13 +148,26 @@ export const gridColumns: ColumnDef<Driver>[] = [
       );
     },
   },
+  {
+    id: 'optionsBottom',
+    cell: ({ row }) => {
+      const driver = row.original;
+
+      return (
+        <Link to={`/driver/${driver.id}`} className="w-full">
+          <Button className="w-full">Go to Details</Button>
+        </Link>
+      );
+    },
+  },
 ];
 
 export const mapper: DataViewCardMainDataMapper = {
   title: 'name',
   subtitle: 'taxi',
   avatar: 'avatar',
-  options: 'options',
+  optionsTop: 'optionsTop',
+  optionsBottom: 'optionsBottom',
   image: 'image',
 } as const;
 

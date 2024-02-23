@@ -39,13 +39,6 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from '@/ui/DropdownMenu';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/ui/Select';
 import { Checkbox } from '@/ui/Checkbox';
 import { Avatar, AvatarImage } from '@/ui/Avatar';
 import { cn } from '@/utils/cn';
@@ -121,7 +114,8 @@ export type DataViewCardMainDataMapper = {
   avatar?: string;
   title?: string;
   subtitle?: string;
-  options?: string;
+  optionsTop?: string;
+  optionsBottom?: string;
 };
 
 type DataViewCardProps<TData extends ReactTableRowData> = {
@@ -163,17 +157,17 @@ function DataViewCard<TData extends ReactTableRowData>(
             </Avatar>
           )}
 
-        {!!mainDataCellsMap.options && (
+        {!!mainDataCellsMap.optionsTop && (
           <span className="absolute top-full right-0 -translate-x-4 translate-y-4">
             {flexRender(
-              mainDataCellsMap.options.column.columnDef.cell,
-              mainDataCellsMap.options.getContext(),
+              mainDataCellsMap.optionsTop.column.columnDef.cell,
+              mainDataCellsMap.optionsTop.getContext(),
             )}
           </span>
         )}
       </div>
 
-      <div className="px-6 pb-8 pt-4 space-y-10">
+      <div className={cn('px-6 pt-4 space-y-10', mainDataCellsMap.optionsBottom ? 'pb-4' : 'pb-8')}>
         <div className="text-center">
           {!!mainDataCellsMap.title && <p className="text-2xl font-semibold">{mainDataCellsMap.title.renderValue<string>()}</p>}
           {!!mainDataCellsMap.subtitle && <p className="text-achromatic-dark/50 dark:text-achromatic-light/50">{mainDataCellsMap.subtitle.renderValue<string>()}</p>}
@@ -214,6 +208,15 @@ function DataViewCard<TData extends ReactTableRowData>(
               </div>
             ))}
         </div>
+
+        {!!mainDataCellsMap.optionsBottom && (
+          <div className="w-full">
+            {flexRender(
+              mainDataCellsMap.optionsBottom.column.columnDef.cell,
+              mainDataCellsMap.optionsBottom.getContext(),
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
