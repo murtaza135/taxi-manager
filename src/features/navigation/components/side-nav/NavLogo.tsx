@@ -3,8 +3,7 @@ import { FaCarAlt } from 'react-icons/fa';
 import { useNavActions } from '@/features/navigation/state/navStore';
 import { config } from '@/app/config';
 
-const [appNameFirst, ...appNameRest] = config.APP_NAME.split(' ');
-const appNameSecond = appNameRest[0] as string | undefined;
+const [appNameFirst, appNameSecond] = config.APP_NAME.split(' ');
 
 export function NavLogo() {
   const { closeNav } = useNavActions();

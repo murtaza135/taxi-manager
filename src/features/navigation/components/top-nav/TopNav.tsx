@@ -5,7 +5,7 @@ import { MdLogout } from 'react-icons/md';
 import { BsSunFill, BsMoonStarsFill } from 'react-icons/bs';
 import { useNavActions } from '@/features/navigation/state/navStore';
 import { useTitle } from '@/features/title/state/titleStore';
-import { UserAvatar } from '@/features/navigation/components/top-nav/UserAvatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/ui/DropdownMenu';
 import { useIsDarkmode, useDarkmodeActions } from '@/features/darkmode/state/darkmodeStore';
 
@@ -35,7 +35,10 @@ export function TopNav() {
 
         <DropdownMenu>
           <DropdownMenuTrigger className="outline-none">
-            <UserAvatar />
+            <Avatar className="hover:opacity-65 transition-opacity">
+              <AvatarImage src="" alt="user" />
+              <AvatarFallback className="dark:text-achromatic-light">Cn</AvatarFallback>
+            </Avatar>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className="min-w-[125px]">
