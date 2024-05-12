@@ -9,14 +9,14 @@ const RentPage = lazy(() => import('@/pages/RentPage'));
 const SettingsPage = lazy(() => import('@/pages/SettingsPage'));
 const TaxisPage = lazy(() => import('@/pages/TaxisPage'));
 
-const publicPages: RouteObject[] = [
+export const publicPages: RouteObject[] = [
   {
     path: '/login',
     element: <LoginPage />,
   },
 ];
 
-const privatePages: RouteObject[] = [
+export const privatePages: RouteObject[] = [
   {
     path: '/',
     element: <DashboardPage />,
@@ -42,8 +42,3 @@ const privatePages: RouteObject[] = [
     element: <SettingsPage />,
   },
 ];
-
-export const pages = {
-  public: publicPages,
-  private: privatePages,
-};
