@@ -11,7 +11,7 @@ export function PrivateLayout() {
       <SideNav />
       <TopNav />
       <ContentContainer>
-        <Suspense fallback={<Spinner className="w-28 h-28" />}>
+        <Suspense fallback={<Spinner />}>
           <Outlet />
         </Suspense>
       </ContentContainer>
