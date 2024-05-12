@@ -76,14 +76,13 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex cursor-pointer select-none items-center justify-between gap-3 rounded-md px-2 py-1.5 text-sm outline-none transition-opacity focus:opacity-65 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'relative cursor-pointer select-none rounded-md px-2 py-1.5 text-sm outline-none transition-opacity focus:opacity-65 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       inset && 'pl-8',
       className,
     )}
     {...props}
   >
-    <div>{children}</div>
-    {!!icon && <span className="text-lg">{icon}</span>}
+    {children}
   </DropdownMenuPrimitive.Item>
 ));
 DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName;

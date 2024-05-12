@@ -46,20 +46,24 @@ export function TopNav() {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={handleToggleDarkMode}
-              className="gap-4"
-              icon={(
-                isDarkmode
-                  ? <span className="text-base"><BsMoonStarsFill /></span>
-                  : <BsSunFill />
-              )}
+              className="flex justify-between gap-4"
             >
-              {isDarkmode ? 'Dark Theme' : 'Light Theme'}
+              <span>{isDarkmode ? 'Dark Theme' : 'Light Theme'}</span>
+              {isDarkmode
+                ? <span className="text-base"><BsMoonStarsFill /></span>
+                : <span className="text-lg -translate-y-[1px]"><BsSunFill /></span>}
             </DropdownMenuItem>
             <Link to="/settings">
-              <DropdownMenuItem icon={<IoMdSettings />}>Settings</DropdownMenuItem>
+              <DropdownMenuItem className="flex justify-between gap-4">
+                <span>Settings</span>
+                <span className="text-lg"><IoMdSettings /></span>
+              </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
-            <DropdownMenuItem icon={<MdLogout />}>Logout</DropdownMenuItem>
+            <DropdownMenuItem className="flex justify-between gap-4">
+              <span>Logout</span>
+              <span className="text-lg"><MdLogout /></span>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

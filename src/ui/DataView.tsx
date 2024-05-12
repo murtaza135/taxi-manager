@@ -386,12 +386,14 @@ function DataViewColumnSortDropdown<TData extends ReactTableRowData>(
             className="capitalize py-1.5 px-2 flex gap-2"
             onClick={() => column.toggleSorting()}
           >
-            {column.getIsSorted() === 'desc' && <ArrowDownIcon className="h-4 w-4" />}
-            {column.getIsSorted() === 'asc' && <ArrowUpIcon className="h-4 w-4" />}
-            {(column.getIsSorted() !== 'desc' && column.getIsSorted() !== 'asc') && (
-              <span className="h-4 w-4" />
-            )}
-            {capitalCase(column.id)}
+            <>
+              {column.getIsSorted() === 'desc' && <ArrowDownIcon className="h-4 w-4 translate-y-[1px]" />}
+              {column.getIsSorted() === 'asc' && <ArrowUpIcon className="h-4 w-4 translate-y-[1px]" />}
+              {(column.getIsSorted() !== 'desc' && column.getIsSorted() !== 'asc') && (
+                <span className="h-4 w-4" />
+              )}
+            </>
+            <span>{capitalCase(column.id)}</span>
           </DropdownMenuItem>
         ))}
         <DropdownMenuSeparator />
@@ -399,7 +401,7 @@ function DataViewColumnSortDropdown<TData extends ReactTableRowData>(
           className="capitalize py-1.5 px-2 flex gap-2"
           onClick={() => table.resetSorting()}
         >
-          {!isAnyColumnSorted ? <Check className="h-4 w-4" /> : <div className="h-4 w-4" />}
+          {!isAnyColumnSorted ? <Check className="h-4 w-4 translate-y-[1px]" /> : <div className="h-4 w-4" />}
           Clear
         </DropdownMenuItem>
       </DropdownMenuContent>
