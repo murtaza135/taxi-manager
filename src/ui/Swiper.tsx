@@ -10,7 +10,7 @@ import { Separator } from '@/ui/Separator';
 type Direction = 'forwards' | 'backwards';
 type Orientation = 'horizontal' | 'vertical';
 
-type SlideContextValue = {
+type SwiperContextValue = {
   index: number;
   direction: Direction;
   setIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -21,21 +21,21 @@ type SlideContextValue = {
   orientation: Orientation;
 };
 
-const SlideContext = React.createContext<SlideContextValue>(
-  null as unknown as SlideContextValue,
+const SwiperContext = React.createContext<SwiperContextValue>(
+  null as unknown as SwiperContextValue,
 );
 
-function useSlideContext() {
-  const context = React.useContext(SlideContext);
+function useSwiperContext() {
+  const context = React.useContext(SwiperContext);
 
   if (context === undefined) {
-    throw new Error('useSlideContext must be used within <Slide />');
+    throw new Error('useSwiperContext must be used within <Swiper />');
   }
 
   return context;
 }
 
-type SlideProps = {
+type SwiperProps = {
   min: number;
   max: number;
   initial?: number;
@@ -44,9 +44,9 @@ type SlideProps = {
   orientation?: Orientation;
 };
 
-const Slide = React.forwardRef<
+const Swiper = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & SlideProps
+  React.HTMLAttributes<HTMLDivElement> & SwiperProps
 >((
   { className, children, min, max, initial, index, onIndexChange, orientation, ...props },
   ref,
@@ -84,7 +84,7 @@ const Slide = React.forwardRef<
   );
 
   return (
-    <SlideContext.Provider value={value}>
+    <SwiperContext.Provider value={value}>
       <div
         ref={ref}
         className={cn('', className)}
@@ -92,32 +92,32 @@ const Slide = React.forwardRef<
       >
         {children}
       </div>
-    </SlideContext.Provider>
+    </SwiperContext.Provider>
   );
 });
-Slide.displayName = 'Slide';
+Swiper.displayName = 'Swiper';
 
-const SLIDE_VALUE = 1000;
+const SWIPE_VALUE = 1000;
 
-const slideVectors = {
+const swipeVectors = {
   horizontal: {
     forwards: {
-      enter: { x: SLIDE_VALUE, y: 0 },
-      exit: { x: -SLIDE_VALUE, y: 0 },
+      enter: { x: SWIPE_VALUE, y: 0 },
+      exit: { x: -SWIPE_VALUE, y: 0 },
     },
     backwards: {
-      enter: { x: -SLIDE_VALUE, y: 0 },
-      exit: { x: SLIDE_VALUE, y: 0 },
+      enter: { x: -SWIPE_VALUE, y: 0 },
+      exit: { x: SWIPE_VALUE, y: 0 },
     },
   },
   vertical: {
     forwards: {
-      enter: { x: 0, y: SLIDE_VALUE },
-      exit: { x: 0, y: -SLIDE_VALUE },
+      enter: { x: 0, y: SWIPE_VALUE },
+      exit: { x: 0, y: -SWIPE_VALUE },
     },
     backwards: {
-      enter: { x: 0, y: -SLIDE_VALUE },
-      exit: { x: 0, y: SLIDE_VALUE },
+      enter: { x: 0, y: -SWIPE_VALUE },
+      exit: { x: 0, y: SWIPE_VALUE },
     },
   },
 };
@@ -129,8 +129,8 @@ type CustomVariantOptions = {
 
 const variants: Variants = {
   enter: ({ orientation, direction }: CustomVariantOptions) => ({
-    x: slideVectors[orientation][direction].enter.x,
-    y: slideVectors[orientation][direction].enter.y,
+    x: swipeVectors[orientation][direction].enter.x,
+    y: swipeVectors[orientation][direction].enter.y,
     opacity: 0,
   }),
   center: {
@@ -141,8 +141,8 @@ const variants: Variants = {
   },
   exit: ({ orientation, direction }: CustomVariantOptions) => ({
     zIndex: 0,
-    x: slideVectors[orientation][direction].exit.x,
-    y: slideVectors[orientation][direction].exit.y,
+    x: swipeVectors[orientation][direction].exit.x,
+    y: swipeVectors[orientation][direction].exit.y,
     opacity: 0,
     transition: {
       opacity: { duration: 0 },
@@ -153,11 +153,11 @@ const variants: Variants = {
 const SWIPE_CONFIDENCE_THRESHOLD = 10000;
 const swipePower = (offset: number, velocity: number) => Math.abs(offset) * velocity;
 
-const SlideItems = React.forwardRef<
+const SwiperItems = React.forwardRef<
   HTMLDivElement,
   HTMLMotionProps<'div'>
 >(({ className, children, ...props }, ref) => {
-  const { index, direction, nextIndex, prevIndex, orientation } = useSlideContext();
+  const { index, direction, nextIndex, prevIndex, orientation } = useSwiperContext();
 
   function handleDragEnd(_event: Event, { offset, velocity }: PanInfo) {
     const swipe = swipePower(offset.x, velocity.x);
@@ -198,15 +198,15 @@ const SlideItems = React.forwardRef<
     </LazyMotion>
   );
 });
-SlideItems.displayName = 'SlideItems';
+SwiperItems.displayName = 'SwiperItems';
 
-type SlideItemProps = {
+type SwiperItemProps = {
   children?: React.ReactNode;
   index: number;
 };
 
-function SlideItem({ index, children }: SlideItemProps) {
-  const { index: currentIndex } = useSlideContext();
+function SwiperItem({ index, children }: SwiperItemProps) {
+  const { index: currentIndex } = useSwiperContext();
 
   return (
     index === currentIndex
@@ -215,13 +215,13 @@ function SlideItem({ index, children }: SlideItemProps) {
   );
 }
 
-type SlideTabsProps = {
+type SwiperTabsProps = {
   children?: React.ReactNode;
   className?: string;
 };
 
-function SlideTabs({ className, children }: SlideTabsProps) {
-  const { index, setIndex } = useSlideContext();
+function SwiperTabs({ className, children }: SwiperTabsProps) {
+  const { index, setIndex } = useSwiperContext();
 
   function handleValueChange(value: string) {
     const newIndex = Number(value);
@@ -243,13 +243,13 @@ function SlideTabs({ className, children }: SlideTabsProps) {
   );
 }
 
-type SlideTabProps = {
+type SwiperTabProps = {
   index: number;
   children?: React.ReactNode;
   className?: string;
 };
 
-function SlideTab({ index, className, children }: SlideTabProps) {
+function SwiperTab({ index, className, children }: SwiperTabProps) {
   return (
     <TabsTrigger
       className={cn(className)}
@@ -260,13 +260,13 @@ function SlideTab({ index, className, children }: SlideTabProps) {
   );
 }
 
-type SlideSelectProps = {
+type SwiperSelectProps = {
   children?: React.ReactNode;
   className?: string;
 };
 
-function SlideSelect({ className, children }: SlideSelectProps) {
-  const { index, setIndex } = useSlideContext();
+function SwiperSelect({ className, children }: SwiperSelectProps) {
+  const { index, setIndex } = useSwiperContext();
 
   function handleValueChange(value: string) {
     const newIndex = Number(value);
@@ -295,13 +295,13 @@ function SlideSelect({ className, children }: SlideSelectProps) {
   );
 }
 
-type SlideSelectItemProps = {
+type SwiperSelectItemProps = {
   index: number;
   children?: React.ReactNode;
   className?: string;
 };
 
-function SlideSelectItem({ index, className, children }: SlideSelectItemProps) {
+function SwiperSelectItem({ index, className, children }: SwiperSelectItemProps) {
   return (
     <SelectItem
       className={cn(className)}
@@ -313,11 +313,11 @@ function SlideSelectItem({ index, className, children }: SlideSelectItemProps) {
 }
 
 export {
-  Slide,
-  SlideItems,
-  SlideItem,
-  SlideTabs,
-  SlideTab,
-  SlideSelect,
-  SlideSelectItem,
+  Swiper,
+  SwiperItems,
+  SwiperItem,
+  SwiperTabs,
+  SwiperTab,
+  SwiperSelect,
+  SwiperSelectItem,
 };

@@ -5,7 +5,7 @@
   - [Form](#form)
   - [MultiStepForm](#multistepform)
   - [Accordion](#accordion)
-  - [Slide](#slide)
+  - [Swiper](#swiper)
   - [Tooltip](#tooltip)
 
 <br>
@@ -437,50 +437,50 @@ export default function Page() {
 
 <br>
 
-## Slide
+## Swiper
 ```tsx
 // @/Page.tsx
 import { useState } from "react";
 import {
-  Slide,
-  SlideItems,
-  SlideItem,
-  SlideTabs,
-  SlideTab,
-  SlideSelect,
-  SlideSelectItem,
-} from '@/ui/Slide';
+  Swiper,
+  SwiperItems,
+  SwiperItem,
+  SwiperTabs,
+  SwiperTab,
+  SwiperSelect,
+  SwiperSelectItem,
+} from '@/ui/Swiper';
 
 export default function Page() {
   const [showSelect, setShowSelect] = useState(false);
 
   return (
-    <Slide min={1} max={4} className="flex flex-col">
+    <Swiper min={1} max={4} className="flex flex-col">
       {showSelect
         ? (
-          <SlideSelect>
-            <SlideSelectItem index={1}>Option 1</SlideSelectItem>
-            <SlideSelectItem index={2}>Option 2</SlideSelectItem>
-            <SlideSelectItem index={3}>Option 3</SlideSelectItem>
-            <SlideSelectItem index={4}>Option 4</SlideSelectItem>
-          </SlideSelect>
+          <SwiperSelect>
+            <SwiperSelectItem index={1}>Option 1</SwiperSelectItem>
+            <SwiperSelectItem index={2}>Option 2</SwiperSelectItem>
+            <SwiperSelectItem index={3}>Option 3</SwiperSelectItem>
+            <SwiperSelectItem index={4}>Option 4</SwiperSelectItem>
+          </SwiperSelect>
         )
         : (
-          <SlideTabs>
-            <SlideTab index={1}>Option 1</SlideTab>
-            <SlideTab index={2}>Option 2</SlideTab>
-            <SlideTab index={3}>Option 3</SlideTab>
-            <SlideTab index={4}>Option 4</SlideTab>
-          </SlideTabs>
+          <SwiperTabs>
+            <SwiperTab index={1}>Option 1</SwiperTab>
+            <SwiperTab index={2}>Option 2</SwiperTab>
+            <SwiperTab index={3}>Option 3</SwiperTab>
+            <SwiperTab index={4}>Option 4</SwiperTab>
+          </SwiperTabs>
         )}
 
-      <SlideItems className="flex-grow">
-        <SlideItem index={1}>1</SlideItem>
-        <SlideItem index={2}>2</SlideItem>
-        <SlideItem index={3}>3</SlideItem>
-        <SlideItem index={4}>4</SlideItem>
-      </SlideItems>
-    </Slide>
+      <SwiperItems className="flex-grow">
+        <SwiperItem index={1}>1</SwiperItem>
+        <SwiperItem index={2}>2</SwiperItem>
+        <SwiperItem index={3}>3</SwiperItem>
+        <SwiperItem index={4}>4</SwiperItem>
+      </SwiperItems>
+    </Swiper>
   );
 }
 ```
