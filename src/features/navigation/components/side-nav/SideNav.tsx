@@ -40,7 +40,7 @@ export function SideNav() {
       <LazyMotion>
         <AnimatePresence>
           <m.nav
-            animate={{ x: isNavOpen ? 0 : '-15rem', opacity: isNavOpen ? 1 : 0 }}
+            animate={{ x: isNavOpen ? 0 : '-110%', opacity: isNavOpen ? 1 : 0 }}
             transition={{ duration: 0.2 }}
             drag={!breakpoint ? 'x' : false}
             dragConstraints={{ left: 0, right: 0 }}
