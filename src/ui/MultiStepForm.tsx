@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { m, AnimatePresence, HTMLMotionProps, Variants } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 import { LazyMotion } from '@/utils/framer-motion/LazyMotion';
 import { cn } from '@/utils/cn';
 import { clamp } from '@/utils/clamp';
+import { useSearchParam } from '@/hooks/useSearchParam';
 
 type Direction = 'forwards' | 'backwards';
 type BaseFormState = Record<string, unknown>;
@@ -48,6 +50,21 @@ type MultiStepFormProps = {
 function MultiStepForm(
   { min, max, initial, step, onStepChange, className, children }: MultiStepFormProps,
 ) {
+  // const [val, setVal] = useSearchParams();
+  // console.log(val);
+
+  // React.useEffect(() => {
+  //   console.log('effect');
+  //   setVal((prev) => {
+  //     // console.log(prev);
+  //     const temp1 = 1;
+  //     return { ...Object.fromEntries(prev), a: '2' };
+  //   });
+  // }, [setVal]);
+
+  // const [val, setVal] = useSearchParam<number>('temp', 0);
+  // console.log(val);
+
   const [internalStep, setInternalStep] = React.useState(step ?? initial ?? min);
   const [direction, setDirection] = React.useState<Direction>('forwards');
   const [formStateObject, setFormStateObject] = React.useState<Partial<BaseFormState>>({});
