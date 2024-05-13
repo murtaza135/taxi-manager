@@ -39,20 +39,30 @@ function useMultiStepFormContext<TFormState extends BaseFormState = BaseFormStat
 type MultiStepFormProps = {
   min: number;
   max: number;
-  initial?: number;
+  initialStep?: number;
   step?: number;
   onStepChange?: (index: number) => void;
+  initialFormState?: Partial<BaseFormState>;
   className?: string;
   children?: React.ReactNode;
 };
 
-function MultiStepForm(
-  { min, max, initial, step, onStepChange, className, children }: MultiStepFormProps,
-) {
-  const [internalStepBase, setInternalStep] = useSearchParam('step', step ?? initial ?? min);
-  const internalStep = internalStepBase ?? step ?? initial ?? min;
+function MultiStepForm({
+  min,
+  max,
+  initialStep,
+  step,
+  onStepChange,
+  initialFormState,
+  className,
+  children,
+}: MultiStepFormProps) {
+  const [internalStepBase, setInternalStep] = useSearchParam('step', step ?? initialStep ?? min);
+  const internalStep = internalStepBase ?? step ?? initialStep ?? min;
   const [direction, setDirection] = React.useState<Direction>('forwards');
-  const [formStateObject, setFormStateObject] = React.useState<Partial<BaseFormState>>({});
+  const [formStateObject, setFormStateObject] = React.useState<Partial<BaseFormState>>(
+    initialFormState ?? {},
+  );
 
   React.useEffect(() => {
     if (internalStep < min) {
