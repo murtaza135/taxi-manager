@@ -50,24 +50,18 @@ type MultiStepFormProps = {
 function MultiStepForm(
   { min, max, initial, step, onStepChange, className, children }: MultiStepFormProps,
 ) {
-  // const [val, setVal] = useSearchParams();
-  // console.log(val);
-
-  // React.useEffect(() => {
-  //   console.log('effect');
-  //   setVal((prev) => {
-  //     // console.log(prev);
-  //     const temp1 = 1;
-  //     return { ...Object.fromEntries(prev), a: '2' };
-  //   });
-  // }, [setVal]);
-
-  // const [val, setVal] = useSearchParam<number>('temp', 0);
-  // console.log(val);
-
-  const [internalStep, setInternalStep] = React.useState(step ?? initial ?? min);
+  const [internalStepBase, setInternalStep] = useSearchParam('step', step ?? initial ?? min);
+  const internalStep = internalStepBase ?? step ?? initial ?? min;
   const [direction, setDirection] = React.useState<Direction>('forwards');
   const [formStateObject, setFormStateObject] = React.useState<Partial<BaseFormState>>({});
+
+  React.useEffect(() => {
+    if (internalStep < min) {
+      setInternalStep(min);
+    } else if (internalStep > max) {
+      setInternalStep(max);
+    }
+  }, [min, max, internalStep, setInternalStep]);
 
   const setStep = React.useCallback((value: React.SetStateAction<number>) => {
     const newStepValue = clamp(typeof value === 'function' ? value(internalStep) : value, min, max);

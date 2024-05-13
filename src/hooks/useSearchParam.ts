@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 type Primitive = string | number | boolean;
@@ -16,6 +16,7 @@ function convertString(str: string | null) {
 }
 
 export function useSearchParam<T extends Primitive>(param: string, initValue?: T) {
+  const [isLoaded, setIsLoaded] = useState(false);
   const [params, setParams] = useSearchParams();
 
   // TODO unsafe typecasting - search param can be changed by user into a different type
@@ -34,10 +35,11 @@ export function useSearchParam<T extends Primitive>(param: string, initValue?: T
   }, [param, setParams]);
 
   useEffect(() => {
-    if (initValue !== undefined) {
+    if (!isLoaded && initValue !== undefined) {
       setParamValue(initValue);
     }
-  }, [initValue, setParamValue]);
+    setIsLoaded(true);
+  }, [initValue, setParamValue, isLoaded, setIsLoaded]);
 
   return [paramValue, setParamValue] as const;
 }
