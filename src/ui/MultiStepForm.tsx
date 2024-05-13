@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { m, AnimatePresence, HTMLMotionProps, Variants } from 'framer-motion';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { LazyMotion } from '@/utils/framer-motion/LazyMotion';
 import { cn } from '@/utils/cn';
 import { clamp } from '@/utils/clamp';
@@ -188,19 +188,15 @@ function MultiStepFormItem({ step, children }: MultiStepFormItemProps) {
 const MultiStepFormStepper = React.forwardRef<
   HTMLOListElement,
   React.HTMLAttributes<HTMLOListElement>
->(({ className, children, ...props }, ref) => {
-  const temp = 1;
-
-  return (
-    <ol
-      ref={ref}
-      className={cn('flex flex-wrap mb-12', className)}
-      {...props}
-    >
-      {children}
-    </ol>
-  );
-});
+>(({ className, children, ...props }, ref) => (
+  <ol
+    ref={ref}
+    className={cn('flex flex-wrap mb-12', className)}
+    {...props}
+  >
+    {children}
+  </ol>
+));
 MultiStepFormStepper.displayName = 'MultiStepFormStepper';
 
 type MultiStepFormStepperItemProps = {
@@ -215,6 +211,11 @@ const MultiStepFormStepperItem = React.forwardRef<
   const { step: currentStep, max } = useMultiStepFormContext();
   const hideLine = step === max;
   const complete = step < currentStep;
+
+  const [params] = useSearchParams();
+  const newParams = new URLSearchParams(params);
+  newParams.set('step', `${step}`);
+  const newParamsString = `?${newParams.toString()}`;
 
   return (
     <li
@@ -233,7 +234,8 @@ const MultiStepFormStepperItem = React.forwardRef<
           />
         )}
 
-        <span
+        <Link
+          to={newParamsString}
           className={cn(
             'w-9 h-9 rounded-full text-xl font-semibold flex justify-center items-center text-center z-[1]',
             complete && 'bg-primary-dark dark:bg-primary-light text-achromatic-light dark:text-achromatic-dark',
@@ -241,7 +243,7 @@ const MultiStepFormStepperItem = React.forwardRef<
           )}
         >
           {step}
-        </span>
+        </Link>
       </div>
 
       {!!title && <p className="text-primary-dark dark:text-primary-light">{title}</p>}
