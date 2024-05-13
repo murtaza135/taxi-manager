@@ -53,7 +53,7 @@ export function SideNav() {
             <NavLogo />
 
             <div className="bg-achromatic-light dark:bg-achromatic-dark rounded-lg pt-12 sm:py-8 flex flex-col gap-4 flex-1">
-              <NavLink to="/" icon={<TiHome />} active={pathname === '/'} text="Dashboard" />
+              <NavLink to="/" icon={<TiHome />} active={pathname === '/'} text="Home" />
               <NavLink to="/rent" icon={<RiMoneyPoundCircleFill />} active={pathname === '/rent'} text="Rent" />
               <NavLink to="/hires" icon={<LiaFileContractSolid />} active={pathname === '/hires'} text="Hires" />
               <NavLink to="/taxis" icon={<FaCarSide />} active={pathname === '/taxis'} text="Taxis" />

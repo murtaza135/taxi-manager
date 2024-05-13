@@ -11,7 +11,7 @@ import {
 import { columns, mapper } from '@/features/tempTable/columns';
 import { data } from '@/features/tempTable/data';
 
-export default function DashboardPage() {
+export default function HomePage() {
   const [sorting, setSorting] = useLocalStorage<SortingState>('dashboard-dataview-sorting', []);
   const [columnFilters, setColumnFilters] = useLocalStorage<ColumnFiltersState>('dashboard-dataview-column-filters', []);
   const [rowSelection, setRowSelection] = useState({});
@@ -34,7 +34,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      <Title title="Dashboard" />
+      <Title title="Home" />
       <div className="flex flex-col gap-3">
         <DataViewTopBar
           table={table}

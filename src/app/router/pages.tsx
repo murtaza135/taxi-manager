@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
+const HomePage = lazy(() => import('@/pages/HomePage'));
 const DriversPage = lazy(() => import('@/pages/DriversPage'));
 const HiresPage = lazy(() => import('@/pages/HiresPage'));
 const LoginPage = lazy(() => import('@/pages/LoginPage'));
@@ -19,7 +19,7 @@ export const publicPages: RouteObject[] = [
 export const privatePages: RouteObject[] = [
   {
     path: '/',
-    element: <DashboardPage />,
+    element: <HomePage />,
   },
   {
     path: '/rent',

@@ -22,12 +22,12 @@ export function TopNav() {
 
   return (
     <div className="flex justify-between items-center gap-4 w-full max-w-screen-2xl h-20 mx-auto pl-5 sm:pl-[9.625rem] md:pl-[18.5rem] pr-5 fixed top-0 left-0 right-0 z-20 bg-scene-light dark:bg-scene-dark text-primary-dark dark:text-primary-light">
-      <div>
+      <div className="flex gap-4 items-center">
         <IoMenu
           className="sm:hidden text-3xl cursor-pointer hover:opacity-75 transition-opacity"
           onClick={() => toggleNav()}
         />
-        <h2 className="hidden sm:block text-2xl">{title}</h2>
+        <h2 className="text-2xl">{title}</h2>
       </div>
 
       <div className="flex items-center gap-5">
