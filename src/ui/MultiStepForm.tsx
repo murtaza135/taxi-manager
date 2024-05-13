@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { m, AnimatePresence, HTMLMotionProps, Variants } from 'framer-motion';
-import { Link, useSearchParams } from 'react-router-dom';
 import { LazyMotion } from '@/utils/framer-motion/LazyMotion';
 import { cn } from '@/utils/cn';
 import { clamp } from '@/utils/clamp';
@@ -212,11 +211,6 @@ const MultiStepFormStepperItem = React.forwardRef<
   const hideLine = step === max;
   const complete = step < currentStep;
 
-  const [params] = useSearchParams();
-  const newParams = new URLSearchParams(params);
-  newParams.set('step', `${step}`);
-  const newParamsString = `?${newParams.toString()}`;
-
   return (
     <li
       ref={ref}
@@ -234,8 +228,7 @@ const MultiStepFormStepperItem = React.forwardRef<
           />
         )}
 
-        <Link
-          to={newParamsString}
+        <span
           className={cn(
             'w-9 h-9 rounded-full text-xl font-semibold flex justify-center items-center text-center z-[1]',
             complete && 'bg-primary-dark dark:bg-primary-light text-achromatic-light dark:text-achromatic-dark',
@@ -243,7 +236,7 @@ const MultiStepFormStepperItem = React.forwardRef<
           )}
         >
           {step}
-        </Link>
+        </span>
       </div>
 
       {!!title && <p className="text-primary-dark dark:text-primary-light">{title}</p>}
