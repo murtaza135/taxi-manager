@@ -1,7 +1,7 @@
 import { StateCreator } from 'zustand';
 import { applyDarkClass } from '@/features/darkmode/utils/applyDarkClass';
 import { isPrefersColorSchemeDark } from '@/features/darkmode/utils/isPrefersColorSchemeDark';
-import { createStore, createHooks } from '@/utils/createStore';
+import { createStore, createHooks } from '@/utils/zustand/createStore';
 
 type DarkmodeStore = {
   isDarkmode: boolean;

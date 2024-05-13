@@ -10,7 +10,7 @@ import { NavLogo } from '@/features/navigation/components/side-nav/NavLogo';
 import { NavLink } from '@/features/navigation/components/side-nav/NavLink';
 import { useIsNavOpen, useNavActions } from '@/features/navigation/state/navStore';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
-import { LazyMotion } from '@/app/framer-motion/LazyMotion';
+import { LazyMotion } from '@/utils/framer-motion/LazyMotion';
 import { cn } from '@/utils/cn';
 import { Backdrop } from '@/ui/Backdrop';
 

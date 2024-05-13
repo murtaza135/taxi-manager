@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { createStore, createHooks } from '@/utils/createStore';
+import { createStore, createHooks } from '@/utils/zustand/createStore';
 
 type TitleStore = {
   title: string;
