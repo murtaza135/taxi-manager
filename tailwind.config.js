@@ -31,7 +31,8 @@ export default {
         roboto: ['Roboto', 'sans-serif']
       },
       screens: {
-        xs: "425px"
+        xs: "425px",
+        pwa: { raw: '(max-width: 640px) and (display-mode: standalone)' },
       },
       keyframes: {
         "accordion-down": {

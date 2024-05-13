@@ -5,11 +5,13 @@ import { LiaFileContractSolid } from 'react-icons/lia';
 import { RiMoneyPoundCircleFill } from 'react-icons/ri';
 import { useLocation } from 'react-router-dom';
 import { MobileNavLink } from '@/features/navigation/components/mobile-nav/MobileNavLink';
+import { useMobilePWA } from '@/hooks/useMobilePWA';
 
 export function MobileNav() {
   const { pathname } = useLocation();
+  const isMobilePWA = useMobilePWA();
 
-  return (
+  return isMobilePWA && (
     <nav
       aria-label="mobile-only"
       className="fixed bottom-0 left-0 right-0 translate-y-[1px] w-100 z-30 border-t-[1px] bg-primary-dark border-achromatic-light dark:bg-scene-dark dark:border-primary-light"
