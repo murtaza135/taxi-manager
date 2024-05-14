@@ -1,5 +1,5 @@
 import { useMediaQuery } from 'usehooks-ts';
-import { config } from '@/app/config';
+import { config } from '@/config/config';
 
 type Breakpoint = keyof typeof config.BREAKPOINTS;
 

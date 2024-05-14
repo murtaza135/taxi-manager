@@ -1,8 +1,8 @@
 import { create, StoreApi, UseBoundStore, StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
-import { config } from '@/app/config';
-import { capitalize } from '@/utils/capitalize';
+import { config } from '@/config/config';
+import { capitalize } from '@/utils/string/capitalize';
 
 type PersistOptions<S> =
   | { persist: true; persistKey: string; partialize?: (state: S) => unknown; }
@@ -44,8 +44,8 @@ export function createStore<S extends object>(
 
 type Hooks<S> = (
   S extends { getState: () => infer T; }
-    ? { hooks: { [K in keyof T as `use${Capitalize<string & K>}`]: () => T[K] }; }
-    : never
+  ? { hooks: { [K in keyof T as `use${Capitalize<string & K>}`]: () => T[K] }; }
+  : never
 )['hooks'];
 
 // generate hooks for all top-level keys in the store, nested keys are NOT included,

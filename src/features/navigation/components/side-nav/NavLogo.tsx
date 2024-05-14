@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { FaCarAlt } from 'react-icons/fa';
 import { useNavActions } from '@/features/navigation/state/navStore';
-import { config } from '@/app/config';
+import { config } from '@/config/config';
 
 const [appNameFirst, appNameSecond] = config.APP_NAME.split(' ');
 

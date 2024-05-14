@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { config } from '@/app/config';
+import { config } from '@/config/config';
 
 export const supabase = createClient(
   config.VITE_SUPABASE_URL,

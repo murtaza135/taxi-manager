@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { router } from '@/app/router/router';
-import { queryClient } from '@/app/api/queryClient';
+import { router } from '@/config/router/router';
+import { queryClient } from '@/config/api/queryClient';
 import { applyTheme } from '@/features/darkmode/utils/applyTheme';
 import '@/styles/main.css';
 

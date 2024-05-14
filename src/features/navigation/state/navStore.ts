@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { createStore, createHooks } from '@/utils/zustand/createStore';
+import { createStore, createHooks } from '@/lib/zustand/createStore';
 
 type NavStore = {
   isNavOpen: boolean;

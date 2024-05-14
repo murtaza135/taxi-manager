@@ -1,4 +1,4 @@
-import { capitalize } from '@/utils/capitalize';
+import { capitalize } from '@/utils/string/capitalize';
 
 export function extractInitials(name: string) {
   const words = name.split(' ');

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useTitleStore, useTitleActions } from '@/features/title/state/titleStore';
-import { config } from '@/app/config';
+import { config } from '@/config/config';
 
 type Props = {
   title: string;

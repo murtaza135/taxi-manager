@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { m, AnimatePresence, HTMLMotionProps, Variants } from 'framer-motion';
-import { LazyMotion } from '@/utils/framer-motion/LazyMotion';
+import { LazyMotion } from '@/lib/framer-motion/LazyMotion';
 import { cn } from '@/utils/cn';
-import { clamp } from '@/utils/clamp';
+import { clamp } from '@/utils/math/clamp';
 import { useSearchParam } from '@/hooks/useSearchParam';
 
 type Direction = 'forwards' | 'backwards';
