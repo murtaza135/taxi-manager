@@ -141,13 +141,13 @@ INSERT INTO "public"."company" ("id", "auth_id", "logo_path", "name", "company_n
 --
 
 INSERT INTO "public"."driver" ("id", "auth_id", "picture_path", "first_names", "last_name", "phone_number", "email", "date_of_birth", "national_insurance_number", "is_retired", "created_at", "active_hire_agreement_id", "active_insurance_id", "active_drivers_licence_id", "active_drivers_taxi_badge_id") VALUES
-	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'driver-pictures/driver1.jpg', 'driver1', 'driver1', '01234567890', 'driver1@test.com', '1990-01-31', 'AB123456C', false, '2024-05-15 16:01:47.140623+00', NULL, NULL, 3, 1),
-	(3, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver3', 'driver3', NULL, NULL, NULL, NULL, false, '2024-05-15 16:03:47.37375+00', NULL, NULL, 8, 5),
-	(4, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver4', 'driver4', '01234567890', NULL, '2024-04-29', NULL, false, '2024-05-15 16:05:22.943012+00', NULL, NULL, 9, 7),
-	(5, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'driver-pictures/driver5.jpg', 'driver5', 'driver5', NULL, 'driver5@test.com', NULL, 'fafsad435vgfds', false, '2024-05-15 16:06:00.626866+00', NULL, NULL, 10, 8),
-	(6, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver6', 'driver6', '', 'driver6@test.com', '2024-05-04', 'adsadasdfasd', false, '2024-05-15 16:12:32.810957+00', NULL, NULL, 11, 9),
-	(2, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver2', 'driver2', 'driver-pictures/driver2.jpg', 'driver2@test.com', '2024-05-13', 'dadadasd', false, '2024-05-15 16:03:12.108898+00', NULL, 5, 5, 3),
-	(7, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'driver-pictures/driver7.jpg', 'driver7', 'driver7', NULL, 'driver7', NULL, 'adafasdfasd', false, '2024-05-15 16:12:57.664063+00', NULL, 8, 12, 10);
+	(7, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'driver-pictures/driver7.jpg', 'driver7', 'driver7', NULL, 'driver7', NULL, 'adafasdfasd', false, '2024-05-15 16:12:57.664063+00', NULL, 8, 12, 10),
+	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'driver-pictures/driver1.jpg', 'driver1', 'driver1', '01234567890', 'driver1@test.com', '1990-01-31', 'AB123456C', false, '2024-05-15 16:01:47.140623+00', 1, NULL, 3, 1),
+	(4, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver4', 'driver4', '01234567890', NULL, '2024-04-29', NULL, false, '2024-05-15 16:05:22.943012+00', 4, NULL, 9, 7),
+	(5, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'driver-pictures/driver5.jpg', 'driver5', 'driver5', NULL, 'driver5@test.com', NULL, 'fafsad435vgfds', false, '2024-05-15 16:06:00.626866+00', 5, NULL, 10, 8),
+	(6, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver6', 'driver6', '', 'driver6@test.com', '2024-05-04', 'adsadasdfasd', false, '2024-05-15 16:12:32.810957+00', 7, NULL, 11, 9),
+	(3, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver3', 'driver3', NULL, NULL, NULL, NULL, false, '2024-05-15 16:03:47.37375+00', 3, NULL, 8, 5),
+	(2, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver2', 'driver2', 'driver-pictures/driver2.jpg', 'driver2@test.com', '2024-05-13', 'dadadasd', false, '2024-05-15 16:03:12.108898+00', 2, 5, 5, 3);
 
 
 --
@@ -192,13 +192,13 @@ INSERT INTO "public"."vehicle" ("id", "auth_id", "make", "model", "cc", "fuel_ty
 --
 
 INSERT INTO "public"."taxi" ("id", "auth_id", "picture_path", "logbook_document_path", "number_plate", "colour", "chassis_number", "registration_date", "expected_expiry_date", "road_tax_expiry_date", "is_retired", "created_at", "vehicle_id", "active_hire_agreement_id", "active_insurance_id", "active_taxi_licence_id") VALUES
-	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'taxi-pictures/taxi-1.png', 'logbooks/logbook-1.png', 'taxi1', 'adasd', 'sadasdasd', '2024-03-06', '2025-03-13', NULL, false, '2024-05-15 17:10:21.095292+00', 1, NULL, 1, 1),
-	(2, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, NULL, 'taxi2', 'asdasd', 'dasdas', NULL, NULL, NULL, false, '2024-05-15 17:10:38.413034+00', 1, NULL, 2, 3),
-	(3, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'taxi-pictures/taxi-3.png', 'logbooks/logbook-3.png', 'taxi3', 'dasdasd', 'dasdasd', '2024-02-14', '2024-09-05', '2024-11-14', false, '2024-05-15 17:11:33.226274+00', 1, NULL, 4, 4),
-	(4, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'taxi-pictures/taxi-4.png', 'logbooks/logbook-4.png', 'taxi4', 'adsasd', 'asdasd', NULL, '2024-05-08', '2024-05-09', false, '2024-05-15 17:13:14.795828+00', 1, NULL, 5, 5),
-	(5, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, NULL, 'taxi5', 'dasdas', 'dasdas', '2024-05-01', '2024-11-15', '2024-05-31', false, '2024-05-15 17:13:37.13274+00', 1, NULL, 6, 7),
-	(6, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'logbooks/logbook-6.png', 'taxi6', 'dasd', 'dasdas', NULL, '2024-05-30', '2024-06-01', false, '2024-05-15 17:14:01.451865+00', 1, NULL, 7, 8),
-	(7, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'taxi-pictures/taxi-7.png', NULL, 'taxi7', 'dasd', 'adsasd', NULL, NULL, '2024-06-06', false, '2024-05-15 17:14:27.956617+00', 1, NULL, 8, 9);
+	(7, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'taxi-pictures/taxi-7.png', NULL, 'taxi7', 'dasd', 'adsasd', NULL, NULL, '2024-06-06', false, '2024-05-15 17:14:27.956617+00', 1, NULL, 8, 9),
+	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'taxi-pictures/taxi-1.png', 'logbooks/logbook-1.png', 'taxi1', 'adasd', 'sadasdasd', '2024-03-06', '2025-03-13', NULL, false, '2024-05-15 17:10:21.095292+00', 1, 1, 1, 1),
+	(2, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, NULL, 'taxi2', 'asdasd', 'dasdas', NULL, NULL, NULL, false, '2024-05-15 17:10:38.413034+00', 1, 2, 2, 3),
+	(3, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'taxi-pictures/taxi-3.png', 'logbooks/logbook-3.png', 'taxi3', 'dasdasd', 'dasdasd', '2024-02-14', '2024-09-05', '2024-11-14', false, '2024-05-15 17:11:33.226274+00', 1, 3, 4, 4),
+	(4, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'taxi-pictures/taxi-4.png', 'logbooks/logbook-4.png', 'taxi4', 'adsasd', 'asdasd', NULL, '2024-05-08', '2024-05-09', false, '2024-05-15 17:13:14.795828+00', 1, 4, 5, 5),
+	(5, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, NULL, 'taxi5', 'dasdas', 'dasdas', '2024-05-01', '2024-11-15', '2024-05-31', false, '2024-05-15 17:13:37.13274+00', 1, 5, 6, 7),
+	(6, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'logbooks/logbook-6.png', 'taxi6', 'dasd', 'dasdas', NULL, '2024-05-30', '2024-06-01', false, '2024-05-15 17:14:01.451865+00', 1, 7, 7, 8);
 
 
 --
@@ -241,6 +241,8 @@ INSERT INTO "public"."council_application_receipt" ("id", "auth_id", "taxi_id", 
 -- Data for Name: driver_application; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO "public"."driver_application" ("id", "auth_id", "company_id", "picture_path", "first_names", "last_name", "phone_number", "email", "date_of_birth", "national_insurance_number", "drivers_licence_path", "drivers_licence_number", "drivers_licence_start_date", "drivers_licence_end_date", "taxi_badge_path", "taxi_badge_number", "taxi_badge_start_date", "taxi_badge_end_date", "created_at") VALUES
+	('faf37e18-664d-4ed6-9ced-008912e3799c', 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 1, 'driver-pictures/driver-a.jpg', 'driverA', 'driverA', '5442543656', 'driverA@test.com', '2023-02-08', 'fsafsdfsdfsd', 'drivers-licences/drivers-licence-a.png', 'sfgsdfsdfsdfsd', '2024-05-01', '2024-10-15', 'taxi-badges/taxi-badge-a.png', 'safdsfsdf', NULL, '2024-10-15', '2024-05-15 19:42:49.282068+00');
 
 
 --
@@ -282,6 +284,11 @@ INSERT INTO "public"."drivers_taxi_badge" ("id", "auth_id", "driver_id", "docume
 -- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO "public"."employee" ("id", "auth_id", "company_id", "picture_path", "first_names", "last_name", "phone_number", "email", "date_of_birth", "national_insurance_number", "signature_path", "created_at") VALUES
+	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 1, 'employees/employee1.jpg', 'employee1', 'employee1', '534534534', 'employee1@test.com', '2024-05-01', 'fafdsafsdfsdf', NULL, '2024-05-15 19:45:54.625931+00'),
+	(2, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 1, NULL, 'employee2', 'employee2', '', 'employee2@test.com', '2024-05-04', 'fsdfsdfsdf', NULL, '2024-05-15 19:46:26.805332+00'),
+	(3, '2a8b0fb4-094c-47b0-b701-2282a6cd8993', 2, 'employees/employee3.jpg', 'employee3', 'employee3', NULL, 'employee3@test.com', '2024-05-06', 'fsfsdfsdfsdf', NULL, '2024-05-15 19:46:52.272149+00'),
+	(4, '34a3aed7-3db5-4cff-a0e5-761d85a8074b', 3, NULL, 'employee4', 'employee4', '54354356346', 'employee4@test.com', '2024-05-08', 'gsfgsdfsdfds', NULL, '2024-05-15 19:47:26.9791+00');
 
 
 --
@@ -553,7 +560,7 @@ SELECT pg_catalog.setval('"public"."drivers_taxi_badge_id_seq"', 10, true);
 -- Name: employee_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."employee_id_seq"', 1, false);
+SELECT pg_catalog.setval('"public"."employee_id_seq"', 4, true);
 
 
 --
