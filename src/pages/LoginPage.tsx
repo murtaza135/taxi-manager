@@ -1,10 +1,11 @@
 import { Title } from '@/features/title/components/Title';
+import { LoginForm } from '@/features/auth/components/LoginForm';
 
 export function LoginPage() {
   return (
-    <div>
+    <>
       <Title title="Login" />
-      <div>LoginPage</div>
-    </div>
+      <LoginForm />
+    </>
   );
 }
