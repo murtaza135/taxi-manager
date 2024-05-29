@@ -55,9 +55,9 @@ export function SideNav() {
             <div className="bg-achromatic-light dark:bg-achromatic-dark rounded-lg pt-12 sm:py-8 flex flex-col gap-4 flex-1">
               <NavLink to="/" icon={<TiHome />} active={pathname === '/'} text="Home" />
               <NavLink to="/rent" icon={<RiMoneyPoundCircleFill />} active={pathname === '/rent'} text="Rent" />
-              <NavLink to="/hires" icon={<LiaFileContractSolid />} active={pathname === '/hires'} text="Hires" />
-              <NavLink to="/taxis" icon={<FaCarSide />} active={pathname === '/taxis'} text="Taxis" />
-              <NavLink to="/drivers" icon={<BsPersonCircle />} active={pathname === '/drivers'} text="Drivers" />
+              <NavLink to="/hires" icon={<LiaFileContractSolid />} active={pathname.startsWith('/hire')} text="Hires" />
+              <NavLink to="/taxis" icon={<FaCarSide />} active={pathname.startsWith('/taxi')} text="Taxis" />
+              <NavLink to="/drivers" icon={<BsPersonCircle />} active={pathname.startsWith('/driver')} text="Drivers" />
               <NavLink to="/settings" icon={<IoMdSettings />} active={pathname === '/settings'} text="Settings" className="mt-auto" />
             </div>
           </m.nav>

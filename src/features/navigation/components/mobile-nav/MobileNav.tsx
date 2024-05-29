@@ -18,10 +18,10 @@ export function MobileNav() {
     >
       <div className="flex justify-around items-center">
         <MobileNavLink to="/rent" icon={<RiMoneyPoundCircleFill />} active={pathname === '/rent'} text="Rent" />
-        <MobileNavLink to="/hires" icon={<LiaFileContractSolid />} active={pathname === '/hires'} text="Hires" />
+        <MobileNavLink to="/hires" icon={<LiaFileContractSolid />} active={pathname.startsWith('/hire')} text="Hires" />
         <MobileNavLink to="/" icon={<TiHome />} active={pathname === '/'} text="Home" />
-        <MobileNavLink to="/taxis" icon={<FaCarSide />} active={pathname === '/taxis'} text="Taxis" />
-        <MobileNavLink to="/drivers" icon={<BsPersonCircle />} active={pathname === '/drivers'} text="Drivers" />
+        <MobileNavLink to="/taxis" icon={<FaCarSide />} active={pathname.startsWith('/taxi')} text="Taxis" />
+        <MobileNavLink to="/drivers" icon={<BsPersonCircle />} active={pathname.startsWith('/driver')} text="Drivers" />
       </div>
     </nav>
   );
