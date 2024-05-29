@@ -8,14 +8,14 @@ import {
   Cell as ReactTableCell,
   flexRender,
 } from '@tanstack/react-table';
-import { AiOutlineNumber } from 'react-icons/ai';
 import { IoSearchSharp } from 'react-icons/io5';
-import { BiSortDown } from 'react-icons/bi';
+import { BiSortAlt2 } from 'react-icons/bi';
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
-import { RxMixerHorizontal } from 'react-icons/rx';
+import { CgHashtag } from 'react-icons/cg';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { RiArrowLeftDoubleFill, RiArrowRightDoubleFill } from 'react-icons/ri';
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon, EyeNoneIcon } from '@radix-ui/react-icons';
+import { TbColumnRemove } from 'react-icons/tb';
 import { Check } from 'lucide-react';
 import { FiLayout } from 'react-icons/fi';
 import { MdOutlineClose } from 'react-icons/md';
@@ -322,9 +322,9 @@ function DataViewColumnVisibilityDropdown<TData extends ReactTableRowData>(
         <Button
           variant="ghost"
           size="auto"
-          className="text-xl translate-y-[1px]"
+          className="text-2xl"
         >
-          <RxMixerHorizontal />
+          <TbColumnRemove />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[150px]">
@@ -372,9 +372,9 @@ function DataViewColumnSortDropdown<TData extends ReactTableRowData>(
         <Button
           variant="ghost"
           size="auto"
-          className="text-2xl translate-y-[1px]"
+          className="text-2xl"
         >
-          <BiSortDown />
+          <BiSortAlt2 />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[150px]">
@@ -422,9 +422,9 @@ function DataViewRowsPerPageDropdown<TData extends ReactTableRowData>(
         <Button
           variant="ghost"
           size="auto"
-          className="text-xl"
+          className="text-2xl"
         >
-          <AiOutlineNumber />
+          <CgHashtag />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[150px]">
