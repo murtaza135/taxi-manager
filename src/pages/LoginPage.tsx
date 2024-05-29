@@ -5,7 +5,9 @@ export function LoginPage() {
   return (
     <>
       <Title title="Login" />
-      <LoginForm />
+      <div className="min-h-dvh center">
+        <LoginForm />
+      </div>
     </>
   );
 }
