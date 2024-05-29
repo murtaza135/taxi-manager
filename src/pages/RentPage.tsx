@@ -1,6 +1,6 @@
 import { Title } from '@/features/title/components/Title';
 
-export default function RentPage() {
+export function RentPage() {
   return (
     <div>
       <Title title="Rent" />

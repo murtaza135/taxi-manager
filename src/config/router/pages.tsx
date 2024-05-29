@@ -1,13 +1,13 @@
-import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
+import { lazyImport } from '@/utils/lazy-import';
 
-const HomePage = lazy(() => import('@/pages/HomePage'));
-const DriversPage = lazy(() => import('@/pages/DriversPage'));
-const HiresPage = lazy(() => import('@/pages/HiresPage'));
-const LoginPage = lazy(() => import('@/pages/LoginPage'));
-const RentPage = lazy(() => import('@/pages/RentPage'));
-const SettingsPage = lazy(() => import('@/pages/SettingsPage'));
-const TaxisPage = lazy(() => import('@/pages/TaxisPage'));
+const { HomePage } = lazyImport(() => import('@/pages/HomePage'), 'HomePage');
+const { DriversPage } = lazyImport(() => import('@/pages/DriversPage'), 'DriversPage');
+const { HiresPage } = lazyImport(() => import('@/pages/HiresPage'), 'HiresPage');
+const { LoginPage } = lazyImport(() => import('@/pages/LoginPage'), 'LoginPage');
+const { RentPage } = lazyImport(() => import('@/pages/RentPage'), 'RentPage');
+const { SettingsPage } = lazyImport(() => import('@/pages/SettingsPage'), 'SettingsPage');
+const { TaxisPage } = lazyImport(() => import('@/pages/TaxisPage'), 'TaxisPage');
 
 export const publicPages: RouteObject[] = [
   {

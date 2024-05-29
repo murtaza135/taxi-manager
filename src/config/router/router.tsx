@@ -3,7 +3,7 @@ import { publicPages, privatePages } from './pages';
 import { RootLayout } from '@/layouts/RootLayout';
 import { PublicLayout } from '@/layouts/PublicLayout';
 import { PrivateLayout } from '@/layouts/PrivateLayout';
-import ErrorPage from '@/pages/ErrorPage';
+import { ErrorPage } from '@/pages/ErrorPage';
 
 export const router = createBrowserRouter([
   {

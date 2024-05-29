@@ -1,6 +1,6 @@
 import { Title } from '@/features/title/components/Title';
 
-export default function DriversPage() {
+export function DriversPage() {
   return (
     <div>
       <Title title="Drivers" />
