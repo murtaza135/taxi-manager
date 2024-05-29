@@ -42,7 +42,7 @@ import {
 import { Checkbox } from '@/ui/Checkbox';
 import { Avatar, AvatarImage } from '@/ui/Avatar';
 import { cn } from '@/utils/cn';
-import { OptionalGroup } from '@/types/utils';
+import { OptionalObjectGroup } from '@/types/utils';
 import { Separator } from '@/ui/Separator';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/ui/Tooltip';
 
@@ -501,10 +501,10 @@ type DataViewTopBarProps<TData extends ReactTableRowData> = {
   showSortButton?: boolean;
   showVisibilityButton?: boolean;
   showRowsPerPageButton?: boolean;
-} & OptionalGroup<{
+} & OptionalObjectGroup<{
   layout: DataViewLayoutType;
   onChangeLayout: (layout: DataViewLayoutType) => void;
-}> & OptionalGroup<{
+}> & OptionalObjectGroup<{
   filter: string;
   onChangeFilter: (filter: string) => void;
 }>;
