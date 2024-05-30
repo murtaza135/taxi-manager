@@ -27,8 +27,8 @@ export function useLogin(options?: Options) {
   >({
     mutationFn: login,
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: ['auth'] });
       if (options?.successRedirect) navigate(options.successRedirect);
+      await queryClient.refetchQueries({ queryKey: ['auth'] });
     },
     onError: (error) => toast({
       title: 'Login Error',
