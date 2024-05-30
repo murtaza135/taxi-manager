@@ -1,33 +1,33 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { AuthTokenResponsePassword, AuthError } from '@supabase/supabase-js';
+import { AuthError, SignOut } from '@supabase/supabase-js';
 import { useToast } from '@/ui/toast';
 import { supabase } from '@/config/api/supabaseClient';
-import { LoginFormSchema } from '@/features/auth/schemas';
 
-export async function login(args: LoginFormSchema) {
-  const { data, error } = await supabase.auth.signInWithPassword(args);
+export async function logout(options?: SignOut) {
+  const scope = options?.scope ?? 'local';
+  const { error } = await supabase.auth.signOut({ scope });
   if (error) throw error;
-  return data;
 }
 
 type Options = {
   successRedirect?: string;
+  scope?: SignOut['scope'];
 };
 
-export function useLogin(options?: Options) {
+export function useLogout(options?: Options) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const mutation = useMutation<AuthTokenResponsePassword['data'], AuthError, LoginFormSchema>({
-    mutationFn: login,
+  const mutation = useMutation<void, AuthError, void>({
+    mutationFn: () => logout({ scope: options?.scope }),
     onSuccess: async () => {
       await queryClient.refetchQueries({ queryKey: ['auth'] });
       if (options?.successRedirect) navigate(options.successRedirect);
     },
     onError: (error) => toast({
-      title: 'Login Error',
+      title: 'Logout Error',
       description: error.message,
       variant: 'destructive',
     }),

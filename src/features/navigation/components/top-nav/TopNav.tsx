@@ -8,16 +8,22 @@ import { useTitle } from '@/features/title/state/titleStore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/ui/DropdownMenu';
 import { useIsDarkmode, useDarkmodeActions } from '@/features/darkmode/state/darkmodeStore';
+import { useLogout } from '@/features/auth/hooks/useLogout';
 
 export function TopNav() {
   const title = useTitle();
   const isDarkmode = useIsDarkmode();
   const { toggleDarkmode } = useDarkmodeActions();
   const { toggleNav } = useNavActions();
+  const { mutate, isPending } = useLogout({ successRedirect: '/login' });
 
   const handleToggleDarkMode = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.preventDefault();
     toggleDarkmode();
+  };
+
+  const handleLogout = () => {
+    if (!isPending) mutate();
   };
 
   return (
@@ -60,9 +66,15 @@ export function TopNav() {
               </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="flex justify-between gap-4">
-              <span>Logout</span>
-              <span className="text-lg"><MdLogout /></span>
+            <DropdownMenuItem>
+              <button
+                onClick={handleLogout}
+                type="button"
+                className="w-full flex justify-between gap-4"
+              >
+                <span>Logout</span>
+                <span className="text-lg"><MdLogout /></span>
+              </button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
