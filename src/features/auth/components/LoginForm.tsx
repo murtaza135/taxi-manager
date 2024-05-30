@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom';
 import {
   FormProvider,
   Form,
@@ -9,15 +10,19 @@ import {
 import { Input } from '@/ui/Input';
 import { Button } from '@/ui/Button';
 import { loginFormSchema } from '@/features/auth/schemas';
+import { useLogin } from '@/features/auth/hooks/useLogin';
 
 export function LoginForm() {
   const form = useZodForm({
     schema: loginFormSchema,
     defaultValues: { email: '', password: '' },
   });
+  const [searchParams] = useSearchParams();
+  const redirect = searchParams.get('redirect') ?? '/';
+  const { mutate, isPending } = useLogin({ successRedirect: redirect });
 
   const onSubmit = form.handleSubmit((data) => {
-    console.log(data);
+    if (!isPending) mutate(data);
   });
 
   return (
@@ -40,7 +45,7 @@ export function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormGroup label="Password">
-              <Input placeholder="Password" {...field} />
+              <Input placeholder="Password" type="password" {...field} />
             </FormGroup>
           )}
         />
