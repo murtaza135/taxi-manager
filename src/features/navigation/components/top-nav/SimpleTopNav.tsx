@@ -1,12 +1,4 @@
-import { IoSearchOutline, IoMenu } from 'react-icons/io5';
-import { Link } from 'react-router-dom';
-import { IoMdSettings } from 'react-icons/io';
-import { MdLogout } from 'react-icons/md';
 import { BsSunFill, BsMoonStarsFill } from 'react-icons/bs';
-import { useNavActions } from '@/features/navigation/state/navStore';
-import { useTitle } from '@/features/title/state/titleStore';
-import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/ui/DropdownMenu';
 import { useIsDarkmode, useDarkmodeActions } from '@/features/darkmode/state/darkmodeStore';
 import { Button } from '@/ui/Button';
 
@@ -30,7 +22,6 @@ export function SimpleTopNav() {
           shape="circle"
           size="sm"
           onClick={handleToggleDarkMode}
-        // className="bg-primary-dark dark:bg-primary-light text-white dark:text-scene-dark"
         >
           {isDarkmode
             ? <span className="text-base"><BsMoonStarsFill /></span>

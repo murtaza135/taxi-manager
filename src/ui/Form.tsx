@@ -38,7 +38,7 @@ const Form = React.forwardRef<
   React.HTMLAttributes<HTMLFormElement>
 >(({ className, ...props }, ref) => (
   <form
-    className={cn('bg-achromatic-light dark:bg-achromatic-dark text-primary-dark dark:text-primary-light px-7 py-6 rounded-lg', className)}
+    className={cn('bg-primary-dark dark:bg-achromatic-dark text-scene-light dark:text-primary-light px-7 py-6 rounded-lg', className)}
     ref={ref}
     {...props}
   />
@@ -179,7 +179,7 @@ const FormDescription = React.forwardRef<
     <p
       ref={ref}
       id={formDescriptionId}
-      className={cn('text-xs font-medium text-primary-dark dark:text-primary-light', className)}
+      className={cn('text-xs font-medium text-scene-light dark:text-primary-light', className)}
       {...props}
     />
   );
@@ -201,7 +201,7 @@ const FormMessage = React.forwardRef<
     <p
       ref={ref}
       id={formMessageId}
-      className={cn('text-sm text-red-600 dark:text-red-400', className)}
+      className={cn('text-sm text-red-200 dark:text-red-400', className)}
       {...props}
     >
       {body}
