@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/ui/DropdownMenu';
 import { useIsDarkmode, useDarkmodeActions } from '@/features/darkmode/state/darkmodeStore';
 import { useLogout } from '@/features/auth/hooks/useLogout';
+import { useCompany } from '@/features/auth/hooks/useCompany';
 
 export function TopNav() {
   const title = useTitle();
@@ -16,6 +17,7 @@ export function TopNav() {
   const { toggleDarkmode } = useDarkmodeActions();
   const { toggleNav } = useNavActions();
   const { mutate, isPending } = useLogout({ successRedirect: '/login' });
+  const { data, isSuccess } = useCompany();
 
   const handleToggleDarkMode = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.preventDefault();
