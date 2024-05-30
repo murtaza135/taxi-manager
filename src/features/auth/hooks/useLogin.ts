@@ -20,7 +20,11 @@ export function useLogin(options?: Options) {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const mutation = useMutation<AuthTokenResponsePassword['data'], AuthError, LoginFormSchema>({
+  const mutation = useMutation<
+    AuthTokenResponsePassword['data'],
+    AuthError,
+    LoginFormSchema
+  >({
     mutationFn: login,
     onSuccess: async () => {
       await queryClient.refetchQueries({ queryKey: ['auth'] });

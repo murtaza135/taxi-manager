@@ -20,7 +20,7 @@ export function useLogout(options?: Options) {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const mutation = useMutation<void, AuthError, void>({
+  const mutation = useMutation<void, AuthError>({
     mutationFn: () => logout({ scope: options?.scope }),
     onSuccess: async () => {
       await queryClient.refetchQueries({ queryKey: ['auth'] });
