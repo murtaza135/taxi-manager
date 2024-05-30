@@ -1,52 +1,10 @@
-/* @source https://github.com/vineethtrv/css-loader */
-
-@layer components {
-  .spinner {
-    border-radius: 50%;
-    display: inline-block;
-    border-top: 4px solid theme(colors.achromatic.dark);
-    border-right: 4px solid transparent;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-  }
-
-  .dark .spinner {
-    border-radius: 50%;
-    display: inline-block;
-    border-top: 4px solid theme(colors.achromatic.light);
-    border-right: 4px solid transparent;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-  }
-
-  .spinner::after {
-    content: "";
-    box-sizing: border-box;
-    position: absolute;
-    left: 0;
-    top: 0;
-    border-radius: 50%;
-    border-bottom: 4px solid theme(colors.primary.dark);
-    border-left: 4px solid transparent;
-  }
-
-  .dark .spinner::after {
-    content: "";
-    box-sizing: border-box;
-    position: absolute;
-    left: 0;
-    top: 0;
-    border-radius: 50%;
-    border-bottom: 4px solid theme(colors.primary.light);
-    border-left: 4px solid transparent;
-  }
-
-  @keyframes rotation {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
+@layer base {
+  *:-webkit-autofill,
+  *:-webkit-autofill:hover,
+  *:-webkit-autofill:focus,
+  *:-webkit-autofill:active {
+    /* use animation hack to remove autofill styling */
+    transition: all 5000s ease-in-out 0s;
+    transition-property: background-color, color;
   }
 }
