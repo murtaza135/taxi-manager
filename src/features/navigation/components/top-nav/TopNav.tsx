@@ -51,7 +51,7 @@ export function TopNav() {
             <Avatar className="hover:opacity-65 transition-opacity">
               <AvatarImage src={src} alt="user" />
               <AvatarFallback className="dark:text-achromatic-light">
-                {isSuccess && extractInitials(data.name)}
+                {isSuccess && extractInitials(data.name ?? '')}
               </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>

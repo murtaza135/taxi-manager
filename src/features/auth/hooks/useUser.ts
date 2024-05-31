@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { AuthError, User } from '@supabase/supabase-js';
 import { supabase } from '@/config/api/supabaseClient';
+import { AppError } from '@/config/errors/AppError';
 
 export const queryKey = ['auth'] as const;
 
@@ -10,7 +11,7 @@ export const queryKey = ['auth'] as const;
 // NOTE it is less speed-efficient than the useSession hook
 export async function getUser() {
   const { data, error } = await supabase.auth.getUser();
-  if (error) throw error;
+  if (error) throw new AppError({ message: 'You need to login again', cause: error });
   return data.user;
 }
 

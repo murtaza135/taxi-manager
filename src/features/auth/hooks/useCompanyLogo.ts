@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { PostgrestError } from '@supabase/supabase-js';
 import { supabase } from '@/config/api/supabaseClient';
 import { getSession } from '@/features/auth/hooks/useSession';
-import { Tables } from '@/types/database';
+import { AppError } from '@/config/errors/AppError';
 
 export const queryKey = ['auth', 'logo'] as const;
 
@@ -17,8 +16,7 @@ export async function getCompanyLogo(): Promise<Blob | null> {
     .single();
 
   // TODO create custom error to handle postgreserror
-  // eslint-disable-next-line @typescript-eslint/no-throw-literal
-  if (error1) throw error1;
+  if (error1) throw new AppError({ message: error1.message, cause: error1 });
   // TODO create custom error and change message
   if (!data1.logo_path) return null;
 
@@ -27,7 +25,7 @@ export async function getCompanyLogo(): Promise<Blob | null> {
     .from('main')
     .download(data1.logo_path);
 
-  if (error2) throw error2;
+  if (error2) throw new AppError({ message: error2.message, cause: error2 });
 
   return data;
 }

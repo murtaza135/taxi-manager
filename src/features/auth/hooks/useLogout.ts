@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { AuthError, SignOut } from '@supabase/supabase-js';
 import { useToast } from '@/ui/toast';
 import { supabase } from '@/config/api/supabaseClient';
+import { AppError } from '@/config/errors/AppError';
 
 export async function logout(options?: SignOut) {
   const scope = options?.scope ?? 'local';
   const { error } = await supabase.auth.signOut({ scope });
-  if (error) throw error;
+  if (error) throw new AppError({ message: error.message, cause: error });
 }
 
 type Options = {

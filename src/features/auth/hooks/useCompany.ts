@@ -3,6 +3,7 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { supabase } from '@/config/api/supabaseClient';
 import { getSession } from '@/features/auth/hooks/useSession';
 import { Tables } from '@/types/database';
+import { AppError } from '@/config/errors/AppError';
 
 // TODO use Pick instead?
 type Company = Omit<
@@ -23,10 +24,9 @@ export async function getCompany(): Promise<Company> {
     .single();
 
   // TODO create custom error to handle postgreserror
-  // eslint-disable-next-line @typescript-eslint/no-throw-literal
-  if (error) throw error;
+  if (error) throw new AppError({ message: error.message, cause: error });
   // TODO create custom error and change message
-  if (!data) throw new Error('No company data');
+  if (!data) throw new AppError({ message: 'Something went wrong' });
   return data;
 }
 
