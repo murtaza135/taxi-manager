@@ -51,14 +51,18 @@ export function TopNav() {
             <Avatar className="hover:opacity-65 transition-opacity">
               <AvatarImage src={src} alt="user" />
               <AvatarFallback className="dark:text-achromatic-light">
-                {isSuccess && extractInitials(data.name ?? '')}
+                {extractInitials(data?.name ?? '')}
               </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className="min-w-[125px]">
-            {isSuccess && <DropdownMenuLabel>{data.name}</DropdownMenuLabel>}
-            <DropdownMenuSeparator />
+            {isSuccess && (
+              <>
+                <DropdownMenuLabel>{data.name}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+              </>
+            )}
             <DropdownMenuItem
               onClick={handleToggleDarkMode}
               className="flex justify-between gap-4"
