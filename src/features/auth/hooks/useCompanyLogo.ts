@@ -4,36 +4,38 @@ import { supabase } from '@/config/api/supabaseClient';
 import { getSession } from '@/features/auth/hooks/useSession';
 import { Tables } from '@/types/database';
 
-// TODO use Pick instead?
-type Company = Omit<
-  Tables<'company'>,
-  'auth_id' | 'id' | 'created_at'
->;
+export const queryKey = ['auth', 'logo'] as const;
 
-export const queryKey = ['auth'] as const;
-
-export async function getCompany(): Promise<Company> {
+export async function getCompanyLogo(): Promise<Blob | null> {
   const session = await getSession();
 
-  const { data, error } = await supabase
+  const { data: data1, error: error1 } = await supabase
     .from('company')
-    .select('logo_path, name, company_number, address, phone_number, email')
+    .select('logo_path')
     .eq('auth_id', session.user.id)
     .limit(1)
     .single();
 
   // TODO create custom error to handle postgreserror
   // eslint-disable-next-line @typescript-eslint/no-throw-literal
-  if (error) throw error;
+  if (error1) throw error1;
   // TODO create custom error and change message
-  if (!data) throw new Error('No company data');
+  if (!data1.logo_path) return null;
+
+  const { data, error: error2 } = await supabase
+    .storage
+    .from('main')
+    .download(data1.logo_path);
+
+  if (error2) throw error2;
+
   return data;
 }
 
-export function useCompany() {
-  const query = useQuery<Company, PostgrestError>({
+export function useCompanyLogo() {
+  const query = useQuery<Blob | null, Error>({
     queryKey,
-    queryFn: getCompany,
+    queryFn: getCompanyLogo,
   });
 
   return query;

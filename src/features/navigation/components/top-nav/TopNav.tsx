@@ -10,7 +10,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuIte
 import { useIsDarkmode, useDarkmodeActions } from '@/features/darkmode/state/darkmodeStore';
 import { useLogout } from '@/features/auth/hooks/useLogout';
 import { useCompany } from '@/features/auth/hooks/useCompany';
+import { useCompanyLogo } from '@/features/auth/hooks/useCompanyLogo';
 import { extractInitials } from '@/utils/string/extractInitials';
+import { useBlobToImgSrc } from '@/hooks/useBlobToImgSrc';
 
 export function TopNav() {
   const title = useTitle();
@@ -19,6 +21,8 @@ export function TopNav() {
   const { toggleNav } = useNavActions();
   const { mutate, isPending } = useLogout({ successRedirect: '/login' });
   const { data, isSuccess } = useCompany();
+  const { data: logo } = useCompanyLogo();
+  const src = useBlobToImgSrc(logo);
 
   const handleToggleDarkMode = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.preventDefault();
@@ -45,7 +49,7 @@ export function TopNav() {
         <DropdownMenu>
           <DropdownMenuTrigger className="outline-none">
             <Avatar className="hover:opacity-65 transition-opacity">
-              <AvatarImage src="" alt="user" />
+              <AvatarImage src={src} alt="user" />
               <AvatarFallback className="dark:text-achromatic-light">
                 {isSuccess && extractInitials(data.name)}
               </AvatarFallback>
