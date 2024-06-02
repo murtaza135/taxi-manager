@@ -1,29 +1,58 @@
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/config/api/supabaseClient';
+import { supabase, sbClient } from '@/config/api/supabaseClient';
 import { getSession } from '@/features/auth/hooks/useSession';
 import { AppError } from '@/config/errors/AppError';
+import { StorageError } from '@/types/supabase/storage-js';
 
 export const queryKey = ['auth', 'logo'] as const;
 
 export async function getCompanyLogo(): Promise<Blob | null> {
   const session = await getSession();
 
-  const { data: data1, error: error1 } = await supabase
+  const temp1 = await supabase
     .from('company')
     .select('logo_path')
     .eq('auth_id', session.user.id)
     .limit(1)
     .single();
 
+  const { data: data1, error: error1 } = await sbClient((client) => client
+    .from('company')
+    .select('logo_path')
+    .eq('auth_id', session.user.id)
+    .limit(1)
+    .single());
+
+  // const { data: data1, error: error1 } = await supabase
+  //   .from('company')
+  //   .select('logo_path')
+  //   .eq('auth_id', session.user.id)
+  //   .limit(1)
+  //   .single();
+
   // TODO create custom error to handle postgreserror
   if (error1) throw new AppError({ message: error1.message, cause: error1 });
-  // TODO create custom error and change message
   if (!data1.logo_path) return null;
 
-  const { data, error: error2 } = await supabase
+  const temp2 = await supabase
     .storage
     .from('main')
-    .download(data1.logo_path);
+    .download(`${data1.logo_path}`);
+
+  // const { data, error: error2 } = await supabase
+  //   .storage
+  //   .from('main')
+  //   .download(`${data1.logo_path}`);
+
+  const { data, error: error2 } = await sbClient((client) => client
+    .storage
+    .from('main')
+    .download(`${data1.logo_path}`));
+
+  console.log(error2?.name);
+  console.log(error2?.message);
+  console.log((error2 as StorageError)?.status);
+  console.log(error2?.stack);
 
   if (error2) throw new AppError({ message: error2.message, cause: error2 });
 

@@ -3,7 +3,7 @@ import { AuthError, User } from '@supabase/supabase-js';
 import { supabase } from '@/config/api/supabaseClient';
 import { AppError } from '@/config/errors/AppError';
 
-export const queryKey = ['auth'] as const;
+export const queryKey = ['auth', 'user'] as const;
 
 // NOTE getUser will return user related data from the server
 // NOTE hence it is up-to-date and non-tampered data

@@ -5,6 +5,9 @@ import { useToast } from '@/ui/toast';
 import { supabase } from '@/config/api/supabaseClient';
 import { AppError } from '@/config/errors/AppError';
 
+// TODO cleanup
+// TODO sessions on supabase server do not get deleted on error callback?
+
 export async function logout(options?: SignOut) {
   const scope = options?.scope ?? 'local';
   const { error } = await supabase.auth.signOut({ scope });
@@ -27,11 +30,16 @@ export function useLogout(options?: Options) {
       if (options?.successRedirect) navigate(options.successRedirect);
       queryClient.clear();
     },
-    onError: (error) => toast({
-      title: 'Logout Error',
-      description: error.message,
-      variant: 'destructive',
-    }),
+    onError: (error) => {
+      // toast({
+      //   title: 'Logout Error',
+      //   description: error.message,
+      //   variant: 'destructive',
+      // })
+      if (options?.successRedirect) navigate(options.successRedirect);
+      localStorage.removeItem('sb-127-auth-token');
+      queryClient.clear();
+    },
   });
 
   return mutation;

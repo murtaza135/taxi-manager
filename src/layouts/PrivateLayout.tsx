@@ -7,10 +7,15 @@ import { MobileNav } from '@/features/navigation/components/mobile-nav/MobileNav
 import { ContentContainer } from '@/ui/Container';
 import { Spinner } from '@/ui/Spinner';
 import { useSession } from '@/features/auth/hooks/useSession';
+import { useUser } from '@/features/auth/hooks/useUser';
 
 export function PrivateLayout() {
   const queryClient = useQueryClient();
-  const { isLoading, isError } = useSession();
+  const { isLoading, isError, isSuccess } = useSession();
+
+  console.log(isLoading);
+  console.log(isSuccess);
+  console.log(isError);
 
   useEffect(() => {
     if (isError) queryClient.clear();
