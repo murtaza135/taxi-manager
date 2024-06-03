@@ -57,15 +57,15 @@ export async function supabase<T extends SupabaseBaseReturnType>(
 ): Promise<SupabaseDataReturnType<T>>;
 export async function supabase<T extends SupabaseBaseReturnType>(
   fn: SupabaseFn<T>,
-  options: Options & { throwError?: false; },
+  options?: Options & { throwError?: false; },
 ): Promise<SupabaseReturnType<T>>;
 export async function supabase<T extends SupabaseBaseReturnType>(
   fn: SupabaseFn<T>,
-  options: Options,
+  options?: Options,
 ): Promise<SupabaseReturnType<T>>;
 export async function supabase<T extends SupabaseBaseReturnType>(
   fn: SupabaseFn<T>,
-  options: Options,
+  options?: Options,
 ) {
   const value = await fn(supabaseClient);
 
@@ -74,30 +74,30 @@ export async function supabase<T extends SupabaseBaseReturnType>(
 
     if (errorType === 'server') {
       const error = new AppError({
-        message: options.serverErrorMessage ?? 'Something went wrong',
+        message: options?.serverErrorMessage ?? 'Something went wrong',
         type: errorType,
         cause: value.error,
       });
-      if (options.throwError) throw error;
+      if (options?.throwError) throw error;
       return { ...value, error } as SupabaseErrorReturnType<T>;
     }
 
     if (errorType === 'auth') {
       const error = new AppError({
-        message: options.authErrorMessage ?? 'You need to login',
+        message: options?.authErrorMessage ?? 'You need to login',
         type: errorType,
         cause: value.error,
       });
-      if (options.throwError) throw error;
+      if (options?.throwError) throw error;
       return { ...value, error } as SupabaseErrorReturnType<T>;
     }
 
     const error = new AppError({
-      message: options.appErrorMessage ?? 'Something went wrong',
+      message: options?.appErrorMessage ?? 'Something went wrong',
       type: errorType,
       cause: value.error,
     });
-    if (options.throwError) throw error;
+    if (options?.throwError) throw error;
     return { ...value, error } as SupabaseErrorReturnType<T>;
   }
 
