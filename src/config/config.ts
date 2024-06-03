@@ -9,4 +9,7 @@ export const config = {
     xl: '1280px',
     '2xl': '1536px',
   },
+  SUPABASE: {
+    authKey: 'sb-127-auth-token',
+  },
 } as const;

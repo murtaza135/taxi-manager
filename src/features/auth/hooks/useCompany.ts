@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { PostgrestError, User } from '@supabase/supabase-js';
-import { supabase } from '@/config/api/supabaseClient';
+import { supabaseClient } from '@/config/api/supabaseClient';
 import { getSession } from '@/features/auth/hooks/useSession';
 import { Tables } from '@/types/database';
 import { AppError } from '@/config/errors/AppError';
@@ -21,7 +21,7 @@ export async function getCompany(): Promise<Company> {
   // });
   // console.log(data1);
 
-  const { data, error, status, statusText, count } = await supabase
+  const { data, error, status, statusText, count } = await supabaseClient
     .from('company')
     .select('logo_path, name, company_number, address, phone_number, email')
     .eq('auth_id', session.user.id)

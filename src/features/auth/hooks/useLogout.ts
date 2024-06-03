@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { AuthError, SignOut } from '@supabase/supabase-js';
 import { useToast } from '@/ui/toast';
-import { supabase } from '@/config/api/supabaseClient';
+import { supabaseClient } from '@/config/api/supabaseClient';
 import { AppError } from '@/config/errors/AppError';
 
 // TODO cleanup
@@ -10,7 +10,7 @@ import { AppError } from '@/config/errors/AppError';
 
 export async function logout(options?: SignOut) {
   const scope = options?.scope ?? 'local';
-  const { error } = await supabase.auth.signOut({ scope });
+  const { error } = await supabaseClient.auth.signOut({ scope });
   if (error) throw new AppError({ message: error.message, cause: error });
 }
 

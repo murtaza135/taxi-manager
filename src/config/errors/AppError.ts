@@ -1,10 +1,5 @@
 /* eslint-disable @typescript-eslint/lines-between-class-members */
-type ErrorType = 'app' | 'auth' | 'server';
-
-type ErrorLike = {
-  [key: string]: unknown;
-  message: string;
-};
+import { ErrorType, ErrorLike } from '@/config/errors/types';
 
 export type AppErrorConstructor = {
   message: string;

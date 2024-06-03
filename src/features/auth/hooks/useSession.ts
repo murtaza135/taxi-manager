@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { AuthError, Session } from '@supabase/supabase-js';
-import { supabase } from '@/config/api/supabaseClient';
+import { supabaseClient } from '@/config/api/supabaseClient';
 import { AppError } from '@/config/errors/AppError';
 import { queryClient } from '@/config/api/queryClient';
 import { logout } from '@/features/auth/hooks/useLogout';
@@ -14,8 +14,8 @@ export async function getSession() {
     throw new AppError({ message: 'You need to login again' });
   }
   // console.log('here 1');
-  const temp = await supabase.auth.getSession();
-  const { data, error } = await supabase.auth.getSession();
+  const temp = await supabaseClient.auth.getSession();
+  const { data, error } = await supabaseClient.auth.getSession();
   // console.log('here 2');
   if (error) {
     // queryClient.clear();
@@ -34,7 +34,7 @@ export async function getSession() {
 // NOTE hence it may have been tampered with
 // NOTE if secure data is required, use the useUser hook
 export async function getSession2() {
-  const { data, error } = await supabase.auth.getSession();
+  const { data, error } = await supabaseClient.auth.getSession();
   console.log(data);
   console.log(error);
   if (error) {

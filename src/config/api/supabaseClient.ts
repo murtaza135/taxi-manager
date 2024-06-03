@@ -1,79 +1,81 @@
-import { createClient, QueryResult, QueryData, QueryError } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import { config } from '@/config/config';
 import { Database } from '@/types/database';
-import { queryClient } from '@/config/api/queryClient';
 import { AppError } from '@/config/errors/AppError';
+import { determineErrorType } from '@/config/errors/utils';
+import { ErrorLike } from '@/config/errors/types';
 
-// TODO
-// "Failed to fetch" signifies some sort of server error
-// const errorMessage = cause?.message.includes('Failed to fetch')
-//   ? 'Something went wrong'
-//   : message;
-
-export const supabase = createClient<Database>(
+export const supabaseClient = createClient<Database>(
   config.VITE_SUPABASE_URL,
   config.VITE_SUPABASE_ANON_KEY,
-  {
-    global: {
-      fetch: async (input, init) => {
-        const response = await fetch(input, init);
-        if (response.status === 401) {
-          localStorage.removeItem('sb-127-auth-token');
-          await queryClient.invalidateQueries({ queryKey: ['auth'] });
-        }
-        return response;
-      },
-    },
-  },
 );
 
-type Supabase = typeof supabase;
+export type SupabaseClient = typeof supabaseClient;
 
-type BaseReturnType3 = {
+type SupabaseBaseReturnType = {
   data: unknown;
-  error: unknown;
+  error: Error | ErrorLike | null;
   status?: number;
   statusText?: string;
   count?: number | null;
 };
 
-type BaseReturnType2 = {
-  status?: number;
-  statusText?: string;
-  count?: number | null;
-} & ({
-  data: NonNullable<unknown>;
-  error: null;
-} | {
-  data: null;
-  error: NonNullable<unknown>;
-});
+type SupabaseReturnType<T extends SupabaseBaseReturnType> =
+  Omit<T, 'data' | 'error'> & ({
+    data: NonNullable<T['data']>;
+    error: null;
+  } | {
+    data: null;
+    error: AppError;
+  });
 
-type BaseReturnType = {
-  data: unknown;
-  error: unknown;
+type SupabaseFn<T extends SupabaseBaseReturnType> =
+  (client: SupabaseClient) => PromiseLike<T>;
+
+export type Options = {
+  throwError?: boolean;
+  appErrorMessage?: string;
+  authErrorMessage?: string;
+  serverErrorMessage?: string;
 };
 
-type SupabaseFn<T extends BaseReturnType> = (client: Supabase) => PromiseLike<T>;
-
-type Replace<T, K extends keyof T, R> = Omit<T, K> & { [P in K]: R };
-
-type ReplaceSupabaseDataAndError<T extends BaseReturnType> = Omit<T, 'data' | 'error'> & ({
-  data: NonNullable<T['data']>;
-  error: null;
-} | {
-  data: null;
-  error: AppError;
-});
-
-// eslint-disable-next-line max-len
-export const sbClient = async <T extends BaseReturnType = BaseReturnType>(fn: SupabaseFn<T>): Promise<ReplaceSupabaseDataAndError<T>> => {
-  const value = await fn(supabase);
+export async function supabase<T extends SupabaseBaseReturnType>(
+  fn: SupabaseFn<T>,
+  options: Options = { throwError: true },
+): Promise<SupabaseReturnType<T>> {
+  const value = await fn(supabaseClient);
 
   if (value.error) {
-    const error = new AppError({ message: 'Temp Error' });
-    return { ...value, error } as ReplaceSupabaseDataAndError<T>;
+    const errorType = determineErrorType(value.error, value.status);
+
+    if (errorType === 'server') {
+      const error = new AppError({
+        message: options.serverErrorMessage ?? 'Something went wrong',
+        type: errorType,
+        cause: value.error,
+      });
+      if (options.throwError) throw error;
+      return { ...value, error } as SupabaseReturnType<T>;
+    }
+
+    if (errorType === 'auth') {
+      const error = new AppError({
+        message: options.authErrorMessage ?? 'Invalid Credentials',
+        type: errorType,
+        cause: value.error,
+      });
+      if (options.throwError) throw error;
+      return { ...value, error } as SupabaseReturnType<T>;
+    }
+
+    const error = new AppError({
+      message: options.appErrorMessage ?? 'Something went wrong',
+      type: errorType,
+      cause: value.error,
+    });
+    if (options.throwError) throw error;
+    return { ...value, error } as SupabaseReturnType<T>;
   }
 
-  return value as ReplaceSupabaseDataAndError<T>;
-};
+  return value as SupabaseReturnType<T>;
+}
