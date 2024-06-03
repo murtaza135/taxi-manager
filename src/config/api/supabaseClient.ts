@@ -20,6 +20,18 @@ type SupabaseBaseReturnType = {
   count?: number | null;
 };
 
+type SupabaseDataReturnType<T extends SupabaseBaseReturnType> =
+  Omit<T, 'data' | 'error'> & {
+    data: NonNullable<T['data']>;
+    error: null;
+  };
+
+type SupabaseErrorReturnType<T extends SupabaseBaseReturnType> =
+  Omit<T, 'data' | 'error'> & {
+    data: null;
+    error: AppError;
+  };
+
 type SupabaseReturnType<T extends SupabaseBaseReturnType> =
   Omit<T, 'data' | 'error'> & ({
     data: NonNullable<T['data']>;
@@ -41,8 +53,20 @@ export type Options = {
 
 export async function supabase<T extends SupabaseBaseReturnType>(
   fn: SupabaseFn<T>,
-  options: Options = { throwError: true },
-): Promise<SupabaseReturnType<T>> {
+  options: Options & { throwError: true; },
+): Promise<SupabaseDataReturnType<T>>;
+export async function supabase<T extends SupabaseBaseReturnType>(
+  fn: SupabaseFn<T>,
+  options: Options & { throwError?: false; },
+): Promise<SupabaseReturnType<T>>;
+export async function supabase<T extends SupabaseBaseReturnType>(
+  fn: SupabaseFn<T>,
+  options: Options,
+): Promise<SupabaseReturnType<T>>;
+export async function supabase<T extends SupabaseBaseReturnType>(
+  fn: SupabaseFn<T>,
+  options: Options,
+) {
   const value = await fn(supabaseClient);
 
   if (value.error) {
@@ -60,7 +84,7 @@ export async function supabase<T extends SupabaseBaseReturnType>(
 
     if (errorType === 'auth') {
       const error = new AppError({
-        message: options.authErrorMessage ?? 'Invalid Credentials',
+        message: options.authErrorMessage ?? 'You need to login',
         type: errorType,
         cause: value.error,
       });
@@ -77,5 +101,5 @@ export async function supabase<T extends SupabaseBaseReturnType>(
     return { ...value, error } as SupabaseReturnType<T>;
   }
 
-  return value as SupabaseReturnType<T>;
+  return value as SupabaseDataReturnType<T>;
 }

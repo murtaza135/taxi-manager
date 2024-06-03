@@ -16,12 +16,18 @@ export async function getCompanyLogo(): Promise<Blob | null> {
   //   .limit(1)
   //   .single();
 
-  const { data: data1, error: error1 } = await supabase((client) => client
-    .from('company')
-    .select('logo_path')
-    .eq('auth_id', session.user.id)
-    .limit(1)
-    .single());
+  const { data: logoPath, error: logoPathError } = await supabase(
+    (client) => client
+      .from('company')
+      .select('logo_path')
+      .eq('auth_id', session.user.id)
+      .limit(1)
+      .single(),
+    {
+      throwError: true,
+      appErrorMessage: 'Could not load company logo',
+    },
+  );
 
   // const { data: data1, error: error1 } = await supabase
   //   .from('company')
@@ -30,9 +36,8 @@ export async function getCompanyLogo(): Promise<Blob | null> {
   //   .limit(1)
   //   .single();
 
-  // TODO create custom error to handle postgreserror
-  if (error1) throw new AppError({ message: error1.message, cause: error1 });
-  if (!data1.logo_path) return null;
+  // if (logoPathError) throw logoPathError;
+  if (!logoPath.logo_path) return null;
 
   const temp2 = await supabaseClient
     .storage
