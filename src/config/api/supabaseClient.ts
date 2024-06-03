@@ -4,6 +4,12 @@ import { Database } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
 import { AppError } from '@/config/errors/AppError';
 
+// TODO
+// "Failed to fetch" signifies some sort of server error
+// const errorMessage = cause?.message.includes('Failed to fetch')
+//   ? 'Something went wrong'
+//   : message;
+
 export const supabase = createClient<Database>(
   config.VITE_SUPABASE_URL,
   config.VITE_SUPABASE_ANON_KEY,

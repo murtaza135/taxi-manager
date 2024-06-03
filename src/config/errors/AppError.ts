@@ -1,30 +1,29 @@
-type ErrorMessageObject = {
+/* eslint-disable @typescript-eslint/lines-between-class-members */
+type ErrorType = 'app' | 'auth' | 'server';
+
+type ErrorLike = {
   [key: string]: unknown;
   message: string;
 };
+
 export type AppErrorConstructor = {
   message: string;
-  code?: string;
-  // TODO cause should really only be an Error and nothing else
-  cause?: Error | ErrorMessageObject;
+  type?: ErrorType;
+  cause?: Error | ErrorLike;
 };
 
 export class AppError extends Error {
-  public readonly code: AppErrorConstructor['code'];
-
+  public readonly type: AppErrorConstructor['type'];
+  protected readonly original: AppErrorConstructor['cause'];
   protected __isAppError = true;
 
-  constructor({ message, code, cause }: AppErrorConstructor) {
-    // "Failed to fetch" signifies some sort of server error
-    const errorMessage = cause?.message.includes('Failed to fetch')
-      ? 'Something went wrong'
-      : message;
-
+  constructor({ message, type = 'app', cause }: AppErrorConstructor) {
     // @ts-expect-error https://github.com/tc39/proposal-error-cause
-    super(errorMessage, { cause });
+    super(message, { cause: cause instanceof Error ? cause : null });
 
     this.name = this.constructor.name;
-    this.code = code;
+    this.type = type;
+    this.original = cause;
   }
 }
 
