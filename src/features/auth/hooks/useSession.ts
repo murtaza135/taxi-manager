@@ -5,7 +5,7 @@ import { AppError } from '@/config/errors/AppError';
 import { queryClient } from '@/config/api/queryClient';
 import { logout } from '@/features/auth/hooks/useLogout';
 
-export const queryKey = ['auth'] as const;
+export const sessionQueryKey = ['auth', 'session'] as const;
 
 export async function getSession() {
   const localSession = localStorage.getItem('sb-127-auth-token');
@@ -52,7 +52,7 @@ export async function getSession2() {
 
 export function useSession() {
   const query = useQuery<Session, AuthError>({
-    queryKey,
+    queryKey: sessionQueryKey,
     queryFn: getSession,
   });
 

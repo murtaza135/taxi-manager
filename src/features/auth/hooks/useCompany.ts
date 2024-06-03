@@ -12,7 +12,7 @@ type Company = Omit<
   'auth_id' | 'id' | 'created_at'
 >;
 
-export const queryKey = ['auth'] as const;
+export const companyQueryKey = ['auth', 'company'] as const;
 
 export async function getCompany(): Promise<Company> {
   const session = await getSession();
@@ -44,7 +44,7 @@ export async function getCompany(): Promise<Company> {
 
 export function useCompany() {
   const query = useQuery<Company, PostgrestError>({
-    queryKey,
+    queryKey: companyQueryKey,
     queryFn: getCompany,
   });
 

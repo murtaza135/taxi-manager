@@ -20,6 +20,15 @@ type SupabaseBaseReturnType = {
   count?: number | null;
 };
 
+type SupabaseReturnType<T extends SupabaseBaseReturnType> =
+  Omit<T, 'data' | 'error'> & ({
+    data: NonNullable<T['data']>;
+    error: null;
+  } | {
+    data: null;
+    error: AppError;
+  });
+
 type SupabaseDataReturnType<T extends SupabaseBaseReturnType> =
   Omit<T, 'data' | 'error'> & {
     data: NonNullable<T['data']>;
@@ -31,15 +40,6 @@ type SupabaseErrorReturnType<T extends SupabaseBaseReturnType> =
     data: null;
     error: AppError;
   };
-
-type SupabaseReturnType<T extends SupabaseBaseReturnType> =
-  Omit<T, 'data' | 'error'> & ({
-    data: NonNullable<T['data']>;
-    error: null;
-  } | {
-    data: null;
-    error: AppError;
-  });
 
 type SupabaseFn<T extends SupabaseBaseReturnType> =
   (client: SupabaseClient) => PromiseLike<T>;
@@ -79,7 +79,7 @@ export async function supabase<T extends SupabaseBaseReturnType>(
         cause: value.error,
       });
       if (options.throwError) throw error;
-      return { ...value, error } as SupabaseReturnType<T>;
+      return { ...value, error } as SupabaseErrorReturnType<T>;
     }
 
     if (errorType === 'auth') {
@@ -89,7 +89,7 @@ export async function supabase<T extends SupabaseBaseReturnType>(
         cause: value.error,
       });
       if (options.throwError) throw error;
-      return { ...value, error } as SupabaseReturnType<T>;
+      return { ...value, error } as SupabaseErrorReturnType<T>;
     }
 
     const error = new AppError({
@@ -98,7 +98,7 @@ export async function supabase<T extends SupabaseBaseReturnType>(
       cause: value.error,
     });
     if (options.throwError) throw error;
-    return { ...value, error } as SupabaseReturnType<T>;
+    return { ...value, error } as SupabaseErrorReturnType<T>;
   }
 
   return value as SupabaseDataReturnType<T>;
