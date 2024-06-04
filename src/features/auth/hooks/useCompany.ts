@@ -1,23 +1,18 @@
-import { useQuery } from '@tanstack/react-query';
-import { PostgrestError } from '@supabase/supabase-js';
+import { useQuery, queryOptions } from '@tanstack/react-query';
 import { supabase } from '@/config/api/supabaseClient';
-import { sessionQueryKey, getSession } from '@/features/auth/hooks/useSession';
+import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
 import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
+import { AppError } from '@/config/errors/AppError';
 
 type CompanyDetails = Pick<
   Tables<'company'>,
   'logo_path' | 'name' | 'company_number' | 'address' | 'phone_number' | 'email'
 >;
 
-export const companyQueryKey = ['auth', 'company'] as const;
-
-export async function getCompany(): Promise<CompanyDetails> {
-  const session = await queryClient.ensureQueryData({
-    queryKey: sessionQueryKey,
-    queryFn: getSession,
-  });
+async function getCompany(): Promise<CompanyDetails> {
+  const session = await queryClient.ensureQueryData(sessionOptions());
 
   const { data, error, status } = await supabase
     .from('company')
@@ -37,11 +32,14 @@ export async function getCompany(): Promise<CompanyDetails> {
   return data;
 }
 
-export function useCompany() {
-  const query = useQuery<CompanyDetails, PostgrestError>({
-    queryKey: companyQueryKey,
+export function companyOptions() {
+  return queryOptions<CompanyDetails, AppError>({
+    queryKey: ['auth', 'company'],
     queryFn: getCompany,
   });
+}
 
+export function useCompany() {
+  const query = useQuery(companyOptions());
   return query;
 }

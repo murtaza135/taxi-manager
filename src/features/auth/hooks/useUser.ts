@@ -1,15 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, queryOptions } from '@tanstack/react-query';
 import { AuthError, User } from '@supabase/supabase-js';
 import { supabase } from '@/config/api/supabaseClient';
 import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
 
-export const queryKey = ['auth', 'user'] as const;
-
-// NOTE getUser will return user related data from the server
-// NOTE hence it is up-to-date and non-tampered data
-// NOTE however, since it makes a request to the server
-// NOTE it is less speed-efficient than the useSession hook
-export async function getUser() {
+async function getUser() {
   const { data, error } = await supabase.auth.getUser();
   if (error) {
     throw await AppErrorBuilder
@@ -21,11 +15,14 @@ export async function getUser() {
   return data.user;
 }
 
-export function useUser() {
-  const query = useQuery<User, AuthError>({
-    queryKey,
+export function userOptions() {
+  return queryOptions<User, AuthError>({
+    queryKey: ['auth', 'user'],
     queryFn: getUser,
   });
+}
 
+export function useUser() {
+  const query = useQuery(userOptions());
   return query;
 }

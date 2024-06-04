@@ -43,7 +43,7 @@ export function useLogin(options?: Options) {
     mutationFn: login,
     onSuccess: async () => {
       if (options?.successRedirect) navigate(options.successRedirect);
-      await queryClient.invalidateQueries({ queryKey: ['auth'] });
+      await queryClient.invalidateQueries();
     },
     onError: (error) => toast({
       title: 'Login Error',

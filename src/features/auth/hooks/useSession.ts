@@ -1,15 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, queryOptions } from '@tanstack/react-query';
 import { AuthError, Session } from '@supabase/supabase-js';
 import { supabase } from '@/config/api/supabaseClient';
 import { config } from '@/config/config';
 import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
 
-export const sessionQueryKey = ['auth', 'session'] as const;
-
-// NOTE getSession will return user related data from local storage
-// NOTE hence it may have been tampered with
-// NOTE if secure data is required, use the useUser hook
-export async function getSession() {
+async function getSession() {
   const localSession = localStorage.getItem(config.SUPABASE.authKey);
   if (!localSession) {
     throw await AppErrorBuilder
@@ -39,11 +34,14 @@ export async function getSession() {
   return data.session;
 }
 
-export function useSession() {
-  const query = useQuery<Session, AuthError>({
-    queryKey: sessionQueryKey,
+export function sessionOptions() {
+  return queryOptions<Session, AuthError>({
+    queryKey: ['auth', 'session'],
     queryFn: getSession,
   });
+}
 
+export function useSession() {
+  const query = useQuery(sessionOptions());
   return query;
 }

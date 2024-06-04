@@ -1,17 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, queryOptions } from '@tanstack/react-query';
 import { supabase } from '@/config/api/supabaseClient';
-import { companyQueryKey, getCompany } from '@/features/auth/hooks/useCompany';
+import { companyOptions } from '@/features/auth/hooks/useCompany';
 import { queryClient } from '@/config/api/queryClient';
 import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
+import { AppError } from '@/config/errors/AppError';
 
-export const queryKey = ['auth', 'company', 'logo'] as const;
-
-export async function getCompanyLogo(): Promise<Blob | null> {
-  const { logo_path: logoPath } = await queryClient.ensureQueryData({
-    queryKey: companyQueryKey,
-    queryFn: getCompany,
-  });
-
+async function getCompanyLogo(): Promise<Blob | null> {
+  const { logo_path: logoPath } = await queryClient.ensureQueryData(companyOptions());
   if (!logoPath) return null;
 
   const { data: logo, error } = await supabase
@@ -30,12 +25,15 @@ export async function getCompanyLogo(): Promise<Blob | null> {
   return logo;
 }
 
-export function useCompanyLogo() {
-  const query = useQuery<Blob | null, Error>({
-    queryKey,
+export function companyLogoOptions() {
+  return queryOptions<Blob | null, AppError>({
+    queryKey: ['auth', 'company', 'logo'],
     queryFn: getCompanyLogo,
     staleTime: 1000 * 60 * 10, // 10 minutes
   });
+}
 
+export function useCompanyLogo() {
+  const query = useQuery(companyLogoOptions());
   return query;
 }
