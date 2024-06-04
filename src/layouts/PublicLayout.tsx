@@ -3,25 +3,13 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { Spinner } from '@/ui/Spinner';
 import { BasicContainer } from '@/ui/Container';
 import { SimpleTopNav } from '@/features/navigation/components/top-nav/SimpleTopNav';
-import { useSession } from '@/features/auth/hooks/useSession';
-import { useUser } from '@/features/auth/hooks/useUser';
+import { useLocalSession } from '@/features/auth/hooks/useLocalSession';
 
 export function PublicLayout() {
-  const { isLoading, isSuccess } = useSession();
-
-  if (isLoading) {
-    return (
-      <>
-        <SimpleTopNav />
-        <BasicContainer>
-          <Spinner />
-        </BasicContainer>
-      </>
-    );
-  }
+  const session = useLocalSession();
 
   // if there is a session, then we do not want to be in the public layout
-  if (isSuccess) {
+  if (session) {
     return <Navigate to="/" replace />;
   }
 
