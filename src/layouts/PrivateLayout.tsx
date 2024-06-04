@@ -7,7 +7,6 @@ import { ContentContainer } from '@/ui/Container';
 import { Spinner } from '@/ui/Spinner';
 import { useSession } from '@/features/auth/hooks/useSession';
 import { useLogout } from '@/features/auth/hooks/useLogout';
-import { useUser } from '@/features/auth/hooks/useUser';
 
 export function PrivateLayout() {
   const { isLoading, isError } = useSession();
