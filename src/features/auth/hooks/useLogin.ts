@@ -5,6 +5,7 @@ import { useToast } from '@/ui/toast';
 import { supabase } from '@/config/api/supabaseClient';
 import { LoginFormSchema } from '@/features/auth/schemas';
 import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
+import { AppError } from '@/config/errors/AppError';
 
 export type AuthTokenResponsePasswordSuccess = {
   user: User;
