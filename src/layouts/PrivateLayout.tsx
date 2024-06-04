@@ -7,15 +7,16 @@ import { MobileNav } from '@/features/navigation/components/mobile-nav/MobileNav
 import { ContentContainer } from '@/ui/Container';
 import { Spinner } from '@/ui/Spinner';
 import { useSession } from '@/features/auth/hooks/useSession';
-import { useUser } from '@/features/auth/hooks/useUser';
+import { useLogout } from '@/features/auth/hooks/useLogout';
 
 export function PrivateLayout() {
   const queryClient = useQueryClient();
   const { isLoading, isError, isSuccess } = useSession();
+  const { mutate: logout } = useLogout({ redirect: '/login', replace: true });
 
-  console.log(isLoading);
-  console.log(isSuccess);
-  console.log(isError);
+  // console.log(isLoading);
+  // console.log(isSuccess);
+  // console.log(isError);
 
   useEffect(() => {
     if (isError) queryClient.clear();

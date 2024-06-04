@@ -6,12 +6,27 @@ import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
 
 async function getSession() {
   const localSession = localStorage.getItem(config.SUPABASE.authKey);
-  if (!localSession) throw await AppErrorBuilder.fromType('auth').build();
+  if (!localSession) {
+    throw await AppErrorBuilder
+      .fromType('auth')
+      .deleteSessionOnAuthError()
+      .build();
+  }
 
   const { data, error } = await supabase.auth.getSession();
-  if (error) throw await AppErrorBuilder.fromSupabaseError(error).build();
+  if (error) {
+    throw await AppErrorBuilder
+      .fromType('auth')
+      .deleteSessionOnAuthError()
+      .build();
+  }
 
-  if (!data.session) throw await AppErrorBuilder.fromType('auth').build();
+  if (!data.session) {
+    throw await AppErrorBuilder
+      .fromType('auth')
+      .deleteSessionOnAuthError()
+      .build();
+  }
 
   return data.session;
 }

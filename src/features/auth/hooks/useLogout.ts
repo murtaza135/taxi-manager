@@ -14,12 +14,14 @@ export async function logout(options?: SignOut) {
     throw await AppErrorBuilder
       .fromSupabaseError(error)
       .setAuthErrorMessage('Something went wrong')
+      .deleteSessionOnAuthError()
       .build();
   }
 }
 
 type Options = {
   redirect?: string;
+  replace?: boolean;
   scope?: SignOut['scope'];
 };
 
@@ -30,7 +32,7 @@ export function useLogout(options?: Options) {
   const mutation = useMutation<void, AuthError>({
     mutationFn: () => logout({ scope: options?.scope }),
     onMutate: () => {
-      if (options?.redirect) navigate(options.redirect);
+      if (options?.redirect) navigate(options.redirect, { replace: options?.replace });
       localStorage.removeItem(config.SUPABASE.authKey);
       queryClient.clear();
     },

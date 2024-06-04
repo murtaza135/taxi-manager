@@ -18,6 +18,7 @@ async function getCompanyLogo(): Promise<Blob | null> {
     throw await AppErrorBuilder
       .fromSupabaseError(error)
       .setAppErrorMessage('Could not load company logo')
+      .deleteSessionOnAuthError()
       .build();
   }
 

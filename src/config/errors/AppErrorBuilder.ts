@@ -18,7 +18,7 @@ export class AppErrorBuilder {
   private appErrorMessage: string = 'Something went wrong';
   private authErrorMessage: string = 'Please login again';
   private serverErrorMessage: string = 'Something went wrong';
-  private shouldLogoutOnAuthError: boolean = true;
+  private shouldDeleteSessionOnAuthError: boolean = false;
 
   constructor({ type, error, status }: AppErrorBuilderConstructor) {
     this.type = type;
@@ -49,8 +49,8 @@ export class AppErrorBuilder {
     return this;
   }
 
-  public preventLogoutOnAuthError() {
-    this.shouldLogoutOnAuthError = false;
+  public deleteSessionOnAuthError() {
+    this.shouldDeleteSessionOnAuthError = true;
     return this;
   }
 
@@ -77,7 +77,7 @@ export class AppErrorBuilder {
       || this.type === 'auth';
 
     if (isSupabaseAuthError) {
-      if (this.shouldLogoutOnAuthError) {
+      if (this.shouldDeleteSessionOnAuthError) {
         localStorage.removeItem(config.SUPABASE.authKey);
         await queryClient.invalidateQueries({ queryKey: ['auth'] });
       }
