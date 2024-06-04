@@ -3,7 +3,6 @@ import { supabase } from '@/config/api/supabaseClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
-import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
 import { AppError } from '@/config/errors/AppError';
 
 type CompanyDetails = Pick<
@@ -22,12 +21,11 @@ async function getCompany(): Promise<CompanyDetails> {
     .single();
 
   if (error) {
-    // throw await AppErrorBuilder
-    //   .fromSupabaseError(error, status)
-    //   .setAppErrorMessage('Could not load company data')
-    //   .deleteSessionOnAuthError()
-    //   .build();
-    throw AppError.fromSupabaseError({ error, status, message: 'Could not load company data' });
+    throw AppError.fromSupabaseError({
+      error,
+      status,
+      message: 'Could not load company data',
+    });
   }
 
   return data;

@@ -4,7 +4,6 @@ import { AuthError, User, Session, WeakPassword } from '@supabase/supabase-js';
 import { useToast } from '@/ui/toast';
 import { supabase } from '@/config/api/supabaseClient';
 import { LoginFormSchema } from '@/features/auth/schemas';
-import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
 import { AppError } from '@/config/errors/AppError';
 
 export type AuthTokenResponsePasswordSuccess = {
@@ -22,14 +21,6 @@ export async function login(args: LoginFormSchema) {
       message: 'Invalid login crendentials',
     });
   }
-
-  // if (error) {
-  //   throw await AppErrorBuilder
-  //     .fromSupabaseError(error)
-  //     .setAuthErrorMessage('Invalid login credentials')
-  //     .deleteSessionOnAuthError()
-  //     .build();
-  // }
 
   return data;
 }

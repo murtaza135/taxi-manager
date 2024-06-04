@@ -2,7 +2,6 @@ import { useQuery, queryOptions } from '@tanstack/react-query';
 import { supabase } from '@/config/api/supabaseClient';
 import { companyOptions } from '@/features/auth/hooks/useCompany';
 import { queryClient } from '@/config/api/queryClient';
-import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
 import { AppError } from '@/config/errors/AppError';
 
 async function getCompanyLogo(): Promise<Blob | null> {
@@ -15,12 +14,10 @@ async function getCompanyLogo(): Promise<Blob | null> {
     .download(logoPath);
 
   if (error) {
-    // throw await AppErrorBuilder
-    //   .fromSupabaseError(error)
-    //   .setAppErrorMessage('Could not load company logo')
-    //   .deleteSessionOnAuthError()
-    //   .build();
-    throw AppError.fromSupabaseError({ error, message: 'Could not load company logo' });
+    throw AppError.fromSupabaseError({
+      error,
+      message: 'Could not load company logo',
+    });
   }
 
   return logo;

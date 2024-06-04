@@ -1,18 +1,11 @@
 import { useQuery, queryOptions } from '@tanstack/react-query';
 import { AuthError, User } from '@supabase/supabase-js';
 import { supabase } from '@/config/api/supabaseClient';
-import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
 import { AppError } from '@/config/errors/AppError';
 
 async function getUser() {
   const { data, error } = await supabase.auth.getUser();
-  if (error) {
-    // throw await AppErrorBuilder
-    //   .fromSupabaseError(error)
-    //   .deleteSessionOnAuthError()
-    //   .build();
-    throw AppError.fromSupabaseError({ error });
-  }
+  if (error) throw AppError.fromSupabaseError({ error });
   return data.user;
 }
 

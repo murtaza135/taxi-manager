@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { AuthError, SignOut } from '@supabase/supabase-js';
 import { supabase } from '@/config/api/supabaseClient';
-import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
 import { config } from '@/config/config';
 import { AppError } from '@/config/errors/AppError';
 
@@ -17,13 +16,6 @@ export async function logout(options?: SignOut) {
       message: 'Something went wrong',
     });
   }
-  // if (error) {
-  //   throw await AppErrorBuilder
-  //     .fromSupabaseError(error)
-  //     .setAuthErrorMessage('Something went wrong')
-  //     .deleteSessionOnAuthError()
-  //     .build();
-  // }
 }
 
 type Options = {
@@ -39,7 +31,9 @@ export function useLogout(options?: Options) {
   const mutation = useMutation<void, AuthError>({
     mutationFn: () => logout({ scope: options?.scope }),
     onMutate: () => {
-      if (options?.redirect) navigate(options.redirect, { replace: options?.replace });
+      if (options?.redirect) {
+        navigate(options.redirect, { replace: options?.replace });
+      }
       localStorage.removeItem(config.SUPABASE.authKey);
       queryClient.clear();
     },
