@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { supabase, supabaseClient } from '@/config/api/supabaseClient';
+import { supabase } from '@/config/api/supabaseClient';
 import { companyQueryKey, getCompany } from '@/features/auth/hooks/useCompany';
 import { queryClient } from '@/config/api/queryClient';
-import { generateAppError } from '@/config/errors/utils';
-import { buildAppError } from '@/config/errors/AppErrorBuilder';
+import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
 
 export const queryKey = ['auth', 'company', 'logo'] as const;
 
@@ -15,13 +14,14 @@ export async function getCompanyLogo(): Promise<Blob | null> {
 
   if (!logoPath) return null;
 
-  const { data: logo, error } = await supabaseClient
+  const { data: logo, error } = await supabase
     .storage
     .from('main')
     .download(logoPath);
 
   if (error) {
-    throw await buildAppError(error)
+    throw await AppErrorBuilder
+      .fromSupabaseError(error)
       .setAppErrorMessage('Could not load company logo')
       .logoutOnAuthError()
       .build();
