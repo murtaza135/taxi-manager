@@ -1,21 +1,37 @@
 /* eslint-disable @typescript-eslint/lines-between-class-members */
 import { isAuthError } from '@supabase/supabase-js';
 import { AppError } from '@/config/errors/AppError';
-import { ErrorLike } from '@/config/errors/types';
+import { ErrorLike, ErrorType } from '@/config/errors/types';
 import { queryClient } from '@/config/api/queryClient';
 import { config } from '@/config/config';
 
+type AppErrorBuilderConstructor = {
+  type?: ErrorType;
+  error?: Error | ErrorLike;
+  status?: number;
+};
+
 export class AppErrorBuilder {
-  private error: Error | ErrorLike;
+  private error?: Error | ErrorLike;
+  private type?: ErrorType;
   private status?: number;
   private appErrorMessage: string = 'Something went wrong';
   private authErrorMessage: string = 'You need to login';
   private serverErrorMessage: string = 'Something went wrong';
   private shouldLogoutOnAuthError: boolean = false;
 
-  constructor(error: Error | ErrorLike, status?: number) {
+  constructor({ type, error, status }: AppErrorBuilderConstructor) {
+    this.type = type;
     this.error = error;
     this.status = status;
+  }
+
+  public static fromSupabaseError(error: Error | ErrorLike, status?: number) {
+    return new AppErrorBuilder({ error, status });
+  }
+
+  public static fromType(type: ErrorType) {
+    return new AppErrorBuilder({ type });
   }
 
   public setAppErrorMessage(message: string) {
@@ -40,7 +56,10 @@ export class AppErrorBuilder {
 
   public async build(): Promise<AppError> {
     // a "Failed to fetch" message signifies some sort of server error
-    if (this.error.message.includes('Failed to fetch')) {
+    const isServerError = this.error?.message.includes('Failed to fetch')
+      || this.type === 'server';
+
+    if (isServerError) {
       return new AppError({
         message: this.serverErrorMessage,
         type: 'server',
@@ -51,9 +70,11 @@ export class AppErrorBuilder {
     // (1) if it is a supabase auth error
     // (2) or network status code made during a supabase --database-- call equals 401
     // (3) or network status code made during a supabase --storage-- call equals 401
+    // (4) or consumer wants error of type "auth"
     const isSupabaseAuthError = isAuthError(this.error)
       || this.status === 401
-      || ('status' in this.error && this.error.status === 401);
+      || (this.error && 'status' in this.error && this.error.status === 401)
+      || this.type === 'auth';
 
     if (isSupabaseAuthError) {
       if (this.shouldLogoutOnAuthError) {
@@ -74,8 +95,4 @@ export class AppErrorBuilder {
       cause: this.error,
     });
   }
-}
-
-export function buildAppError(error: Error | ErrorLike, status?: number) {
-  return new AppErrorBuilder(error, status);
 }

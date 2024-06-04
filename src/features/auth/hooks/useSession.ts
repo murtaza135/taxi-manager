@@ -1,30 +1,29 @@
 import { useQuery } from '@tanstack/react-query';
 import { AuthError, Session } from '@supabase/supabase-js';
-import { supabaseClient } from '@/config/api/supabaseClient';
+import { supabase } from '@/config/api/supabaseClient';
 import { AppError } from '@/config/errors/AppError';
 import { queryClient } from '@/config/api/queryClient';
 import { logout } from '@/features/auth/hooks/useLogout';
+import { config } from '@/config/config';
+import { buildAppError } from '@/config/errors/AppErrorBuilder';
 
 export const sessionQueryKey = ['auth', 'session'] as const;
 
 export async function getSession() {
-  const localSession = localStorage.getItem('sb-127-auth-token');
-  // console.log('here 0');
+  const localSession = localStorage.getItem(config.SUPABASE.authKey);
   if (!localSession) {
-    throw new AppError({ message: 'You need to login again' });
+    throw new AppError({ message: 'You need to login again', type: 'auth' });
   }
-  // console.log('here 1');
-  const temp = await supabaseClient.auth.getSession();
-  const { data, error } = await supabaseClient.auth.getSession();
-  // console.log('here 2');
+
+  const { data, error } = await supabase.auth.getSession();
   if (error) {
-    // queryClient.clear();
-    // await logout();
-    throw new AppError({ message: error.message, cause: error });
+    throw await buildAppError(error)
+      .setAuthErrorMessage('You need to login again')
+      .logoutOnAuthError()
+      .build();
   }
+  
   if (!data.session) {
-    // queryClient.clear();
-    // await logout();
     throw new AppError({ message: 'You need to login again' });
   }
   return data.session;
