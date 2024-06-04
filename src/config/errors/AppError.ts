@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/lines-between-class-members */
-import { isAuthError } from '@supabase/supabase-js';
 import { ErrorType, ErrorLike } from '@/config/errors/types';
+import { determineAppErrorTypeFromSupabaseError } from '@/config/errors/utils';
 
 export type AppErrorConstructor = {
   type: ErrorType;
@@ -25,50 +25,21 @@ export class AppError extends Error {
   protected readonly original: AppErrorConstructor['cause'];
   protected __isAppError = true;
 
-  constructor({ type, message, cause }: AppErrorConstructor) {
-    const messageOfType = message ?? defaultMessages[type];
-
-    if (cause instanceof Error) {
-      // @ts-expect-error https://github.com/tc39/proposal-error-cause
-      super(messageOfType, { cause });
-    } else {
-      super(messageOfType);
-    }
+  constructor({ type, message = defaultMessages[type], cause }: AppErrorConstructor) {
+    // @ts-expect-error https://github.com/tc39/proposal-error-cause
+    super(message, { cause: cause instanceof Error ? cause : undefined });
 
     this.name = this.constructor.name;
     this.type = type;
     this.original = cause;
   }
 
-  public static fromSupabaseError({ error, status, message }: AppErrorFromSupabaseError): AppError {
-    // a "Failed to fetch" message signifies some sort of server error
-    if (error.message.includes('Failed to fetch')) {
-      return new AppError({
-        message: message ?? defaultMessages.server,
-        type: 'server',
-        cause: error,
-      });
-    }
+  public static fromSupabaseError({ error, status, message }: AppErrorFromSupabaseError) {
+    const errorType = determineAppErrorTypeFromSupabaseError(error, status);
 
-    // (1) if it is a supabase auth error
-    // (2) or network status code made during a supabase --database-- call equals 401
-    // (3) or network status code made during a supabase --storage-- call equals 401
-    const isSupabaseAuthError = isAuthError(error)
-      || status === 401
-      || (error && 'status' in error && error.status === 401);
-
-    if (isSupabaseAuthError) {
-      return new AppError({
-        message: message ?? defaultMessages.auth,
-        type: 'auth',
-        cause: error,
-      });
-    }
-
-    // general app error
     return new AppError({
-      message: message ?? defaultMessages.app,
-      type: 'app',
+      type: errorType,
+      message: message ?? defaultMessages[errorType],
       cause: error,
     });
   }
