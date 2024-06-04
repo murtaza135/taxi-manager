@@ -3,11 +3,12 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { SideNav } from '@/features/navigation/components/side-nav/SideNav';
 import { TopNav } from '@/features/navigation/components/top-nav/TopNav';
 import { MobileNav } from '@/features/navigation/components/mobile-nav/MobileNav';
-import { ContentContainer } from '@/ui/Container';
+import { ContentContainer, BasicContainer } from '@/ui/Container';
 import { Spinner } from '@/ui/Spinner';
 import { useSession } from '@/features/auth/hooks/useSession';
 import { useLogout } from '@/features/auth/hooks/useLogout';
 import { useToast } from '@/ui/toast';
+import { SimpleTopNav } from '@/features/navigation/components/top-nav/SimpleTopNav';
 
 export function PrivateLayout() {
   const { isLoading, isError, error } = useSession();
@@ -24,12 +25,10 @@ export function PrivateLayout() {
   if (isLoading) {
     return (
       <>
-        <SideNav />
-        <TopNav />
-        <ContentContainer>
+        <SimpleTopNav />
+        <BasicContainer>
           <Spinner />
-        </ContentContainer>
-        <MobileNav />
+        </BasicContainer>
       </>
     );
   }
