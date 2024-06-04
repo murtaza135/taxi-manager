@@ -76,10 +76,13 @@ export class AppErrorBuilder {
       || (this.error && 'status' in this.error && this.error.status === 401)
       || this.type === 'auth';
 
+    console.log(isSupabaseAuthError);
+
     if (isSupabaseAuthError) {
       if (this.shouldDeleteSessionOnAuthError) {
         localStorage.removeItem(config.SUPABASE.authKey);
-        await queryClient.invalidateQueries({ queryKey: ['auth'] });
+        await queryClient.invalidateQueries();
+        console.log('here 2');
       }
 
       return new AppError({

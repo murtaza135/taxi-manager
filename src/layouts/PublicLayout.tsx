@@ -7,11 +7,7 @@ import { useSession } from '@/features/auth/hooks/useSession';
 import { useUser } from '@/features/auth/hooks/useUser';
 
 export function PublicLayout() {
-  const { isLoading, isSuccess, isError } = useSession();
-
-  // console.log(isLoading);
-  // console.log(isSuccess);
-  // console.log(isError);
+  const { isLoading, isSuccess } = useSession();
 
   if (isLoading) {
     return (

@@ -6,12 +6,14 @@ import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
 
 async function getSession() {
   const localSession = localStorage.getItem(config.SUPABASE.authKey);
+  console.log(localSession);
   if (!localSession) {
     throw await AppErrorBuilder
       .fromType('auth')
       .deleteSessionOnAuthError()
       .build();
   }
+  console.log('here 1');
 
   const { data, error } = await supabase.auth.getSession();
   if (error) {

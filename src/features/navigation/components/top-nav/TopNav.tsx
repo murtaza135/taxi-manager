@@ -19,7 +19,7 @@ export function TopNav() {
   const isDarkmode = useIsDarkmode();
   const { toggleDarkmode } = useDarkmodeActions();
   const { toggleNav } = useNavActions();
-  const { mutate, isPending } = useLogout({ successRedirect: '/login' });
+  const { mutate, isPending } = useLogout({ redirect: '/login' });
   const { data, isSuccess } = useCompany();
   const { data: logo } = useCompanyLogo();
   const src = useBlobToImgSrc(logo);
