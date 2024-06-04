@@ -19,7 +19,6 @@ export async function login(args: LoginFormSchema) {
     throw await AppErrorBuilder
       .fromSupabaseError(error)
       .setAuthErrorMessage('Invalid login credentials')
-      .logoutOnAuthError()
       .build();
   }
 

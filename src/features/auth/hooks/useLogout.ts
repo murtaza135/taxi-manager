@@ -14,7 +14,6 @@ export async function logout(options?: SignOut) {
     throw await AppErrorBuilder
       .fromSupabaseError(error)
       .setAuthErrorMessage('Something went wrong')
-      .logoutOnAuthError()
       .build();
   }
 }

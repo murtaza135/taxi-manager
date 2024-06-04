@@ -16,9 +16,9 @@ export class AppErrorBuilder {
   private type?: ErrorType;
   private status?: number;
   private appErrorMessage: string = 'Something went wrong';
-  private authErrorMessage: string = 'You need to login';
+  private authErrorMessage: string = 'Please login again';
   private serverErrorMessage: string = 'Something went wrong';
-  private shouldLogoutOnAuthError: boolean = false;
+  private shouldLogoutOnAuthError: boolean = true;
 
   constructor({ type, error, status }: AppErrorBuilderConstructor) {
     this.type = type;
@@ -49,8 +49,8 @@ export class AppErrorBuilder {
     return this;
   }
 
-  public logoutOnAuthError() {
-    this.shouldLogoutOnAuthError = true;
+  public preventLogoutOnAuthError() {
+    this.shouldLogoutOnAuthError = false;
     return this;
   }
 

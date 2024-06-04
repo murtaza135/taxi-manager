@@ -5,13 +5,7 @@ import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
 
 async function getUser() {
   const { data, error } = await supabase.auth.getUser();
-  if (error) {
-    throw await AppErrorBuilder
-      .fromSupabaseError(error)
-      .setAuthErrorMessage('You need to login again')
-      .logoutOnAuthError()
-      .build();
-  }
+  if (error) throw await AppErrorBuilder.fromSupabaseError(error).build();
   return data.user;
 }
 

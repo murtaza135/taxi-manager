@@ -25,7 +25,6 @@ async function getCompany(): Promise<CompanyDetails> {
     throw await AppErrorBuilder
       .fromSupabaseError(error, status)
       .setAppErrorMessage('Could not load company data')
-      .logoutOnAuthError()
       .build();
   }
 
