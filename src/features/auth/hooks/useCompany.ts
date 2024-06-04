@@ -1,49 +1,44 @@
 import { useQuery } from '@tanstack/react-query';
-import { PostgrestError, User } from '@supabase/supabase-js';
-import { supabaseClient } from '@/config/api/supabaseClient';
-import { getSession } from '@/features/auth/hooks/useSession';
+import { PostgrestError } from '@supabase/supabase-js';
+import { supabase } from '@/config/api/supabaseClient';
+import { sessionQueryKey, getSession } from '@/features/auth/hooks/useSession';
 import { Tables } from '@/types/database';
-import { AppError } from '@/config/errors/AppError';
 import { queryClient } from '@/config/api/queryClient';
+import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
 
-// TODO use Pick instead?
-type Company = Omit<
+type CompanyDetails = Pick<
   Tables<'company'>,
-  'auth_id' | 'id' | 'created_at'
+  'logo_path' | 'name' | 'company_number' | 'address' | 'phone_number' | 'email'
 >;
 
 export const companyQueryKey = ['auth', 'company'] as const;
 
-export async function getCompany(): Promise<Company> {
-  const session = await getSession();
-  // const data1 = await queryClient.fetchQuery<User>({
-  //   queryKey: ['auth', 'user'],
-  // });
-  // console.log(data1);
+export async function getCompany(): Promise<CompanyDetails> {
+  const session = await queryClient.ensureQueryData({
+    queryKey: sessionQueryKey,
+    queryFn: getSession,
+  });
 
-  const { data, error, status, statusText, count } = await supabaseClient
+  const { data, error, status } = await supabase
     .from('company')
     .select('logo_path, name, company_number, address, phone_number, email')
     .eq('auth_id', session.user.id)
     .limit(1)
     .single();
 
-  console.log('status:', status);
+  if (error) {
+    throw await AppErrorBuilder
+      .fromSupabaseError(error, status)
+      .setAppErrorMessage('Could not load company data')
+      .logoutOnAuthError()
+      .build();
+  }
 
-  // console.log(error?.code);
-  // console.log(error?.details);
-  // console.log(error?.hint);
-  // console.log(error?.message);
-
-  // TODO create custom error to handle postgreserror
-  if (error) throw new AppError({ message: error.message, cause: error });
-  // TODO create custom error and change message
-  if (!data) throw new AppError({ message: 'Something went wrong' });
   return data;
 }
 
 export function useCompany() {
-  const query = useQuery<Company, PostgrestError>({
+  const query = useQuery<CompanyDetails, PostgrestError>({
     queryKey: companyQueryKey,
     queryFn: getCompany,
   });
