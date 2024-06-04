@@ -4,10 +4,13 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { router } from '@/config/router/router';
 import { queryClient } from '@/config/api/queryClient';
+import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { applyTheme } from '@/features/darkmode/utils/applyTheme';
 import { config } from '@/config/config';
 import '@/styles/main.css';
 
+// eslint-disable-next-line no-void
+void queryClient.prefetchQuery(sessionOptions());
 applyTheme();
 
 export function App() {
