@@ -7,14 +7,19 @@ import { ContentContainer } from '@/ui/Container';
 import { Spinner } from '@/ui/Spinner';
 import { useSession } from '@/features/auth/hooks/useSession';
 import { useLogout } from '@/features/auth/hooks/useLogout';
+import { useToast } from '@/ui/toast';
 
 export function PrivateLayout() {
-  const { isLoading, isError } = useSession();
+  const { isLoading, isError, error } = useSession();
   const { mutate: logout } = useLogout({ redirect: '/login', replace: true });
+  const { toast } = useToast();
 
   useEffect(() => {
-    if (isError) logout();
-  }, [isError, logout]);
+    if (isError) {
+      logout();
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    }
+  }, [isError, error, logout, toast]);
 
   if (isLoading) {
     return (
