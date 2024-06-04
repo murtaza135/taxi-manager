@@ -15,11 +15,12 @@ async function getCompanyLogo(): Promise<Blob | null> {
     .download(logoPath);
 
   if (error) {
-    throw await AppErrorBuilder
-      .fromSupabaseError(error)
-      .setAppErrorMessage('Could not load company logo')
-      .deleteSessionOnAuthError()
-      .build();
+    // throw await AppErrorBuilder
+    //   .fromSupabaseError(error)
+    //   .setAppErrorMessage('Could not load company logo')
+    //   .deleteSessionOnAuthError()
+    //   .build();
+    throw AppError.fromSupabaseError({ error, message: 'Could not load company logo' });
   }
 
   return logo;

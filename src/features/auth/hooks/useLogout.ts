@@ -4,6 +4,7 @@ import { AuthError, SignOut } from '@supabase/supabase-js';
 import { supabase } from '@/config/api/supabaseClient';
 import { AppErrorBuilder } from '@/config/errors/AppErrorBuilder';
 import { config } from '@/config/config';
+import { AppError } from '@/config/errors/AppError';
 
 // TODO if supabase.auth.signOut() fails, then it seems like the user is logged out on the frontend, but the session still remains active in the backend
 
@@ -11,12 +12,18 @@ export async function logout(options?: SignOut) {
   const scope = options?.scope ?? 'local';
   const { error } = await supabase.auth.signOut({ scope });
   if (error) {
-    throw await AppErrorBuilder
-      .fromSupabaseError(error)
-      .setAuthErrorMessage('Something went wrong')
-      .deleteSessionOnAuthError()
-      .build();
+    throw AppError.fromSupabaseError({
+      error,
+      message: 'Something went wrong',
+    });
   }
+  // if (error) {
+  //   throw await AppErrorBuilder
+  //     .fromSupabaseError(error)
+  //     .setAuthErrorMessage('Something went wrong')
+  //     .deleteSessionOnAuthError()
+  //     .build();
+  // }
 }
 
 type Options = {

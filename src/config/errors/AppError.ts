@@ -3,8 +3,8 @@ import { isAuthError } from '@supabase/supabase-js';
 import { ErrorType, ErrorLike } from '@/config/errors/types';
 
 export type AppErrorConstructor = {
-  message: string;
-  type?: ErrorType;
+  type: ErrorType;
+  message?: string;
   cause?: Error | ErrorLike;
 };
 
@@ -25,12 +25,14 @@ export class AppError extends Error {
   protected readonly original: AppErrorConstructor['cause'];
   protected __isAppError = true;
 
-  constructor({ message, type = 'app', cause }: AppErrorConstructor) {
+  constructor({ type, message, cause }: AppErrorConstructor) {
+    const messageOfType = message ?? defaultMessages[type];
+
     if (cause instanceof Error) {
       // @ts-expect-error https://github.com/tc39/proposal-error-cause
-      super(message, { cause });
+      super(messageOfType, { cause });
     } else {
-      super(message);
+      super(messageOfType);
     }
 
     this.name = this.constructor.name;

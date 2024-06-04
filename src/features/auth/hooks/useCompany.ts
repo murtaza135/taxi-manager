@@ -22,11 +22,12 @@ async function getCompany(): Promise<CompanyDetails> {
     .single();
 
   if (error) {
-    throw await AppErrorBuilder
-      .fromSupabaseError(error, status)
-      .setAppErrorMessage('Could not load company data')
-      .deleteSessionOnAuthError()
-      .build();
+    // throw await AppErrorBuilder
+    //   .fromSupabaseError(error, status)
+    //   .setAppErrorMessage('Could not load company data')
+    //   .deleteSessionOnAuthError()
+    //   .build();
+    throw AppError.fromSupabaseError({ error, status, message: 'Could not load company data' });
   }
 
   return data;

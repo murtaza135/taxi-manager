@@ -17,12 +17,19 @@ export async function login(args: LoginFormSchema) {
   const { data, error } = await supabase.auth.signInWithPassword(args);
 
   if (error) {
-    throw await AppErrorBuilder
-      .fromSupabaseError(error)
-      .setAuthErrorMessage('Invalid login credentials')
-      .deleteSessionOnAuthError()
-      .build();
+    throw AppError.fromSupabaseError({
+      error,
+      message: 'Invalid login crendentials',
+    });
   }
+
+  // if (error) {
+  //   throw await AppErrorBuilder
+  //     .fromSupabaseError(error)
+  //     .setAuthErrorMessage('Invalid login credentials')
+  //     .deleteSessionOnAuthError()
+  //     .build();
+  // }
 
   return data;
 }
