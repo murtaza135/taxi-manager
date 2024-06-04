@@ -4,15 +4,18 @@ import { AuthTokenResponsePassword, AuthError } from '@supabase/supabase-js';
 import { useToast } from '@/ui/toast';
 import { supabase } from '@/config/api/supabaseClient';
 import { LoginFormSchema } from '@/features/auth/schemas';
+import { buildAppError } from '@/config/errors/AppErrorBuilder';
 
 export async function login(args: LoginFormSchema) {
-  const { data } = await supabase(
-    (client) => client.auth.signInWithPassword(args),
-    {
-      throwError: true,
-      authErrorMessage: 'Invalid login credentials',
-    },
-  );
+  const { data, error } = await supabase.auth.signInWithPassword(args);
+
+  if (error) {
+    throw await buildAppError(error)
+      .setAuthErrorMessage('Invalid login credentials')
+      .logoutOnAuthError()
+      .build();
+  }
+
   return data;
 }
 
@@ -33,7 +36,7 @@ export function useLogin(options?: Options) {
     mutationFn: login,
     onSuccess: async () => {
       if (options?.successRedirect) navigate(options.successRedirect);
-      await queryClient.refetchQueries({ queryKey: ['auth'] });
+      await queryClient.invalidateQueries({ queryKey: ['auth'] });
     },
     onError: (error) => toast({
       title: 'Login Error',
