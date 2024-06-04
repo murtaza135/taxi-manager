@@ -10,7 +10,7 @@ export function PublicLayout() {
 
   // if there is a session, then we do not want to be in the public layout
   if (session) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/home" replace />;
   }
 
   return (

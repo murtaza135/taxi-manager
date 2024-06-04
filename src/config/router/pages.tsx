@@ -1,6 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import { lazyImport } from '@/utils/lazy-import';
 
+const { IndexPage } = lazyImport(() => import('@/pages/IndexPage'), 'IndexPage');
 const { HomePage } = lazyImport(() => import('@/pages/HomePage'), 'HomePage');
 const { DriverPage } = lazyImport(() => import('@/pages/DriverPage'), 'DriverPage');
 const { DriversPage } = lazyImport(() => import('@/pages/DriversPage'), 'DriversPage');
@@ -14,6 +15,10 @@ const { TaxisPage } = lazyImport(() => import('@/pages/TaxisPage'), 'TaxisPage')
 
 export const publicPages: RouteObject[] = [
   {
+    path: '/',
+    element: <IndexPage />,
+  },
+  {
     path: '/login',
     element: <LoginPage />,
   },
@@ -21,7 +26,7 @@ export const publicPages: RouteObject[] = [
 
 export const privatePages: RouteObject[] = [
   {
-    path: '/',
+    path: '/home',
     element: <HomePage />,
   },
   {
