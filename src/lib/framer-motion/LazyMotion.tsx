@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { LazyMotion as FramerMotionLazyMotion } from 'framer-motion';
 
-const loadFeatures = () => import('./features.ts').then((res) => res.default);
+const loadFeatures = () => import('./features.ts').then((res) => res.domMax);
 
 type LazyMotionProps = {
   children: ReactNode;
