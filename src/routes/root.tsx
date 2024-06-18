@@ -1,13 +1,19 @@
 import { Outlet, useNavigation } from 'react-router-dom';
+import { QueryClient } from '@tanstack/react-query';
 import { createComponent } from '@/lib/react-router-dom/createComponent';
 import { Toaster } from '@/ui/toast';
 import { ScrollToTopButton } from '@/features/scroll/ScrollToTopButton';
 
 // TODO
 
-function rootLoader() {
+// eslint-disable-next-line arrow-body-style
+const rootLoader = (queryClient: QueryClient) => () => {
   return null;
-}
+};
+
+// function rootLoader() {
+//   return null;
+// }
 
 function RootSuspenseBoundary() {
   return <div>RootSuspenseBoundary</div>;
@@ -33,5 +39,7 @@ function RootComponent() {
 }
 
 export const loader = rootLoader;
+export const SuspenseBoundary = RootSuspenseBoundary;
 export const ErrorBoundary = RootErrorBoundary;
-export const Component = createComponent(RootComponent, RootSuspenseBoundary);
+export const Component = RootComponent;
+// export const Component = createComponent(RootComponent, RootSuspenseBoundary);

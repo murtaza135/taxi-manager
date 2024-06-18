@@ -21,7 +21,7 @@ export function createComponent(
       <Component />
     </Suspense>
   );
-  SuspenseWrappedComponent.name = Component.name ?? componentName;
+  // SuspenseWrappedComponent.name = Component.name ?? componentName;
 
   return SuspenseWrappedComponent;
 }

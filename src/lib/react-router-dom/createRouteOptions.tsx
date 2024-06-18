@@ -8,16 +8,16 @@ import { createComponent } from '@/lib/react-router-dom/createComponent';
 // };
 
 type Options = {
-  Component?: () => JSX.Element;
-  SuspenseBoundary?: () => JSX.Element;
-  ErrorBoundary?: () => JSX.Element;
+  Component?: React.ComponentType;
+  SuspenseBoundary?: React.ComponentType;
+  ErrorBoundary?: React.ComponentType;
   loader?: (queryClient: QueryClient) => LoaderFunction;
 };
 
 export function createRouteOptions(
   options: Options,
   queryClient: QueryClient,
-): RouteProps {
+) {
   const { Component, SuspenseBoundary, loader, ...rest } = options;
   return {
     Component: createComponent(Component, SuspenseBoundary),
