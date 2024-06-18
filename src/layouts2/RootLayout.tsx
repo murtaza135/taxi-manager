@@ -4,7 +4,7 @@ import { ScrollToTopButton } from '@/features/scroll/ScrollToTopButton';
 import { createComponent } from '@/lib/react-router-dom/createComponent';
 
 function rootLoader() {
-
+  return null;
 }
 
 function RootSuspenseBoundary() {
@@ -30,4 +30,6 @@ function RootComponent() {
 
 export const loader = rootLoader;
 export const ErrorBoundary = RootErrorBoundary;
-export const Component = createComponent(RootComponent, RootSuspenseBoundary);
+// export const Component = createComponent(RootComponent, RootSuspenseBoundary);
+export const Component = RootComponent;
+export const SuspenseBoundary = RootSuspenseBoundary;
