@@ -3,10 +3,14 @@ import { Suspense } from 'react';
 // TODO clean up
 
 export function createComponent(
-  Component: () => JSX.Element,
-  SuspenseBoundary?: (() => JSX.Element) | null,
+  Component?: React.ComponentType | null,
+  SuspenseBoundary?: React.ComponentType | null,
   componentName?: string | null,
 ) {
+  if (!Component) {
+    return null;
+  }
+
   if (!SuspenseBoundary) {
     return Component;
   }
@@ -17,10 +21,7 @@ export function createComponent(
       <Component />
     </Suspense>
   );
-
-  if (componentName) {
-    SuspenseWrappedComponent.name = componentName;
-  }
+  SuspenseWrappedComponent.name = Component.name ?? componentName;
 
   return SuspenseWrappedComponent;
 }
