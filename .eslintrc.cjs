@@ -24,7 +24,12 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-unused-vars': ['warn', {
       "ignoreRestSiblings": true,
-      "destructuredArrayIgnorePattern": "[A-Za-z]"
+      "destructuredArrayIgnorePattern": "[A-Za-z]",
+      "args": "all",
+      "argsIgnorePattern": "^_",
+      "caughtErrors": "all",
+      "caughtErrorsIgnorePattern": "^_",
+      "varsIgnorePattern": "^_",
     }],
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',

@@ -3,6 +3,8 @@ import { createComponent } from '@/lib/react-router-dom/createComponent';
 import { Toaster } from '@/ui/toast';
 import { ScrollToTopButton } from '@/features/scroll/ScrollToTopButton';
 
+// TODO
+
 function rootLoader() {
   return null;
 }
