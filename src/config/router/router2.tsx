@@ -1,5 +1,4 @@
-import { createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
-import { Route } from '@/lib/react-router-dom/Route';
+import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import * as rootOptions from '@/routes/root';
 
 const routes = createRoutesFromElements(

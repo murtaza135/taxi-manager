@@ -1,4 +1,5 @@
 import { Outlet, useNavigation } from 'react-router-dom';
+import { createComponent } from '@/lib/react-router-dom/createComponent';
 import { Toaster } from '@/ui/toast';
 import { ScrollToTopButton } from '@/features/scroll/ScrollToTopButton';
 
@@ -19,7 +20,7 @@ function RootComponent() {
 
   return (
     <>
-      {(state === 'idle' || state === 'submitting') && <p className="fixed top-0 left-0">Loading...</p>}
+      {(state === 'loading' || state === 'submitting') && <p className="fixed top-0 left-0">Loading...</p>}
       <Outlet />
       <Toaster />
       <ScrollToTopButton />
@@ -28,6 +29,5 @@ function RootComponent() {
 }
 
 export const loader = rootLoader;
-export const SuspenseBoundary = RootSuspenseBoundary;
 export const ErrorBoundary = RootErrorBoundary;
-export const Component = RootComponent;
+export const Component = createComponent(RootComponent, RootSuspenseBoundary);

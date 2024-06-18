@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { createComponent } from '@/lib/react-router-dom/createComponent';
 import { Title } from '@/features/title/components/Title';
 
 function driverPageLoader() {
@@ -28,6 +29,5 @@ function DriverPageComponent() {
 }
 
 export const loader = driverPageLoader;
-export const SuspenseBoundary = DriverPageSuspenseBoundary;
 export const ErrorBoundary = DriverPageErrorBoundary;
-export const Component = DriverPageComponent;
+export const Component = createComponent(DriverPageComponent, DriverPageSuspenseBoundary);
