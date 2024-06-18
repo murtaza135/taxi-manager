@@ -17,10 +17,12 @@ function RootErrorBoundary() {
 
 function RootComponent() {
   const { state } = useNavigation();
+  console.log(state);
 
   return (
     <>
       {(state === 'loading' || state === 'submitting') && <p className="fixed top-0 left-0">Loading...</p>}
+      <p>Root</p>
       <Outlet />
       <Toaster />
       <ScrollToTopButton />

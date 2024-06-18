@@ -1,8 +1,10 @@
 import { useParams } from 'react-router-dom';
 import { createComponent } from '@/lib/react-router-dom/createComponent';
 import { Title } from '@/features/title/components/Title';
+import { sleep } from '@/utils/sleep';
 
-function driverPageLoader() {
+async function driverPageLoader() {
+  await sleep(100);
   return null;
 }
 
@@ -24,6 +26,7 @@ function DriverPageComponent() {
   return (
     <div>
       <Title title={`Driver ${id}`} />
+      <p>Driver</p>
     </div>
   );
 }
