@@ -1,20 +1,19 @@
 import { useParams } from 'react-router-dom';
-import { Suspense } from 'react';
 import { Title } from '@/features/title/components/Title';
 
 function driverPageLoader() {
-  return {};
+  return null;
+}
+
+function DriverPageSuspenseBoundary() {
+  return (
+    <div>DriverPageSuspenseBoundary</div>
+  );
 }
 
 function DriverPageErrorBoundary() {
   return (
     <div>DriverPageErrorBoundary</div>
-  );
-}
-
-function DriverPageSuspenseFallback() {
-  return (
-    <div>DriverPageSuspenseFallback</div>
   );
 }
 
@@ -29,11 +28,6 @@ function DriverPageComponent() {
 }
 
 export const loader = driverPageLoader;
+export const SuspenseBoundary = DriverPageSuspenseBoundary;
 export const ErrorBoundary = DriverPageErrorBoundary;
-export function Component() {
-  return (
-    <Suspense fallback={<DriverPageSuspenseFallback />}>
-      <DriverPageComponent />
-    </Suspense>
-  );
-}
+export const Component = DriverPageComponent;

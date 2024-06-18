@@ -1,7 +1,6 @@
 import { Outlet, useNavigation } from 'react-router-dom';
 import { Toaster } from '@/ui/toast';
 import { ScrollToTopButton } from '@/features/scroll/ScrollToTopButton';
-import { createComponent } from '@/lib/react-router-dom/createComponent';
 
 function rootLoader() {
   return null;
@@ -29,7 +28,6 @@ function RootComponent() {
 }
 
 export const loader = rootLoader;
-export const ErrorBoundary = RootErrorBoundary;
-// export const Component = createComponent(RootComponent, RootSuspenseBoundary);
-export const Component = RootComponent;
 export const SuspenseBoundary = RootSuspenseBoundary;
+export const ErrorBoundary = RootErrorBoundary;
+export const Component = RootComponent;
