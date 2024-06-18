@@ -1,11 +1,8 @@
 import { Suspense } from 'react';
 
-// TODO clean up
-
 export function createComponent(
   Component?: React.ComponentType | null,
   SuspenseBoundary?: React.ComponentType | null,
-  componentName?: string | null,
 ) {
   if (!Component) {
     return null;
@@ -16,12 +13,11 @@ export function createComponent(
   }
 
   // eslint-disable-next-line react/function-component-definition
-  const SuspenseWrappedComponent = () => (
+  const SuspenseWrappedComponent: React.ComponentType = () => (
     <Suspense fallback={<SuspenseBoundary />}>
       <Component />
     </Suspense>
   );
-  // SuspenseWrappedComponent.name = Component.name ?? componentName;
 
   return SuspenseWrappedComponent;
 }

@@ -1,24 +1,43 @@
-import { LoaderFunction, LazyRouteFunction, RouteProps } from 'react-router-dom';
+import { LoaderFunction, RouteObject, LazyRouteFunction } from 'react-router-dom';
 import { QueryClient } from '@tanstack/react-query';
-import { createComponent } from '@/lib/react-router-dom/createComponent';
+import { createComponent } from './createComponent';
 
-// type Options = Omit<RouteProps, 'lazy' | 'loader'> & {
-//   SuspenseBoundary?: React.ComponentType;
-//   loader?: (queryClient: QueryClient) => LoaderFunction;
-// };
-
-type Options = {
-  Component?: React.ComponentType;
-  SuspenseBoundary?: React.ComponentType;
-  ErrorBoundary?: React.ComponentType;
+export type ImportedRouteOptions = {
+  Component?: RouteObject['Component'];
+  SuspenseBoundary?: RouteObject['Component'];
+  ErrorBoundary?: RouteObject['ErrorBoundary'];
   loader?: (queryClient: QueryClient) => LoaderFunction;
 };
 
+export type RouteOptions = Pick<
+  RouteObject,
+  'Component' | 'ErrorBoundary' | 'loader'
+>;
+
 export function createRouteOptions(
-  options: Options,
+  options: ImportedRouteOptions,
   queryClient: QueryClient,
-) {
-  const { Component, SuspenseBoundary, loader, ...rest } = options;
+): RouteOptions;
+export function createRouteOptions(
+  optionsFn: () => Promise<ImportedRouteOptions>,
+  queryClient: QueryClient,
+): LazyRouteFunction<RouteOptions>;
+export function createRouteOptions(
+  optionsOrFn: ImportedRouteOptions | (() => Promise<ImportedRouteOptions>),
+  queryClient: QueryClient,
+): RouteOptions | LazyRouteFunction<RouteOptions> {
+  if (typeof optionsOrFn === 'function') {
+    return async function lazyRouteOptions() {
+      const { Component, SuspenseBoundary, loader, ...rest } = await optionsOrFn();
+      return {
+        Component: createComponent(Component, SuspenseBoundary),
+        loader: loader?.(queryClient),
+        ...rest,
+      };
+    };
+  }
+
+  const { Component, SuspenseBoundary, loader, ...rest } = optionsOrFn;
   return {
     Component: createComponent(Component, SuspenseBoundary),
     loader: loader?.(queryClient),

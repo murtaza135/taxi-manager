@@ -1,18 +1,12 @@
 import { useParams } from 'react-router-dom';
 import { QueryClient } from '@tanstack/react-query';
-import { createComponent } from '@/lib/react-router-dom/createComponent';
 import { Title } from '@/features/title/components/Title';
 import { sleep } from '@/utils/sleep';
 
-const driverPageLoader = (queryClient: QueryClient) => async () => {
+const driverPageLoader = (_queryClient: QueryClient) => async () => {
   await sleep(100);
   return null;
 };
-
-// async function driverPageLoader() {
-//   await sleep(100);
-//   return null;
-// }
 
 function DriverPageSuspenseBoundary() {
   return (
@@ -38,5 +32,6 @@ function DriverPageComponent() {
 }
 
 export const loader = driverPageLoader;
+export const SuspenseBoundary = DriverPageSuspenseBoundary;
 export const ErrorBoundary = DriverPageErrorBoundary;
-export const Component = createComponent(DriverPageComponent, DriverPageSuspenseBoundary);
+export const Component = DriverPageComponent;
