@@ -4,7 +4,6 @@ import { queryClient } from '@/config/api/queryClient';
 import * as rootOptions from '@/routes/root';
 import * as privateLayoutOptions from '@/routes/layouts/private';
 import * as publicOnlyLayoutOptions from '@/routes/layouts/publicOnly';
-// import * as driverOptions from '@/routes/pages/driver';
 
 const routes = createRoutesFromElements(
   <Route path="/" {...createRouteOptions(rootOptions, queryClient)}>

@@ -1,8 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import { redirect, Outlet } from 'react-router-dom';
-import { createComponent } from '@/lib/react-router-dom/createComponent';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
-import { AppError, isAppError } from '@/config/errors/AppError';
+import { isAppError } from '@/config/errors/AppError';
 import { logout } from '@/features/auth/hooks/useLogout';
 import { toast } from '@/ui/toast';
 import { BasicContainer, ContentContainer } from '@/ui/Container';
@@ -57,4 +56,5 @@ function PrivateLayoutComponent() {
 }
 
 export const loader = privateLayoutLoader;
-export const Component = createComponent(PrivateLayoutComponent, PrivateLayoutSuspenseBoundary);
+export const SuspenseBoundary = PrivateLayoutSuspenseBoundary;
+export const Component = PrivateLayoutComponent;
