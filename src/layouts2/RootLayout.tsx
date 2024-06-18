@@ -1,18 +1,18 @@
 import { Outlet, useNavigation } from 'react-router-dom';
-import { Suspense } from 'react';
 import { Toaster } from '@/ui/toast';
 import { ScrollToTopButton } from '@/features/scroll/ScrollToTopButton';
+import { createComponent } from '@/lib/react-router-dom/createComponent';
 
 function rootLoader() {
 
 }
 
-function RootErrorBoundary() {
-  return <div>RootErrorBoundary</div>;
+function RootSuspenseBoundary() {
+  return <div>RootSuspenseBoundary</div>;
 }
 
-function RootSuspenseFallback() {
-  return <div>RootSuspenseFallback</div>;
+function RootErrorBoundary() {
+  return <div>RootErrorBoundary</div>;
 }
 
 function RootComponent() {
@@ -30,10 +30,4 @@ function RootComponent() {
 
 export const loader = rootLoader;
 export const ErrorBoundary = RootErrorBoundary;
-export function Component() {
-  return (
-    <Suspense fallback={<RootSuspenseFallback />}>
-      <RootComponent />
-    </Suspense>
-  );
-}
+export const Component = createComponent(RootComponent, RootSuspenseBoundary);
