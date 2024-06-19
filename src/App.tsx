@@ -9,6 +9,7 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { applyTheme } from '@/features/darkmode/utils/applyTheme';
 import { config } from '@/config/config';
 import '@/styles/main.css';
+import { Spinner } from '@/ui/Spinner';
 
 // eslint-disable-next-line no-void
 void queryClient.prefetchQuery(sessionOptions());
@@ -16,7 +17,7 @@ applyTheme();
 
 export function App() {
   return (
-    <Suspense>
+    <Suspense fallback={<Spinner />}>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router2} />
         {!config.PROD && (

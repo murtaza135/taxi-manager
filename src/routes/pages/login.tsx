@@ -1,8 +1,12 @@
 import { QueryClient } from '@tanstack/react-query';
 import { Title } from '@/features/title/components/Title';
 import { LoginForm } from '@/features/auth/components/LoginForm';
+import { sleep } from '@/utils/sleep';
 
-const loginPageLoader = (_queryClient: QueryClient) => () => null;
+const loginPageLoader = (_queryClient: QueryClient) => async () => {
+  await sleep(2500);
+  return null;
+};
 
 function LoginPageSuspenseBoundary() {
   return <div>LoginPageSuspenseBoundary</div>;

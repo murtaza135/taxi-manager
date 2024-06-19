@@ -19,15 +19,16 @@ function RootErrorBoundary() {
 }
 
 function RootComponent() {
-  const { state } = useNavigation();
-  const { state: state2 } = useRevalidator();
-  console.log('useNavigation:', state);
-  console.log('useRevalidator:', state2);
+  const { state: navigationState } = useNavigation(); // for queries (via loaders)
+  const { state: revalidatorState } = useRevalidator(); // for mutations
+
+  const isLoading = revalidatorState === 'loading'
+    || navigationState === 'loading'
+    || navigationState === 'submitting';
 
   return (
     <>
-      {(state === 'loading' || state === 'submitting') && <p className="fixed top-0 left-0">Loading...</p>}
-      <p>Root</p>
+      {isLoading && <p className="fixed top-0 left-0 z-[200] text-red-700">Loading...</p>}
       <Outlet />
       <Toaster />
       <ScrollToTopButton />
