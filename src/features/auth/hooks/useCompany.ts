@@ -1,4 +1,4 @@
-import { useQuery, queryOptions } from '@tanstack/react-query';
+import { useSuspenseQuery, queryOptions } from '@tanstack/react-query';
 import { supabase } from '@/config/api/supabaseClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Tables } from '@/types/database';
@@ -39,6 +39,6 @@ export function companyOptions() {
 }
 
 export function useCompany() {
-  const query = useQuery(companyOptions());
+  const query = useSuspenseQuery(companyOptions());
   return query;
 }

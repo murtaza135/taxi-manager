@@ -1,4 +1,4 @@
-import { useQuery, queryOptions } from '@tanstack/react-query';
+import { useSuspenseQuery, queryOptions } from '@tanstack/react-query';
 import { AuthError, Session } from '@supabase/supabase-js';
 import { supabase } from '@/config/api/supabaseClient';
 import { AppError } from '@/config/errors/AppError';
@@ -18,6 +18,6 @@ export function sessionOptions() {
 }
 
 export function useSession() {
-  const query = useQuery(sessionOptions());
+  const query = useSuspenseQuery(sessionOptions());
   return query;
 }
