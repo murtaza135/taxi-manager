@@ -26,6 +26,16 @@ const routes = createRoutesFromElements(
         path="/driver/:id"
         lazy={createRouteOptions(() => import('@/routes/pages/driver'), queryClient)}
       />
+      <Route
+        id="driversPage"
+        path="/drivers"
+        lazy={createRouteOptions(() => import('@/routes/pages/drivers'), queryClient)}
+      />
+      <Route
+        id="hirePage"
+        path="/hire/:id"
+        lazy={createRouteOptions(() => import('@/routes/pages/hire'), queryClient)}
+      />
     </Route>
   </Route>,
 );
