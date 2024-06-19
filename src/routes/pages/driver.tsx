@@ -22,7 +22,7 @@ function DriverPageComponent() {
   return (
     <div>
       <Title title={`Driver ${id}`} />
-      <p>Driver</p>
+      <div>DriverPageComponent</div>
     </div>
   );
 }
