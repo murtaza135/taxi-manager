@@ -1,12 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { QueryClient } from '@tanstack/react-query';
 import { Title } from '@/features/title/components/Title';
-import { sleep } from '@/utils/sleep';
 
-const driverPageLoader = (_queryClient: QueryClient) => async () => {
-  await sleep(100);
-  return null;
-};
+const driverPageLoader = (_queryClient: QueryClient) => () => null;
 
 function DriverPageSuspenseBoundary() {
   return (

@@ -15,19 +15,15 @@ const routes = createRoutesFromElements(
       id="publicOnlyLayout"
       {...createRouteOptions(publicOnlyLayoutOptions, queryClient)}
     >
-      <Route
-        id="driverPage"
-        path="/driver"
-        lazy={createRouteOptions(() => import('@/routes/pages/driver'), queryClient)}
-      />
+      {/*  */}
     </Route>
     <Route
       id="privateLayout"
       {...createRouteOptions(privateLayoutOptions, queryClient)}
     >
       <Route
-        id="driver2Page"
-        path="/driver2"
+        id="driverPage"
+        path="/driver/:id"
         lazy={createRouteOptions(() => import('@/routes/pages/driver'), queryClient)}
       />
     </Route>
