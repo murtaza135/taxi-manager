@@ -1,4 +1,4 @@
-import { Outlet, useNavigation } from 'react-router-dom';
+import { Outlet, useNavigation, useRevalidator } from 'react-router-dom';
 import { QueryClient } from '@tanstack/react-query';
 import { Toaster } from '@/ui/toast';
 import { ScrollToTopButton } from '@/features/scroll/ScrollToTopButton';
@@ -10,12 +10,19 @@ function RootSuspenseBoundary() {
 }
 
 function RootErrorBoundary() {
-  return <div>RootErrorBoundary</div>;
+  return (
+    <div>
+      RootErrorBoundary
+      <Toaster />
+    </div>
+  );
 }
 
 function RootComponent() {
   const { state } = useNavigation();
-  console.log(state);
+  const { state: state2 } = useRevalidator();
+  console.log('useNavigation:', state);
+  console.log('useRevalidator:', state2);
 
   return (
     <>

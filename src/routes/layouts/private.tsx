@@ -18,15 +18,18 @@ const privateLayoutLoader = (queryClient: QueryClient) => async () => {
   } catch (error: unknown) {
     if (isAppError(error) && error.type === 'auth') {
       await logout();
+      queryClient.clear();
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
       return redirect('/login');
     }
 
     if (isAppError(error)) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      return null;
     }
 
     await logout();
+    queryClient.clear();
     throw error;
   }
 };
