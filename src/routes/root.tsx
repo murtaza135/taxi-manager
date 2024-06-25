@@ -75,7 +75,9 @@ function RootComponent() {
   const { state: navigationState } = useNavigation(); // for queries (via loaders)
   const { state: revalidatorState } = useRevalidator(); // for mutations
 
-  const isLoading = navigationState === 'loading' || revalidatorState === 'loading';
+  const isLoading = revalidatorState === 'loading'
+    || navigationState === 'loading'
+    || navigationState === 'submitting';
 
   return (
     <>
