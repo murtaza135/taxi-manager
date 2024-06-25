@@ -2,8 +2,7 @@ import { Suspense } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { router } from '@/config/router/router';
-import { router as router2 } from '@/config/router/router2';
+import { router } from '@/config/router';
 import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { applyTheme } from '@/features/darkmode/utils/applyTheme';
@@ -18,7 +17,7 @@ export function App() {
   return (
     <Suspense>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router2} />
+        <RouterProvider router={router} />
         {!config.PROD && (
           <ReactQueryDevtools initialIsOpen={false} position="bottom" buttonPosition="bottom-right" />
         )}
