@@ -2,7 +2,7 @@ import { useSuspenseQuery, queryOptions } from '@tanstack/react-query';
 import { supabase } from '@/config/api/supabaseClient';
 import { companyOptions } from '@/features/auth/hooks/useCompany';
 import { queryClient } from '@/config/api/queryClient';
-import { AppError } from '@/config/errors/AppError';
+import { AppError } from '@/errors/AppError';
 
 async function getCompanyLogo(): Promise<Blob | null> {
   const { logo_path: logoPath } = await queryClient.ensureQueryData(companyOptions());

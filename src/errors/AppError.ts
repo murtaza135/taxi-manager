@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/lines-between-class-members */
-import { ErrorType, ErrorLike } from '@/config/errors/types';
-import { determineAppErrorTypeFromSupabaseError } from '@/config/errors/utils';
+import { ErrorType, ErrorLike } from '@/errors/types';
+import { determineAppErrorTypeFromSupabaseError } from '@/errors/utils';
 
 export type AppErrorConstructor = {
   type: ErrorType;

@@ -4,7 +4,7 @@ import { AuthError, User, Session, WeakPassword } from '@supabase/supabase-js';
 import { useToast } from '@/ui/toast';
 import { supabase } from '@/config/api/supabaseClient';
 import { LoginFormSchema } from '@/features/auth/schemas';
-import { AppError } from '@/config/errors/AppError';
+import { AppError } from '@/errors/AppError';
 
 export async function login(args: LoginFormSchema) {
   const { data, error } = await supabase.auth.signInWithPassword(args);

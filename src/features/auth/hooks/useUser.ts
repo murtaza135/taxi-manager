@@ -1,7 +1,7 @@
 import { useSuspenseQuery, queryOptions } from '@tanstack/react-query';
 import { AuthError, User } from '@supabase/supabase-js';
 import { supabase } from '@/config/api/supabaseClient';
-import { AppError } from '@/config/errors/AppError';
+import { AppError } from '@/errors/AppError';
 
 async function getUser() {
   const { data, error } = await supabase.auth.getUser();

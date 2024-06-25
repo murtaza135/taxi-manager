@@ -3,7 +3,7 @@ import { supabase } from '@/config/api/supabaseClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
-import { AppError } from '@/config/errors/AppError';
+import { AppError } from '@/errors/AppError';
 
 type CompanyDetails = Pick<
   Tables<'company'>,

@@ -4,7 +4,7 @@ import { ScrollToTopButton } from '@/features/scroll/ScrollToTopButton';
 import { BasicContainer } from '@/ui/Container';
 import { Spinner } from '@/ui/Spinner';
 import { SimpleTopNav } from '@/features/navigation/components/top-nav/SimpleTopNav';
-import { ErrorComponent } from '@/config/errors/ErrorComponent';
+import { ErrorComponent } from '@/errors/ErrorComponent';
 import { useIsDarkmode } from '@/features/darkmode/state/darkmodeStore';
 import notFoundLightImage from '@/assets/images/404-page-not-found-light.svg';
 import notFoundDarkImage from '@/assets/images/404-page-not-found-dark.svg';

@@ -1,5 +1,5 @@
 import { isAuthError } from '@supabase/supabase-js';
-import { ErrorType, ErrorLike } from '@/config/errors/types';
+import { ErrorType, ErrorLike } from '@/errors/types';
 
 export function determineAppErrorTypeFromSupabaseError(
   error: Error | ErrorLike,

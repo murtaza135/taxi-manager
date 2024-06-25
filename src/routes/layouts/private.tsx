@@ -2,7 +2,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { redirect, Outlet } from 'react-router-dom';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { getLocalSession } from '@/features/auth/hooks/useLocalSession';
-import { isAppError } from '@/config/errors/AppError';
+import { isAppError } from '@/errors/AppError';
 import { logout } from '@/features/auth/hooks/useLogout';
 import { toast } from '@/ui/toast';
 import { BasicContainer, ContentContainer } from '@/ui/Container';
