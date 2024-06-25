@@ -10,6 +10,7 @@ import notFoundLightImage from '@/assets/images/404-page-not-found-light.svg';
 import notFoundDarkImage from '@/assets/images/404-page-not-found-dark.svg';
 import bugFixingLightImage from '@/assets/images/bug-fixing-light.svg';
 import bugFixingDarkImage from '@/assets/images/bug-fixing-dark.svg';
+import { TopBarProgress } from '@/lib/react-topbar-progress-indicator/TopBarProgress';
 
 function RootSuspenseBoundary() {
   return (
@@ -74,13 +75,11 @@ function RootComponent() {
   const { state: navigationState } = useNavigation(); // for queries (via loaders)
   const { state: revalidatorState } = useRevalidator(); // for mutations
 
-  const isLoading = revalidatorState === 'loading'
-    || navigationState === 'loading'
-    || navigationState === 'submitting';
+  const isLoading = navigationState === 'loading' || revalidatorState === 'loading';
 
   return (
     <>
-      {isLoading && <p className="fixed top-0 left-0 z-[200] text-red-700">Loading...</p>}
+      {isLoading && <TopBarProgress />}
       <Outlet />
       <Toaster />
       <ScrollToTopButton />
