@@ -1,18 +1,20 @@
-import { Outlet, isRouteErrorResponse, useNavigation, useRevalidator, useRouteError, useNavigate } from 'react-router-dom';
-import { VscWorkspaceUnknown } from 'react-icons/vsc';
+import { Outlet, isRouteErrorResponse, useNavigation, useRevalidator, useRouteError } from 'react-router-dom';
 import { Toaster } from '@/ui/toast';
 import { ScrollToTopButton } from '@/features/scroll/ScrollToTopButton';
 import { BasicContainer } from '@/ui/Container';
 import { Spinner } from '@/ui/Spinner';
-import { useLocalSession } from '@/features/auth/hooks/useLocalSession';
-import { TopNav } from '@/features/navigation/components/top-nav/TopNav';
 import { SimpleTopNav } from '@/features/navigation/components/top-nav/SimpleTopNav';
-import { Button } from '@/ui/Button';
+import { ErrorComponent } from '@/config/errors/ErrorComponent';
+import { useIsDarkmode } from '@/features/darkmode/state/darkmodeStore';
+import notFoundLightImage from '@/assets/images/404-page-not-found-light.svg';
+import notFoundDarkImage from '@/assets/images/404-page-not-found-dark.svg';
+import bugFixingLightImage from '@/assets/images/bug-fixing-light.svg';
+import bugFixingDarkImage from '@/assets/images/bug-fixing-dark.svg';
 
 function RootSuspenseBoundary() {
   return (
     <>
-      <BasicContainer>
+      <BasicContainer className="center">
         <Spinner />
       </BasicContainer>
       <Toaster />
@@ -21,21 +23,26 @@ function RootSuspenseBoundary() {
 }
 
 function RootErrorBoundary() {
-  const session = useLocalSession();
   const error = useRouteError();
-  const navigate = useNavigate();
+  const isDarkMode = useIsDarkmode();
 
-  if (isRouteErrorResponse(error) && error.status === 404) {
+  if (isRouteErrorResponse(error) && error.status === 405) {
     return (
       <>
-        {session ? <TopNav /> : <SimpleTopNav />}
-        <BasicContainer className="text-center justify-center items-center gap-4">
-          <i className="center *:translate-y-1 text-6xl rounded-full text-achromatic-light bg-primary-dark p-6 dark:text-achromatic-dark dark:bg-primary-light">
-            <VscWorkspaceUnknown />
-          </i>
-          <h1>404 Page Not Found</h1>
-          <p>Sorry, but we couldn&apos;t find this page.</p>
-          <Button onClick={() => navigate('/')}>Go Home</Button>
+        <SimpleTopNav />
+        <BasicContainer className="center">
+          <ErrorComponent
+            image={(
+              <img
+                src={isDarkMode ? notFoundLightImage : notFoundDarkImage}
+                alt="404 Not Found"
+                className="w-80"
+              />
+            )}
+            title="Page Not Found"
+            description="We looked everywhere for the page, but we couldn&apos;t find it!"
+            description2="Are you sure the website URL is correct?"
+          />
         </BasicContainer>
         <Toaster />
       </>
@@ -44,11 +51,19 @@ function RootErrorBoundary() {
 
   return (
     <>
-      {session ? <TopNav /> : <SimpleTopNav />}
-      <BasicContainer className="text-center justify-center items-center gap-4">
-        <p>Oops</p>
-        <p>Something went wrong!</p>
-        <Button onClick={() => navigate('/')}>Go Home</Button>
+      <SimpleTopNav />
+      <BasicContainer className="center">
+        <ErrorComponent
+          image={(
+            <img
+              src={isDarkMode ? bugFixingLightImage : bugFixingDarkImage}
+              alt="404 Not Found"
+              className="w-60"
+            />
+          )}
+          title="Oops"
+          description="Something went wrong!"
+        />
       </BasicContainer>
       <Toaster />
     </>

@@ -10,6 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         base: 'hover:opacity-75 bg-achromatic-light text-primary-dark dark:bg-primary-light dark:text-achromatic-dark',
+        primary: 'hover:opacity-75 bg-primary-dark text-achromatic-light dark:bg-primary-light dark:text-achromatic-dark',
         danger:
           'hover:opacity-75 bg-red-600 text-achromatic-light dark:bg-red-500 dark:text-achromatic-light',
         outline:
