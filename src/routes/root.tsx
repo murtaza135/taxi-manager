@@ -10,7 +10,7 @@ import notFoundLightImage from '@/assets/images/404-page-not-found-light.svg';
 import notFoundDarkImage from '@/assets/images/404-page-not-found-dark.svg';
 import bugFixingLightImage from '@/assets/images/bug-fixing-light.svg';
 import bugFixingDarkImage from '@/assets/images/bug-fixing-dark.svg';
-import { TopBarProgress } from '@/lib/react-topbar-progress-indicator/TopBarProgress';
+import { TopBarProgress } from '@/ui/TopBarProgress';
 
 function RootSuspenseBoundary() {
   return (
