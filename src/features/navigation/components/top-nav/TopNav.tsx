@@ -19,18 +19,14 @@ export function TopNav() {
   const isDarkmode = useIsDarkmode();
   const { toggleDarkmode } = useDarkmodeActions();
   const { toggleNav } = useNavActions();
-  const { mutate, isPending } = useLogout({ redirect: '/login' });
-  const { data, isSuccess } = useCompany();
+  const { mutate: logout } = useLogout({ redirect: '/login' });
+  const { data } = useCompany();
   const { data: logo } = useCompanyLogo();
   const src = useBlobToImgSrc(logo);
 
   const handleToggleDarkMode = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.preventDefault();
     toggleDarkmode();
-  };
-
-  const handleLogout = () => {
-    if (!isPending) mutate();
   };
 
   return (
@@ -57,12 +53,8 @@ export function TopNav() {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className="min-w-[125px]">
-            {isSuccess && (
-              <>
-                <DropdownMenuLabel>{data.name}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-              </>
-            )}
+            <DropdownMenuLabel>{data.name}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={handleToggleDarkMode}
               className="flex justify-between gap-4"
@@ -81,7 +73,7 @@ export function TopNav() {
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <button
-                onClick={handleLogout}
+                onClick={() => logout()}
                 type="button"
                 className="w-full flex justify-between gap-4"
               >

@@ -19,7 +19,7 @@ export function LoginForm() {
   });
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get('redirect') ?? '/';
-  const { mutate, isPending } = useLogin({ successRedirect: redirect });
+  const { mutate, isPending } = useLogin({ redirect });
 
   const onSubmit = form.handleSubmit((data) => {
     if (!isPending) mutate(data);

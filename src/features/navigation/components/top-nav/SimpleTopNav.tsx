@@ -2,12 +2,14 @@ import { BsSunFill, BsMoonStarsFill } from 'react-icons/bs';
 import { MdLogout } from 'react-icons/md';
 import { useIsDarkmode, useDarkmodeActions } from '@/features/darkmode/state/darkmodeStore';
 import { useLocalSession } from '@/features/auth/hooks/useLocalSession';
+import { useLogout } from '@/features/auth/hooks/useLogout';
 import { Button } from '@/ui/Button';
 
 export function SimpleTopNav() {
   const session = useLocalSession();
   const isDarkmode = useIsDarkmode();
   const { toggleDarkmode } = useDarkmodeActions();
+  const { mutate: logout } = useLogout({ redirect: '/login' });
 
   const handleToggleDarkMode = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
@@ -36,7 +38,7 @@ export function SimpleTopNav() {
             variant="ghost"
             shape="circle"
             size="sm"
-            onClick={handleToggleDarkMode}
+            onClick={() => logout()}
             className="text-xl"
           >
             <MdLogout />

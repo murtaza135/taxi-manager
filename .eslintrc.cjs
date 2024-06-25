@@ -45,6 +45,7 @@ module.exports = {
     "@typescript-eslint/no-misused-promises": ["error", { "checksVoidReturn": false }],
     "@typescript-eslint/indent": "off",
     "indent": "off",
+    "no-void": ["error", { "allowAsStatement": true }]
   },
   settings: {
     "import/resolver": {

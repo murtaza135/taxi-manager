@@ -26,7 +26,7 @@ export type AuthTokenResponsePasswordSuccess = {
 };
 
 type Options = {
-  successRedirect?: string;
+  redirect?: string;
 };
 
 export function useLogin(options?: Options) {
@@ -42,7 +42,7 @@ export function useLogin(options?: Options) {
   >({
     mutationFn: login,
     onSuccess: async () => {
-      if (options?.successRedirect) navigate(options.successRedirect);
+      if (options?.redirect) navigate(options.redirect);
       await queryClient.invalidateQueries();
       revalidate();
     },

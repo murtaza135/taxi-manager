@@ -10,7 +10,6 @@ import { useTopBarProgressConfiguration } from '@/ui/TopBarProgress';
 import { config } from '@/config/config';
 import '@/styles/main.css';
 
-// eslint-disable-next-line no-void
 void queryClient.prefetchQuery(sessionOptions());
 applyTheme();
 

@@ -25,10 +25,8 @@ export function useLogout(options?: Options) {
 
   const mutation = useMutation<void, AuthError>({
     mutationFn: () => logout({ scope: options?.scope }),
-    onMutate: () => {
-      if (options?.redirect) {
-        navigate(options.redirect, { replace: options.replace });
-      }
+    onSettled: () => {
+      if (options?.redirect) navigate(options.redirect, { replace: options.replace });
       queryClient.clear();
       revalidate();
     },
