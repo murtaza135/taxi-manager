@@ -24,7 +24,7 @@ export function ErrorComponent({ image, title, description, description2 }: Prop
         </div>
       </div>
 
-      <div className="pt-3 space-x-3">
+      <div className="flex gap-3 flex-wrap justify-center pt-3">
         <Button variant="primary" onClick={() => navigate(-1)}>Go Back</Button>
         <Button variant="primary" onClick={() => navigate('/')}>Go Home</Button>
       </div>

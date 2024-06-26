@@ -27,7 +27,7 @@ function RootErrorBoundary() {
   const error = useRouteError();
   const isDarkMode = useIsDarkmode();
 
-  if (isRouteErrorResponse(error) && error.status === 405) {
+  if (isRouteErrorResponse(error) && error.status === 404) {
     return (
       <>
         <SimpleTopNav />
@@ -37,7 +37,7 @@ function RootErrorBoundary() {
               <img
                 src={isDarkMode ? notFoundLightImage : notFoundDarkImage}
                 alt="404 Not Found"
-                className="w-80"
+                className="max-w-80"
               />
             )}
             title="Page Not Found"
@@ -58,7 +58,7 @@ function RootErrorBoundary() {
           image={(
             <img
               src={isDarkMode ? bugFixingLightImage : bugFixingDarkImage}
-              alt="404 Not Found"
+              alt="Bug Fixing"
               className="w-60"
             />
           )}
