@@ -31,7 +31,7 @@ function RootErrorBoundary() {
     return (
       <>
         <SimpleTopNav />
-        <BasicContainer className="center">
+        <BasicContainer center>
           <ErrorComponent
             image={(
               <img
@@ -53,7 +53,7 @@ function RootErrorBoundary() {
   return (
     <>
       <SimpleTopNav />
-      <BasicContainer className="center">
+      <BasicContainer center>
         <ErrorComponent
           image={(
             <img

@@ -2,13 +2,14 @@ import { ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 
 type BasicContainerProps = {
+  center?: boolean;
   className?: string;
   children?: ReactNode;
 };
 
-function BasicContainer({ className, children }: BasicContainerProps) {
+function BasicContainer({ center, className, children }: BasicContainerProps) {
   return (
-    <div className={cn('w-full max-w-screen-2xl min-h-dvh mx-auto px-5 flex flex-col', className)}>
+    <div className={cn('w-full max-w-screen-2xl min-h-dvh mx-auto px-5', center && 'center', className)}>
       {children}
     </div>
   );
