@@ -58,7 +58,7 @@ export function LoginForm() {
         <div className="pt-1">
           <Button
             type="button"
-            className="w-full"
+            className="w-full inline-block"
             variant="ghost"
             onClick={() => anonymousLogin()}
           >
