@@ -1,46 +1,43 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useRevalidator } from 'react-router-dom';
-import { AuthError, User, Session, WeakPassword } from '@supabase/supabase-js';
+import { AuthError, User, Session } from '@supabase/supabase-js';
 import { useToast } from '@/ui/toast';
 import { supabase } from '@/config/api/supabaseClient';
-import { LoginFormSchema } from '@/features/auth/schemas';
 import { AppError } from '@/errors/AppError';
 
-export async function login(args: LoginFormSchema) {
-  const { data, error } = await supabase.auth.signInWithPassword(args);
+export type AnonymousAuthResponseSuccessData = {
+  user: User;
+  session: Session;
+};
+
+export async function anonymousLogin() {
+  const { data, error } = await supabase.auth.signInAnonymously();
 
   if (error) {
     throw AppError.fromSupabaseError({
       error,
-      message: 'Invalid login crendentials',
+      message: 'Something went wrong',
     });
   }
 
-  return data;
+  return data as AnonymousAuthResponseSuccessData;
 }
-
-export type AuthTokenResponsePasswordSuccessData = {
-  user: User;
-  session: Session;
-  weakPassword?: WeakPassword | undefined;
-};
 
 type Options = {
   redirect?: string;
 };
 
-export function useLogin(options?: Options) {
+export function useAnonymousLogin(options?: Options) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { revalidate } = useRevalidator();
   const { toast } = useToast();
 
   const mutation = useMutation<
-    AuthTokenResponsePasswordSuccessData,
-    AuthError,
-    LoginFormSchema
+    AnonymousAuthResponseSuccessData,
+    AuthError
   >({
-    mutationFn: login,
+    mutationFn: anonymousLogin,
     onSuccess: async () => {
       if (options?.redirect) navigate(options.redirect);
       await queryClient.invalidateQueries();

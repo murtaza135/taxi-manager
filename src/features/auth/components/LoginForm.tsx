@@ -11,6 +11,7 @@ import { Input } from '@/ui/Input';
 import { Button } from '@/ui/Button';
 import { loginFormSchema } from '@/features/auth/schemas';
 import { useLogin } from '@/features/auth/hooks/useLogin';
+import { useAnonymousLogin } from '@/features/auth/hooks/useAnonymousLogin';
 
 export function LoginForm() {
   const form = useZodForm({
@@ -19,15 +20,15 @@ export function LoginForm() {
   });
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get('redirect') ?? '/';
-  const { mutate, isPending } = useLogin({ redirect });
-
-  const onSubmit = form.handleSubmit((data) => {
-    if (!isPending) mutate(data);
-  });
+  const { mutate: login } = useLogin({ redirect });
+  const { mutate: anonymousLogin } = useAnonymousLogin({ redirect });
 
   return (
     <FormProvider {...form}>
-      <Form onSubmit={onSubmit} className="w-full max-w-[24rem] space-y-4">
+      <Form
+        onSubmit={form.handleSubmit((data) => login(data))}
+        className="w-full max-w-[24rem] space-y-4"
+      >
         <FormTitle>Login</FormTitle>
 
         <FormField
@@ -52,6 +53,19 @@ export function LoginForm() {
 
         <div className="pt-3">
           <Button type="submit" className="w-full">Login</Button>
+        </div>
+
+        <div className="pt-1">
+          <Button
+            type="button"
+            className="w-full"
+            variant="ghost"
+            onClick={() => anonymousLogin()}
+          >
+            <span className="text-neutral-900/70 dark:text-achromatic-500">Don&apos;t have an account?</span>
+            &nbsp;
+            GUEST LOGIN
+          </Button>
         </div>
       </Form>
     </FormProvider>
