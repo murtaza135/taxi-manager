@@ -15,7 +15,7 @@ import { TopBarProgress } from '@/ui/TopBarProgress';
 function RootSuspenseBoundary() {
   return (
     <>
-      <BasicContainer className="center">
+      <BasicContainer center>
         <Spinner />
       </BasicContainer>
       <Toaster />

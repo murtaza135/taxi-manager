@@ -44,7 +44,7 @@ const privateLayoutLoader = (queryClient: QueryClient) => async () => {
 
 function PrivateLayoutSuspenseBoundary() {
   return (
-    <BasicContainer>
+    <BasicContainer center>
       <Spinner />
     </BasicContainer>
   );
