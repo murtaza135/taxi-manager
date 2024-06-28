@@ -4,27 +4,26 @@ import { companyOptions } from '@/features/auth/hooks/useCompany';
 import { queryClient } from '@/config/api/queryClient';
 import { AppError } from '@/errors/AppError';
 
-async function getCompanyLogo(): Promise<Blob | null> {
+async function getCompanyLogo(): Promise<string | null> {
   const { logo_path: logoPath } = await queryClient.ensureQueryData(companyOptions());
   if (!logoPath) return null;
 
-  const { data: logo, error } = await supabase
+  const { data } = await supabase
     .storage
     .from('main')
-    .download(logoPath);
+    .createSignedUrl(
+      logoPath,
+      10 * 60, // 10 minutes
+      { download: true },
+    );
 
-  if (error) {
-    throw AppError.fromSupabaseError({
-      error,
-      message: 'Could not load company logo',
-    });
-  }
+  if (!data) return null;
 
-  return logo;
+  return data.signedUrl;
 }
 
 export function companyLogoOptions() {
-  return queryOptions<Blob | null, AppError>({
+  return queryOptions<string | null, AppError>({
     queryKey: ['auth', 'company', 'logo'],
     queryFn: getCompanyLogo,
     staleTime: 1000 * 60 * 10, // 10 minutes
