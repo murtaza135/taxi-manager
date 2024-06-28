@@ -1,7 +1,7 @@
 import { useSuspenseQuery, queryOptions } from '@tanstack/react-query';
 import { supabase } from '@/config/api/supabaseClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
-import { Tables } from '@/types/database';
+import { Tables } from '@/types/supabase/database';
 import { queryClient } from '@/config/api/queryClient';
 import { AppError } from '@/errors/AppError';
 

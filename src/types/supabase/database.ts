@@ -70,11 +70,11 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "company_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'company_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -102,18 +102,18 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "council_application_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'council_application_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "council_application_taxi_id_fkey";
-            columns: ["taxi_id"];
+            foreignKeyName: 'council_application_taxi_id_fkey';
+            columns: ['taxi_id'];
             isOneToOne: false;
-            referencedRelation: "taxi";
-            referencedColumns: ["id"];
+            referencedRelation: 'taxi';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -141,18 +141,18 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "council_application_receipt_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'council_application_receipt_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "council_application_receipt_taxi_id_fkey";
-            columns: ["taxi_id"];
+            foreignKeyName: 'council_application_receipt_taxi_id_fkey';
+            columns: ['taxi_id'];
             isOneToOne: false;
-            referencedRelation: "taxi";
-            referencedColumns: ["id"];
+            referencedRelation: 'taxi';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -210,39 +210,39 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "driver_active_drivers_licence_id_fkey";
-            columns: ["active_drivers_licence_id"];
+            foreignKeyName: 'driver_active_drivers_licence_id_fkey';
+            columns: ['active_drivers_licence_id'];
             isOneToOne: false;
-            referencedRelation: "drivers_licence";
-            referencedColumns: ["id"];
+            referencedRelation: 'drivers_licence';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "driver_active_drivers_taxi_badge_id_fkey";
-            columns: ["active_drivers_taxi_badge_id"];
+            foreignKeyName: 'driver_active_drivers_taxi_badge_id_fkey';
+            columns: ['active_drivers_taxi_badge_id'];
             isOneToOne: false;
-            referencedRelation: "drivers_taxi_badge";
-            referencedColumns: ["id"];
+            referencedRelation: 'drivers_taxi_badge';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "driver_active_hire_agreement_id_fkey";
-            columns: ["active_hire_agreement_id"];
+            foreignKeyName: 'driver_active_hire_agreement_id_fkey';
+            columns: ['active_hire_agreement_id'];
             isOneToOne: false;
-            referencedRelation: "hire_agreement";
-            referencedColumns: ["id"];
+            referencedRelation: 'hire_agreement';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "driver_active_insurance_id_fkey";
-            columns: ["active_insurance_id"];
+            foreignKeyName: 'driver_active_insurance_id_fkey';
+            columns: ['active_insurance_id'];
             isOneToOne: false;
-            referencedRelation: "insurance";
-            referencedColumns: ["id"];
+            referencedRelation: 'insurance';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "driver_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'driver_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -312,18 +312,18 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "driver_application_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'driver_application_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "driver_application_company_id_fkey";
-            columns: ["company_id"];
+            foreignKeyName: 'driver_application_company_id_fkey';
+            columns: ['company_id'];
             isOneToOne: false;
-            referencedRelation: "company";
-            referencedColumns: ["id"];
+            referencedRelation: 'company';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -360,18 +360,18 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "drivers_licence_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'drivers_licence_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "drivers_licence_driver_id_fkey";
-            columns: ["driver_id"];
+            foreignKeyName: 'drivers_licence_driver_id_fkey';
+            columns: ['driver_id'];
             isOneToOne: false;
-            referencedRelation: "driver";
-            referencedColumns: ["id"];
+            referencedRelation: 'driver';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -408,18 +408,18 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "drivers_taxi_badge_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'drivers_taxi_badge_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "drivers_taxi_badge_driver_id_fkey";
-            columns: ["driver_id"];
+            foreignKeyName: 'drivers_taxi_badge_driver_id_fkey';
+            columns: ['driver_id'];
             isOneToOne: false;
-            referencedRelation: "driver";
-            referencedColumns: ["id"];
+            referencedRelation: 'driver';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -468,18 +468,18 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "employee_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'employee_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "employee_company_id_fkey";
-            columns: ["company_id"];
+            foreignKeyName: 'employee_company_id_fkey';
+            columns: ['company_id'];
             isOneToOne: false;
-            referencedRelation: "company";
-            referencedColumns: ["id"];
+            referencedRelation: 'company';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -531,25 +531,25 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "hire_agreement_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'hire_agreement_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "hire_agreement_driver_id_fkey";
-            columns: ["driver_id"];
+            foreignKeyName: 'hire_agreement_driver_id_fkey';
+            columns: ['driver_id'];
             isOneToOne: false;
-            referencedRelation: "driver";
-            referencedColumns: ["id"];
+            referencedRelation: 'driver';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "hire_agreement_taxi_id_fkey";
-            columns: ["taxi_id"];
+            foreignKeyName: 'hire_agreement_taxi_id_fkey';
+            columns: ['taxi_id'];
             isOneToOne: false;
-            referencedRelation: "taxi";
-            referencedColumns: ["id"];
+            referencedRelation: 'taxi';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -592,25 +592,25 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "insurance_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'insurance_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "insurance_driver_id_fkey";
-            columns: ["driver_id"];
+            foreignKeyName: 'insurance_driver_id_fkey';
+            columns: ['driver_id'];
             isOneToOne: false;
-            referencedRelation: "driver";
-            referencedColumns: ["id"];
+            referencedRelation: 'driver';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "insurance_taxi_id_fkey";
-            columns: ["taxi_id"];
+            foreignKeyName: 'insurance_taxi_id_fkey';
+            columns: ['taxi_id'];
             isOneToOne: false;
-            referencedRelation: "taxi";
-            referencedColumns: ["id"];
+            referencedRelation: 'taxi';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -641,18 +641,18 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "picture_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'picture_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "picture_hire_id_fkey";
-            columns: ["hire_id"];
+            foreignKeyName: 'picture_hire_id_fkey';
+            columns: ['hire_id'];
             isOneToOne: false;
-            referencedRelation: "hire_agreement";
-            referencedColumns: ["id"];
+            referencedRelation: 'hire_agreement';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -692,18 +692,18 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "rent_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'rent_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "rent_hire_id_fkey";
-            columns: ["hire_id"];
+            foreignKeyName: 'rent_hire_id_fkey';
+            columns: ['hire_id'];
             isOneToOne: false;
-            referencedRelation: "hire_agreement";
-            referencedColumns: ["id"];
+            referencedRelation: 'hire_agreement';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -764,39 +764,39 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "taxi_active_hire_agreement_id_fkey";
-            columns: ["active_hire_agreement_id"];
+            foreignKeyName: 'taxi_active_hire_agreement_id_fkey';
+            columns: ['active_hire_agreement_id'];
             isOneToOne: false;
-            referencedRelation: "hire_agreement";
-            referencedColumns: ["id"];
+            referencedRelation: 'hire_agreement';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "taxi_active_insurance_id_fkey";
-            columns: ["active_insurance_id"];
+            foreignKeyName: 'taxi_active_insurance_id_fkey';
+            columns: ['active_insurance_id'];
             isOneToOne: false;
-            referencedRelation: "insurance";
-            referencedColumns: ["id"];
+            referencedRelation: 'insurance';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "taxi_active_taxi_licence_id_fkey";
-            columns: ["active_taxi_licence_id"];
+            foreignKeyName: 'taxi_active_taxi_licence_id_fkey';
+            columns: ['active_taxi_licence_id'];
             isOneToOne: false;
-            referencedRelation: "taxi_licence";
-            referencedColumns: ["id"];
+            referencedRelation: 'taxi_licence';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "taxi_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'taxi_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "taxi_vehicle_id_fkey";
-            columns: ["vehicle_id"];
+            foreignKeyName: 'taxi_vehicle_id_fkey';
+            columns: ['vehicle_id'];
             isOneToOne: false;
-            referencedRelation: "vehicle";
-            referencedColumns: ["id"];
+            referencedRelation: 'vehicle';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -839,18 +839,18 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "taxi_licence_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'taxi_licence_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "taxi_licence_taxi_id_fkey";
-            columns: ["taxi_id"];
+            foreignKeyName: 'taxi_licence_taxi_id_fkey';
+            columns: ['taxi_id'];
             isOneToOne: false;
-            referencedRelation: "taxi";
-            referencedColumns: ["id"];
+            referencedRelation: 'taxi';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -884,11 +884,11 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "vehiclee_auth_id_fkey";
-            columns: ["auth_id"];
+            foreignKeyName: 'vehiclee_auth_id_fkey';
+            columns: ['auth_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -1010,11 +1010,11 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "objects_bucketId_fkey";
-            columns: ["bucket_id"];
+            foreignKeyName: 'objects_bucketId_fkey';
+            columns: ['bucket_id'];
             isOneToOne: false;
-            referencedRelation: "buckets";
-            referencedColumns: ["id"];
+            referencedRelation: 'buckets';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -1051,11 +1051,11 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "s3_multipart_uploads_bucket_id_fkey";
-            columns: ["bucket_id"];
+            foreignKeyName: 's3_multipart_uploads_bucket_id_fkey';
+            columns: ['bucket_id'];
             isOneToOne: false;
-            referencedRelation: "buckets";
-            referencedColumns: ["id"];
+            referencedRelation: 'buckets';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -1098,18 +1098,18 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "s3_multipart_uploads_parts_bucket_id_fkey";
-            columns: ["bucket_id"];
+            foreignKeyName: 's3_multipart_uploads_parts_bucket_id_fkey';
+            columns: ['bucket_id'];
             isOneToOne: false;
-            referencedRelation: "buckets";
-            referencedColumns: ["id"];
+            referencedRelation: 'buckets';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "s3_multipart_uploads_parts_upload_id_fkey";
-            columns: ["upload_id"];
+            foreignKeyName: 's3_multipart_uploads_parts_upload_id_fkey';
+            columns: ['upload_id'];
             isOneToOne: false;
-            referencedRelation: "s3_multipart_uploads";
-            referencedColumns: ["id"];
+            referencedRelation: 's3_multipart_uploads';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -1213,27 +1213,27 @@ export type Database = {
   };
 };
 
-type PublicSchema = Database[Extract<keyof Database, "public">];
+type PublicSchema = Database[Extract<keyof Database, 'public'>];
 
 export type Tables<
   PublicTableNameOrOptions extends
-  | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+  | keyof (PublicSchema['Tables'] & PublicSchema['Views'])
   | { schema: keyof Database; },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database; }
-  ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-    Database[PublicTableNameOrOptions["schema"]]["Views"])
+  ? keyof (Database[PublicTableNameOrOptions['schema']]['Tables'] &
+    Database[PublicTableNameOrOptions['schema']]['Views'])
   : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database; }
-  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-    Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+  ? (Database[PublicTableNameOrOptions['schema']]['Tables'] &
+    Database[PublicTableNameOrOptions['schema']]['Views'])[TableName] extends {
       Row: infer R;
     }
   ? R
   : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
-    PublicSchema["Views"])
-  ? (PublicSchema["Tables"] &
-    PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+  : PublicTableNameOrOptions extends keyof (PublicSchema['Tables'] &
+    PublicSchema['Views'])
+  ? (PublicSchema['Tables'] &
+    PublicSchema['Views'])[PublicTableNameOrOptions] extends {
       Row: infer R;
     }
   ? R
@@ -1242,19 +1242,19 @@ export type Tables<
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
-  | keyof PublicSchema["Tables"]
+  | keyof PublicSchema['Tables']
   | { schema: keyof Database; },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database; }
-  ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+  ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
   : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database; }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
     Insert: infer I;
   }
   ? I
   : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-  ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
+  ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
     Insert: infer I;
   }
   ? I
@@ -1263,19 +1263,19 @@ export type TablesInsert<
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
-  | keyof PublicSchema["Tables"]
+  | keyof PublicSchema['Tables']
   | { schema: keyof Database; },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database; }
-  ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+  ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
   : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database; }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
     Update: infer U;
   }
   ? U
   : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-  ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
+  ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
     Update: infer U;
   }
   ? U
@@ -1284,14 +1284,14 @@ export type TablesUpdate<
 
 export type Enums<
   PublicEnumNameOrOptions extends
-  | keyof PublicSchema["Enums"]
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+  | keyof PublicSchema['Enums']
   | { schema: keyof Database; },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database; }
-  ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+  ? keyof Database[PublicEnumNameOrOptions['schema']]['Enums']
   : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database; }
-  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
-  ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-  : never
-
+  ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
+  : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
+  ? PublicSchema['Enums'][PublicEnumNameOrOptions]
+  : never;
