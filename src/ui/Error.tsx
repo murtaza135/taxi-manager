@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cn } from '@/utils/cn';
+import { useIsDarkmode } from '@/features/darkmode/state/darkmodeStore';
 
 const ErrorContainer = React.forwardRef<
   HTMLDivElement,
@@ -15,20 +16,54 @@ const ErrorContainer = React.forwardRef<
 );
 ErrorContainer.displayName = 'ErrorContainer';
 
+type ErrorImageProps = React.ImgHTMLAttributes<HTMLImageElement> & {
+  srcLight?: string;
+  srcDark?: string;
+};
+
 const ErrorImage = React.forwardRef<
   HTMLImageElement,
-  React.ImgHTMLAttributes<HTMLImageElement>
+  ErrorImageProps
 >(
-  ({ className, alt, ...props }, ref) => (
-    <img
-      className={cn('max-w-80', className)}
-      alt={alt}
-      ref={ref}
-      {...props}
-    />
-  ),
+  ({ className, alt, src, srcLight, srcDark, ...props }, ref) => {
+    const isDarkMode = useIsDarkmode();
+    const srcLightMode = srcLight ?? src;
+    const srcDarkMode = srcDark ?? src;
+    const imageSrc = isDarkMode ? srcDarkMode : srcLightMode;
+
+    return (
+      <img
+        className={cn('max-w-80', className)}
+        src={imageSrc}
+        alt={alt}
+        ref={ref}
+        {...props}
+      />
+    );
+  },
 );
 ErrorImage.displayName = 'ErrorImage';
+
+type ErrorIconProps = React.HTMLAttributes<HTMLSpanElement> & {
+  icon: React.ReactNode;
+  color?: 'primary' | 'danger';
+};
+
+const ErrorIcon = React.forwardRef<
+  HTMLSpanElement,
+  ErrorIconProps
+>(
+  ({ icon, color = 'primary', className, ...props }, ref) => (
+    <span
+      className={cn('text-5xl', color === 'primary' && 'text-primary-dark dark:text-primary-light', color === 'danger' && 'text-red-800/90 dark:text-red-700/90', className)}
+      ref={ref}
+      {...props}
+    >
+      {icon}
+    </span>
+  ),
+);
+ErrorIcon.displayName = 'ErrorIcon';
 
 const ErrorTitle = React.forwardRef<
   HTMLHeadingElement,
@@ -52,7 +87,7 @@ const ErrorMessage = React.forwardRef<
 >(
   ({ className, children, ...props }, ref) => (
     <p
-      className={cn('max-w-[30rem]', className)}
+      className={cn('max-w-[32.5rem]', className)}
       ref={ref}
       {...props}
     >
@@ -79,6 +114,7 @@ ErrorButtons.displayName = 'ErrorButtons';
 export {
   ErrorContainer,
   ErrorImage,
+  ErrorIcon,
   ErrorTitle,
   ErrorMessage,
   ErrorButtons,

@@ -1,25 +1,20 @@
 import { useNavigate, useRevalidator } from 'react-router-dom';
-import { ErrorContainer, ErrorImage, ErrorTitle, ErrorMessage, ErrorButtons } from '@/ui/Error';
+import { FaTriangleExclamation } from 'react-icons/fa6';
+import { ErrorContainer, ErrorIcon, ErrorTitle, ErrorMessage, ErrorButtons } from '@/ui/Error';
 import { Button } from '@/ui/Button';
-import { useIsDarkmode } from '@/features/darkmode/state/darkmodeStore';
-import generalErrorLightImage from '@/assets/images/bug-fixing-light.svg';
-import generalErrorDarkImage from '@/assets/images/bug-fixing-dark.svg';
 
 export function GeneralError() {
-  const isDarkMode = useIsDarkmode();
   const navigate = useNavigate();
   const { revalidate } = useRevalidator();
 
   return (
     <ErrorContainer>
-      <ErrorImage
-        src={isDarkMode ? generalErrorLightImage : generalErrorDarkImage}
-        alt="Bug Fixing"
-        className="max-w-60"
-      />
+      <ErrorIcon icon={<FaTriangleExclamation />} color="danger" className="pb-2" />
       <div className="space-y-2">
-        <ErrorTitle>Oops</ErrorTitle>
-        <ErrorMessage>Something went wrong!</ErrorMessage>
+        <ErrorTitle className="text-2xl">Oops! Something went wrong!</ErrorTitle>
+        <ErrorMessage>
+          Looks like things didn&apos;t go as planned. Maybe you would like to retry?
+        </ErrorMessage>
       </div>
       <ErrorButtons>
         <Button

@@ -1,18 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import { ErrorContainer, ErrorImage, ErrorTitle, ErrorMessage, ErrorButtons } from '@/ui/Error';
 import { Button } from '@/ui/Button';
-import { useIsDarkmode } from '@/features/darkmode/state/darkmodeStore';
 import notFoundErrorLightImage from '@/assets/images/404-page-not-found-light.svg';
 import notFoundErrorDarkImage from '@/assets/images/404-page-not-found-dark.svg';
 
 export function NotFoundError() {
-  const isDarkMode = useIsDarkmode();
   const navigate = useNavigate();
 
   return (
     <ErrorContainer>
       <ErrorImage
-        src={isDarkMode ? notFoundErrorLightImage : notFoundErrorDarkImage}
+        srcLight={notFoundErrorDarkImage}
+        srcDark={notFoundErrorLightImage}
         alt="404 Not Found"
       />
       <ErrorTitle>Page Not Found</ErrorTitle>
