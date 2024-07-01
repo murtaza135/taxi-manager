@@ -1,50 +1,35 @@
-/* eslint-disable @typescript-eslint/lines-between-class-members */
-import { ErrorType, ErrorLike } from '@/errors/types';
-import { determineAppErrorTypeFromSupabaseError } from '@/errors/utils';
-
 export type AppErrorConstructor = {
-  type: ErrorType;
-  message?: string;
-  cause?: Error | ErrorLike;
-};
-
-export type AppErrorFromSupabaseError = {
-  error: Error | ErrorLike;
-  status?: number;
-  message?: string;
-};
-
-const defaultMessages: Record<ErrorType, string> = {
-  app: 'Something went wrong',
-  auth: 'Please login again',
-  server: 'Something went wrong',
+  message: string;
+  hint?: string | null | undefined;
+  status?: number | null | undefined;
+  code?: string | null | undefined;
+  cause?: Error | null | undefined;
 };
 
 export class AppError extends Error {
-  public readonly type: AppErrorConstructor['type'];
-  protected readonly original: AppErrorConstructor['cause'];
-  protected __isAppError = true;
+  /**
+   * Additional information that can be displayed
+   * to the user or used for debugging purposes.
+   */
+  public readonly hint?: string | null | undefined;
 
-  constructor({ type, message = defaultMessages[type], cause }: AppErrorConstructor) {
+  /**
+   * HTTP status code received from network response.
+   */
+  public readonly status?: number | null | undefined;
+
+  /**
+   * A custom error code that can be used for debugging.
+   */
+  public readonly code?: string | null | undefined;
+
+  constructor({ message, hint, status, code, cause }: AppErrorConstructor) {
     // @ts-expect-error https://github.com/tc39/proposal-error-cause
-    super(message, { cause: cause instanceof Error ? cause : undefined });
+    super(message, { cause });
 
-    this.name = this.constructor.name;
-    this.type = type;
-    this.original = cause;
+    this.name = 'AppError';
+    this.hint = hint;
+    this.status = status;
+    this.code = code;
   }
-
-  public static fromSupabaseError({ error, status, message }: AppErrorFromSupabaseError) {
-    const errorType = determineAppErrorTypeFromSupabaseError(error, status);
-
-    return new AppError({
-      type: errorType,
-      message: message ?? defaultMessages[errorType],
-      cause: error,
-    });
-  }
-}
-
-export function isAppError(error: unknown): error is AppError {
-  return typeof error === 'object' && error !== null && '__isAppError' in error;
 }

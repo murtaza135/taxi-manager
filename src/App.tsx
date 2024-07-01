@@ -9,9 +9,6 @@ import { applyTheme } from '@/features/darkmode/utils/applyTheme';
 import { useTopBarProgressConfiguration } from '@/ui/TopBarProgress';
 import { config } from '@/config/config';
 import '@/styles/main.css';
-// import '@/utils/ImmutableTwoWayMap';
-// import '@/errors2/status';
-// import '@/errors3/AppErrorBuilder';
 
 void queryClient.prefetchQuery(sessionOptions());
 applyTheme();

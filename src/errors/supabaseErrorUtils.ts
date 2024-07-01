@@ -1,5 +1,5 @@
-import { ErrorLike } from '@/errors3/types';
-import { AppErrorBuilder } from '@/errors3/AppErrorBuilder';
+import { ErrorLike } from '@/errors/types';
+import { AppErrorBuilder } from '@/errors/AppErrorBuilder';
 
 function extractStatusCodeFromSupabaseError(
   error: Error | ErrorLike,

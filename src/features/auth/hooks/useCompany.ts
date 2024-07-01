@@ -4,6 +4,7 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Tables } from '@/types/supabase/database';
 import { queryClient } from '@/config/api/queryClient';
 import { AppError } from '@/errors/AppError';
+import { buildAppErrorFromSupabaseError } from '@/errors/supabaseErrorUtils';
 
 type CompanyDetails = Pick<
   Tables<'company'>,
@@ -21,11 +22,10 @@ async function getCompany(): Promise<CompanyDetails> {
     .single();
 
   if (error) {
-    throw AppError.fromSupabaseError({
-      error,
-      status,
-      message: 'Could not load company data',
-    });
+    throw buildAppErrorFromSupabaseError(error, status)
+      .addGlobalMessage('Could not load company data')
+      .addGlobalHint('Looks like things didn\'t go as planned. Maybe you would like to retry?')
+      .build();
   }
 
   return data;

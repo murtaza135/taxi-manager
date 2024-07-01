@@ -1,19 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useRevalidator } from 'react-router-dom';
-import { AuthError, User, Session, WeakPassword } from '@supabase/supabase-js';
+import { User, Session, WeakPassword } from '@supabase/supabase-js';
 import { useToast } from '@/ui/toast';
 import { supabase } from '@/config/api/supabaseClient';
 import { LoginFormSchema } from '@/features/auth/schemas';
 import { AppError } from '@/errors/AppError';
+import { buildAppErrorFromSupabaseError } from '@/errors/supabaseErrorUtils';
 
 export async function login(args: LoginFormSchema) {
   const { data, error } = await supabase.auth.signInWithPassword(args);
 
   if (error) {
-    throw AppError.fromSupabaseError({
-      error,
-      message: 'Invalid login crendentials',
-    });
+    throw buildAppErrorFromSupabaseError(error)
+      .addGlobalMessage('Could not login')
+      .addHint(429, 'Too many login attempts! Please try again later.')
+      .addHint(500, 'Something went wrong')
+      .build();
   }
 
   return data;
@@ -37,7 +39,7 @@ export function useLogin(options?: Options) {
 
   const mutation = useMutation<
     AuthTokenResponsePasswordSuccessData,
-    AuthError,
+    AppError,
     LoginFormSchema
   >({
     mutationFn: login,

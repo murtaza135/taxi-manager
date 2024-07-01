@@ -2,7 +2,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { redirect, Outlet } from 'react-router-dom';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { getLocalSession } from '@/features/auth/hooks/useLocalSession';
-import { isAppError } from '@/errors/AppError';
+import { AppError } from '@/errors/AppError';
 import { logout } from '@/features/auth/hooks/useLogout';
 import { toast } from '@/ui/toast';
 import { BasicContainer, ContentContainer } from '@/ui/Container';
@@ -24,15 +24,15 @@ const privateLayoutLoader = (queryClient: QueryClient) => async () => {
     await queryClient.ensureQueryData(sessionOptions());
     return null;
   } catch (error: unknown) {
-    if (isAppError(error) && error.type === 'auth') {
+    if (error instanceof AppError && error.status === 401) {
       await logout();
       queryClient.clear();
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      toast({ title: error.message, description: error.hint, variant: 'destructive' });
       return redirect('/login');
     }
 
-    if (isAppError(error)) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    if (error instanceof AppError) {
+      toast({ title: error.message, description: error.hint, variant: 'destructive' });
       return null;
     }
 

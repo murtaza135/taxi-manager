@@ -1,5 +1,5 @@
 import { ErrorLike } from '@/errors/types';
-import { AppError, AppErrorConstructor } from '@/errors3/AppError';
+import { AppError, AppErrorConstructor } from '@/errors/AppError';
 import { Prettify } from '@/types/utils';
 
 export type AppErrorBuilderConstructor = Prettify<
@@ -48,23 +48,29 @@ export class AppErrorBuilder {
   constructor({ status, code, cause }: AppErrorBuilderConstructor) {
     this.status = status;
     this.code = code;
-    this.cause = cause && !(cause instanceof Error) ? new Error(cause.message) : cause;
+    this.cause = cause && !(cause instanceof Error)
+      ? new Error(cause.message)
+      : cause;
   }
 
   public addGlobalMessage(message: string) {
     this.globalMessage = message;
+    return this;
   }
 
   public addMessage(status: number, message: string) {
     this.statusCodeToMessageMap[status] = message;
+    return this;
   }
 
   public addGlobalHint(hint: string) {
     this.globalHint = hint;
+    return this;
   }
 
   public addHint(status: number, hint: string) {
     this.statusCodeToHintMap[status] = hint;
+    return this;
   }
 
   private extractMessage() {

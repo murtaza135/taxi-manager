@@ -23,7 +23,7 @@ async function getCompanyLogo(): Promise<string | null> {
 }
 
 export function companyLogoOptions() {
-  return queryOptions<string | null, AppError>({
+  return queryOptions<string | null, null>({
     queryKey: ['auth', 'company', 'logo'],
     queryFn: getCompanyLogo,
     staleTime: 1000 * 60 * 10, // 10 minutes
