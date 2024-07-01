@@ -10,14 +10,6 @@ import { buildAppErrorFromSupabaseError } from '@/errors/supabaseErrorUtils';
 export async function login(args: LoginFormSchema) {
   const { data, error } = await supabase.auth.signInWithPassword(args);
 
-  // if (error) {
-  //   throw buildAppErrorFromSupabaseError(error)
-  //     .addGlobalMessage('Could not login')
-  //     .addHint(429, 'Too many login attempts! Please try again later.')
-  //     .addHint(500, 'Something went wrong')
-  //     .build();
-  // }
-
   if (error) {
     throw buildAppErrorFromSupabaseError(error)
       .setTitle('Could not login')
