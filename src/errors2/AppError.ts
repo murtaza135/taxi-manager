@@ -2,21 +2,21 @@ import { ErrorLike } from '@/errors2/types';
 
 export type AppErrorConstructor = {
   message: string;
-  hint?: string;
-  code?: string;
-  cause?: Error | ErrorLike;
+  hint?: string | null | undefined;
+  code?: string | null | undefined;
+  cause?: Error | ErrorLike | null;
 };
 
 export class AppError extends Error {
   /**
    * Additional information that can be displayed to the user or used for debugging purposes
    */
-  public readonly hint?: string;
+  public readonly hint?: string | null | undefined;
 
   /**
    * A custom error code that can be used for debugging
    */
-  public readonly code?: string;
+  public readonly code?: string | null | undefined;
 
   constructor({ message, hint, code, cause }: AppErrorConstructor) {
     if (cause && cause instanceof Error) {

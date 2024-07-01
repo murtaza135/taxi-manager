@@ -40,12 +40,26 @@ export type MaybePartialStatusObject = Prettify<
   >
 >;
 
+export function isStatusText(statusText: string): statusText is StatusText {
+  return statusText in statusCodes;
+}
+
+export function isStatusCode(statusCode: number): statusCode is StatusCode {
+  return statusCode in statusTexts;
+}
+
 export function status(statusText: StatusText): StatusCode;
 export function status(statusCode: StatusCode): StatusText;
-export function status(value: StatusText | StatusCode) {
-  if (typeof value === 'string') {
+export function status(statusCode: string): StatusCode | null;
+export function status(statusCode: number): StatusText | null;
+export function status(value: string | number) {
+  if (typeof value === 'string' && isStatusText(value)) {
     return statusCodes[value];
   }
 
-  return statusTexts[value];
+  if (typeof value === 'number' && isStatusCode(value)) {
+    return statusTexts[value];
+  }
+
+  return null;
 }

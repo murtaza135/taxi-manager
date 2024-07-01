@@ -1,12 +1,20 @@
 import { AppError, AppErrorConstructor } from '@/errors2/AppError';
 import { status, StatusCode, StatusText, MaybePartialStatusObject } from '@/errors2/status';
 import { ErrorDetails } from '@/errors2/errorDetails';
+import { Prettify } from '@/types/utils';
 
-export type APIErrorConstructor = AppErrorConstructor & MaybePartialStatusObject;
+export type APIErrorConstructor = Prettify<
+  AppErrorConstructor & MaybePartialStatusObject
+>;
 
-export type FromErrorDetailsArguments =
+export type FromErrorDetailsArguments = Prettify<
   Omit<AppErrorConstructor, 'code' | 'cause'>
-  & { errorDetails: ErrorDetails; };
+  & { errorDetails: ErrorDetails; }
+>;
+
+// export type APIErrorConstructorWithErrorDetails = Prettify<
+
+//   >;
 
 export class APIError extends AppError {
   /**

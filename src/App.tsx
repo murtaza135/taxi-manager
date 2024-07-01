@@ -10,6 +10,7 @@ import { useTopBarProgressConfiguration } from '@/ui/TopBarProgress';
 import { config } from '@/config/config';
 import '@/styles/main.css';
 // import '@/utils/ImmutableTwoWayMap';
+import '@/errors2/status';
 
 void queryClient.prefetchQuery(sessionOptions());
 applyTheme();
