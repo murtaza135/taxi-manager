@@ -27,12 +27,12 @@ const privateLayoutLoader = (queryClient: QueryClient) => async () => {
     if (error instanceof AppError && error.status === 401) {
       await logout();
       queryClient.clear();
-      toast({ title: error.message, description: error.hint, variant: 'destructive' });
+      toast({ title: error.title, description: error.description, variant: 'destructive' });
       return redirect('/login');
     }
 
     if (error instanceof AppError) {
-      toast({ title: error.message, description: error.hint, variant: 'destructive' });
+      toast({ title: error.title, description: error.description, variant: 'destructive' });
       return null;
     }
 

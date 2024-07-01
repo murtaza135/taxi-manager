@@ -10,11 +10,21 @@ import { buildAppErrorFromSupabaseError } from '@/errors/supabaseErrorUtils';
 export async function login(args: LoginFormSchema) {
   const { data, error } = await supabase.auth.signInWithPassword(args);
 
+  // if (error) {
+  //   throw buildAppErrorFromSupabaseError(error)
+  //     .addGlobalMessage('Could not login')
+  //     .addHint(429, 'Too many login attempts! Please try again later.')
+  //     .addHint(500, 'Something went wrong')
+  //     .build();
+  // }
+
   if (error) {
     throw buildAppErrorFromSupabaseError(error)
-      .addGlobalMessage('Could not login')
-      .addHint(429, 'Too many login attempts! Please try again later.')
-      .addHint(500, 'Something went wrong')
+      .setTitle('Could not login')
+      .addDescription('Invalid credentials')
+      .addDescription(0, 'You are offline! Please reconnect to the internet to login.')
+      .addDescription(429, 'Too many login attempts! Please try again later.')
+      .addDescription(500, 'Something went wrong')
       .build();
   }
 
@@ -49,8 +59,8 @@ export function useLogin(options?: Options) {
       revalidate();
     },
     onError: (error) => toast({
-      title: 'Login Error',
-      description: error.message,
+      title: error.title,
+      description: error.description,
       variant: 'destructive',
     }),
   });

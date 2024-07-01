@@ -3,35 +3,30 @@ import { AppError, AppErrorConstructor } from '@/errors/AppError';
 import { Prettify } from '@/types/utils';
 
 export type AppErrorBuilderConstructor = Prettify<
-  Omit<AppErrorConstructor, 'message' | 'hint' | 'cause'> & {
+  Omit<AppErrorConstructor, 'title' | 'description' | 'cause'> & {
     cause?: Error | ErrorLike | null | undefined;
   }
 >;
 
 export class AppErrorBuilder {
   /**
-   * The global error message will be used when a custom message
-   * from `statusCodeToMessageMap` cannot be found
+   * A title message describing what the error is.
+   * Should be user-friendly, such that it can be displayed
+   * to the user on an error screen.
    */
-  protected globalMessage: string = 'Something went wrong';
+  protected title: string = 'Something went wrong';
 
   /**
-   * When a valid HTTP status code and a corresponding error message
-   * is given via `addMessage`, it will be stored in this map
+   * The global description will be used when a custom description
+   * from `statusCodeToDescriptionMap` cannot be found
    */
-  protected statusCodeToMessageMap: Record<number, string | undefined> = {};
+  protected globalDescription?: string;
 
   /**
-   * The global error hint will be used when a custom hint
-   * from `statusCodeToHintMap` cannot be found
+   * When a valid HTTP status code and a corresponding error description
+   * is given via `addDescription`, it will be stored in this map
    */
-  protected globalHint?: string;
-
-  /**
-   * When a valid HTTP status code and a corresponding error hint
-   * is given via `addHint`, it will be stored in this map
-   */
-  protected statusCodeToHintMap: Record<number, string | undefined> = {};
+  protected statusCodeToDescriptionMap: Record<number, string | undefined> = {};
 
   /**
    * HTTP status code received from network response.
@@ -53,46 +48,41 @@ export class AppErrorBuilder {
       : cause;
   }
 
-  public addGlobalMessage(message: string) {
-    this.globalMessage = message;
+  public setTitle(title: string) {
+    this.title = title;
     return this;
   }
 
-  public addMessage(status: number, message: string) {
-    this.statusCodeToMessageMap[status] = message;
-    return this;
-  }
-
-  public addGlobalHint(hint: string) {
-    this.globalHint = hint;
-    return this;
-  }
-
-  public addHint(status: number, hint: string) {
-    this.statusCodeToHintMap[status] = hint;
-    return this;
-  }
-
-  private extractMessage() {
-    if (this.status) {
-      return this.statusCodeToMessageMap[this.status] ?? this.globalMessage;
+  public addDescription(globalDescription: string): this;
+  public addDescription(status: number, description: string): this;
+  public addDescription(arg1: string | number, arg2?: string): this {
+    // set globalDescription
+    if (typeof arg1 === 'string' && typeof arg2 === 'undefined') {
+      this.globalDescription = arg1;
+      return this;
     }
 
-    return this.globalMessage;
-  }
-
-  private extractHint() {
-    if (this.status) {
-      return this.statusCodeToHintMap[this.status] ?? this.globalHint;
+    // set description associated with a particular status code
+    if (typeof arg1 === 'number' && typeof arg2 === 'string') {
+      this.statusCodeToDescriptionMap[arg1] = arg2;
+      return this;
     }
 
-    return this.globalHint;
+    throw new Error('Invalid `addDescription` arguments');
+  }
+
+  private determineDescription() {
+    if (this.status) {
+      return this.statusCodeToDescriptionMap[this.status] ?? this.globalDescription;
+    }
+
+    return this.globalDescription;
   }
 
   public build() {
     return new AppError({
-      message: this.extractMessage(),
-      hint: this.extractHint(),
+      title: this.title,
+      description: this.determineDescription(),
       status: this.status,
       code: this.code,
       cause: this.cause,

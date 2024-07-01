@@ -2,7 +2,6 @@ import { useSuspenseQuery, queryOptions } from '@tanstack/react-query';
 import { supabase } from '@/config/api/supabaseClient';
 import { companyOptions } from '@/features/auth/hooks/useCompany';
 import { queryClient } from '@/config/api/queryClient';
-import { AppError } from '@/errors/AppError';
 
 async function getCompanyLogo(): Promise<string | null> {
   const { logo_path: logoPath } = await queryClient.ensureQueryData(companyOptions());
@@ -23,7 +22,7 @@ async function getCompanyLogo(): Promise<string | null> {
 }
 
 export function companyLogoOptions() {
-  return queryOptions<string | null, null>({
+  return queryOptions<string | null>({
     queryKey: ['auth', 'company', 'logo'],
     queryFn: getCompanyLogo,
     staleTime: 1000 * 60 * 10, // 10 minutes

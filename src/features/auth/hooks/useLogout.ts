@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useRevalidator } from 'react-router-dom';
-import { AuthError, SignOut } from '@supabase/supabase-js';
+import { SignOut } from '@supabase/supabase-js';
 import { supabase } from '@/config/api/supabaseClient';
 import { config } from '@/config/config';
 
@@ -23,7 +23,7 @@ export function useLogout(options?: Options) {
   const navigate = useNavigate();
   const { revalidate } = useRevalidator();
 
-  const mutation = useMutation<void, AuthError>({
+  const mutation = useMutation<void>({
     mutationFn: () => logout({ scope: options?.scope }),
     onSettled: () => {
       if (options?.redirect) navigate(options.redirect, { replace: options.replace });

@@ -16,11 +16,10 @@ export async function anonymousLogin() {
 
   if (error) {
     throw buildAppErrorFromSupabaseError(error)
-      .addGlobalMessage('Login failed')
-      .addGlobalHint('Looks like things didn\'t go as planned. Maybe you would like to retry?')
-      .addHint(0, 'You\'re offline! Please reconnect to the internet to continue using the app.')
-      .addMessage(429, 'Too many login attempts!')
-      .addHint(429, 'You have attempted to login too many times. Please try again later.')
+      .setTitle('Could not login')
+      .addDescription('Looks like things didn\'t go as planned. Maybe you would like to retry?')
+      .addDescription(0, 'You are offline! Please reconnect to the internet to continue using the app.')
+      .addDescription(429, 'Too many login attempts! Please try again later.')
       .build();
   }
 
@@ -48,8 +47,8 @@ export function useAnonymousLogin(options?: Options) {
       revalidate();
     },
     onError: (error) => toast({
-      title: 'Login Error',
-      description: error.message,
+      title: error.title,
+      description: error.description,
       variant: 'destructive',
     }),
   });
