@@ -27,6 +27,7 @@ export class APIError extends AppError {
 
   constructor({ statusText, statusCode, ...rest }: APIErrorConstructor) {
     super(rest);
+    this.name = 'APIError';
     this.statusText = statusText ?? status(statusCode);
     this.statusCode = statusCode ?? status(statusText);
   }
