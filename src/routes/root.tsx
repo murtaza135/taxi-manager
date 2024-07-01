@@ -5,8 +5,8 @@ import { BasicContainer } from '@/ui/Container';
 import { Spinner } from '@/ui/Spinner';
 import { SimpleTopNav } from '@/features/navigation/components/top-nav/SimpleTopNav';
 import { TopBarProgress } from '@/ui/TopBarProgress';
-import { NotFoundError } from '@/errors/components/NotFoundError';
-import { GeneralError } from '@/errors/components/GeneralError';
+import { NotFoundError } from '@/errors3/components/NotFoundError';
+import { GeneralError } from '@/errors3/components/GeneralError';
 
 function RootSuspenseBoundary() {
   return (
