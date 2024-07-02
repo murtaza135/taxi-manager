@@ -2,6 +2,8 @@ import { Suspense } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { BasicContainer } from '@/ui/Container';
+import { Spinner } from '@/ui/Spinner';
 import { router } from '@/config/router';
 import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
@@ -19,7 +21,14 @@ export function App() {
   return (
     <Suspense>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} fallbackElement={<div>lol</div>} />
+        <RouterProvider
+          router={router}
+          fallbackElement={(
+            <BasicContainer center>
+              <Spinner />
+            </BasicContainer>
+          )}
+        />
         {!config.PROD && (
           <ReactQueryDevtools initialIsOpen={false} position="bottom" buttonPosition="bottom-right" />
         )}

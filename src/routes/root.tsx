@@ -1,4 +1,5 @@
 import { Outlet, isRouteErrorResponse, useNavigation, useRevalidator, useRouteError } from 'react-router-dom';
+import { useIsMutating } from '@tanstack/react-query';
 import { Toaster } from '@/ui/toast';
 import { ScrollToTopButton } from '@/features/scroll/ScrollToTopButton';
 import { BasicContainer } from '@/ui/Container';
@@ -21,6 +22,14 @@ function RootSuspenseBoundary() {
 
 function RootErrorBoundary() {
   const error = useRouteError();
+  const { state: navigationState } = useNavigation(); // when loaders invoked via navigation
+  const { state: revalidatorState } = useRevalidator(); // when loaders invoked via mutations
+  const numMutations = useIsMutating(); // when mutation invoked
+
+  const isLoading = revalidatorState === 'loading'
+    || navigationState === 'loading'
+    || navigationState === 'submitting'
+    || numMutations > 0;
 
   const errorUI = isRouteErrorResponse(error) && error.status === 404
     ? <NotFoundErrorUI />
@@ -28,6 +37,7 @@ function RootErrorBoundary() {
 
   return (
     <>
+      {isLoading && <TopBarProgress />}
       <SimpleTopNav />
       <BasicContainer center>
         {errorUI}
