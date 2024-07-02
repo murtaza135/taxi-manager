@@ -7,10 +7,18 @@ import { Spinner } from '@/ui/Spinner';
 import { router } from '@/config/router';
 import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
+import { useDarkmodeStore } from '@/features/darkmode/state/darkmodeStore';
 import { applyTheme } from '@/features/darkmode/utils/applyTheme';
 import { useTopBarProgressConfiguration } from '@/ui/TopBarProgress';
 import { config } from '@/config/config';
 import '@/styles/main.css';
+
+useDarkmodeStore.subscribe(
+  (state) => state.isDarkmode,
+  (isDarkMode) => {
+    console.log(isDarkMode);
+  },
+);
 
 void queryClient.prefetchQuery(sessionOptions());
 applyTheme();

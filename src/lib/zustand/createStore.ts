@@ -1,5 +1,5 @@
-import { create, StoreApi, UseBoundStore, StateCreator } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create, StoreApi, UseBoundStore, StateCreator, Mutate } from 'zustand';
+import { persist, subscribeWithSelector } from 'zustand/middleware';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 import { config } from '@/config/config';
 import { capitalize } from '@/utils/string/capitalize';
@@ -12,27 +12,38 @@ export type CreateStoreOptions<S> = PersistOptions<S> & {
   devtoolsStoreName: string;
 };
 
+export type UseMutatedBoundStore<S> = UseBoundStore<
+  Mutate<
+    StoreApi<S>,
+    [
+      ['zustand/subscribeWithSelector', never],
+    ]
+  >
+>;
+
 // Create a zustand store with predefined middleware and devtools
 export function createStore<S extends object>(
   stateObject: StateCreator<S>,
   options: CreateStoreOptions<S>,
-) {
+): UseMutatedBoundStore<S> {
   const useStore = (function createStoreWithPersist() {
     // apply persist middleware, which persists state to localStorage,
     // requires a localStorage key (persistKey), and an optional partialize function,
     // see https://docs.pmnd.rs/zustand/integrations/persisting-store-data for more details
     if (options.persist) {
       return create<S>()(
-        persist(
-          (...a) => ({ ...stateObject(...a) }),
-          options.partialize
-            ? { name: options.persistKey, partialize: options.partialize }
-            : { name: options.persistKey },
+        subscribeWithSelector(
+          persist(
+            (...a) => ({ ...stateObject(...a) }),
+            options.partialize
+              ? { name: options.persistKey, partialize: options.partialize }
+              : { name: options.persistKey },
+          ),
         ),
       );
     }
 
-    return create<S>()(stateObject);
+    return create<S>()(stateObject) as UseMutatedBoundStore<S>;
   }());
 
   if (!config.PROD) {
