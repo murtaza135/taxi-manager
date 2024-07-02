@@ -1,4 +1,4 @@
-export const defaultMessages: Record<number, string> = {
+export const defaultErrorMessages: Record<number, string> = {
   0: 'You\'re offline! Please reconnect to the internet to continue using the app.',
   400: 'Looks like you entered invalid details. Please try again.',
   401: 'You must be logged in!',

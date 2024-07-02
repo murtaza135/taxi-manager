@@ -1,4 +1,4 @@
-import { ErrorLike } from '@/errors/types';
+import { ErrorType, ErrorLike } from '@/errors/types';
 import { AppError, AppErrorConstructor } from '@/errors/AppError';
 import { Prettify } from '@/types/utils';
 
@@ -18,15 +18,20 @@ export class AppErrorBuilder {
 
   /**
    * The global description will be used when a custom description
-   * from `statusCodeToDescriptionMap` cannot be found
+   * from `errorTypeToDescriptionMap` cannot be found
    */
   protected globalDescription?: string;
 
   /**
-   * When a valid HTTP status code and a corresponding error description
-   * is given via `addDescription`, it will be stored in this map
+   * When an ErrorType and corresponding error description
+   * are given via `setDescription`, it will be stored in this map
    */
-  protected statusCodeToDescriptionMap: Record<number, string | undefined> = {};
+  protected errorTypeToDescriptionMap: Partial<Record<ErrorType, string>> = {};
+
+  /**
+   * The type of error
+   */
+  protected readonly type: AppErrorBuilderConstructor['type'];
 
   /**
    * HTTP status code received from network response.
@@ -40,7 +45,8 @@ export class AppErrorBuilder {
 
   protected cause?: Exclude<AppErrorBuilderConstructor['cause'], ErrorLike>;
 
-  constructor({ status, code, cause }: AppErrorBuilderConstructor) {
+  constructor({ type, status, code, cause }: AppErrorBuilderConstructor) {
+    this.type = type;
     this.status = status;
     this.code = code;
     this.cause = cause && !(cause instanceof Error)
@@ -53,9 +59,9 @@ export class AppErrorBuilder {
     return this;
   }
 
-  public addDescription(globalDescription: string): this;
-  public addDescription(status: number, description: string): this;
-  public addDescription(arg1: string | number, arg2?: string): this {
+  public setDescription(type: ErrorType, description: string): this;
+  public setDescription(globalDescription: string): this;
+  public setDescription(arg1: string, arg2?: string): this {
     // set globalDescription
     if (typeof arg1 === 'string' && typeof arg2 === 'undefined') {
       this.globalDescription = arg1;
@@ -63,26 +69,19 @@ export class AppErrorBuilder {
     }
 
     // set description associated with a particular status code
-    if (typeof arg1 === 'number' && typeof arg2 === 'string') {
-      this.statusCodeToDescriptionMap[arg1] = arg2;
+    if (typeof arg1 === 'string' && typeof arg2 === 'string') {
+      this.errorTypeToDescriptionMap[arg1 as ErrorType] = arg2;
       return this;
     }
 
-    throw new Error('Invalid `addDescription` arguments');
-  }
-
-  private determineDescription() {
-    if (this.status) {
-      return this.statusCodeToDescriptionMap[this.status] ?? this.globalDescription;
-    }
-
-    return this.globalDescription;
+    throw new Error('Invalid `setDescription` arguments');
   }
 
   public build() {
     return new AppError({
+      type: this.type,
       title: this.title,
-      description: this.determineDescription(),
+      description: this.errorTypeToDescriptionMap[this.type] ?? this.globalDescription,
       status: this.status,
       code: this.code,
       cause: this.cause,

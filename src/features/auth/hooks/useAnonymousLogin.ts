@@ -16,10 +16,10 @@ export async function anonymousLogin() {
 
   if (error) {
     throw buildAppErrorFromSupabaseError(error)
-      .setTitle('Could not login')
-      .addDescription('Looks like things didn\'t go as planned. Maybe you would like to retry?')
-      .addDescription(0, 'You are offline! Please reconnect to the internet to continue using the app.')
-      .addDescription(429, 'Too many login attempts! Please try again later.')
+      .setTitle('Login Error')
+      .setDescription('Looks like things didn\'t go as planned. Maybe you would like to retry?')
+      .setDescription('offline', 'You are offline! Please reconnect to the internet to continue using the app.')
+      .setDescription('tooManyRequests', 'Too many login attempts! Please try again later.')
       .build();
   }
 

@@ -24,7 +24,7 @@ async function getCompany(): Promise<CompanyDetails> {
   if (error) {
     throw buildAppErrorFromSupabaseError(error, status)
       .setTitle('Could not load company data')
-      .addDescription('Looks like things didn\'t go as planned. Maybe you would like to retry?')
+      .setDescription('Looks like things didn\'t go as planned. Maybe you would like to retry?')
       .build();
   }
 

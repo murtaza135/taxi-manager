@@ -13,10 +13,11 @@ export async function login(args: LoginFormSchema) {
   if (error) {
     throw buildAppErrorFromSupabaseError(error)
       .setTitle('Could not login')
-      .addDescription('Invalid credentials')
-      .addDescription(0, 'You are offline! Please reconnect to the internet to login.')
-      .addDescription(429, 'Too many login attempts! Please try again later.')
-      .addDescription(500, 'Something went wrong')
+      .setDescription('Invalid credentials')
+      .setDescription('offline', 'You are offline! Please reconnect to the internet to login.')
+      .setDescription('tooManyRequests', 'Too many login attempts! Please try again later.')
+      .setDescription('unknown', 'Something went wrong')
+      .setDescription('server', 'Something went wrong')
       .build();
   }
 

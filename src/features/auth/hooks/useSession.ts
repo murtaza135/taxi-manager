@@ -10,14 +10,15 @@ async function getSession() {
   if (error) {
     throw buildAppErrorFromSupabaseError(error)
       .setTitle('Something went wrong')
-      .addDescription(0, 'You are offline! Please reconnet to the internet to conitnue using the app.')
-      .addDescription(401, 'You need to login again!')
-      .addDescription(500, 'Oops. Looks like there is something wrong on our side. Please try again later')
+      .setDescription('offline', 'You are offline! Please reconnet to the internet to conitnue using the app.')
+      .setDescription('authentication', 'You need to login again!')
+      .setDescription('server', 'Oops. Looks like there is something wrong on our side. Please try again later')
       .build();
   }
 
   if (!data.session) {
     throw new AppError({
+      type: 'authentication',
       title: 'Something went wrong',
       description: 'You need to login again!',
     });
