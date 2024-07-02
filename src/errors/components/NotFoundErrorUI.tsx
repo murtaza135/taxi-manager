@@ -4,7 +4,7 @@ import { Button } from '@/ui/Button';
 import notFoundErrorLightImage from '@/assets/images/404-page-not-found-light.svg';
 import notFoundErrorDarkImage from '@/assets/images/404-page-not-found-dark.svg';
 
-export function NotFoundError() {
+export function NotFoundErrorUI() {
   const navigate = useNavigate();
 
   return (

@@ -5,8 +5,8 @@ import { BasicContainer } from '@/ui/Container';
 import { Spinner } from '@/ui/Spinner';
 import { SimpleTopNav } from '@/features/navigation/components/top-nav/SimpleTopNav';
 import { TopBarProgress } from '@/ui/TopBarProgress';
-import { NotFoundError } from '@/errors/components/NotFoundError';
-import { GeneralError } from '@/errors/components/GeneralError';
+import { NotFoundErrorUI } from '@/errors/components/NotFoundErrorUI';
+import { GeneralErrorUI } from '@/errors/components/GeneralErrorUI';
 
 function RootSuspenseBoundary() {
   return (
@@ -23,8 +23,8 @@ function RootErrorBoundary() {
   const error = useRouteError();
 
   const errorUI = isRouteErrorResponse(error) && error.status === 404
-    ? <NotFoundError />
-    : <GeneralError />;
+    ? <NotFoundErrorUI />
+    : <GeneralErrorUI />;
 
   return (
     <>

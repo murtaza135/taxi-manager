@@ -12,6 +12,7 @@ import { SideNav } from '@/features/navigation/components/side-nav/SideNav';
 import { MobileNav } from '@/features/navigation/components/mobile-nav/MobileNav';
 
 const privateLayoutLoader = (queryClient: QueryClient) => async () => {
+  console.log('running private loader');
   const localSession = getLocalSession();
   if (!localSession) {
     await logout();
@@ -22,12 +23,14 @@ const privateLayoutLoader = (queryClient: QueryClient) => async () => {
 
   try {
     await queryClient.ensureQueryData(sessionOptions());
+    console.log('here1');
     return null;
   } catch (error: unknown) {
     if (error instanceof AppError && error.status === 401) {
       await logout();
       queryClient.clear();
       toast({ title: error.title, description: error.description, variant: 'destructive' });
+      console.log('here2');
       return redirect('/login');
     }
 
@@ -35,6 +38,8 @@ const privateLayoutLoader = (queryClient: QueryClient) => async () => {
       toast({ title: error.title, description: error.description, variant: 'destructive' });
       return null;
     }
+
+    console.log('here 3');
 
     await logout();
     queryClient.clear();
