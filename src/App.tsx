@@ -19,7 +19,7 @@ export function App() {
   return (
     <Suspense>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <RouterProvider router={router} fallbackElement={<div>lol</div>} />
         {!config.PROD && (
           <ReactQueryDevtools initialIsOpen={false} position="bottom" buttonPosition="bottom-right" />
         )}
