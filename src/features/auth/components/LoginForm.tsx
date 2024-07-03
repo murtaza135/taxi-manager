@@ -4,7 +4,6 @@ import {
   Form,
   FormTitle,
   FormField,
-  FormGroup,
   useZodForm,
 } from '@/ui/Form';
 import { Input } from '@/ui/Input';
@@ -12,6 +11,7 @@ import { Button } from '@/ui/Button';
 import { loginFormSchema } from '@/features/auth/schemas';
 import { useLogin } from '@/features/auth/hooks/useLogin';
 import { useAnonymousLogin } from '@/features/auth/hooks/useAnonymousLogin';
+import { LoginFormGroup } from '@/features/auth/components/LoginFormGroup';
 
 export function LoginForm() {
   const form = useZodForm({
@@ -27,7 +27,7 @@ export function LoginForm() {
     <FormProvider {...form}>
       <Form
         onSubmit={form.handleSubmit((data) => login(data))}
-        className="w-full max-w-[24rem] space-y-4"
+        className="w-full max-w-[24rem] space-y-4 bg-primary-dark text-achromatic-light"
       >
         <FormTitle>Login</FormTitle>
 
@@ -35,9 +35,13 @@ export function LoginForm() {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormGroup label="Email">
-              <Input placeholder="Email" {...field} />
-            </FormGroup>
+            <LoginFormGroup label="Email">
+              <Input
+                placeholder="Email"
+                className="border-achromatic-light bg-primary-dark [&>input]:placeholder:text-achromatic-light/70"
+                {...field}
+              />
+            </LoginFormGroup>
           )}
         />
 
@@ -45,14 +49,19 @@ export function LoginForm() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormGroup label="Password">
-              <Input placeholder="Password" type="password" {...field} />
-            </FormGroup>
+            <LoginFormGroup label="Password">
+              <Input
+                placeholder="Password"
+                type="password"
+                className="border-achromatic-light bg-primary-dark [&>input]:placeholder:text-achromatic-light/70"
+                {...field}
+              />
+            </LoginFormGroup>
           )}
         />
 
         <div className="pt-3">
-          <Button type="submit" className="w-full">Login</Button>
+          <Button type="submit" variant="base" className="w-full">Login</Button>
         </div>
 
         <div className="pt-1">
@@ -62,7 +71,9 @@ export function LoginForm() {
             variant="ghost"
             onClick={() => anonymousLogin()}
           >
-            <span className="text-neutral-900/70 dark:text-achromatic-500">Don&apos;t have an account?</span>
+            <span className="text-achromatic-light/70 dark:text-achromatic-500">
+              Don&apos;t have an account?
+            </span>
             &nbsp;
             GUEST LOGIN
           </Button>
