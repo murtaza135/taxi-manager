@@ -22,7 +22,7 @@ export function Title({ title }: Props) {
   // set the document title
   useEffect(() => {
     const oldTitle = document.title;
-    document.title = `${title} | ${config.APP_NAME}`;
+    document.title = `${title} | ${config.appName}`;
 
     return () => {
       document.title = oldTitle;

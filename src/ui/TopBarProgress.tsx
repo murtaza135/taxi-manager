@@ -6,8 +6,8 @@ import { config } from '@/config/config';
 function configureTopBarProgress(isDarkmode: boolean) {
   TopBarProgressComponent.config({
     barColors: {
-      0: isDarkmode ? config.COLORS.primary.light : config.COLORS.primary.dark,
-      '1.0': isDarkmode ? config.COLORS.primary.light : config.COLORS.primary.dark,
+      0: isDarkmode ? config.colors.primary.light : config.colors.primary.dark,
+      '1.0': isDarkmode ? config.colors.primary.light : config.colors.primary.dark,
     },
     barThickness: 4,
     shadowBlur: 2,

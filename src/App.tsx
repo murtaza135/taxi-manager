@@ -35,7 +35,7 @@ export function App() {
             </BasicContainer>
           )}
         />
-        {!config.PROD && (
+        {!config.env.PROD && (
           <ReactQueryDevtools
             initialIsOpen={false}
             position="bottom"

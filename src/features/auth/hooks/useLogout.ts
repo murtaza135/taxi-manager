@@ -9,7 +9,7 @@ import { config } from '@/config/config';
 export async function logout(options?: SignOut) {
   const scope = options?.scope ?? 'local';
   await supabase.auth.signOut({ scope });
-  localStorage.removeItem(config.SUPABASE.authKey);
+  localStorage.removeItem(config.supabase.authKey);
 }
 
 type Options = {

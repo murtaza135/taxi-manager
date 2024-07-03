@@ -1,7 +1,7 @@
 export const config = {
-  ...import.meta.env,
-  APP_NAME: 'Taxi Manager',
-  BREAKPOINTS: {
+  env: import.meta.env,
+  appName: 'Taxi Manager',
+  breakpoints: {
     xs: '425px',
     sm: '640px',
     md: '768px',
@@ -9,7 +9,7 @@ export const config = {
     xl: '1280px',
     '2xl': '1536px',
   },
-  COLORS: {
+  colors: {
     primary: {
       light: '#7dd3fc',
       dark: '#0284c7',
@@ -23,7 +23,7 @@ export const config = {
       dark: '#121212',
     },
   },
-  SUPABASE: {
+  supabase: {
     authKey: 'sb-127-auth-token',
   },
 } as const;

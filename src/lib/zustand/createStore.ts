@@ -46,7 +46,7 @@ export function createStore<S extends object>(
     return create<S>()(stateObject) as UseMutatedBoundStore<S>;
   }());
 
-  if (!config.PROD) {
+  if (!config.env.PROD) {
     mountStoreDevtool(options.devtoolsStoreName, useStore);
   }
 
