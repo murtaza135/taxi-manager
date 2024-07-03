@@ -12,6 +12,7 @@ import { useLogout } from '@/features/auth/hooks/useLogout';
 import { useCompany } from '@/features/auth/hooks/useCompany';
 import { useCompanyLogo } from '@/features/auth/hooks/useCompanyLogo';
 import { extractInitials } from '@/utils/string/extractInitials';
+import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 
 export function TopNav() {
   const title = useTitle();
@@ -51,7 +52,7 @@ export function TopNav() {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className="min-w-[125px]">
-            <DropdownMenuLabel>{data.name}</DropdownMenuLabel>
+            <DropdownMenuLabel>{capitalizeEachWord(data.name)}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={handleToggleDarkMode}
