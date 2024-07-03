@@ -8,14 +8,24 @@ import { TopBarProgress } from '@/ui/TopBarProgress';
 import { NotFoundErrorUI } from '@/errors/components/NotFoundErrorUI';
 import { GeneralErrorUI } from '@/errors/components/GeneralErrorUI';
 
-function RootSuspenseBoundary() {
+function RootWrapper({ children }: { children?: React.ReactNode; }) {
   return (
     <>
+      <TopBarProgress />
+      {children}
+      <Toaster />
+      <ScrollToTopButton />
+    </>
+  );
+}
+
+function RootSuspenseBoundary() {
+  return (
+    <RootWrapper>
       <BasicContainer center>
         <Spinner />
       </BasicContainer>
-      <Toaster />
-    </>
+    </RootWrapper>
   );
 }
 
@@ -27,25 +37,20 @@ function RootErrorBoundary() {
     : <GeneralErrorUI />;
 
   return (
-    <>
-      <TopBarProgress />
+    <RootWrapper>
       <SimpleTopNav />
       <BasicContainer center>
         {errorUI}
       </BasicContainer>
-      <Toaster />
-    </>
+    </RootWrapper>
   );
 }
 
 function RootComponent() {
   return (
-    <>
-      <TopBarProgress />
+    <RootWrapper>
       <Outlet />
-      <Toaster />
-      <ScrollToTopButton />
-    </>
+    </RootWrapper>
   );
 }
 

@@ -12,6 +12,8 @@ import { Spinner } from '@/ui/Spinner';
 import { TopNav } from '@/features/navigation/components/top-nav/TopNav';
 import { SideNav } from '@/features/navigation/components/side-nav/SideNav';
 import { MobileNav } from '@/features/navigation/components/mobile-nav/MobileNav';
+import { GeneralErrorUI } from '@/errors/components/GeneralErrorUI';
+import { SimpleTopNav } from '@/features/navigation/components/top-nav/SimpleTopNav';
 
 const privateLayoutLoader = (queryClient: QueryClient) => async () => {
   const localSession = getLocalSession();
@@ -43,8 +45,10 @@ const privateLayoutLoader = (queryClient: QueryClient) => async () => {
   }
 
   try {
-    await queryClient.ensureQueryData(companyOptions());
-    await queryClient.ensureQueryData(companyLogoOptions());
+    await Promise.all([
+      queryClient.ensureQueryData(companyOptions()),
+      queryClient.ensureQueryData(companyLogoOptions()),
+    ]);
   } catch {
     throw new Error('Oops! Something went wrong.');
   }
@@ -57,6 +61,17 @@ function PrivateLayoutSuspenseBoundary() {
     <BasicContainer center>
       <Spinner />
     </BasicContainer>
+  );
+}
+
+function PrivateLayoutErrorBoundary() {
+  return (
+    <>
+      <SimpleTopNav />
+      <BasicContainer center>
+        <GeneralErrorUI />
+      </BasicContainer>
+    </>
   );
 }
 
@@ -75,4 +90,5 @@ function PrivateLayoutComponent() {
 
 export const loader = privateLayoutLoader;
 export const SuspenseBoundary = PrivateLayoutSuspenseBoundary;
+export const ErrorBoundary = PrivateLayoutErrorBoundary;
 export const Component = PrivateLayoutComponent;
