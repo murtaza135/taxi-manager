@@ -9,23 +9,20 @@ import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { useDarkmodeStore } from '@/features/darkmode/state/darkmodeStore';
 import { applyTheme } from '@/features/darkmode/utils/applyTheme';
-import { useTopBarProgressConfiguration } from '@/ui/TopBarProgress';
+import { configureTopBarProgress } from '@/ui/TopBarProgress';
 import { config } from '@/config/config';
 import '@/styles/main.css';
 
+configureTopBarProgress(useDarkmodeStore.getState().isDarkmode);
 useDarkmodeStore.subscribe(
   (state) => state.isDarkmode,
-  (isDarkMode) => {
-    console.log(isDarkMode);
-  },
+  (isDarkmode) => configureTopBarProgress(isDarkmode),
 );
 
 void queryClient.prefetchQuery(sessionOptions());
 applyTheme();
 
 export function App() {
-  useTopBarProgressConfiguration();
-
   return (
     <Suspense>
       <QueryClientProvider client={queryClient}>
