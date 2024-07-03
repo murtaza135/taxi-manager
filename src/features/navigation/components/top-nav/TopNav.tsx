@@ -29,7 +29,7 @@ export function TopNav() {
   };
 
   return (
-    <div className="flex justify-between items-center gap-4 w-full max-w-screen-2xl h-20 mx-auto pl-5 sm:pl-[9.625rem] md:pl-[18.5rem] pr-5 fixed top-0 left-0 right-0 z-20 bg-scene-light dark:bg-scene-dark text-primary-dark dark:text-primary-light">
+    <div className="flex justify-between items-center gap-4 w-full max-w-screen-2xl h-20 mx-auto pl-5 sm:pl-[9.625rem] md:pl-[18.5rem] pr-5 fixed top-0 left-0 right-0 z-20 bg-achromatic-light dark:bg-achromatic-darker text-primary-dark dark:text-primary-light">
       <div className="flex gap-4 items-center">
         <IoMenu
           className="sm:hidden text-3xl cursor-pointer hover:opacity-75 transition-opacity"
@@ -45,7 +45,7 @@ export function TopNav() {
           <DropdownMenuTrigger className="outline-none">
             <Avatar className="hover:opacity-65 transition-opacity">
               {src && <AvatarImage src={src} alt="user" />}
-              <AvatarFallback className="dark:text-achromatic-light">
+              <AvatarFallback className="dark:text-achromatic-lighter">
                 {extractInitials(data.name ?? '')}
               </AvatarFallback>
             </Avatar>

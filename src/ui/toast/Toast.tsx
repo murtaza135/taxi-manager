@@ -26,8 +26,8 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary-dark text-achromatic-light dark:bg-achromatic-dark dark:text-achromatic-light',
-        destructive: 'destructive group border-red-500 bg-red-500 text-achromatic-light dark:border-red-800 dark:bg-red-800 dark:text-achromatic-light',
+        default: 'bg-primary-dark text-achromatic-lighter dark:bg-achromatic-dark dark:text-achromatic-lighter',
+        destructive: 'destructive group border-red-500 bg-red-500 text-achromatic-lighter dark:border-red-800 dark:bg-red-800 dark:text-achromatic-lighter',
       },
     },
     defaultVariants: {
@@ -56,7 +56,7 @@ const ToastAction = React.forwardRef<
   <ToastPrimitives.Action
     ref={ref}
     className={cn(
-      'inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-achromatic-dark bg-transparent px-3 text-sm font-medium ring-offset-achromatic-dark transition-colors hover:opacity-50 focus:outline-none focus:ring-2 focus:ring-achromatic-dark focus:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-achromatic-light/40 group-[.destructive]:hover:opacity-50 group-[.destructive]:focus:ring-achromatic-light dark:border-achromatic-light dark:ring-offset-achromatic-light dark:focus:ring-achromatic-light dark:group-[.destructive]:focus:ring-achromatic-light',
+      'inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-achromatic-dark bg-transparent px-3 text-sm font-medium ring-offset-achromatic-dark transition-colors hover:opacity-50 focus:outline-none focus:ring-2 focus:ring-achromatic-dark focus:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-achromatic-lighter/40 group-[.destructive]:hover:opacity-50 group-[.destructive]:focus:ring-achromatic-lighter dark:border-achromatic-lighter dark:ring-offset-achromatic-lighter dark:focus:ring-achromatic-lighter dark:group-[.destructive]:focus:ring-achromatic-lighter',
       className,
     )}
     {...props}
@@ -71,7 +71,7 @@ const ToastClose = React.forwardRef<
   <ToastPrimitives.Close
     ref={ref}
     className={cn(
-      'absolute right-2 top-2 rounded-md p-1 text-scene-dark/50 opacity-0 transition-opacity hover:text-scene-dark focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600 dark:text-achromatic-light/50 dark:hover:text-achromatic-light',
+      'absolute right-2 top-2 rounded-md p-1 text-achromatic-darker/50 opacity-0 transition-opacity hover:text-achromatic-darker focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600 dark:text-achromatic-lighter/50 dark:hover:text-achromatic-lighter',
       className,
     )}
     toast-close=""

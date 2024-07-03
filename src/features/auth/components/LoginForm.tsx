@@ -27,7 +27,7 @@ export function LoginForm() {
     <FormProvider {...form}>
       <Form
         onSubmit={form.handleSubmit((data) => login(data))}
-        className="w-full max-w-[24rem] space-y-4 bg-primary-dark text-achromatic-light"
+        className="w-full max-w-[24rem] space-y-4 bg-primary-dark text-achromatic-lighter"
       >
         <FormTitle>Login</FormTitle>
 
@@ -38,7 +38,7 @@ export function LoginForm() {
             <LoginFormGroup label="Email">
               <Input
                 placeholder="Email"
-                className="border-achromatic-light bg-primary-dark [&>input]:placeholder:text-achromatic-light/70"
+                className="border-achromatic-lighter bg-primary-dark [&>input]:placeholder:text-achromatic-lighter/70"
                 {...field}
               />
             </LoginFormGroup>
@@ -53,7 +53,7 @@ export function LoginForm() {
               <Input
                 placeholder="Password"
                 type="password"
-                className="border-achromatic-light bg-primary-dark [&>input]:placeholder:text-achromatic-light/70"
+                className="border-achromatic-lighter bg-primary-dark [&>input]:placeholder:text-achromatic-lighter/70"
                 {...field}
               />
             </LoginFormGroup>
@@ -71,7 +71,7 @@ export function LoginForm() {
             variant="ghost"
             onClick={() => anonymousLogin()}
           >
-            <span className="text-achromatic-light/70 dark:text-achromatic-500">
+            <span className="text-achromatic-lighter/70 dark:text-achromatic-500">
               Don&apos;t have an account?
             </span>
             &nbsp;

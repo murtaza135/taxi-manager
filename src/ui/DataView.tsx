@@ -144,7 +144,7 @@ function DataViewCard<TData extends ReactTableRowData>(
   const avatarRenderValue = mainDataCellsMap.avatar?.renderValue<string>();
 
   return (
-    <div className="h-full min-h-[20rem] rounded-lg overflow-hidden bg-achromatic-light dark:bg-achromatic-dark">
+    <div className="h-full min-h-[20rem] rounded-lg overflow-hidden bg-achromatic-lighter dark:bg-achromatic-dark">
       <div className={cn('h-28 relative', !!avatarRenderValue && 'mb-16')}>
         {imageRenderValue
           ? <img src={imageRenderValue} alt="card background" className="object-cover object-center h-full w-full" />
@@ -170,7 +170,7 @@ function DataViewCard<TData extends ReactTableRowData>(
       <div className={cn('px-6 pt-4 space-y-10', mainDataCellsMap.optionsBottom ? 'pb-4' : 'pb-8')}>
         <div className="text-center">
           {!!mainDataCellsMap.title && <p className="text-2xl font-semibold">{mainDataCellsMap.title.renderValue<string>()}</p>}
-          {!!mainDataCellsMap.subtitle && <p className="text-achromatic-dark/50 dark:text-achromatic-light/50">{mainDataCellsMap.subtitle.renderValue<string>()}</p>}
+          {!!mainDataCellsMap.subtitle && <p className="text-achromatic-dark/50 dark:text-achromatic-lighter/50">{mainDataCellsMap.subtitle.renderValue<string>()}</p>}
         </div>
 
         <div className="space-y-4">
@@ -181,7 +181,7 @@ function DataViewCard<TData extends ReactTableRowData>(
                 className="grid grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] gap-x-10 gap-y-4 text-center"
               >
                 <div>
-                  <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-light/50">
+                  <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-lighter/50">
                     {flexRender(
                       headerRow[cellA.column.id].column.columnDef.header,
                       headerRow[cellA.column.id].getContext(),
@@ -194,7 +194,7 @@ function DataViewCard<TData extends ReactTableRowData>(
 
                 {cellB && (
                   <div>
-                    <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-light/50">
+                    <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-lighter/50">
                       {flexRender(
                         headerRow[cellB.column.id].column.columnDef.header,
                         headerRow[cellB.column.id].getContext(),
@@ -233,7 +233,7 @@ function DataViewGrid<TData extends ReactTableRowData>(
   if (!table.getRowModel().rows?.length) {
     return (
       <div>
-        <p className="w-full h-24 p-4 center text-sm rounded-lg transition-colors bg-achromatic-light hover:bg-achromatic-light/50 dark:bg-achromatic-dark dark:hover:bg-achromatic-dark/50">
+        <p className="w-full h-24 p-4 center text-sm rounded-lg transition-colors bg-achromatic-lighter hover:bg-achromatic-lighter/50 dark:bg-achromatic-dark dark:hover:bg-achromatic-dark/50">
           No Results.
         </p>
       </div>

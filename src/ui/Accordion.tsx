@@ -9,7 +9,7 @@ const Accordion = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AccordionPrimitive.Root
     ref={ref}
-    className={cn('rounded-lg bg-achromatic-light dark:bg-achromatic-dark', className)}
+    className={cn('rounded-lg bg-achromatic-lighter dark:bg-achromatic-dark', className)}
     {...props}
   />
 ));
@@ -21,7 +21,7 @@ const AccordionItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AccordionPrimitive.Item
     ref={ref}
-    className={cn('border-b-2 last-of-type:border-b-0 border-scene-light dark:border-scene-dark', className)}
+    className={cn('border-b-2 last-of-type:border-b-0 border-achromatic-light dark:border-achromatic-darker', className)}
     {...props}
   />
 ));

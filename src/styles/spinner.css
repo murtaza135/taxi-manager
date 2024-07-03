@@ -13,7 +13,7 @@
   .dark .spinner {
     border-radius: 50%;
     display: inline-block;
-    border-top: 4px solid theme(colors.achromatic.light);
+    border-top: 4px solid theme(colors.achromatic.lighter);
     border-right: 4px solid transparent;
     box-sizing: border-box;
     animation: rotation 1s linear infinite;

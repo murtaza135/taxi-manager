@@ -18,13 +18,11 @@ export default {
         },
         achromatic: {
           ...colors.zinc,
-          light: colors.white,
-          dark: colors.zinc[800]
-        },
-        scene: {
           light: colors.sky[100],
-          dark: "#121212"
-        }
+          lighter: colors.white,
+          dark: colors.zinc[800],
+          darker: "#121212"
+        },
       },
       fontFamily: {
         cursive: ['cursive'],

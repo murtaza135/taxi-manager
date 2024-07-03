@@ -233,7 +233,7 @@ const MultiStepFormStepperItem = React.forwardRef<
             className={cn(
               'h-[3px] -translate-y-[1.5px] w-full absolute top-1/2 left-1/2',
               complete && 'bg-primary-dark dark:bg-primary-light',
-              !complete && 'bg-achromatic-light dark:bg-achromatic-dark',
+              !complete && 'bg-achromatic-lighter dark:bg-achromatic-dark',
             )}
           />
         )}
@@ -241,8 +241,8 @@ const MultiStepFormStepperItem = React.forwardRef<
         <span
           className={cn(
             'w-9 h-9 rounded-full text-xl font-semibold flex justify-center items-center text-center z-[1]',
-            complete && 'bg-primary-dark dark:bg-primary-light text-achromatic-light dark:text-achromatic-dark',
-            !complete && 'bg-achromatic-light dark:bg-achromatic-dark text-primary-dark dark:text-primary-light',
+            complete && 'bg-primary-dark dark:bg-primary-light text-achromatic-lighter dark:text-achromatic-dark',
+            !complete && 'bg-achromatic-lighter dark:bg-achromatic-dark text-primary-dark dark:text-primary-light',
           )}
         >
           {step}

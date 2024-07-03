@@ -15,12 +15,10 @@ export const config = {
       dark: '#0284c7',
     },
     achromatic: {
-      light: '#fff',
-      dark: '#27272a',
-    },
-    scene: {
       light: '#e0f2fe',
-      dark: '#121212',
+      lighter: '#fff',
+      dark: '#27272a',
+      darker: '#121212',
     },
   },
   supabase: {

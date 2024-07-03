@@ -14,7 +14,7 @@ export function LoginFormGroup({ label, description, children }: Props) {
     <FormItem>
       {!!label && <FormLabel>{label}</FormLabel>}
       <FormControl className={cn(error && 'border-2')}>{children}</FormControl>
-      {!!description && <FormDescription className="text-achromatic-light">{description}</FormDescription>}
+      {!!description && <FormDescription className="text-achromatic-lighter">{description}</FormDescription>}
       <FormMessage className="text-red-200" />
     </FormItem>
   );

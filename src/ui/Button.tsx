@@ -5,14 +5,14 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/utils/cn';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-lg font-medium ring-offset-achromatic-light outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-achromatic-dark focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-achromatic-dark dark:focus-visible:ring-achromatic-light transition-opacity',
+  'inline-flex items-center justify-center rounded-lg font-medium ring-offset-achromatic-lighter outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-achromatic-dark focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-achromatic-dark dark:focus-visible:ring-achromatic-lighter transition-opacity',
   {
     variants: {
       variant: {
-        base: 'hover:opacity-75 bg-achromatic-light text-primary-dark dark:bg-primary-light dark:text-achromatic-dark',
-        primary: 'hover:opacity-75 bg-primary-dark text-achromatic-light dark:bg-primary-light dark:text-achromatic-dark',
+        base: 'hover:opacity-75 bg-achromatic-lighter text-primary-dark dark:bg-primary-light dark:text-achromatic-dark',
+        primary: 'hover:opacity-75 bg-primary-dark text-achromatic-lighter dark:bg-primary-light dark:text-achromatic-dark',
         danger:
-          'hover:opacity-75 bg-red-600 text-achromatic-light dark:bg-red-500 dark:text-achromatic-light',
+          'hover:opacity-75 bg-red-600 text-achromatic-lighter dark:bg-red-500 dark:text-achromatic-lighter',
         outline:
           'hover:opacity-50 bg-transparent border border-primary-dark dark:border-primary-light',
         ghost:

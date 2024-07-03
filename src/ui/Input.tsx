@@ -10,7 +10,7 @@ const Input = React.forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement> & InputProps
 >(({ className, leftIcon, rightIcon, ...props }, ref) => (
-  <div className={cn('flex items-center gap-2 w-full rounded-lg border border-primary-dark bg-achromatic-light px-3 py-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-primary-light dark:bg-achromatic-dark', className)}>
+  <div className={cn('flex items-center gap-2 w-full rounded-lg border border-primary-dark bg-achromatic-lighter px-3 py-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-primary-light dark:bg-achromatic-dark', className)}>
     {!!leftIcon && leftIcon}
 
     <input

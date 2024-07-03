@@ -48,11 +48,11 @@ export function SideNav() {
             onDragEnd={handleDragEnd}
             dragPropagation
             aria-label="primary"
-            className={cn('flex flex-col w-64 sm:w-[7.125rem] md:w-64 h-dvh ml-0 sm:ml-5 pt-5 sm:pt-0 pb-5 fixed top-0 left-0 sm:left-[max(0px,calc(50%-48rem))] right-auto z-40 overflow-x-clip overflow-y-auto scrollbar-none bg-achromatic-light dark:bg-achromatic-dark sm:bg-transparent sm:dark:bg-transparent shadow-xl sm:shadow-none shadow-scene-dark/60', !isNavOpen && '[&>*]:hidden')}
+            className={cn('flex flex-col w-64 sm:w-[7.125rem] md:w-64 h-dvh ml-0 sm:ml-5 pt-5 sm:pt-0 pb-5 fixed top-0 left-0 sm:left-[max(0px,calc(50%-48rem))] right-auto z-40 overflow-x-clip overflow-y-auto scrollbar-none bg-achromatic-lighter dark:bg-achromatic-dark sm:bg-transparent sm:dark:bg-transparent shadow-xl sm:shadow-none shadow-achromatic-darker/60', !isNavOpen && '[&>*]:hidden')}
           >
             <NavLogo />
 
-            <div className={cn('bg-achromatic-light dark:bg-achromatic-dark rounded-lg pt-12 sm:py-8 flex flex-col gap-4 flex-1', breakpoint && 'shadow')}>
+            <div className={cn('bg-achromatic-lighter dark:bg-achromatic-dark rounded-lg pt-12 sm:py-8 flex flex-col gap-4 flex-1', breakpoint && 'shadow')}>
               <NavLink to="/home" icon={<TiHome />} active={pathname === '/home'} text="Home" />
               <NavLink to="/rent" icon={<RiMoneyPoundCircleFill />} active={pathname === '/rent'} text="Rent" />
               <NavLink to="/hires" icon={<LiaFileContractSolid />} active={pathname.startsWith('/hire')} text="Hires" />
