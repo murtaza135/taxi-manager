@@ -36,7 +36,11 @@ export function App() {
           )}
         />
         {!config.PROD && (
-          <ReactQueryDevtools initialIsOpen={false} position="bottom" buttonPosition="bottom-right" />
+          <ReactQueryDevtools
+            initialIsOpen={false}
+            position="bottom"
+            buttonPosition="bottom-left"
+          />
         )}
       </QueryClientProvider>
     </Suspense>
