@@ -46,11 +46,13 @@ export function useAnonymousLogin(options?: Options) {
       await queryClient.invalidateQueries();
       revalidate();
     },
-    onError: (error) => toast({
-      title: error.title,
-      description: error.description,
-      variant: 'destructive',
-    }),
+    onError: (error) => {
+      toast({
+        title: error.title,
+        description: error.description,
+        variant: 'destructive',
+      });
+    },
   });
 
   return mutation;

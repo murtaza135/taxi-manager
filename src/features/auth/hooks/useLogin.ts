@@ -10,6 +10,9 @@ import { buildAppErrorFromSupabaseError } from '@/errors/supabaseErrorUtils';
 export async function login(args: LoginFormSchema) {
   const { data, error } = await supabase.auth.signInWithPassword(args);
 
+  // console.log(data);
+  // console.log(error?.status);
+
   if (error) {
     throw buildAppErrorFromSupabaseError(error)
       .setTitle('Could not login')
@@ -51,11 +54,13 @@ export function useLogin(options?: Options) {
       await queryClient.invalidateQueries();
       revalidate();
     },
-    onError: (error) => toast({
-      title: error.title,
-      description: error.description,
-      variant: 'destructive',
-    }),
+    onError: (error) => {
+      toast({
+        title: error.title,
+        description: error.description,
+        variant: 'destructive',
+      });
+    },
   });
 
   return mutation;

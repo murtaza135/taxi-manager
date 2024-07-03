@@ -6,7 +6,7 @@ function extractErrorTypeFromSupabaseError(
   error: Error | ErrorLike,
   status?: number,
 ): ErrorType {
-  if (!status) return 'unknown';
+  if (typeof status === 'undefined') return 'unknown';
   if (status === 0 && !window.navigator.onLine) return 'offline';
   if (status === 0 && window.navigator.onLine) return 'server';
   if (status >= 500) return 'server';
