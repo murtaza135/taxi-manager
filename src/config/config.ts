@@ -9,6 +9,20 @@ export const config = {
     xl: '1280px',
     '2xl': '1536px',
   },
+  COLORS: {
+    primary: {
+      light: '#7dd3fc',
+      dark: '#0284c7',
+    },
+    achromatic: {
+      light: '#fff',
+      dark: '#27272a',
+    },
+    scene: {
+      light: '#e0f2fe',
+      dark: '#121212',
+    },
+  },
   SUPABASE: {
     authKey: 'sb-127-auth-token',
   },

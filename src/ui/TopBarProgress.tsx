@@ -1,12 +1,13 @@
 import TopBarProgressComponent from 'react-topbar-progress-indicator';
 import { useNavigation, useRevalidator } from 'react-router-dom';
 import { useIsMutating } from '@tanstack/react-query';
+import { config } from '@/config/config';
 
 function configureTopBarProgress(isDarkmode: boolean) {
   TopBarProgressComponent.config({
     barColors: {
-      0: isDarkmode ? '#7dd3fc' : '#0284c7',
-      '1.0': isDarkmode ? '#7dd3fc' : '#0284c7',
+      0: isDarkmode ? config.COLORS.primary.light : config.COLORS.primary.dark,
+      '1.0': isDarkmode ? config.COLORS.primary.light : config.COLORS.primary.dark,
     },
     barThickness: 4,
     shadowBlur: 2,
