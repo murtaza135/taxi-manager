@@ -12,6 +12,7 @@ import { applyTheme } from '@/features/darkmode/utils/applyTheme';
 import { configureTopBarProgress } from '@/ui/TopBarProgress';
 import { config } from '@/config/config';
 import '@/styles/main.css';
+import '@/features/drivers/hooks/useDrivers';
 
 void queryClient.prefetchQuery(sessionOptions());
 applyTheme();
