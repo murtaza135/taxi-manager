@@ -17,7 +17,7 @@ export function Toaster() {
       {toasts.map(({ id, title, description, action, variant, ...props }) => (
         <Toast key={id} variant={variant} {...props}>
           <div className="flex items-center gap-5">
-            {variant === 'default' && <FaCheckCircle className="text-3xl" />}
+            {(!variant || variant === 'default') && <FaCheckCircle className="text-3xl" />}
             {variant === 'destructive' && <FaTimesCircle className="text-3xl" />}
 
             <div className="grid gap-1">

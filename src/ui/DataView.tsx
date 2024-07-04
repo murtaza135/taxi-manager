@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import {
   Table as ReactTable,
   Header as ReactTableHeader,
@@ -9,16 +9,17 @@ import {
   flexRender,
 } from '@tanstack/react-table';
 import { IoSearchSharp } from 'react-icons/io5';
+import { MdEmail, MdOutlineClose } from 'react-icons/md';
+import { CgInternal, CgHashtag } from 'react-icons/cg';
+import { FaPhone, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { BiSortAlt2 } from 'react-icons/bi';
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
-import { CgHashtag } from 'react-icons/cg';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { LuClipboardCopy, LuClipboardCheck } from 'react-icons/lu';
 import { RiArrowLeftDoubleFill, RiArrowRightDoubleFill } from 'react-icons/ri';
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon, EyeNoneIcon } from '@radix-ui/react-icons';
 import { TbColumnRemove } from 'react-icons/tb';
 import { Check } from 'lucide-react';
 import { FiLayout } from 'react-icons/fi';
-import { MdOutlineClose } from 'react-icons/md';
 import { TiEye } from 'react-icons/ti';
 import chunk from 'lodash/chunk';
 import partition from 'lodash/partition';
@@ -44,7 +45,16 @@ import { Avatar, AvatarImage } from '@/ui/Avatar';
 import { cn } from '@/utils/cn';
 import { OptionalObjectGroup } from '@/types/utils';
 import { Separator } from '@/ui/Separator';
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/ui/Tooltip';
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipWrapper,
+} from '@/ui/Tooltip';
+import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
+import { useTimedBoolean } from '@/hooks/useTimedBoolean';
+import { useToast } from '@/ui/toast';
 
 const DATA_VIEW_LAYOUTS = ['table', 'grid'] as const;
 export type DataViewLayoutType = typeof DATA_VIEW_LAYOUTS[number];
@@ -737,6 +747,113 @@ function DataViewOpenPageButton({ linkTo }: DataViewOpenPageButtonProps) {
   );
 }
 
+// type DataViewTextProps = {
+//   text?: string | null | undefined;
+// };
+
+// function DataViewText({ text }: DataViewTextProps) {
+//   if (!text) {
+//     return <p className="text-center">-</p>;
+//   }
+
+//   return text;
+// }
+
+function DataViewNoDataCell() {
+  return <p className="opacity-45">N/A</p>;
+}
+
+type DataViewLinkCellProps = {
+  to: To;
+  children?: ReactNode;
+  className?: string;
+};
+
+function DataViewLinkCell({ to, children, className }: DataViewLinkCellProps) {
+  return (
+    <Link
+      to={to}
+      className={cn('flex gap-2 transition-opacity hover:opacity-70 text-nowrap group', className)}
+    >
+      {children}
+      <CgInternal className="text-lg transition-opacity opacity-0 group-hover:opacity-100" />
+    </Link>
+  );
+}
+
+type DataViewPhoneNumberCellProps = {
+  phone: string;
+  children?: ReactNode;
+  className?: string;
+};
+
+function DataViewPhoneNumberCell({ phone, children, className }: DataViewPhoneNumberCellProps) {
+  return (
+    <a
+      href={`tel:${phone}`}
+      className={cn('flex gap-2 transition-opacity hover:opacity-60 text-nowrap group', className)}
+    >
+      {children ?? phone}
+      <FaPhone className="translate-y-[3px] transition-opacity opacity-0 group-hover:opacity-100" />
+    </a>
+  );
+}
+
+type DataViewEmailCellProps = {
+  email: string;
+  children?: ReactNode;
+  className?: string;
+};
+
+function DataViewEmailCell({ email, children, className }: DataViewEmailCellProps) {
+  return (
+    <a
+      href={`mailto:${email}`}
+      className={cn('flex gap-2 transition-opacity hover:opacity-60 text-nowrap group', className)}
+    >
+      {children ?? email}
+      <MdEmail className="text-lg translate-y-[1px] transition-opacity opacity-0 group-hover:opacity-100" />
+    </a>
+  );
+}
+
+type DataViewCopyCellProps = {
+  text: string;
+  children?: ReactNode;
+  className?: string;
+};
+
+function DataViewCopyCell({ text, children, className }: DataViewCopyCellProps) {
+  const [isCopied, setIsCopied] = useTimedBoolean(2500);
+  const { toast } = useToast();
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(text);
+    setIsCopied();
+    toast({ title: 'Copied to Clipboard' });
+  };
+
+  return (
+    <Button
+      variant="ghost"
+      className={cn('flex gap-2 p-0 transition-opacity hover:opacity-60 text-nowrap group', className)}
+      onClick={handleCopy}
+    >
+      {children ?? text}
+      {!isCopied && (
+        <LuClipboardCopy
+          className="text-lg translate-y-[0px] transition-opacity opacity-0 group-hover:opacity-100"
+        />
+      )}
+      {isCopied && (
+        <LuClipboardCheck
+          className="text-lg translate-y-[0px] transition-opacity opacity-0 group-hover:opacity-100"
+        />
+      )}
+    </Button>
+  );
+}
+
 const DataViewCheckbox = {
   Header: DataViewHeaderCheckbox,
   Cell: DataViewCellCheckbox,
@@ -756,4 +873,9 @@ export {
   DataViewCheckbox,
   DataViewHeader,
   DataViewOpenPageButton,
+  DataViewNoDataCell,
+  DataViewLinkCell,
+  DataViewPhoneNumberCell,
+  DataViewEmailCell,
+  DataViewCopyCell,
 };

@@ -17,6 +17,11 @@ import {
   DataViewHeader,
   DataViewCardMainDataMapper,
   DataViewOpenPageButton,
+  DataViewNoDataCell,
+  DataViewLinkCell,
+  DataViewPhoneNumberCell,
+  DataViewEmailCell,
+  DataViewCopyCell,
 } from '@/ui/DataView';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { Button } from '@/ui/Button';
@@ -57,33 +62,17 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     accessorKey: 'first_names',
     header: ({ column }) => <DataViewHeader column={column} header="Name" />,
     cell: ({ row }) => (
-      <TooltipWrapper text="Open Driver" linkTo={`/driver/${row.original.id}`}>
-        <Link
-          to={`/driver/${row.original.id}`}
-          className="flex gap-2 transition-opacity hover:opacity-70 text-nowrap"
-        >
-          <TiEye className="text-lg translate-y-[0px]" />
-          {capitalizeEachWord(`${row.original.first_names} ${row.original.last_name}`)}
-        </Link>
-      </TooltipWrapper>
+      <DataViewLinkCell to={`/driver/${row.original.id}`}>
+        {capitalizeEachWord(`${row.original.first_names} ${row.original.last_name}`)}
+      </DataViewLinkCell>
     ),
   },
   {
     accessorKey: 'phone_number',
     header: ({ column }) => <DataViewHeader column={column} header="Phone" />,
     cell: ({ row }) => {
-      if (!row.original.phone_number) {
-        return <p className="text-center">-</p>;
-      }
-
-      return (
-        <div className="flex gap-2">
-          <a href={`tel:${row.original.phone_number}`}>{row.original.phone_number}</a>
-          <TooltipWrapper text="copy">
-            <BiCopyAlt className="text-lg transition-opacity hover:opacity-70" />
-          </TooltipWrapper>
-        </div>
-      );
+      if (!row.original.phone_number) return <DataViewNoDataCell />;
+      return <DataViewPhoneNumberCell phone={row.original.phone_number} />;
     },
     enableSorting: false,
     enableGlobalFilter: false,
@@ -92,18 +81,8 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     accessorKey: 'email',
     header: ({ column }) => <DataViewHeader column={column} header="Email" />,
     cell: ({ row }) => {
-      if (!row.original.email) {
-        return <p className="text-center">-</p>;
-      }
-
-      return (
-        <div className="flex gap-2">
-          <a href={`mailto:${row.original.email}`}>{row.original.email}</a>
-          <TooltipWrapper text="copy">
-            <BiCopyAlt className="text-lg transition-opacity hover:opacity-70" />
-          </TooltipWrapper>
-        </div>
-      );
+      if (!row.original.email) return <DataViewNoDataCell />;
+      return <DataViewEmailCell email={row.original.email} />;
     },
   },
   {
@@ -111,19 +90,13 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     header: ({ column }) => <DataViewHeader column={column} header="Taxi" />,
     cell: ({ row }) => {
       if (!row.original.active_taxi_id || !row.original.active_taxi_number_plate) {
-        return <p className="text-center">-</p>;
+        return <DataViewNoDataCell />;
       }
 
       return (
-        <TooltipWrapper text="Open Taxi" linkTo={`/taxi/${row.original.active_taxi_id}`}>
-          <Link
-            to={`/taxi/${row.original.active_taxi_id}`}
-            className="flex gap-2 transition-opacity hover:opacity-70"
-          >
-            <TiEye className="text-lg translate-y-[0px]" />
-            {row.original.active_taxi_number_plate?.toUpperCase()}
-          </Link>
-        </TooltipWrapper>
+        <DataViewLinkCell to={`/taxi/${row.original.active_taxi_id}`}>
+          {row.original.active_taxi_number_plate?.toUpperCase()}
+        </DataViewLinkCell>
       );
     },
   },
@@ -131,20 +104,12 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     accessorKey: 'active_hire_agreement_id',
     header: ({ column }) => <DataViewHeader column={column} header="Hire Agreement" className="text-nowrap" />,
     cell: ({ row }) => {
-      if (!row.original.active_hire_agreement_id) {
-        return <p className="text-center">-</p>;
-      }
+      if (!row.original.active_hire_agreement_id) return <DataViewNoDataCell />;
 
       return (
-        <TooltipWrapper text="Open Agreement" linkTo={`/hire/${row.original.active_hire_agreement_id}`}>
-          <Link
-            to={`/hire/${row.original.active_hire_agreement_id}`}
-            className="flex gap-2 transition-opacity hover:opacity-70"
-          >
-            <TiEye className="text-lg translate-y-[0px]" />
-            <p className="text-nowrap">Agreement</p>
-          </Link>
-        </TooltipWrapper>
+        <DataViewLinkCell to={`/hire/${row.original.active_hire_agreement_id}`}>
+          Agreement
+        </DataViewLinkCell>
       );
     },
     enableSorting: false,
@@ -152,36 +117,33 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
   },
   {
     id: 'options',
-    cell: ({ row }) => {
-      const data = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="cursor-pointer hover:opacity-70 transition-opacity">
-              <span className="sr-only">Options</span>
-              <IoEllipsisVertical />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={
-                () => navigator.clipboard.writeText(
-                  `${config.env.VITE_CLIENT_URL}driver/${row.original.id}`,
-                )
-              }
-            >
-              Copy Link
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              Delete Driver
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <div className="cursor-pointer hover:opacity-70 transition-opacity">
+            <span className="sr-only">Options</span>
+            <IoEllipsisVertical />
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            // TODO join url properly
+            onClick={
+              () => navigator.clipboard.writeText(
+                `${config.env.VITE_CLIENT_URL}driver/${row.original.id}`,
+              )
+            }
+          >
+            Copy Link
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            Delete Driver
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
   },
 ];
 
