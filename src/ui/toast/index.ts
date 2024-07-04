@@ -12,4 +12,4 @@ export {
 
 export { Toaster } from './Toaster';
 
-export { useToast, toast } from './use-toast';
+export { useToast, toast } from './useToast';

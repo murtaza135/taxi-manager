@@ -7,7 +7,7 @@ import {
   ToastTitle,
   ToastViewport,
 } from './Toast';
-import { useToast } from './use-toast';
+import { useToast } from './useToast';
 
 export function Toaster() {
   const { toasts } = useToast();

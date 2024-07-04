@@ -14,9 +14,7 @@ import { config } from '@/config/config';
 import '@/styles/main.css';
 
 void queryClient.prefetchQuery(sessionOptions());
-
 applyTheme();
-
 configureTopBarProgress(useDarkmodeStore.getState().isDarkmode);
 useDarkmodeStore.subscribe(
   (state) => state.isDarkmode,
