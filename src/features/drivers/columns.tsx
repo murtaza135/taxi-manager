@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from '@/ui/DropdownMenu';
 import {
   DataViewCheckbox,
@@ -23,6 +24,7 @@ import { DriverDetails } from '@/features/drivers/hooks/useDrivers';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { TooltipWrapper } from '@/ui/Tooltip';
+import { config } from '@/config/config';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<DriverDetails>[] = [
@@ -89,6 +91,20 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
   {
     accessorKey: 'email',
     header: ({ column }) => <DataViewHeader column={column} header="Email" />,
+    cell: ({ row }) => {
+      if (!row.original.email) {
+        return <p className="text-center">-</p>;
+      }
+
+      return (
+        <div className="flex gap-2">
+          <a href={`mailto:${row.original.email}`}>{row.original.email}</a>
+          <TooltipWrapper text="copy">
+            <BiCopyAlt className="text-lg transition-opacity hover:opacity-70" />
+          </TooltipWrapper>
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'active_taxi_number_plate',
@@ -112,6 +128,29 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     },
   },
   {
+    accessorKey: 'active_hire_agreement_id',
+    header: ({ column }) => <DataViewHeader column={column} header="Hire Agreement" className="text-nowrap" />,
+    cell: ({ row }) => {
+      if (!row.original.active_hire_agreement_id) {
+        return <p className="text-center">-</p>;
+      }
+
+      return (
+        <TooltipWrapper text="Open Agreement" linkTo={`/hire/${row.original.active_hire_agreement_id}`}>
+          <Link
+            to={`/hire/${row.original.active_hire_agreement_id}`}
+            className="flex gap-2 transition-opacity hover:opacity-70"
+          >
+            <TiEye className="text-lg translate-y-[0px]" />
+            <p className="text-nowrap">Agreement</p>
+          </Link>
+        </TooltipWrapper>
+      );
+    },
+    enableSorting: false,
+    enableGlobalFilter: false,
+  },
+  {
     id: 'options',
     cell: ({ row }) => {
       const data = row.original;
@@ -126,10 +165,18 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(`${data.id}`)}
+              onClick={
+                () => navigator.clipboard.writeText(
+                  `${config.env.VITE_CLIENT_URL}driver/${row.original.id}`,
+                )
+              }
             >
-              Copy ID
+              Copy Link
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              Delete Driver
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

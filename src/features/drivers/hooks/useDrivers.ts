@@ -23,7 +23,6 @@ export type DriverDetails = Prettify<
 >;
 
 async function getAllDriverDetails(): Promise<DriverDetails[]> {
-  console.log('running');
   const session = await queryClient.ensureQueryData(sessionOptions());
 
   const { data, error, status } = await supabase
