@@ -2,31 +2,23 @@ import { IoSearchOutline, IoMenu } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { IoMdSettings } from 'react-icons/io';
 import { MdLogout } from 'react-icons/md';
-import { BsSunFill, BsMoonStarsFill } from 'react-icons/bs';
 import { useNavActions } from '@/features/navigation/state/navStore';
 import { useTitle } from '@/features/title/state/titleStore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/ui/DropdownMenu';
-import { useIsDarkmode, useDarkmodeActions } from '@/features/darkmode/state/darkmodeStore';
 import { useLogout } from '@/features/auth/hooks/useLogout';
 import { useCompany } from '@/features/auth/hooks/useCompany';
 import { useCompanyLogo } from '@/features/auth/hooks/useCompanyLogo';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
+import { SimpleDarkmodeSwitch } from '@/features/darkmode/components/SimpleDarkmodeSwitch';
 
 export function TopNav() {
   const title = useTitle();
-  const isDarkmode = useIsDarkmode();
-  const { toggleDarkmode } = useDarkmodeActions();
   const { toggleNav } = useNavActions();
   const { mutate: logout } = useLogout({ redirect: '/login' });
   const { data } = useCompany();
   const { data: src } = useCompanyLogo();
-
-  const handleToggleDarkMode = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    event.preventDefault();
-    toggleDarkmode();
-  };
 
   return (
     <div className="flex justify-between items-center gap-4 w-full max-w-screen-2xl h-20 mx-auto pl-5 sm:pl-[9.625rem] md:pl-[18.5rem] pr-5 fixed top-0 left-0 right-0 z-20 bg-achromatic-light dark:bg-achromatic-darker text-primary-dark dark:text-primary-light">
@@ -38,14 +30,15 @@ export function TopNav() {
         <h2 className="text-2xl">{title}</h2>
       </div>
 
-      <div className="flex items-center gap-5">
-        <IoSearchOutline className="text-2xl cursor-pointer hover:opacity-75 transition-opacity" />
+      <div className="flex items-center gap-5 bg-achromatic-lighter dark:bg-achromatic-dark px-4 py-2 rounded-lg">
+        <IoSearchOutline className="text-xl cursor-pointer hover:opacity-75 transition-opacity" />
+        <SimpleDarkmodeSwitch />
 
         <DropdownMenu>
           <DropdownMenuTrigger className="outline-none">
             <Avatar className="hover:opacity-65 transition-opacity">
               {src && <AvatarImage src={src} alt="user" />}
-              <AvatarFallback className="dark:text-achromatic-lighter">
+              <AvatarFallback className="">
                 {extractInitials(data.name ?? '')}
               </AvatarFallback>
             </Avatar>
@@ -54,22 +47,12 @@ export function TopNav() {
           <DropdownMenuContent className="min-w-[125px]">
             <DropdownMenuLabel>{capitalizeEachWord(data.name)}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={handleToggleDarkMode}
-              className="flex justify-between gap-4"
-            >
-              <span>{isDarkmode ? 'Dark Theme' : 'Light Theme'}</span>
-              {isDarkmode
-                ? <span className="text-base"><BsMoonStarsFill /></span>
-                : <span className="text-lg -translate-y-[1px]"><BsSunFill /></span>}
-            </DropdownMenuItem>
             <Link to="/settings">
               <DropdownMenuItem className="flex justify-between gap-4">
                 <span>Settings</span>
                 <span className="text-lg"><IoMdSettings /></span>
               </DropdownMenuItem>
             </Link>
-            <DropdownMenuSeparator />
             <DropdownMenuItem>
               <button
                 onClick={() => logout()}
