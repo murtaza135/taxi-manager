@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 import { Prettify } from '@/types/utils';
 import { Tables } from '@/types/database';
@@ -7,7 +8,9 @@ import { supabase } from '@/config/api/supabaseClient';
 import { buildAppErrorFromSupabaseError } from '@/errors/supabaseErrorUtils';
 import { AppError } from '@/errors/AppError';
 
-type DriverDetails = Prettify<
+// TODO separate driver details query and driver picture srcs query to allow for different levels of caching via staleTime
+
+export type DriverDetails = Prettify<
   Pick<
     Tables<'driver'>,
     'id' | 'first_names' | 'last_name' | 'phone_number' | 'email' | 'active_hire_agreement_id'
@@ -20,6 +23,7 @@ type DriverDetails = Prettify<
 >;
 
 async function getAllDriverDetails(): Promise<DriverDetails[]> {
+  console.log('running');
   const session = await queryClient.ensureQueryData(sessionOptions());
 
   const { data, error, status } = await supabase
@@ -58,7 +62,7 @@ async function getAllDriverDetails(): Promise<DriverDetails[]> {
   const { data: urls } = await supabase
     .storage
     .from('main')
-    .createSignedUrls(picturePaths, 60);
+    .createSignedUrls(picturePaths, 60, { download: true });
 
   const srcs = urls?.map(({ signedUrl }) => signedUrl as string | null) ?? null;
 
@@ -76,10 +80,11 @@ export function driversOptions() {
   return queryOptions<DriverDetails[], AppError>({
     queryKey: ['drivers'],
     queryFn: getAllDriverDetails,
+    staleTime: 1000 * 60, // 60 seconds
   });
 }
 
-export function useCompany() {
+export function useDrivers() {
   const query = useSuspenseQuery(driversOptions());
   return query;
 }

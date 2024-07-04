@@ -1,5 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 import { Title } from '@/features/title/components/Title';
+import { DriversTable } from '@/features/drivers/components/DriversTable';
 
 const driversPageLoader = (_queryClient: QueryClient) => () => null;
 
@@ -15,7 +16,7 @@ function DriversPageComponent() {
   return (
     <div>
       <Title title="Drivers" />
-      <div>DriversPageComponent</div>
+      <DriversTable />
     </div>
   );
 }

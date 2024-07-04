@@ -46,13 +46,6 @@ module.exports = {
     "@typescript-eslint/indent": "off",
     "indent": "off",
     "no-void": ["error", { "allowAsStatement": true }],
-    "@typescript-eslint/naming-convention": [
-      "error",
-      {
-        "selector": "variableLike",
-        "format": ["camelCase", "PascalCase", "UPPER_CASE", "snake_case"],
-      }
-    ],
   },
   settings: {
     "import/resolver": {

@@ -25,7 +25,7 @@ import partition from 'lodash/partition';
 import keyBy from 'lodash/keyBy';
 import mapValues from 'lodash/mapValues';
 import { capitalCase } from 'change-case';
-import { Link } from 'react-router-dom';
+import { Link, To } from 'react-router-dom';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
 import { Input } from '@/ui/Input';
 import { Button } from '@/ui/Button';
@@ -715,20 +715,20 @@ function DataViewHeader<TData extends ReactTableRowData, TValue = unknown>(
 }
 
 type DataViewOpenPageButtonProps = {
-  to: string;
+  linkTo: To;
 };
 
-function DataViewOpenPageButton({ to }: DataViewOpenPageButtonProps) {
+function DataViewOpenPageButton({ linkTo }: DataViewOpenPageButtonProps) {
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <Link to={to} className="text-2xl transition-opacity hover:opacity-70">
+          <Link to={linkTo} className="text-2xl transition-opacity hover:opacity-70">
             <TiEye />
           </Link>
         </TooltipTrigger>
         <TooltipContent>
-          <Link to={to} className="transition-opacity hover:opacity-70">
+          <Link to={linkTo} className="transition-opacity hover:opacity-70">
             Open
           </Link>
         </TooltipContent>

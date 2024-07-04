@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import { type XOR } from 'ts-essentials';
+import { Link, To } from 'react-router-dom';
 import { cn } from '@/utils/cn';
 
 const TooltipProvider = TooltipPrimitive.Provider;
@@ -29,16 +30,21 @@ type TooltipWrapperProps = XOR<
   { text: string; },
   { content: React.ReactNode; }
 > & {
+  linkTo?: To;
   className?: string;
   children?: React.ReactNode;
 };
 
-function TooltipWrapper({ text, content, className, children }: TooltipWrapperProps) {
+function TooltipWrapper({ text, content, linkTo, className, children }: TooltipWrapperProps) {
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>{children}</TooltipTrigger>
-        <TooltipContent className={cn(className)}>{content ?? text}</TooltipContent>
+        <TooltipContent className={cn(className)}>
+          {linkTo
+            ? <Link to={linkTo} className="transition-opacity hover:opacity-70">{content ?? text}</Link>
+            : content ?? text}
+        </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
