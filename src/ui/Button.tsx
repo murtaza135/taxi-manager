@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
-
 import { cn } from '@/utils/cn';
+
+// TODO button cva should include a `variant` prop with options default, outline & ghost
+// TODO and should include a `color` prop with options primary, primaryAchromatic & destructive
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center rounded-lg font-medium ring-offset-achromatic-lighter outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-achromatic-dark focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-achromatic-dark dark:focus-visible:ring-achromatic-lighter transition-opacity',
