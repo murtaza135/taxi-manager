@@ -41,7 +41,6 @@ import {
   DropdownMenuRadioItem,
 } from '@/ui/DropdownMenu';
 import { Checkbox } from '@/ui/Checkbox';
-import { Avatar, AvatarImage, AvatarFallback } from '@/ui/Avatar';
 import { cn } from '@/utils/cn';
 import { OptionalObjectGroup } from '@/types/utils';
 import { Separator } from '@/ui/Separator';
@@ -53,7 +52,6 @@ import {
 } from '@/ui/Tooltip';
 import { useTimedBoolean } from '@/hooks/useTimedBoolean';
 import { useToast } from '@/ui/toast';
-import { extractInitials } from '@/utils/string/extractInitials';
 
 const DATA_VIEW_LAYOUTS = ['table', 'grid'] as const;
 export type DataViewLayoutType = typeof DATA_VIEW_LAYOUTS[number];
@@ -121,11 +119,11 @@ type DataViewCardCellPair<TData extends ReactTableRowData> = [
 export type DataViewCardMainDataMapper = {
   image?: string;
   avatar?: string;
+  // avatarFallback?: string;
   title?: string;
   subtitle?: string;
   optionsTop?: string;
   optionsBottom?: string;
-  showAvatar?: boolean;
 };
 
 type DataViewCardProps<TData extends ReactTableRowData> = {
@@ -138,37 +136,38 @@ function DataViewCard<TData extends ReactTableRowData>(
   { headerRow, dataRow, mapper = {} }: DataViewCardProps<TData>,
 ) {
   // TODO comment on whats going on here
-  const { showAvatar = false, ...restMapper } = mapper;
-  const mapperValues = Object.values(restMapper);
+  const mapperValues = Object.values(mapper);
   const [mainDataCells, listDataCells] = partition(
     dataRow.getVisibleCells(),
     (cell) => mapperValues.includes(cell.column.id),
   );
   const mainDataCellsObject = keyBy(mainDataCells, (cell) => cell.column.id);
   const mainDataCellsMap = mapValues(
-    restMapper,
+    mapper,
     (value) => (value ? mainDataCellsObject[value] : undefined),
   );
   const listDataCellPairs = chunk(listDataCells, 2) as DataViewCardCellPair<TData>[];
 
   const imageRenderValue = mainDataCellsMap.image?.renderValue<string>();
-  const avatarRenderValue = mainDataCellsMap.avatar?.renderValue<string>();
+  const avatarFlexValue = mainDataCellsMap.avatar
+    ? flexRender(
+      mainDataCellsMap.avatar.column.columnDef.cell,
+      mainDataCellsMap.avatar.getContext(),
+    )
+    : null;
 
   return (
     <div className="h-full min-h-[20rem] rounded-lg overflow-hidden bg-achromatic-lighter dark:bg-achromatic-dark">
-      <div className={cn('h-28 relative', !!showAvatar && 'mb-16')}>
+      <div className={cn('h-28 relative', !!avatarFlexValue && 'mb-16')}>
         {imageRenderValue
           ? <img src={imageRenderValue} alt="card background" className="object-cover object-center h-full w-full" />
           : <div className="h-full w-full bg-primary-dark dark:bg-primary-light" />}
 
-        {!!showAvatar
+        {!!avatarFlexValue
           && (
-            <Avatar className={cn('h-32 w-32 rounded-full absolute top-full left-1/2 -translate-x-16 -translate-y-16', !avatarRenderValue && 'border-[3px] border-achromatic-lighter dark:border-achromatic-dark')}>
-              {!!avatarRenderValue && <AvatarImage src={avatarRenderValue} alt="avatar" />}
-              <AvatarFallback className="text-3xl">
-                {extractInitials(mainDataCellsMap.title?.renderValue<string>() ?? '')}
-              </AvatarFallback>
-            </Avatar>
+            <div className="center rounded-full absolute top-full left-1/2 -translate-x-1/2 -translate-y-1/2">
+              {avatarFlexValue}
+            </div>
           )}
 
         {!!mainDataCellsMap.optionsTop && (

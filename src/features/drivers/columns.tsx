@@ -32,6 +32,7 @@ import { TooltipWrapper } from '@/ui/Tooltip';
 import personDark from '@/assets/images/person-dark.png';
 import personLight from '@/assets/images/person-light.png';
 import { config } from '@/config/config';
+import { cn } from '@/utils/cn';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<DriverDetails>[] = [
@@ -168,6 +169,12 @@ export const gridColumns: ColumnDef<DriverDetails>[] = [
     id: 'Avatar',
     accessorKey: 'picture_src',
     header: 'Avatar',
+    cell: ({ row }) => (
+      <Avatar className={cn('h-32 w-32 rounded-full', !row.original.picture_src && 'border-[3px] border-achromatic-lighter dark:border-achromatic-dark')}>
+        {row.original.picture_src && <AvatarImage src={row.original.picture_src} alt="avatar" />}
+        <AvatarFallback className="text-3xl">{extractInitials(row.original.name)}</AvatarFallback>
+      </Avatar>
+    ),
     enableSorting: false,
     enableGlobalFilter: false,
   },
@@ -244,9 +251,6 @@ export const mapper: DataViewCardMainDataMapper = {
   avatar: 'Avatar',
   optionsTop: 'Options Top',
   optionsBottom: 'Options Bottom',
-  // subtitle: 'subtitle', // if you have a subtitle property in ColumnDef
-  // image: 'picture_src', // if you have an image property in ColumnDef
-  showAvatar: true,
 } as const;
 
 export const columns = {
