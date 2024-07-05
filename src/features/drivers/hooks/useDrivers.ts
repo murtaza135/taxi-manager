@@ -7,14 +7,16 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { supabase } from '@/config/api/supabaseClient';
 import { buildAppErrorFromSupabaseError } from '@/errors/supabaseErrorUtils';
 import { AppError } from '@/errors/AppError';
+import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 
 // TODO separate driver details query and driver picture srcs query to allow for different levels of caching via staleTime
 
 export type DriverDetails = Prettify<
   Pick<
     Tables<'driver'>,
-    'id' | 'first_names' | 'last_name' | 'phone_number' | 'email' | 'active_hire_agreement_id'
+    'id' | 'phone_number' | 'email' | 'active_hire_agreement_id'
   > & {
+    name: string;
     picture_src: string | null;
   } & {
     active_taxi_id: Tables<'taxi'>['id'] | null;
@@ -65,11 +67,13 @@ async function getAllDriverDetails(): Promise<DriverDetails[]> {
 
   const srcs = urls?.map(({ signedUrl }) => signedUrl as string | null) ?? null;
 
-  const drivers = data.map(({ hire_agreement, picture_path, ...rest }, index) => {
-    const active_taxi_id = hire_agreement?.taxi_id ?? null;
-    const active_taxi_number_plate = hire_agreement?.taxi?.number_plate ?? null;
+  const drivers = data.map((driver, index) => {
+    const { hire_agreement, picture_path, first_names, last_name, ...rest } = driver;
+    const name = capitalizeEachWord(`${first_names} ${last_name}`);
     const picture_src = srcs?.[index] ?? null;
-    return { ...rest, picture_src, active_taxi_id, active_taxi_number_plate };
+    const active_taxi_id = hire_agreement?.taxi_id ?? null;
+    const active_taxi_number_plate = hire_agreement?.taxi?.number_plate.toUpperCase() ?? null;
+    return { ...rest, name, picture_src, active_taxi_id, active_taxi_number_plate };
   });
 
   return drivers;

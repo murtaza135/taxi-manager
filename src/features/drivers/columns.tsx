@@ -29,6 +29,8 @@ import { DriverDetails } from '@/features/drivers/hooks/useDrivers';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { TooltipWrapper } from '@/ui/Tooltip';
+import personDark from '@/assets/images/person-dark.png';
+import personLight from '@/assets/images/person-light.png';
 import { config } from '@/config/config';
 
 // ColumnDef for the table layout
@@ -53,17 +55,17 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
           />
         )}
         <AvatarFallback>
-          {extractInitials(`${row.original.first_names} ${row.original.last_name}`)}
+          {extractInitials(row.original.name)}
         </AvatarFallback>
       </Avatar>
     ),
   },
   {
-    accessorKey: 'first_names',
+    accessorKey: 'name',
     header: ({ column }) => <DataViewHeader column={column} header="Name" />,
     cell: ({ row }) => (
       <DataViewLinkCell to={`/driver/${row.original.id}`}>
-        {capitalizeEachWord(`${row.original.first_names} ${row.original.last_name}`)}
+        {row.original.name}
       </DataViewLinkCell>
     ),
   },
@@ -95,7 +97,7 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
 
       return (
         <DataViewLinkCell to={`/taxi/${row.original.active_taxi_id}`}>
-          {row.original.active_taxi_number_plate?.toUpperCase()}
+          {row.original.active_taxi_number_plate}
         </DataViewLinkCell>
       );
     },
@@ -154,55 +156,76 @@ export const gridColumns: ColumnDef<DriverDetails>[] = [
     header: 'Name',
   },
   {
-    accessorKey: 'avatar',
+    accessorKey: 'picture_src',
     header: 'Avatar',
   },
   {
+    accessorKey: 'phone_number',
+    header: 'Phone Number',
+    cell: ({ row }) => row.original.phone_number || 'N/A',
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email',
+    cell: ({ row }) => row.original.email || 'N/A',
+  },
+  {
+    accessorKey: 'active_taxi_number_plate',
+    header: 'Taxi',
+    cell: ({ row }) => row.original.active_taxi_number_plate || 'N/A',
+  },
+  {
+    accessorKey: 'active_hire_agreement_id',
+    header: 'Agreement No.',
+    cell: ({ row }) => row.original.active_hire_agreement_id || 'N/A',
+  },
+  {
     id: 'optionsTop',
-    cell: ({ row }) => {
-      const data = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild className="translate-x-2">
-            <div className="cursor-pointer hover:opacity-70 transition-opacity">
-              <span className="sr-only">Options</span>
-              <IoEllipsisVertical />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(`${data.id}`)}
-            >
-              Copy ID
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild className="translate-x-2">
+          <div className="cursor-pointer hover:opacity-70 transition-opacity">
+            <span className="sr-only">Options</span>
+            <IoEllipsisVertical />
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            // TODO join url properly
+            onClick={
+              () => navigator.clipboard.writeText(
+                `${config.env.VITE_CLIENT_URL}driver/${row.original.id}`,
+              )
+            }
+          >
+            Copy Link
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            Delete Driver
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
   },
   {
     id: 'optionsBottom',
-    cell: ({ row }) => {
-      const driver = row.original;
-
-      return (
-        <Link to={`/driver/${driver.id}`} className="w-full">
-          <Button className="w-full">Open</Button>
-        </Link>
-      );
-    },
+    cell: ({ row }) => (
+      <Link to={`/driver/${row.original.id}`} className="w-full">
+        <Button className="w-full">Open</Button>
+      </Link>
+    ),
   },
 ];
 
 export const mapper: DataViewCardMainDataMapper = {
   title: 'name',
-  avatar: 'avatar',
+  avatar: 'picture_src',
   optionsTop: 'optionsTop',
   optionsBottom: 'optionsBottom',
   // subtitle: 'subtitle', // if you have a subtitle property in ColumnDef
-  // image: 'image', // if you have an image property in ColumnDef
+  // image: 'picture_src', // if you have an image property in ColumnDef
 } as const;
 
 export const columns = {

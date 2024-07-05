@@ -747,18 +747,6 @@ function DataViewOpenPageButton({ linkTo }: DataViewOpenPageButtonProps) {
   );
 }
 
-// type DataViewTextProps = {
-//   text?: string | null | undefined;
-// };
-
-// function DataViewText({ text }: DataViewTextProps) {
-//   if (!text) {
-//     return <p className="text-center">-</p>;
-//   }
-
-//   return text;
-// }
-
 function DataViewNoDataCell() {
   return <p className="opacity-45">N/A</p>;
 }
