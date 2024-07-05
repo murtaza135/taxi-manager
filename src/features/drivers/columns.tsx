@@ -226,6 +226,7 @@ export const mapper: DataViewCardMainDataMapper = {
   optionsBottom: 'optionsBottom',
   // subtitle: 'subtitle', // if you have a subtitle property in ColumnDef
   // image: 'picture_src', // if you have an image property in ColumnDef
+  showAvatar: true,
 } as const;
 
 export const columns = {

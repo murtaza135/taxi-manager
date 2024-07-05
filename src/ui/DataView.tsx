@@ -41,7 +41,7 @@ import {
   DropdownMenuRadioItem,
 } from '@/ui/DropdownMenu';
 import { Checkbox } from '@/ui/Checkbox';
-import { Avatar, AvatarImage } from '@/ui/Avatar';
+import { Avatar, AvatarImage, AvatarFallback } from '@/ui/Avatar';
 import { cn } from '@/utils/cn';
 import { OptionalObjectGroup } from '@/types/utils';
 import { Separator } from '@/ui/Separator';
@@ -50,11 +50,10 @@ import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-  TooltipWrapper,
 } from '@/ui/Tooltip';
-import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { useTimedBoolean } from '@/hooks/useTimedBoolean';
 import { useToast } from '@/ui/toast';
+import { extractInitials } from '@/utils/string/extractInitials';
 
 const DATA_VIEW_LAYOUTS = ['table', 'grid'] as const;
 export type DataViewLayoutType = typeof DATA_VIEW_LAYOUTS[number];
@@ -126,6 +125,7 @@ export type DataViewCardMainDataMapper = {
   subtitle?: string;
   optionsTop?: string;
   optionsBottom?: string;
+  showAvatar?: boolean;
 };
 
 type DataViewCardProps<TData extends ReactTableRowData> = {
@@ -138,14 +138,15 @@ function DataViewCard<TData extends ReactTableRowData>(
   { headerRow, dataRow, mapper = {} }: DataViewCardProps<TData>,
 ) {
   // TODO comment on whats going on here
-  const mapperValues = Object.values(mapper);
+  const { showAvatar = false, ...restMapper } = mapper;
+  const mapperValues = Object.values(restMapper);
   const [mainDataCells, listDataCells] = partition(
     dataRow.getVisibleCells(),
     (cell) => mapperValues.includes(cell.column.id),
   );
   const mainDataCellsObject = keyBy(mainDataCells, (cell) => cell.column.id);
   const mainDataCellsMap = mapValues(
-    mapper,
+    restMapper,
     (value) => (value ? mainDataCellsObject[value] : undefined),
   );
   const listDataCellPairs = chunk(listDataCells, 2) as DataViewCardCellPair<TData>[];
@@ -155,15 +156,18 @@ function DataViewCard<TData extends ReactTableRowData>(
 
   return (
     <div className="h-full min-h-[20rem] rounded-lg overflow-hidden bg-achromatic-lighter dark:bg-achromatic-dark">
-      <div className={cn('h-28 relative', !!avatarRenderValue && 'mb-16')}>
+      <div className={cn('h-28 relative', !!showAvatar && 'mb-16')}>
         {imageRenderValue
           ? <img src={imageRenderValue} alt="card background" className="object-cover object-center h-full w-full" />
           : <div className="h-full w-full bg-primary-dark dark:bg-primary-light" />}
 
-        {!!avatarRenderValue
+        {!!showAvatar
           && (
-            <Avatar className="h-32 w-32 rounded-full absolute top-full left-1/2 -translate-x-16 -translate-y-16">
-              <AvatarImage src={avatarRenderValue} alt="avatar" />
+            <Avatar className={cn('h-32 w-32 rounded-full absolute top-full left-1/2 -translate-x-16 -translate-y-16', !avatarRenderValue && 'border-[3px] border-achromatic-lighter dark:border-achromatic-dark')}>
+              {!!avatarRenderValue && <AvatarImage src={avatarRenderValue} alt="avatar" />}
+              <AvatarFallback className="text-3xl">
+                {extractInitials(mainDataCellsMap.title?.renderValue<string>() ?? '')}
+              </AvatarFallback>
             </Avatar>
           )}
 
@@ -179,8 +183,16 @@ function DataViewCard<TData extends ReactTableRowData>(
 
       <div className={cn('px-6 pt-4 space-y-10', mainDataCellsMap.optionsBottom ? 'pb-4' : 'pb-8')}>
         <div className="text-center">
-          {!!mainDataCellsMap.title && <p className="text-2xl font-semibold">{mainDataCellsMap.title.renderValue<string>()}</p>}
-          {!!mainDataCellsMap.subtitle && <p className="text-achromatic-dark/50 dark:text-achromatic-lighter/50">{mainDataCellsMap.subtitle.renderValue<string>()}</p>}
+          {!!mainDataCellsMap.title && (
+            <p className="text-2xl font-semibold">
+              {mainDataCellsMap.title.renderValue<string>()}
+            </p>
+          )}
+          {!!mainDataCellsMap.subtitle && (
+            <p className="text-achromatic-dark/50 dark:text-achromatic-lighter/50">
+              {mainDataCellsMap.subtitle.renderValue<string>()}
+            </p>
+          )}
         </div>
 
         <div className="space-y-4">
