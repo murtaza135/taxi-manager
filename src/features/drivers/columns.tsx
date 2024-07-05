@@ -179,7 +179,7 @@ export const gridColumns: ColumnDef<DriverDetails>[] = [
     id: 'Phone Number',
     accessorKey: 'phone_number',
     header: 'Phone Number',
-    cell: ({ row }) => row.original.phone_number || 'N/A',
+    cell: ({ row }) => (row.original.phone_number ? <DataViewPhoneNumberCell className="justify-center" phone={row.original.phone_number} /> : 'N/A'),
     enableSorting: false,
     enableGlobalFilter: false,
   },

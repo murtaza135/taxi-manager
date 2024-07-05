@@ -772,10 +772,10 @@ function DataViewLinkCell({ to, children, className }: DataViewLinkCellProps) {
   return (
     <Link
       to={to}
-      className={cn('flex gap-2 transition-opacity hover:opacity-70 text-nowrap group', className)}
+      className={cn('inline-flex gap-2 transition-opacity hover:opacity-70 text-nowrap group relative', className)}
     >
       {children}
-      <CgInternal className="text-lg transition-opacity opacity-0 group-hover:opacity-100" />
+      <CgInternal className="text-lg transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
     </Link>
   );
 }
@@ -790,10 +790,10 @@ function DataViewPhoneNumberCell({ phone, children, className }: DataViewPhoneNu
   return (
     <a
       href={`tel:${phone}`}
-      className={cn('flex gap-2 transition-opacity hover:opacity-60 text-nowrap group', className)}
+      className={cn('inline-flex gap-2 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
     >
       {children ?? phone}
-      <FaPhone className="translate-y-[3px] transition-opacity opacity-0 group-hover:opacity-100" />
+      <FaPhone className="translate-y-[3px] transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
     </a>
   );
 }
@@ -808,10 +808,10 @@ function DataViewEmailCell({ email, children, className }: DataViewEmailCellProp
   return (
     <a
       href={`mailto:${email}`}
-      className={cn('flex gap-2 transition-opacity hover:opacity-60 text-nowrap group', className)}
+      className={cn('inline-flex gap-2 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
     >
       {children ?? email}
-      <MdEmail className="text-lg translate-y-[1px] transition-opacity opacity-0 group-hover:opacity-100" />
+      <MdEmail className="text-lg translate-y-[1px] transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
     </a>
   );
 }
@@ -835,18 +835,18 @@ function DataViewCopyCell({ text, children, className }: DataViewCopyCellProps) 
   return (
     <Button
       variant="ghost"
-      className={cn('flex gap-2 p-0 transition-opacity hover:opacity-60 text-nowrap group', className)}
+      className={cn('inline-flex gap-2 p-0 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
       onClick={handleCopy}
     >
       {children ?? text}
       {!isCopied && (
         <LuClipboardCopy
-          className="text-lg translate-y-[0px] transition-opacity opacity-0 group-hover:opacity-100"
+          className="text-lg translate-y-[0px] transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6"
         />
       )}
       {isCopied && (
         <LuClipboardCheck
-          className="text-lg translate-y-[0px] transition-opacity opacity-0 group-hover:opacity-100"
+          className="text-lg translate-y-[0px] transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6"
         />
       )}
     </Button>
