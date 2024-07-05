@@ -4,6 +4,7 @@ import { IoEllipsisVertical } from 'react-icons/io5';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { BiCopyAlt } from 'react-icons/bi';
 import { TiEye } from 'react-icons/ti';
+import urlJoin from 'url-join';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -140,18 +141,14 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            // TODO join url properly
-            onClick={
-              () => navigator.clipboard.writeText(
-                `${config.env.VITE_CLIENT_URL}driver/${row.original.id}`,
-              )
-            }
+            onClick={() => navigator.clipboard.writeText(urlJoin(
+              config.env.VITE_CLIENT_URL,
+              `/driver/${row.original.id}`,
+            ))}
           >
             Copy Link
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            Delete Driver
-          </DropdownMenuItem>
+          <DropdownMenuItem>Delete</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     ),
@@ -220,18 +217,14 @@ export const gridColumns: ColumnDef<DriverDetails>[] = [
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            // TODO join url properly
-            onClick={
-              () => navigator.clipboard.writeText(
-                `${config.env.VITE_CLIENT_URL}driver/${row.original.id}`,
-              )
-            }
+            onClick={() => navigator.clipboard.writeText(urlJoin(
+              config.env.VITE_CLIENT_URL,
+              `/driver/${row.original.id}`,
+            ))}
           >
             Copy Link
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            Delete Driver
-          </DropdownMenuItem>
+          <DropdownMenuItem>Delete</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     ),
