@@ -36,7 +36,7 @@ import { config } from '@/config/config';
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<DriverDetails>[] = [
   {
-    id: 'select',
+    id: 'Select',
     header: ({ table }) => <DataViewCheckbox.Header table={table} />,
     cell: ({ row }) => <DataViewCheckbox.Cell dataRow={row} />,
     enableSorting: false,
@@ -44,6 +44,7 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     enableGlobalFilter: false,
   },
   {
+    id: 'Avatar',
     accessorKey: 'avatar',
     header: '',
     cell: ({ row }) => (
@@ -59,8 +60,11 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
         </AvatarFallback>
       </Avatar>
     ),
+    enableSorting: false,
+    enableGlobalFilter: false,
   },
   {
+    id: 'Name',
     accessorKey: 'name',
     header: ({ column }) => <DataViewHeader column={column} header="Name" />,
     cell: ({ row }) => (
@@ -70,6 +74,7 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     ),
   },
   {
+    id: 'Phone Number',
     accessorKey: 'phone_number',
     header: ({ column }) => <DataViewHeader column={column} header="Phone" />,
     cell: ({ row }) => {
@@ -80,6 +85,7 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     enableGlobalFilter: false,
   },
   {
+    id: 'Email',
     accessorKey: 'email',
     header: ({ column }) => <DataViewHeader column={column} header="Email" />,
     cell: ({ row }) => {
@@ -88,6 +94,7 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     },
   },
   {
+    id: 'Taxi',
     accessorKey: 'active_taxi_number_plate',
     header: ({ column }) => <DataViewHeader column={column} header="Taxi" />,
     cell: ({ row }) => {
@@ -103,6 +110,7 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     },
   },
   {
+    id: 'Hire Agreement',
     accessorKey: 'active_hire_agreement_id',
     header: ({ column }) => <DataViewHeader column={column} header="Hire Agreement" className="text-nowrap" />,
     cell: ({ row }) => {
@@ -118,7 +126,7 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     enableGlobalFilter: false,
   },
   {
-    id: 'options',
+    id: 'Options',
     cell: ({ row }) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -152,35 +160,47 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
 // another ColumnDef for the grid layout
 export const gridColumns: ColumnDef<DriverDetails>[] = [
   {
+    id: 'Name',
     accessorKey: 'name',
     header: 'Name',
   },
   {
+    id: 'Avatar',
     accessorKey: 'picture_src',
     header: 'Avatar',
+    enableSorting: false,
+    enableGlobalFilter: false,
   },
   {
+    id: 'Phone Number',
     accessorKey: 'phone_number',
     header: 'Phone Number',
     cell: ({ row }) => row.original.phone_number || 'N/A',
+    enableSorting: false,
+    enableGlobalFilter: false,
   },
   {
+    id: 'Email',
     accessorKey: 'email',
     header: 'Email',
     cell: ({ row }) => row.original.email || 'N/A',
   },
   {
+    id: 'Taxi',
     accessorKey: 'active_taxi_number_plate',
     header: 'Taxi',
     cell: ({ row }) => row.original.active_taxi_number_plate || 'N/A',
   },
   {
+    id: 'Hire Agreement',
     accessorKey: 'active_hire_agreement_id',
-    header: 'Agreement No.',
+    header: 'Hire Agreement',
     cell: ({ row }) => row.original.active_hire_agreement_id || 'N/A',
+    enableSorting: false,
+    enableGlobalFilter: false,
   },
   {
-    id: 'optionsTop',
+    id: 'Options Top',
     cell: ({ row }) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="translate-x-2">
@@ -210,7 +230,7 @@ export const gridColumns: ColumnDef<DriverDetails>[] = [
     ),
   },
   {
-    id: 'optionsBottom',
+    id: 'Options Bottom',
     cell: ({ row }) => (
       <Link to={`/driver/${row.original.id}`} className="w-full">
         <Button className="w-full">Open</Button>
@@ -220,10 +240,10 @@ export const gridColumns: ColumnDef<DriverDetails>[] = [
 ];
 
 export const mapper: DataViewCardMainDataMapper = {
-  title: 'name',
-  avatar: 'picture_src',
-  optionsTop: 'optionsTop',
-  optionsBottom: 'optionsBottom',
+  title: 'Name',
+  avatar: 'Avatar',
+  optionsTop: 'Options Top',
+  optionsBottom: 'Options Bottom',
   // subtitle: 'subtitle', // if you have a subtitle property in ColumnDef
   // image: 'picture_src', // if you have an image property in ColumnDef
   showAvatar: true,
