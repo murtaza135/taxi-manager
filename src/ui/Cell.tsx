@@ -30,7 +30,9 @@ function LinkCell({ to, children, className }: LinkCellProps) {
       className={cn('inline-flex items-center gap-2 transition-opacity hover:opacity-70 text-nowrap group relative', className)}
     >
       {children}
-      <CgInternal className="-translate-y-[1px] text-lg transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
+      <span className="absolute -right-6 pl-6 -translate-y-[1px]">
+        <CgInternal className="text-lg transition-opacity opacity-0 group-hover:opacity-100" />
+      </span>
     </Link>
   );
 }
@@ -48,7 +50,9 @@ function PhoneNumberCell({ phone, children, className }: PhoneNumberCellProps) {
       className={cn('inline-flex items-center gap-2 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
     >
       {children ?? phone}
-      <FaPhone className="-translate-y-[1px] transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
+      <span className="absolute -right-6 pl-6 -translate-y-[1px]">
+        <FaPhone className="transition-opacity opacity-0 group-hover:opacity-100" />
+      </span>
     </a>
   );
 }
@@ -66,7 +70,9 @@ function EmailCell({ email, children, className }: EmailCellProps) {
       className={cn('inline-flex items-center gap-2 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
     >
       {children ?? email}
-      <MdEmail className="text-lg transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
+      <span className="absolute -right-6 pl-6">
+        <MdEmail className="text-lg transition-opacity opacity-0 group-hover:opacity-100" />
+      </span>
     </a>
   );
 }
@@ -94,16 +100,18 @@ function CopyCell({ text, children, className }: CopyCellProps) {
       onClick={handleCopy}
     >
       {children ?? text}
-      {!isCopied && (
-        <LuClipboardCopy
-          className="-translate-y-[1px] text-lg transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6"
-        />
-      )}
-      {isCopied && (
-        <LuClipboardCheck
-          className="-translate-y-[1px] text-lg transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6"
-        />
-      )}
+      <span className="absolute -right-6 pl-6 -translate-y-[1px]">
+        {!isCopied && (
+          <LuClipboardCopy
+            className="text-lg transition-opacity opacity-0 group-hover:opacity-100"
+          />
+        )}
+        {isCopied && (
+          <LuClipboardCheck
+            className="text-lg transition-opacity opacity-0 group-hover:opacity-100"
+          />
+        )}
+      </span>
     </Button>
   );
 }
