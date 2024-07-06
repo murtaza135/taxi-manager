@@ -1,9 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { Link } from 'react-router-dom';
 import { IoEllipsisVertical } from 'react-icons/io5';
-import { FaExternalLinkAlt } from 'react-icons/fa';
-import { BiCopyAlt } from 'react-icons/bi';
-import { TiEye } from 'react-icons/ti';
 import urlJoin from 'url-join';
 import {
   DropdownMenu,
@@ -21,9 +18,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { Button } from '@/ui/Button';
 import { DriverDetails } from '@/features/drivers/hooks/useDrivers';
-import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { extractInitials } from '@/utils/string/extractInitials';
-import { TooltipWrapper } from '@/ui/Tooltip';
 import { config } from '@/config/config';
 import { cn } from '@/utils/cn';
 import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/Cell';
@@ -47,7 +42,7 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
         {row.original.picture_src && (
           <AvatarImage
             src={row.original.picture_src}
-            alt={`user-${row.original.id}`}
+            alt={`driver-${row.original.id}`}
           />
         )}
         <AvatarFallback>
@@ -122,29 +117,31 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
   },
   {
     id: 'Options',
-    cell: ({ row }) => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <div className="cursor-pointer hover:opacity-70 transition-opacity">
-            <span className="sr-only">Options</span>
-            <IoEllipsisVertical />
-          </div>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => navigator.clipboard.writeText(urlJoin(
-              config.env.VITE_CLIENT_URL,
-              `/driver/${row.original.id}`,
-            ))}
-          >
-            Copy Link
-          </DropdownMenuItem>
-          <DropdownMenuItem>Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+    cell: ({ row }) => {
+      const fullDriverUrl = urlJoin(
+        config.env.VITE_CLIENT_URL,
+        `/driver/${row.original.id}`,
+      );
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div className="cursor-pointer hover:opacity-70 transition-opacity">
+              <span className="sr-only">Options</span>
+              <IoEllipsisVertical />
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(fullDriverUrl)}>
+              Copy Link
+            </DropdownMenuItem>
+            <DropdownMenuItem>Delete</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
   },
 ];
 
@@ -231,29 +228,31 @@ export const gridColumns: ColumnDef<DriverDetails>[] = [
   },
   {
     id: 'Options Top',
-    cell: ({ row }) => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild className="translate-x-2">
-          <div className="cursor-pointer hover:opacity-70 transition-opacity">
-            <span className="sr-only">Options</span>
-            <IoEllipsisVertical />
-          </div>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => navigator.clipboard.writeText(urlJoin(
-              config.env.VITE_CLIENT_URL,
-              `/driver/${row.original.id}`,
-            ))}
-          >
-            Copy Link
-          </DropdownMenuItem>
-          <DropdownMenuItem>Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+    cell: ({ row }) => {
+      const fullDriverUrl = urlJoin(
+        config.env.VITE_CLIENT_URL,
+        `/driver/${row.original.id}`,
+      );
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild className="translate-x-2">
+            <div className="cursor-pointer hover:opacity-70 transition-opacity">
+              <span className="sr-only">Options</span>
+              <IoEllipsisVertical />
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(fullDriverUrl)}>
+              Copy Link
+            </DropdownMenuItem>
+            <DropdownMenuItem>Delete</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
   },
   {
     id: 'Options Bottom',

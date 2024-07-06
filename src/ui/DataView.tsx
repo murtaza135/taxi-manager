@@ -1,4 +1,4 @@
-import { ReactNode, useRef, useState } from 'react';
+import { useRef } from 'react';
 import {
   Table as ReactTable,
   Header as ReactTableHeader,
@@ -9,25 +9,23 @@ import {
   flexRender,
 } from '@tanstack/react-table';
 import { IoSearchSharp } from 'react-icons/io5';
-import { MdEmail, MdOutlineClose } from 'react-icons/md';
-import { CgInternal, CgHashtag } from 'react-icons/cg';
-import { FaPhone, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { MdOutlineClose } from 'react-icons/md';
+import { CgHashtag } from 'react-icons/cg';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { BiSortAlt2 } from 'react-icons/bi';
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
-import { LuClipboardCopy, LuClipboardCheck } from 'react-icons/lu';
 import { RiArrowLeftDoubleFill, RiArrowRightDoubleFill } from 'react-icons/ri';
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon, EyeNoneIcon } from '@radix-ui/react-icons';
 import { TbColumnRemove } from 'react-icons/tb';
 import { Check } from 'lucide-react';
 import { FiLayout } from 'react-icons/fi';
-import { TiEye } from 'react-icons/ti';
 import chunk from 'lodash/chunk';
 import partition from 'lodash/partition';
 import keyBy from 'lodash/keyBy';
 import mapValues from 'lodash/mapValues';
 import { capitalCase } from 'change-case';
-import { Link, To } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
+import { flexRenderHeader, flexRenderCell } from '@/lib/tanstack-table/flexRender';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
 import { Input } from '@/ui/Input';
 import { Button } from '@/ui/Button';
@@ -45,15 +43,6 @@ import { Checkbox } from '@/ui/Checkbox';
 import { cn } from '@/utils/cn';
 import { OptionalObjectGroup } from '@/types/utils';
 import { Separator } from '@/ui/Separator';
-import {
-  TooltipProvider,
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-  TooltipWrapper,
-} from '@/ui/Tooltip';
-import { useTimedBoolean } from '@/hooks/useTimedBoolean';
-import { useToast } from '@/ui/toast';
 
 const DATA_VIEW_LAYOUTS = ['table', 'grid'] as const;
 export type DataViewLayoutType = typeof DATA_VIEW_LAYOUTS[number];
@@ -121,7 +110,6 @@ type DataViewCardCellPair<TData extends ReactTableRowData> = [
 export type DataViewCardMainDataMapper = {
   image?: string;
   avatar?: string;
-  // avatarFallback?: string;
   title?: string;
   subtitle?: string;
   optionsTop?: string;
@@ -137,61 +125,56 @@ type DataViewCardProps<TData extends ReactTableRowData> = {
 function DataViewCard<TData extends ReactTableRowData>(
   { headerRow, dataRow, mapper = {} }: DataViewCardProps<TData>,
 ) {
-  // TODO comment on whats going on here
+  // TODO comment on whats going on here and simplify if possible
   const mapperValues = Object.values(mapper);
   const [mainDataCells, listDataCells] = partition(
     dataRow.getVisibleCells(),
     (cell) => mapperValues.includes(cell.column.id),
   );
+
   const mainDataCellsObject = keyBy(mainDataCells, (cell) => cell.column.id);
   const mainDataCellsMap = mapValues(
     mapper,
     (value) => (value ? mainDataCellsObject[value] : undefined),
   );
+
   const listDataCellPairs = chunk(listDataCells, 2) as DataViewCardCellPair<TData>[];
 
-  const imageRenderValue = mainDataCellsMap.image?.renderValue<string>();
-  const avatarFlexValue = mainDataCellsMap.avatar
-    ? flexRender(
-      mainDataCellsMap.avatar.column.columnDef.cell,
-      mainDataCellsMap.avatar.getContext(),
-    )
-    : null;
+  const imageSrc = mainDataCellsMap.image?.renderValue<string>();
+  const avatarElement = flexRenderCell(mainDataCellsMap.avatar);
+  const optionsTopElement = flexRenderCell(mainDataCellsMap.optionsTop);
+  const optionsBottomElement = flexRenderCell(mainDataCellsMap.optionsBottom);
+  const titleElement = flexRenderCell(mainDataCellsMap.title);
+  const subtitleElement = flexRenderCell(mainDataCellsMap.subtitle);
 
   return (
     <div className="h-full min-h-[20rem] rounded-lg overflow-hidden bg-achromatic-lighter dark:bg-achromatic-dark">
-      <div className={cn('h-28 relative', !!avatarFlexValue && 'mb-16')}>
-        {imageRenderValue
-          ? <img src={imageRenderValue} alt="card background" className="object-cover object-center h-full w-full" />
+      <div className={cn('h-28 relative', avatarElement && 'mb-16')}>
+        {imageSrc
+          ? <img src={imageSrc} alt="card background" className="object-cover object-center h-full w-full" />
           : <div className="h-full w-full bg-primary-dark dark:bg-primary-light" />}
 
-        {!!avatarFlexValue
-          && (
-            <div className="center rounded-full absolute top-full left-1/2 -translate-x-1/2 -translate-y-1/2">
-              {avatarFlexValue}
-            </div>
-          )}
+        {avatarElement && (
+          <div className="center rounded-full absolute top-full left-1/2 -translate-x-1/2 -translate-y-1/2">
+            {avatarElement}
+          </div>
+        )}
 
-        {!!mainDataCellsMap.optionsTop && (
+        {optionsTopElement && (
           <span className="absolute top-full right-0 -translate-x-4 translate-y-4">
-            {flexRender(
-              mainDataCellsMap.optionsTop.column.columnDef.cell,
-              mainDataCellsMap.optionsTop.getContext(),
-            )}
+            {optionsTopElement}
           </span>
         )}
       </div>
 
-      <div className={cn('px-6 pt-4 space-y-10', mainDataCellsMap.optionsBottom ? 'pb-4' : 'pb-8')}>
+      <div className={cn('px-6 pt-4 space-y-10', optionsBottomElement ? 'pb-4' : 'pb-8')}>
         <div className="text-center">
-          {!!mainDataCellsMap.title && (
-            <p className="text-2xl font-semibold">
-              {mainDataCellsMap.title.renderValue<string>()}
-            </p>
+          {titleElement && (
+            <p className="text-2xl font-semibold">{titleElement}</p>
           )}
-          {!!mainDataCellsMap.subtitle && (
+          {subtitleElement && (
             <p className="text-achromatic-dark/50 dark:text-achromatic-lighter/50">
-              {mainDataCellsMap.subtitle.renderValue<string>()}
+              {subtitleElement}
             </p>
           )}
         </div>
@@ -205,26 +188,20 @@ function DataViewCard<TData extends ReactTableRowData>(
               >
                 <div>
                   <div className="text-xs font-semibold text-achromatic-dark/60 dark:text-achromatic-lighter/50">
-                    {flexRender(
-                      headerRow[cellA.column.id].column.columnDef.header,
-                      headerRow[cellA.column.id].getContext(),
-                    )}
+                    {flexRenderHeader(headerRow[cellA.column.id])}
                   </div>
                   <div className="text-ellipsis overflow-hidden">
-                    {flexRender(cellA.column.columnDef.cell, cellA.getContext())}
+                    {flexRenderCell(cellA)}
                   </div>
                 </div>
 
                 {cellB && (
                   <div>
                     <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-lighter/50">
-                      {flexRender(
-                        headerRow[cellB.column.id].column.columnDef.header,
-                        headerRow[cellB.column.id].getContext(),
-                      )}
+                      {flexRenderHeader(headerRow[cellB.column.id])}
                     </div>
                     <div className="text-ellipsis overflow-hidden">
-                      {flexRender(cellB.column.columnDef.cell, cellB.getContext())}
+                      {flexRenderCell(cellB)}
                     </div>
                   </div>
                 )}
@@ -232,13 +209,8 @@ function DataViewCard<TData extends ReactTableRowData>(
             ))}
         </div>
 
-        {!!mainDataCellsMap.optionsBottom && (
-          <div className="w-full">
-            {flexRender(
-              mainDataCellsMap.optionsBottom.column.columnDef.cell,
-              mainDataCellsMap.optionsBottom.getContext(),
-            )}
-          </div>
+        {optionsBottomElement && (
+          <div className="w-full">{optionsBottomElement}</div>
         )}
       </div>
     </div>
@@ -479,13 +451,6 @@ type DataViewLayoutDropdownProps = {
 };
 
 function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdownProps) {
-  const [layoutValue, setLayoutValue] = useState<DataViewLayoutType>(layout);
-
-  function handleValueChange(value: DataViewLayoutType) {
-    setLayoutValue(value);
-    onChangeLayout(value);
-  }
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -501,8 +466,8 @@ function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdo
         <DropdownMenuLabel>Select Layout</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
-          value={layoutValue}
-          onValueChange={(value) => handleValueChange(value as DataViewLayoutType)}
+          value={layout}
+          onValueChange={(value) => onChangeLayout(value as DataViewLayoutType)}
         >
           {DATA_VIEW_LAYOUTS.map((value) => (
             <DropdownMenuRadioItem
