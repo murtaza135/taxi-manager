@@ -405,12 +405,12 @@ function DataViewColumnSortDropdown<TData extends ReactTableRowData>(
         {columns.map((column) => (
           <DropdownMenuItem
             key={column.id}
-            className="capitalize py-1.5 px-2 flex gap-2"
+            className="capitalize py-1.5 px-2 flex items-center gap-2"
             onClick={() => column.toggleSorting()}
           >
             <>
-              {column.getIsSorted() === 'desc' && <ArrowDownIcon className="h-4 w-4 translate-y-[1px]" />}
-              {column.getIsSorted() === 'asc' && <ArrowUpIcon className="h-4 w-4 translate-y-[1px]" />}
+              {column.getIsSorted() === 'desc' && <ArrowDownIcon className="h-4 w-4" />}
+              {column.getIsSorted() === 'asc' && <ArrowUpIcon className="h-4 w-4" />}
               {(column.getIsSorted() !== 'desc' && column.getIsSorted() !== 'asc') && (
                 <span className="h-4 w-4" />
               )}
@@ -420,7 +420,7 @@ function DataViewColumnSortDropdown<TData extends ReactTableRowData>(
         ))}
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="capitalize py-1.5 px-2 flex gap-2"
+          className="capitalize py-1.5 px-2 flex items-center gap-2"
           onClick={() => table.resetSorting()}
         >
           {!isAnyColumnSorted ? <Check className="h-4 w-4 translate-y-[1px]" /> : <div className="h-4 w-4" />}
@@ -717,17 +717,17 @@ function DataViewHeader<TData extends ReactTableRowData, TValue = unknown>(
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
-          <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-            <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+          <DropdownMenuItem onClick={() => column.toggleSorting(false)} className="flex items-center gap-2">
+            <ArrowUpIcon className="h-3.5 w-3.5 text-muted-foreground/70" />
             Asc
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+          <DropdownMenuItem onClick={() => column.toggleSorting(true)} className="flex items-center gap-2">
+            <ArrowDownIcon className="h-3.5 w-3.5 text-muted-foreground/70" />
             Desc
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-            <EyeNoneIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+          <DropdownMenuItem onClick={() => column.toggleVisibility(false)} className="flex items-center gap-2">
+            <EyeNoneIcon className="h-3.5 w-3.5 text-muted-foreground/70" />
             Hide
           </DropdownMenuItem>
         </DropdownMenuContent>
