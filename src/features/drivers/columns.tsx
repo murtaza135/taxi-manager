@@ -155,7 +155,7 @@ export const gridColumns: ColumnDef<DriverDetails>[] = [
     accessorKey: 'picture_src',
     header: 'Avatar',
     cell: ({ row }) => (
-      <Avatar className={cn('h-32 w-32', !row.original.picture_src && 'border-[3px] border-achromatic-lighter dark:border-achromatic-dark')}>
+      <Avatar className={cn('h-32 w-32', 'border-[3px] border-achromatic-lighter dark:border-achromatic-dark')}>
         {row.original.picture_src && (
           <AvatarImage
             src={row.original.picture_src}

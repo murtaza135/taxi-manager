@@ -11,8 +11,8 @@ import {
 import {
   DataViewTopBar,
   DataViewPagination,
-  DataViewLayoutType,
   DataViewLayout,
+  usePersistentDataViewLayout,
 } from '@/ui/DataView';
 import { columns, mapper } from '@/features/drivers/columns';
 import { useDrivers } from '@/features/drivers/hooks/useDrivers';
@@ -22,7 +22,7 @@ export function DriversTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
-  const [layout, setLayout] = useState<DataViewLayoutType>('table');
+  const [layout, setLayout] = usePersistentDataViewLayout('drivers');
   const [globalFilter, setGlobalFilter] = useState('');
 
   const table = useReactTable({

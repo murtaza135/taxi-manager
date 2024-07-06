@@ -27,6 +27,7 @@ import keyBy from 'lodash/keyBy';
 import mapValues from 'lodash/mapValues';
 import { capitalCase } from 'change-case';
 import { Link, To } from 'react-router-dom';
+import { useLocalStorage } from 'usehooks-ts';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
 import { Input } from '@/ui/Input';
 import { Button } from '@/ui/Button';
@@ -518,6 +519,20 @@ function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdo
   );
 }
 
+function usePersistentDataViewLayout(key: string) {
+  return useLocalStorage<DataViewLayoutType>(
+    `${key}.dataview.layout`,
+    'table',
+    {
+      deserializer: (value) => {
+        const val = JSON.parse(value) as unknown;
+        if (val === 'table' || val === 'grid') return val;
+        return 'table';
+      },
+    },
+  );
+}
+
 type DataViewTopBarProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
   showSortButton?: boolean;
@@ -750,6 +765,7 @@ export {
   DataViewColumnSortDropdown,
   DataViewRowsPerPageDropdown,
   DataViewLayoutDropdown,
+  usePersistentDataViewLayout,
   DataViewTopBar,
   DataViewPagination,
   DataViewCheckbox,
