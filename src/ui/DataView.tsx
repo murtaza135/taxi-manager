@@ -49,6 +49,7 @@ import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
+  TooltipWrapper,
 } from '@/ui/Tooltip';
 import { useTimedBoolean } from '@/hooks/useTimedBoolean';
 import { useToast } from '@/ui/toast';
@@ -670,17 +671,17 @@ function DataViewHeaderCheckbox<TData extends ReactTableRowData>(
   );
 }
 
-type DataViewCellCheckboxProps<TData extends ReactTableRowData> = {
-  dataRow: ReactTableRow<TData>;
+type DataViewRowCheckboxProps<TData extends ReactTableRowData> = {
+  row: ReactTableRow<TData>;
 };
 
-function DataViewCellCheckbox<TData extends ReactTableRowData>(
-  { dataRow }: DataViewCellCheckboxProps<TData>,
+function DataViewRowCheckbox<TData extends ReactTableRowData>(
+  { row }: DataViewRowCheckboxProps<TData>,
 ) {
   return (
     <Checkbox
-      checked={dataRow.getIsSelected()}
-      onCheckedChange={(value) => dataRow.toggleSelected(!!value)}
+      checked={row.getIsSelected()}
+      onCheckedChange={(value) => row.toggleSelected(!!value)}
       aria-label="Select row"
     />
   );
@@ -735,131 +736,9 @@ function DataViewHeader<TData extends ReactTableRowData, TValue = unknown>(
   );
 }
 
-type DataViewOpenPageButtonProps = {
-  linkTo: To;
-};
-
-function DataViewOpenPageButton({ linkTo }: DataViewOpenPageButtonProps) {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger>
-          <Link to={linkTo} className="text-2xl transition-opacity hover:opacity-70">
-            <TiEye />
-          </Link>
-        </TooltipTrigger>
-        <TooltipContent>
-          <Link to={linkTo} className="transition-opacity hover:opacity-70">
-            Open
-          </Link>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-}
-
-function DataViewNoDataCell() {
-  return (
-    <p className="text-achromatic-dark/60 dark:text-achromatic-lighter/50">
-      N/A
-    </p>
-  );
-}
-
-type DataViewLinkCellProps = {
-  to: To;
-  children?: ReactNode;
-  className?: string;
-};
-
-function DataViewLinkCell({ to, children, className }: DataViewLinkCellProps) {
-  return (
-    <Link
-      to={to}
-      className={cn('inline-flex items-center gap-2 transition-opacity hover:opacity-70 text-nowrap group relative', className)}
-    >
-      {children}
-      <CgInternal className="-translate-y-[1px] text-lg transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
-    </Link>
-  );
-}
-
-type DataViewPhoneNumberCellProps = {
-  phone: string;
-  children?: ReactNode;
-  className?: string;
-};
-
-function DataViewPhoneNumberCell({ phone, children, className }: DataViewPhoneNumberCellProps) {
-  return (
-    <a
-      href={`tel:${phone}`}
-      className={cn('inline-flex items-center gap-2 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
-    >
-      {children ?? phone}
-      <FaPhone className="-translate-y-[1px] transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
-    </a>
-  );
-}
-
-type DataViewEmailCellProps = {
-  email: string;
-  children?: ReactNode;
-  className?: string;
-};
-
-function DataViewEmailCell({ email, children, className }: DataViewEmailCellProps) {
-  return (
-    <a
-      href={`mailto:${email}`}
-      className={cn('inline-flex items-center gap-2 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
-    >
-      {children ?? email}
-      <MdEmail className="text-lg transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
-    </a>
-  );
-}
-
-type DataViewCopyCellProps = {
-  text: string;
-  children?: ReactNode;
-  className?: string;
-};
-
-function DataViewCopyCell({ text, children, className }: DataViewCopyCellProps) {
-  const [isCopied, setIsCopied] = useTimedBoolean(2500);
-  const { toast } = useToast();
-
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(text);
-    setIsCopied();
-    toast({ title: 'Copied to Clipboard' });
-  };
-
-  return (
-    <Button
-      variant="ghost"
-      className={cn('inline-flex items-center gap-2 p-0 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
-      onClick={handleCopy}
-    >
-      {children ?? text}
-      {!isCopied && (
-        <LuClipboardCopy
-          className="-translate-y-[1px] text-lg transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6"
-        />
-      )}
-      {isCopied && (
-        <LuClipboardCheck
-          className="-translate-y-[1px] text-lg transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6"
-        />
-      )}
-    </Button>
-  );
-}
-
 const DataViewCheckbox = {
   Header: DataViewHeaderCheckbox,
-  Cell: DataViewCellCheckbox,
+  Row: DataViewRowCheckbox,
 };
 
 export {
@@ -875,10 +754,4 @@ export {
   DataViewPagination,
   DataViewCheckbox,
   DataViewHeader,
-  DataViewOpenPageButton,
-  DataViewNoDataCell,
-  DataViewLinkCell,
-  DataViewPhoneNumberCell,
-  DataViewEmailCell,
-  DataViewCopyCell,
 };

@@ -17,12 +17,6 @@ import {
   DataViewCheckbox,
   DataViewHeader,
   DataViewCardMainDataMapper,
-  DataViewOpenPageButton,
-  DataViewNoDataCell,
-  DataViewLinkCell,
-  DataViewPhoneNumberCell,
-  DataViewEmailCell,
-  DataViewCopyCell,
 } from '@/ui/DataView';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { Button } from '@/ui/Button';
@@ -30,17 +24,16 @@ import { DriverDetails } from '@/features/drivers/hooks/useDrivers';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { TooltipWrapper } from '@/ui/Tooltip';
-import personDark from '@/assets/images/person-dark.png';
-import personLight from '@/assets/images/person-light.png';
 import { config } from '@/config/config';
 import { cn } from '@/utils/cn';
+import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/Cell';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<DriverDetails>[] = [
   {
     id: 'Select',
     header: ({ table }) => <DataViewCheckbox.Header table={table} />,
-    cell: ({ row }) => <DataViewCheckbox.Cell dataRow={row} />,
+    cell: ({ row }) => <DataViewCheckbox.Row row={row} />,
     enableSorting: false,
     enableHiding: false,
     enableGlobalFilter: false,
@@ -70,9 +63,9 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     accessorKey: 'name',
     header: ({ column }) => <DataViewHeader column={column} header="Name" />,
     cell: ({ row }) => (
-      <DataViewLinkCell to={`/driver/${row.original.id}`}>
+      <LinkCell to={`/driver/${row.original.id}`}>
         {row.original.name}
-      </DataViewLinkCell>
+      </LinkCell>
     ),
   },
   {
@@ -80,8 +73,8 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     accessorKey: 'phone_number',
     header: ({ column }) => <DataViewHeader column={column} header="Phone" />,
     cell: ({ row }) => {
-      if (!row.original.phone_number) return <DataViewNoDataCell />;
-      return <DataViewPhoneNumberCell phone={row.original.phone_number} />;
+      if (!row.original.phone_number) return <NoDataCell />;
+      return <PhoneNumberCell phone={row.original.phone_number} />;
     },
     enableSorting: false,
     enableGlobalFilter: false,
@@ -91,8 +84,8 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     accessorKey: 'email',
     header: ({ column }) => <DataViewHeader column={column} header="Email" />,
     cell: ({ row }) => {
-      if (!row.original.email) return <DataViewNoDataCell />;
-      return <DataViewEmailCell email={row.original.email} />;
+      if (!row.original.email) return <NoDataCell />;
+      return <EmailCell email={row.original.email} />;
     },
   },
   {
@@ -101,13 +94,13 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     header: ({ column }) => <DataViewHeader column={column} header="Taxi" />,
     cell: ({ row }) => {
       if (!row.original.active_taxi_id || !row.original.active_taxi_number_plate) {
-        return <DataViewNoDataCell />;
+        return <NoDataCell />;
       }
 
       return (
-        <DataViewLinkCell to={`/taxi/${row.original.active_taxi_id}`}>
+        <LinkCell to={`/taxi/${row.original.active_taxi_id}`}>
           {row.original.active_taxi_number_plate}
-        </DataViewLinkCell>
+        </LinkCell>
       );
     },
   },
@@ -116,12 +109,12 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
     accessorKey: 'active_hire_agreement_id',
     header: ({ column }) => <DataViewHeader column={column} header="Hire Agreement" className="text-nowrap" />,
     cell: ({ row }) => {
-      if (!row.original.active_hire_agreement_id) return <DataViewNoDataCell />;
+      if (!row.original.active_hire_agreement_id) return <NoDataCell />;
 
       return (
-        <DataViewLinkCell to={`/hire/${row.original.active_hire_agreement_id}`}>
+        <LinkCell to={`/hire/${row.original.active_hire_agreement_id}`}>
           Agreement
-        </DataViewLinkCell>
+        </LinkCell>
       );
     },
     enableSorting: false,
@@ -187,8 +180,8 @@ export const gridColumns: ColumnDef<DriverDetails>[] = [
     accessorKey: 'phone_number',
     header: 'Phone Number',
     cell: ({ row }) => {
-      if (!row.original.phone_number) return <DataViewNoDataCell />;
-      return <DataViewPhoneNumberCell phone={row.original.phone_number} />;
+      if (!row.original.phone_number) return <NoDataCell />;
+      return <PhoneNumberCell phone={row.original.phone_number} />;
     },
     enableSorting: false,
     enableGlobalFilter: false,
@@ -198,8 +191,8 @@ export const gridColumns: ColumnDef<DriverDetails>[] = [
     accessorKey: 'email',
     header: 'Email',
     cell: ({ row }) => {
-      if (!row.original.email) return <DataViewNoDataCell />;
-      return <DataViewEmailCell email={row.original.email} />;
+      if (!row.original.email) return <NoDataCell />;
+      return <EmailCell email={row.original.email} />;
     },
   },
   {
@@ -209,13 +202,13 @@ export const gridColumns: ColumnDef<DriverDetails>[] = [
     // cell: ({ row }) => row.original.active_taxi_number_plate || 'N/A',
     cell: ({ row }) => {
       if (!row.original.active_taxi_id || !row.original.active_taxi_number_plate) {
-        return <DataViewNoDataCell />;
+        return <NoDataCell />;
       }
 
       return (
-        <DataViewLinkCell to={`/taxi/${row.original.active_taxi_id}`}>
+        <LinkCell to={`/taxi/${row.original.active_taxi_id}`}>
           {row.original.active_taxi_number_plate}
-        </DataViewLinkCell>
+        </LinkCell>
       );
     },
   },
@@ -225,12 +218,12 @@ export const gridColumns: ColumnDef<DriverDetails>[] = [
     header: 'Hire Agreement',
     // cell: ({ row }) => row.original.active_hire_agreement_id || 'N/A',
     cell: ({ row }) => {
-      if (!row.original.active_hire_agreement_id) return <DataViewNoDataCell />;
+      if (!row.original.active_hire_agreement_id) return <NoDataCell />;
 
       return (
-        <DataViewLinkCell to={`/hire/${row.original.active_hire_agreement_id}`}>
+        <LinkCell to={`/hire/${row.original.active_hire_agreement_id}`}>
           {row.original.active_hire_agreement_id}
-        </DataViewLinkCell>
+        </LinkCell>
       );
     },
     enableSorting: false,
