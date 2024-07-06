@@ -202,7 +202,7 @@ function DataViewCard<TData extends ReactTableRowData>(
                 className="grid grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] gap-x-10 gap-y-4 text-center"
               >
                 <div>
-                  <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-lighter/50">
+                  <div className="text-xs font-semibold text-achromatic-dark/60 dark:text-achromatic-lighter/50">
                     {flexRender(
                       headerRow[cellA.column.id].column.columnDef.header,
                       headerRow[cellA.column.id].getContext(),
@@ -759,7 +759,11 @@ function DataViewOpenPageButton({ linkTo }: DataViewOpenPageButtonProps) {
 }
 
 function DataViewNoDataCell() {
-  return <p className="opacity-45">N/A</p>;
+  return (
+    <p className="text-achromatic-dark/60 dark:text-achromatic-lighter/50">
+      N/A
+    </p>
+  );
 }
 
 type DataViewLinkCellProps = {
@@ -772,10 +776,10 @@ function DataViewLinkCell({ to, children, className }: DataViewLinkCellProps) {
   return (
     <Link
       to={to}
-      className={cn('inline-flex gap-2 transition-opacity hover:opacity-70 text-nowrap group relative', className)}
+      className={cn('inline-flex items-center gap-2 transition-opacity hover:opacity-70 text-nowrap group relative', className)}
     >
       {children}
-      <CgInternal className="text-lg transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
+      <CgInternal className="-translate-y-[1px] text-lg transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
     </Link>
   );
 }
@@ -790,10 +794,10 @@ function DataViewPhoneNumberCell({ phone, children, className }: DataViewPhoneNu
   return (
     <a
       href={`tel:${phone}`}
-      className={cn('inline-flex gap-2 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
+      className={cn('inline-flex items-center gap-2 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
     >
       {children ?? phone}
-      <FaPhone className="translate-y-[3px] transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
+      <FaPhone className="-translate-y-[1px] transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
     </a>
   );
 }
@@ -808,10 +812,10 @@ function DataViewEmailCell({ email, children, className }: DataViewEmailCellProp
   return (
     <a
       href={`mailto:${email}`}
-      className={cn('inline-flex gap-2 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
+      className={cn('inline-flex items-center gap-2 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
     >
       {children ?? email}
-      <MdEmail className="text-lg translate-y-[1px] transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
+      <MdEmail className="text-lg transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6" />
     </a>
   );
 }
@@ -835,18 +839,18 @@ function DataViewCopyCell({ text, children, className }: DataViewCopyCellProps) 
   return (
     <Button
       variant="ghost"
-      className={cn('inline-flex gap-2 p-0 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
+      className={cn('inline-flex items-center gap-2 p-0 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
       onClick={handleCopy}
     >
       {children ?? text}
       {!isCopied && (
         <LuClipboardCopy
-          className="text-lg translate-y-[0px] transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6"
+          className="-translate-y-[1px] text-lg transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6"
         />
       )}
       {isCopied && (
         <LuClipboardCheck
-          className="text-lg translate-y-[0px] transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6"
+          className="-translate-y-[1px] text-lg transition-opacity opacity-0 group-hover:opacity-100 absolute -right-6"
         />
       )}
     </Button>
