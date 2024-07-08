@@ -7,7 +7,6 @@ import {
   Column as ReactTableColumn,
   Cell as ReactTableCell,
   flexRender,
-  layouts,
   LayoutState,
 } from '@tanstack/react-table';
 import { IoSearchSharp } from 'react-icons/io5';
@@ -43,6 +42,8 @@ import {
 import { Checkbox } from '@/ui/Checkbox';
 import { cn } from '@/utils/cn';
 import { Separator } from '@/ui/Separator';
+
+const layouts: LayoutState[] = ['table', 'grid'];
 
 type ReactTableContextValue<TData extends ReactTableRowData = unknown> = {
   table: ReactTableType<TData>;
@@ -85,13 +86,9 @@ function ReactTable<TData extends ReactTableRowData = ReactTableRowData>(
   );
 }
 
-type DataViewTableProps<TData extends ReactTableRowData> = {
-  table: ReactTableType<TData>;
-};
+function DataViewTable() {
+  const { table } = useReactTableContext();
 
-function DataViewTable<TData extends ReactTableRowData>(
-  { table }: DataViewTableProps<TData>,
-) {
   // eslint-disable-next-line no-underscore-dangle
   const columnDefs = table._getColumnDefs();
 
@@ -142,9 +139,9 @@ function DataViewTable<TData extends ReactTableRowData>(
   );
 }
 
-type DataViewCardCellPair<TData extends ReactTableRowData> = [
-  ReactTableCell<TData, unknown>,
-  ReactTableCell<TData, unknown> | undefined,
+type DataViewCardCellPair = [
+  ReactTableCell<unknown, unknown>,
+  ReactTableCell<unknown, unknown> | undefined,
 ];
 
 export type DataViewCardMainDataMapper = {
@@ -156,16 +153,16 @@ export type DataViewCardMainDataMapper = {
   optionsBottom?: string;
 };
 
-type DataViewCardProps<TData extends ReactTableRowData> = {
-  headerRow: Record<string, ReactTableHeader<TData, unknown>>;
-  dataRow: ReactTableRow<TData>;
-  mapper?: DataViewCardMainDataMapper;
+type DataViewCardProps = {
+  headerRow: Record<string, ReactTableHeader<unknown, unknown>>;
+  dataRow: ReactTableRow<unknown>;
 };
 
-function DataViewCard<TData extends ReactTableRowData>(
-  { headerRow, dataRow, mapper = {} }: DataViewCardProps<TData>,
+function DataViewCard(
+  { headerRow, dataRow }: DataViewCardProps,
 ) {
   // TODO comment on whats going on here and simplify if possible
+  const { mapper = {} } = useReactTableContext();
   const mapperValues = Object.values(mapper);
   const [mainDataCells, listDataCells] = partition(
     dataRow.getVisibleCells(),
@@ -178,7 +175,7 @@ function DataViewCard<TData extends ReactTableRowData>(
     (value) => (value ? mainDataCellsObject[value] : undefined),
   );
 
-  const listDataCellPairs = chunk(listDataCells, 2) as DataViewCardCellPair<TData>[];
+  const listDataCellPairs = chunk(listDataCells, 2) as DataViewCardCellPair[];
 
   const imageSrc = mainDataCellsMap.image?.renderValue<string>();
   const avatarElement = flexRenderCell(mainDataCellsMap.avatar);
@@ -257,14 +254,9 @@ function DataViewCard<TData extends ReactTableRowData>(
   );
 }
 
-type DataViewGridProps<TData extends ReactTableRowData> = {
-  table: ReactTableType<TData>;
-  mapper?: DataViewCardMainDataMapper;
-};
+function DataViewGrid() {
+  const { table } = useReactTableContext();
 
-function DataViewGrid<TData extends ReactTableRowData>(
-  { table, mapper }: DataViewGridProps<TData>,
-) {
   if (!table.getRowModel().rows?.length) {
     return (
       <div>
@@ -275,7 +267,7 @@ function DataViewGrid<TData extends ReactTableRowData>(
     );
   }
 
-  const headerRow: Record<string, ReactTableHeader<TData, unknown>> = keyBy(
+  const headerRow: Record<string, ReactTableHeader<unknown, unknown>> = keyBy(
     table.getLeafHeaders(),
     (header) => header.id,
   );
@@ -283,36 +275,25 @@ function DataViewGrid<TData extends ReactTableRowData>(
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
       {table.getRowModel().rows.map((row) => (
-        <DataViewCard key={row.id} dataRow={row} headerRow={headerRow} mapper={mapper} />
+        <DataViewCard key={row.id} dataRow={row} headerRow={headerRow} />
       ))}
     </div>
   );
 }
 
-type DataViewLayoutProps<TData extends ReactTableRowData> = {
-  table: ReactTableType<TData>;
-  mapper?: DataViewCardMainDataMapper;
-};
-
-function DataViewLayout<TData extends ReactTableRowData>(
-  { table, mapper }: DataViewLayoutProps<TData>,
-) {
+function DataViewLayout() {
+  const { table } = useReactTableContext();
   const layout = table.options.meta?.layout ?? 'table';
 
   if (layout === 'grid') {
-    return <DataViewGrid table={table} mapper={mapper} />;
+    return <DataViewGrid />;
   }
 
-  return <DataViewTable table={table} />;
+  return <DataViewTable />;
 }
 
-type DataViewSearchFilterProps<TData extends ReactTableRowData> = {
-  table: ReactTableType<TData>;
-};
-
-function DataViewSearchFilter<TData extends ReactTableRowData>(
-  { table }: DataViewSearchFilterProps<TData>,
-) {
+function DataViewSearchFilter() {
+  const { table } = useReactTableContext();
   const ref = useRef<HTMLInputElement | null>(null);
 
   function handleClearSearchFilter() {
@@ -346,13 +327,9 @@ function DataViewSearchFilter<TData extends ReactTableRowData>(
   );
 }
 
-type DataViewColumnVisibilityDropdownProps<TData extends ReactTableRowData> = {
-  table: ReactTableType<TData>;
-};
+function DataViewColumnVisibilityDropdown() {
+  const { table } = useReactTableContext();
 
-function DataViewColumnVisibilityDropdown<TData extends ReactTableRowData>(
-  { table }: DataViewColumnVisibilityDropdownProps<TData>,
-) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -387,13 +364,8 @@ function DataViewColumnVisibilityDropdown<TData extends ReactTableRowData>(
   );
 }
 
-type DataViewSortDropdownProps<TData extends ReactTableRowData> = {
-  table: ReactTableType<TData>;
-};
-
-function DataViewColumnSortDropdown<TData extends ReactTableRowData>(
-  { table }: DataViewSortDropdownProps<TData>,
-) {
+function DataViewColumnSortDropdown() {
+  const { table } = useReactTableContext();
   const columns = table.getAllColumns().filter((column) => column.getCanSort());
   const isAnyColumnSorted = columns.some((column) => (
     column.getIsSorted() === 'desc' || column.getIsSorted() === 'asc'
@@ -448,13 +420,9 @@ function DataViewColumnSortDropdown<TData extends ReactTableRowData>(
   );
 }
 
-type DataViewRowsPerPageDropdownProps<TData extends ReactTableRowData> = {
-  table: ReactTableType<TData>;
-};
+function DataViewRowsPerPageDropdown() {
+  const { table } = useReactTableContext();
 
-function DataViewRowsPerPageDropdown<TData extends ReactTableRowData>(
-  { table }: DataViewRowsPerPageDropdownProps<TData>,
-) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -489,13 +457,8 @@ function DataViewRowsPerPageDropdown<TData extends ReactTableRowData>(
   );
 }
 
-type DataViewLayoutDropdownProps<TData extends ReactTableRowData> = {
-  table: ReactTableType<TData>;
-};
-
-function DataViewLayoutDropdown<TData extends ReactTableRowData>(
-  { table }: DataViewLayoutDropdownProps<TData>,
-) {
+function DataViewLayoutDropdown() {
+  const { table } = useReactTableContext();
   const layout = table.options.meta?.layout;
   const onLayoutChange = table.options.meta?.onLayoutChange;
 
@@ -542,8 +505,7 @@ function DataViewLayoutDropdown<TData extends ReactTableRowData>(
   );
 }
 
-type DataViewTopBarProps<TData extends ReactTableRowData> = {
-  table: ReactTableType<TData>;
+type DataViewTopBarProps = {
   showGlobalFilterInput?: boolean;
   showSortButton?: boolean;
   showVisibilityButton?: boolean;
@@ -551,28 +513,27 @@ type DataViewTopBarProps<TData extends ReactTableRowData> = {
   showLayoutButton?: boolean;
 };
 
-function DataViewTopBar<TData extends ReactTableRowData>({
-  table,
+function DataViewTopBar({
   showGlobalFilterInput,
   showSortButton,
   showVisibilityButton,
   showRowsPerPageButton,
   showLayoutButton,
-}: DataViewTopBarProps<TData>) {
+}: DataViewTopBarProps) {
   return (
     <div>
       <div className="flex justify-between items-center gap-4">
         {
           showGlobalFilterInput
-            ? <DataViewSearchFilter table={table} />
+            ? <DataViewSearchFilter />
             : <div />
         }
 
         <div className="flex gap-3 items-center">
-          {showVisibilityButton && <DataViewColumnVisibilityDropdown table={table} />}
-          {showSortButton && <DataViewColumnSortDropdown table={table} />}
-          {showRowsPerPageButton && <DataViewRowsPerPageDropdown table={table} />}
-          {showLayoutButton && <DataViewLayoutDropdown table={table} />}
+          {showVisibilityButton && <DataViewColumnVisibilityDropdown />}
+          {showSortButton && <DataViewColumnSortDropdown />}
+          {showRowsPerPageButton && <DataViewRowsPerPageDropdown />}
+          {showLayoutButton && <DataViewLayoutDropdown />}
           <Button size="sm" shape="circle" className="text-xl ml-2">+</Button>
         </div>
       </div>
@@ -581,21 +542,21 @@ function DataViewTopBar<TData extends ReactTableRowData>({
   );
 }
 
-type DataViewPaginationProps<TData extends ReactTableRowData> = {
-  table: ReactTableType<TData>;
+type DataViewPaginationProps = {
   showSelectedRows?: boolean;
   showPageCount?: boolean;
   showPageButtons?: boolean;
   className?: string;
 };
 
-function DataViewPagination<TData extends ReactTableRowData>({
-  table,
+function DataViewPagination({
   showSelectedRows,
   showPageCount,
   showPageButtons,
   className,
-}: DataViewPaginationProps<TData>) {
+}: DataViewPaginationProps) {
+  const { table } = useReactTableContext();
+
   return (
     <div className={cn('flex items-center justify-between px-2', className)}>
       {showSelectedRows
@@ -670,13 +631,9 @@ function DataViewPagination<TData extends ReactTableRowData>({
   );
 }
 
-type DataViewHeaderCheckboxProps<TData extends ReactTableRowData> = {
-  table: ReactTableType<TData>;
-};
+function DataViewHeaderCheckbox() {
+  const { table } = useReactTableContext();
 
-function DataViewHeaderCheckbox<TData extends ReactTableRowData>(
-  { table }: DataViewHeaderCheckboxProps<TData>,
-) {
   return (
     <Checkbox
       checked={
