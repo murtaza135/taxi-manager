@@ -193,9 +193,11 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  getFilteredRowModel,
   SortingState,
   ColumnFiltersState,
-  getFilteredRowModel,
+  PaginationState,
+  RowSelectionState,
 } from '@tanstack/react-table';
 import {
   DataViewTopBar,
@@ -209,22 +211,24 @@ import { data } from '@/data';
 export default function Page() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [rowSelection, setRowSelection] = useState({});
+  const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 50 });
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [globalFilter, setGlobalFilter] = useState<string>('');
   const [layout, setLayout] = useState<DataViewLayoutType>('table');
-  const [globalFilter, setGlobalFilter] = useState('');
 
   const table = useReactTable({
     data,
     columns: columns[layout],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
-    state: { sorting, columnFilters, rowSelection, globalFilter },
+    onPaginationChange: setPagination,
+    state: { sorting, columnFilters, pagination, rowSelection, globalFilter },
   });
 
   return (
@@ -234,10 +238,9 @@ export default function Page() {
         showSortButton
         showVisibilityButton
         showRowsPerPageButton
+        showGlobalFilterInput
         layout={layout}
         onChangeLayout={setLayout}
-        filter={globalFilter}
-        onChangeFilter={setGlobalFilter}
       />
       <DataViewLayout
         layout={layout}
@@ -263,7 +266,7 @@ export function LowerLevelComponents() {
 
   return (
     <>
-      <DataViewSearchFilter filter={filter} onChangeFilter={onChangeFilter} />
+      <DataViewSearchFilter table={table} />
       <DataViewColumnVisibilityDropdown table={table} />
       <DataViewColumnSortDropdown table={table} />
       <DataViewRowsPerPageDropdown table={table} />

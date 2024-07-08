@@ -8,6 +8,7 @@ import {
   SortingState,
   ColumnFiltersState,
   PaginationState,
+  RowSelectionState,
 } from '@tanstack/react-table';
 import {
   DataViewTopBar,
@@ -23,8 +24,8 @@ export function DriversTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 50 });
-  const [rowSelection, setRowSelection] = useState({});
-  const [globalFilter, setGlobalFilter] = useState('');
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [globalFilter, setGlobalFilter] = useState<string>('');
   const [layout, setLayout] = usePersistentDataViewLayout('drivers');
 
   const table = useReactTable({
