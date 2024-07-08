@@ -265,16 +265,17 @@ function DataViewLayout<TData extends ReactTableRowData>(
   return <DataViewTable table={table} />;
 }
 
-type DataViewSearchFilterProps = {
-  filter: string;
-  onChangeFilter: (filter: string) => void;
+type DataViewSearchFilterProps<TData extends ReactTableRowData> = {
+  table: ReactTable<TData>;
 };
 
-function DataViewSearchFilter({ filter, onChangeFilter }: DataViewSearchFilterProps) {
+function DataViewSearchFilter<TData extends ReactTableRowData>(
+  { table }: DataViewSearchFilterProps<TData>,
+) {
   const ref = useRef<HTMLInputElement | null>(null);
 
   function handleClearSearchFilter() {
-    onChangeFilter('');
+    table.setGlobalFilter('');
     ref.current?.focus();
   }
 
@@ -282,8 +283,8 @@ function DataViewSearchFilter({ filter, onChangeFilter }: DataViewSearchFilterPr
     <Input
       name="search"
       placeholder="Search..."
-      value={filter}
-      onChange={(event) => onChangeFilter(event.target.value)}
+      value={table.getState().globalFilter as string}
+      onChange={(event) => table.setGlobalFilter(event.target.value)}
       leftIcon={(
         <span className="text-sm">
           <IoSearchSharp />
@@ -396,7 +397,9 @@ function DataViewColumnSortDropdown<TData extends ReactTableRowData>(
           className="capitalize py-1.5 px-2 flex items-center gap-2"
           onClick={() => table.resetSorting()}
         >
-          {!isAnyColumnSorted ? <Check className="h-4 w-4 translate-y-[1px]" /> : <div className="h-4 w-4" />}
+          {!isAnyColumnSorted
+            ? <Check className="h-4 w-4 translate-y-[1px]" />
+            : <div className="h-4 w-4" />}
           Clear
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -503,12 +506,10 @@ type DataViewTopBarProps<TData extends ReactTableRowData> = {
   showSortButton?: boolean;
   showVisibilityButton?: boolean;
   showRowsPerPageButton?: boolean;
+  showGlobalFilterInput?: boolean;
 } & OptionalObjectGroup<{
   layout: DataViewLayoutType;
   onChangeLayout: (layout: DataViewLayoutType) => void;
-}> & OptionalObjectGroup<{
-  filter: string;
-  onChangeFilter: (filter: string) => void;
 }>;
 
 function DataViewTopBar<TData extends ReactTableRowData>({
@@ -516,17 +517,16 @@ function DataViewTopBar<TData extends ReactTableRowData>({
   showSortButton,
   showVisibilityButton,
   showRowsPerPageButton,
+  showGlobalFilterInput,
   layout,
   onChangeLayout,
-  filter,
-  onChangeFilter,
 }: DataViewTopBarProps<TData>) {
   return (
     <div>
       <div className="flex justify-between items-center gap-4">
         {
-          typeof filter !== 'undefined'
-            ? <DataViewSearchFilter filter={filter} onChangeFilter={onChangeFilter} />
+          showGlobalFilterInput
+            ? <DataViewSearchFilter table={table} />
             : <div />
         }
 

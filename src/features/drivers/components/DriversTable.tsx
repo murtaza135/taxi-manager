@@ -24,8 +24,8 @@ export function DriversTable() {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 50 });
   const [rowSelection, setRowSelection] = useState({});
-  const [layout, setLayout] = usePersistentDataViewLayout('drivers');
   const [globalFilter, setGlobalFilter] = useState('');
+  const [layout, setLayout] = usePersistentDataViewLayout('drivers');
 
   const table = useReactTable({
     data,
@@ -49,10 +49,9 @@ export function DriversTable() {
         showSortButton
         showVisibilityButton
         showRowsPerPageButton
+        showGlobalFilterInput
         layout={layout}
         onChangeLayout={setLayout}
-        filter={globalFilter}
-        onChangeFilter={setGlobalFilter}
       />
       <DataViewLayout
         layout={layout}
