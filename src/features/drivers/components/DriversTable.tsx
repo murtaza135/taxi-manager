@@ -9,12 +9,14 @@ import {
   ColumnFiltersState,
   PaginationState,
   RowSelectionState,
+  LayoutState,
 } from '@tanstack/react-table';
+import { useLocalStorage } from 'usehooks-ts';
+import { layoutDeserializer } from '@/lib/tanstack-table/utils';
 import {
   DataViewTopBar,
   DataViewPagination,
   DataViewLayout,
-  usePersistentDataViewLayout,
 } from '@/ui/DataView';
 import { columns, mapper } from '@/features/drivers/columns';
 import { useDrivers } from '@/features/drivers/hooks/useDrivers';
@@ -23,10 +25,17 @@ export function DriversTable() {
   const { data } = useDrivers();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 50 });
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 50,
+  });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [globalFilter, setGlobalFilter] = useState<string>('');
-  const [layout, setLayout] = usePersistentDataViewLayout('drivers');
+  const [layout, setLayout] = useLocalStorage<LayoutState>(
+    'drivers.dataview.layout',
+    'table',
+    { deserializer: layoutDeserializer },
+  );
 
   const table = useReactTable({
     data,
@@ -40,6 +49,7 @@ export function DriversTable() {
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
+    meta: { layout, onLayoutChange: setLayout },
     state: { sorting, columnFilters, pagination, rowSelection, globalFilter },
   });
 
@@ -47,15 +57,13 @@ export function DriversTable() {
     <div className="flex flex-col gap-3">
       <DataViewTopBar
         table={table}
+        showGlobalFilterInput
         showSortButton
         showVisibilityButton
         showRowsPerPageButton
-        showGlobalFilterInput
-        layout={layout}
-        onChangeLayout={setLayout}
+        showLayoutButton
       />
       <DataViewLayout
-        layout={layout}
         table={table}
         mapper={mapper}
       />

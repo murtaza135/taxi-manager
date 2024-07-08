@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   Table as ReactTable,
   Header as ReactTableHeader,
@@ -7,6 +7,8 @@ import {
   Column as ReactTableColumn,
   Cell as ReactTableCell,
   flexRender,
+  layouts,
+  LayoutState,
 } from '@tanstack/react-table';
 import { IoSearchSharp } from 'react-icons/io5';
 import { MdOutlineClose } from 'react-icons/md';
@@ -24,7 +26,6 @@ import partition from 'lodash/partition';
 import keyBy from 'lodash/keyBy';
 import mapValues from 'lodash/mapValues';
 import { capitalCase } from 'change-case';
-import { useLocalStorage } from 'usehooks-ts';
 import { flexRenderHeader, flexRenderCell } from '@/lib/tanstack-table/flexRender';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
 import { Input } from '@/ui/Input';
@@ -41,11 +42,7 @@ import {
 } from '@/ui/DropdownMenu';
 import { Checkbox } from '@/ui/Checkbox';
 import { cn } from '@/utils/cn';
-import { OptionalObjectGroup } from '@/types/utils';
 import { Separator } from '@/ui/Separator';
-
-const DATA_VIEW_LAYOUTS = ['table', 'grid'] as const;
-export type DataViewLayoutType = typeof DATA_VIEW_LAYOUTS[number];
 
 type DataViewTableProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
@@ -251,13 +248,14 @@ function DataViewGrid<TData extends ReactTableRowData>(
 
 type DataViewLayoutProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
-  layout: DataViewLayoutType;
   mapper?: DataViewCardMainDataMapper;
 };
 
 function DataViewLayout<TData extends ReactTableRowData>(
-  { table, layout, mapper }: DataViewLayoutProps<TData>,
+  { table, mapper }: DataViewLayoutProps<TData>,
 ) {
+  const layout = table.options.meta?.layout ?? 'table';
+
   if (layout === 'grid') {
     return <DataViewGrid table={table} mapper={mapper} />;
   }
@@ -448,12 +446,26 @@ function DataViewRowsPerPageDropdown<TData extends ReactTableRowData>(
   );
 }
 
-type DataViewLayoutDropdownProps = {
-  layout: DataViewLayoutType;
-  onChangeLayout: (layout: DataViewLayoutType) => void;
+type DataViewLayoutDropdownProps<TData extends ReactTableRowData> = {
+  table: ReactTable<TData>;
 };
 
-function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdownProps) {
+function DataViewLayoutDropdown<TData extends ReactTableRowData>(
+  { table }: DataViewLayoutDropdownProps<TData>,
+) {
+  const layout = table.options.meta?.layout;
+  const onLayoutChange = table.options.meta?.onLayoutChange;
+
+  useEffect(() => {
+    if (!layout || !onLayoutChange) {
+      // TODO replace with proper logger
+      // eslint-disable-next-line no-console
+      console.warn('DataView `layout` and/or `onLayoutChange` not defined');
+    }
+  }, [layout, onLayoutChange]);
+
+  if (!layout || !onLayoutChange) return null;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -470,9 +482,9 @@ function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdo
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
           value={layout}
-          onValueChange={(value) => onChangeLayout(value as DataViewLayoutType)}
+          onValueChange={(value) => onLayoutChange(value as LayoutState)}
         >
-          {DATA_VIEW_LAYOUTS.map((value) => (
+          {layouts.map((value) => (
             <DropdownMenuRadioItem
               key={value}
               className="capitalize"
@@ -487,39 +499,22 @@ function DataViewLayoutDropdown({ layout, onChangeLayout }: DataViewLayoutDropdo
   );
 }
 
-function usePersistentDataViewLayout(key: string) {
-  return useLocalStorage<DataViewLayoutType>(
-    `${key}.dataview.layout`,
-    'table',
-    {
-      deserializer: (value) => {
-        const val = JSON.parse(value) as unknown;
-        if (val === 'table' || val === 'grid') return val;
-        return 'table';
-      },
-    },
-  );
-}
-
 type DataViewTopBarProps<TData extends ReactTableRowData> = {
   table: ReactTable<TData>;
+  showGlobalFilterInput?: boolean;
   showSortButton?: boolean;
   showVisibilityButton?: boolean;
   showRowsPerPageButton?: boolean;
-  showGlobalFilterInput?: boolean;
-} & OptionalObjectGroup<{
-  layout: DataViewLayoutType;
-  onChangeLayout: (layout: DataViewLayoutType) => void;
-}>;
+  showLayoutButton?: boolean;
+};
 
 function DataViewTopBar<TData extends ReactTableRowData>({
   table,
+  showGlobalFilterInput,
   showSortButton,
   showVisibilityButton,
   showRowsPerPageButton,
-  showGlobalFilterInput,
-  layout,
-  onChangeLayout,
+  showLayoutButton,
 }: DataViewTopBarProps<TData>) {
   return (
     <div>
@@ -534,7 +529,7 @@ function DataViewTopBar<TData extends ReactTableRowData>({
           {showVisibilityButton && <DataViewColumnVisibilityDropdown table={table} />}
           {showSortButton && <DataViewColumnSortDropdown table={table} />}
           {showRowsPerPageButton && <DataViewRowsPerPageDropdown table={table} />}
-          {layout && <DataViewLayoutDropdown layout={layout} onChangeLayout={onChangeLayout} />}
+          {showLayoutButton && <DataViewLayoutDropdown table={table} />}
           <Button size="sm" shape="circle" className="text-xl ml-2">+</Button>
         </div>
       </div>
@@ -730,7 +725,6 @@ export {
   DataViewColumnSortDropdown,
   DataViewRowsPerPageDropdown,
   DataViewLayoutDropdown,
-  usePersistentDataViewLayout,
   DataViewTopBar,
   DataViewPagination,
   DataViewCheckbox,
