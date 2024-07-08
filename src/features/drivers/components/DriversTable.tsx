@@ -4,9 +4,10 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  getFilteredRowModel,
   SortingState,
   ColumnFiltersState,
-  getFilteredRowModel,
+  PaginationState,
 } from '@tanstack/react-table';
 import {
   DataViewTopBar,
@@ -21,6 +22,7 @@ export function DriversTable() {
   const { data } = useDrivers();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 50 });
   const [rowSelection, setRowSelection] = useState({});
   const [layout, setLayout] = usePersistentDataViewLayout('drivers');
   const [globalFilter, setGlobalFilter] = useState('');
@@ -30,13 +32,14 @@ export function DriversTable() {
     columns: columns[layout],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
-    state: { sorting, columnFilters, rowSelection, globalFilter },
+    onPaginationChange: setPagination,
+    state: { sorting, columnFilters, pagination, rowSelection, globalFilter },
   });
 
   return (
