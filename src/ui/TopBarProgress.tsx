@@ -17,8 +17,8 @@ function configureTopBarProgress(isDarkmode: boolean) {
 function TopBarProgress() {
   const { state: navigationState } = useNavigation(); // when data fetching occurs via loaders
   const { state: revalidatorState } = useRevalidator(); // when router cache needs to be revalidated AFTER mutation
-  const numFetches = useIsFetching(); // when query invoked
-  const numMutations = useIsMutating(); // when mutation invoked
+  const numFetches = useIsFetching(); // when data fetching occurs via query directly
+  const numMutations = useIsMutating(); // when mutation occurs
 
   const isLoading = revalidatorState === 'loading'
     || navigationState === 'loading'

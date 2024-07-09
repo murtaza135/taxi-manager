@@ -14,6 +14,7 @@ import {
 import { useLocalStorage } from 'usehooks-ts';
 import { layoutDeserializer } from '@/lib/tanstack-table/utils';
 import {
+  ReactTable,
   DataViewTopBar,
   DataViewPagination,
   DataViewLayout,
@@ -55,24 +56,21 @@ export function DriversTable() {
 
   return (
     <div className="flex flex-col gap-3">
-      <DataViewTopBar
-        table={table}
-        showGlobalFilterInput
-        showSortButton
-        showVisibilityButton
-        showRowsPerPageButton
-        showLayoutButton
-      />
-      <DataViewLayout
-        table={table}
-        mapper={mapper}
-      />
-      <DataViewPagination
-        table={table}
-        showSelectedRows
-        showPageCount
-        showPageButtons
-      />
+      <ReactTable table={table} mapper={mapper}>
+        <DataViewTopBar
+          showGlobalFilterInput
+          showSortButton
+          showVisibilityButton
+          showRowsPerPageButton
+          showLayoutButton
+        />
+        <DataViewLayout />
+        <DataViewPagination
+          showSelectedRows
+          showPageCount
+          showPageButtons
+        />
+      </ReactTable>
     </div>
   );
 }
