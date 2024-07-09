@@ -59,7 +59,7 @@ function useReactTableContext<TData extends ReactTableRowData = ReactTableRowDat
     ReactTableContext as unknown as React.Context<ReactTableContextValue<TData>>,
   );
 
-  if (context === undefined || context === null) {
+  if (!context) {
     throw new Error('useReactTableContext must be used within <ReactTable />');
   }
 

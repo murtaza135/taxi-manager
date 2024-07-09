@@ -27,7 +27,7 @@ import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/Cell';
 export const tableColumns: ColumnDef<DriverDetails>[] = [
   {
     id: 'Select',
-    header: ({ table }) => <DataViewCheckbox.Header />,
+    header: () => <DataViewCheckbox.Header />,
     cell: ({ row }) => <DataViewCheckbox.Row row={row} />,
     enableSorting: false,
     enableHiding: false,
