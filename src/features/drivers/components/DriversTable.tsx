@@ -25,12 +25,12 @@ import { useInfiniteDrivers } from '@/features/drivers/hooks/useInfiniteDrivers'
 import { Button } from '@/ui/Button';
 
 export function DriversTable() {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 1000,
-  });
+  // const [sorting, setSorting] = useState<SortingState>([]);
+  // const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  // const [pagination, setPagination] = useState<PaginationState>({
+  //   pageIndex: 0,
+  //   pageSize: 1000,
+  // });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [globalFilter, setGlobalFilter] = useState<string>('');
   const [layout, setLayout] = useLocalStorage<LayoutState>(
@@ -40,30 +40,31 @@ export function DriversTable() {
   );
 
   // const { data } = useDrivers();
-  const { data, fetchNextPage, isFetching, isLoading, status } = useInfiniteDrivers();
+  const { data, fetchNextPage, isFetching, isLoading, status } = useInfiniteDrivers(globalFilter);
 
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page) ?? [],
     [data],
   );
 
-  console.log(status);
-  console.log(isFetching);
+  // console.log(status);
+  // console.log(isFetching);
 
   const table = useReactTable({
     data: flatData,
     columns: columns[layout],
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    // getPaginationRowModel: getPaginationRowModel(),
+    // getSortedRowModel: getSortedRowModel(),
+    // getFilteredRowModel: getFilteredRowModel(),
+    // onSortingChange: setSorting,
+    // onColumnFiltersChange: setColumnFilters,
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
-    onPaginationChange: setPagination,
+    // onPaginationChange: setPagination,
     meta: { layout, onLayoutChange: setLayout },
-    state: { sorting, columnFilters, pagination, rowSelection, globalFilter },
+    state: { rowSelection, globalFilter },
+    // state: { sorting, columnFilters, pagination, rowSelection, globalFilter },
   });
 
   return (
@@ -71,9 +72,9 @@ export function DriversTable() {
       <ReactTable table={table}>
         <DataViewTopBar
           showGlobalFilterInput
-          showSortButton
+          // showSortButton
           showVisibilityButton
-          showRowsPerPageButton
+          // showRowsPerPageButton
           showLayoutButton
         />
         <DataViewLayout mapper={mapper} />

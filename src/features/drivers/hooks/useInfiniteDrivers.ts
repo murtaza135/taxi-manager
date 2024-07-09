@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import {
-  // eslint-disable-next-line max-len
-  queryOptions, useSuspenseQuery, useInfiniteQuery, keepPreviousData, infiniteQueryOptions, QueryFunctionContext, QueryKey, useSuspenseInfiniteQuery,
-} from '@tanstack/react-query';
+import { keepPreviousData, infiniteQueryOptions, QueryKey, useSuspenseInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import { Prettify } from '@/types/utils';
 import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
@@ -13,8 +10,11 @@ import { AppError } from '@/errors/AppError';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 
 // TODO separate driver details query and driver picture srcs query to allow for different levels of caching via staleTime
+// TODO add created_at
 
-export type DriverDetails = Prettify<
+const fetchSize = 50;
+
+export type Driver = Prettify<
   Pick<
     Tables<'driver'>,
     'id' | 'phone_number' | 'email' | 'active_hire_agreement_id'
@@ -27,17 +27,14 @@ export type DriverDetails = Prettify<
   }
 >;
 
-// type DriversQueryFunctionContext = QueryFunctionContext<QueryKey, number | undefined>;
-type GetAllDriverDetailsContext = {
+type DriversQueryFnOptions = {
+  search: string;
   pageParam: number;
-  search?: string;
 };
 
-const fetchSize = 50;
-
-async function getAllDriverDetails(
-  { pageParam, search }: GetAllDriverDetailsContext,
-): Promise<DriverDetails[]> {
+async function getAllDriversDetails(
+  { search = '', pageParam }: DriversQueryFnOptions,
+): Promise<Driver[]> {
   const session = await queryClient.ensureQueryData(sessionOptions());
 
   const from = fetchSize * pageParam;
@@ -61,6 +58,10 @@ async function getAllDriverDetails(
       )
     `)
     .eq('auth_id', session.user.id)
+    .ilike('first_names', `%${search}%`)
+    .ilike('last_name', `%${search}%`)
+    .ilike('email', `%${search}%`)
+    .ilike('hire_agreement.taxi.number_plate', `%${search}%`)
     .order('created_at', { ascending: false })
     .range(from, to);
 
@@ -97,13 +98,10 @@ async function getAllDriverDetails(
   return drivers;
 }
 
-export function driversOptions(search?: string) {
-  return infiniteQueryOptions<DriverDetails[], AppError>({
+export function driversOptions(search: string = '') {
+  return infiniteQueryOptions<Driver[], AppError, InfiniteData<Driver>, QueryKey, number>({
     queryKey: ['drivers', { search }],
-    queryFn: ({ pageParam }) => getAllDriverDetails({
-      pageParam: (pageParam ?? 0) as number,
-      search,
-    }),
+    queryFn: ({ pageParam }) => getAllDriversDetails({ search, pageParam }),
     staleTime: 1000 * 60, // 60 seconds,
     initialPageParam: 0,
     getNextPageParam: (_lastGroup, groups) => groups.length,
@@ -112,7 +110,7 @@ export function driversOptions(search?: string) {
   });
 }
 
-export function useInfiniteDrivers(search?: string) {
+export function useInfiniteDrivers(search: string = '') {
   const query = useSuspenseInfiniteQuery(driversOptions(search));
   return query;
 }
