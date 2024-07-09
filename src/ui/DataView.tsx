@@ -7,7 +7,6 @@ import {
   Column as ReactTableColumn,
   Cell as ReactTableCell,
   flexRender,
-  layouts,
   LayoutState,
 } from '@tanstack/react-table';
 import { IoSearchSharp } from 'react-icons/io5';
@@ -43,6 +42,8 @@ import {
 import { Checkbox } from '@/ui/Checkbox';
 import { cn } from '@/utils/cn';
 import { Separator } from '@/ui/Separator';
+
+const layouts: LayoutState[] = ['table', 'grid'];
 
 type ReactTableContextValue<TData extends ReactTableRowData = unknown> = {
   table: ReactTableType<TData>;
