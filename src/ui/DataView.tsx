@@ -1,6 +1,5 @@
-import { useEffect, useRef, useContext, createContext, useMemo, ReactNode } from 'react';
+import { useEffect, useRef } from 'react';
 import {
-  Table as ReactTableType,
   Header as ReactTableHeader,
   Row as ReactTableRow,
   RowData as ReactTableRowData,
@@ -42,52 +41,11 @@ import {
 import { Checkbox } from '@/ui/Checkbox';
 import { cn } from '@/utils/cn';
 import { Separator } from '@/ui/Separator';
-
-const layouts: LayoutState[] = ['table', 'grid'];
-
-type ReactTableContextValue<TData extends ReactTableRowData = unknown> = {
-  table: ReactTableType<TData>;
-  mapper?: DataViewCardMainDataMapper;
-};
-
-const ReactTableContext = createContext<ReactTableContextValue>(
-  null as unknown as ReactTableContextValue,
-);
-
-function useReactTableContext<TData extends ReactTableRowData = ReactTableRowData>() {
-  const context = useContext<ReactTableContextValue<TData>>(
-    ReactTableContext as unknown as React.Context<ReactTableContextValue<TData>>,
-  );
-
-  if (!context) {
-    throw new Error('useReactTableContext must be used within <ReactTable />');
-  }
-
-  return context;
-}
-
-type ReactTableProps<TData extends ReactTableRowData = ReactTableRowData> = {
-  table: ReactTableType<TData>;
-  mapper?: DataViewCardMainDataMapper;
-  children: ReactNode;
-};
-
-function ReactTable<TData extends ReactTableRowData = ReactTableRowData>(
-  { table, mapper, children }: ReactTableProps<TData>,
-) {
-  const value = useMemo(() => (
-    { table, mapper }
-  ), [table, mapper]) as ReactTableContextValue<unknown>;
-
-  return (
-    <ReactTableContext.Provider value={value}>
-      {children}
-    </ReactTableContext.Provider>
-  );
-}
+import { layouts } from '@/lib/tanstack-table/constants';
+import { useReactTableContext } from '@/lib/tanstack-table/ReactTable';
 
 function DataViewTable() {
-  const { table } = useReactTableContext();
+  const table = useReactTableContext();
 
   // eslint-disable-next-line no-underscore-dangle
   const columnDefs = table._getColumnDefs();
@@ -154,15 +112,15 @@ export type DataViewCardMainDataMapper = {
 };
 
 type DataViewCardProps = {
+  mapper: DataViewCardMainDataMapper;
   headerRow: Record<string, ReactTableHeader<unknown, unknown>>;
   dataRow: ReactTableRow<unknown>;
 };
 
 function DataViewCard(
-  { headerRow, dataRow }: DataViewCardProps,
+  { mapper, headerRow, dataRow }: DataViewCardProps,
 ) {
   // TODO comment on whats going on here and simplify if possible
-  const { mapper = {} } = useReactTableContext();
   const mapperValues = Object.values(mapper);
   const [mainDataCells, listDataCells] = partition(
     dataRow.getVisibleCells(),
@@ -254,8 +212,12 @@ function DataViewCard(
   );
 }
 
-function DataViewGrid() {
-  const { table } = useReactTableContext();
+type DataViewGridProps = {
+  mapper: DataViewCardMainDataMapper;
+};
+
+function DataViewGrid({ mapper }: DataViewGridProps) {
+  const table = useReactTableContext();
 
   if (!table.getRowModel().rows?.length) {
     return (
@@ -275,25 +237,29 @@ function DataViewGrid() {
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
       {table.getRowModel().rows.map((row) => (
-        <DataViewCard key={row.id} dataRow={row} headerRow={headerRow} />
+        <DataViewCard key={row.id} mapper={mapper} dataRow={row} headerRow={headerRow} />
       ))}
     </div>
   );
 }
 
-function DataViewLayout() {
-  const { table } = useReactTableContext();
+type DataViewLayoutProps = {
+  mapper?: DataViewCardMainDataMapper;
+};
+
+function DataViewLayout({ mapper }: DataViewLayoutProps) {
+  const table = useReactTableContext();
   const layout = table.options.meta?.layout ?? 'table';
 
   if (layout === 'grid') {
-    return <DataViewGrid />;
+    return <DataViewGrid mapper={mapper ?? {}} />;
   }
 
   return <DataViewTable />;
 }
 
 function DataViewSearchFilter() {
-  const { table } = useReactTableContext();
+  const table = useReactTableContext();
   const ref = useRef<HTMLInputElement | null>(null);
 
   function handleClearSearchFilter() {
@@ -328,7 +294,7 @@ function DataViewSearchFilter() {
 }
 
 function DataViewColumnVisibilityDropdown() {
-  const { table } = useReactTableContext();
+  const table = useReactTableContext();
 
   return (
     <DropdownMenu>
@@ -365,7 +331,7 @@ function DataViewColumnVisibilityDropdown() {
 }
 
 function DataViewColumnSortDropdown() {
-  const { table } = useReactTableContext();
+  const table = useReactTableContext();
   const columns = table.getAllColumns().filter((column) => column.getCanSort());
   const isAnyColumnSorted = columns.some((column) => (
     column.getIsSorted() === 'desc' || column.getIsSorted() === 'asc'
@@ -421,7 +387,7 @@ function DataViewColumnSortDropdown() {
 }
 
 function DataViewRowsPerPageDropdown() {
-  const { table } = useReactTableContext();
+  const table = useReactTableContext();
 
   return (
     <DropdownMenu>
@@ -458,7 +424,7 @@ function DataViewRowsPerPageDropdown() {
 }
 
 function DataViewLayoutDropdown() {
-  const { table } = useReactTableContext();
+  const table = useReactTableContext();
   const layout = table.options.meta?.layout;
   const onLayoutChange = table.options.meta?.onLayoutChange;
 
@@ -555,7 +521,7 @@ function DataViewPagination({
   showPageButtons,
   className,
 }: DataViewPaginationProps) {
-  const { table } = useReactTableContext();
+  const table = useReactTableContext();
 
   return (
     <div className={cn('flex items-center justify-between px-2', className)}>
@@ -632,7 +598,7 @@ function DataViewPagination({
 }
 
 function DataViewHeaderCheckbox() {
-  const { table } = useReactTableContext();
+  const table = useReactTableContext();
 
   return (
     <Checkbox
@@ -717,7 +683,7 @@ const DataViewCheckbox = {
 };
 
 export {
-  ReactTable,
+  // ReactTable,
   useReactTableContext,
   DataViewTable,
   DataViewGrid,
