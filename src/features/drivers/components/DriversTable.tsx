@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -21,14 +21,15 @@ import {
 import { columns, mapper } from '@/features/drivers/columns';
 import { useDrivers } from '@/features/drivers/hooks/useDrivers';
 import { ReactTable } from '@/lib/tanstack-table/ReactTable';
+import { useInfiniteDrivers } from '@/features/drivers/hooks/useInfiniteDrivers';
+import { Button } from '@/ui/Button';
 
 export function DriversTable() {
-  const { data } = useDrivers();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 50,
+    pageSize: 1000,
   });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [globalFilter, setGlobalFilter] = useState<string>('');
@@ -38,8 +39,19 @@ export function DriversTable() {
     { deserializer: layoutDeserializer },
   );
 
+  // const { data } = useDrivers();
+  const { data, fetchNextPage, isFetching, isLoading, status } = useInfiniteDrivers();
+
+  const flatData = useMemo(
+    () => data?.pages?.flatMap((page) => page) ?? [],
+    [data],
+  );
+
+  console.log(status);
+  console.log(isFetching);
+
   const table = useReactTable({
-    data,
+    data: flatData,
     columns: columns[layout],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -71,6 +83,13 @@ export function DriversTable() {
           showPageButtons
         />
       </ReactTable>
+      <Button
+        variant="primary"
+        onClick={() => fetchNextPage()}
+      >
+        Load More
+      </Button>
+      {isFetching && <p>Loading More...</p>}
     </div>
   );
 }
