@@ -26,7 +26,7 @@ import mapValues from 'lodash/mapValues';
 import { capitalCase } from 'change-case';
 import { flexRenderHeader, flexRenderCell } from '@/lib/tanstack-table/flexRender';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
-import { Input } from '@/ui/Input';
+import { DebouncedInput, Input } from '@/ui/Input';
 import { Button } from '@/ui/Button';
 import {
   DropdownMenu,
@@ -268,11 +268,12 @@ function DataViewSearchFilter() {
   }
 
   return (
-    <Input
+    <DebouncedInput
       name="search"
       placeholder="Search..."
       value={table.getState().globalFilter as string}
-      onChange={(event) => table.setGlobalFilter(event.target.value)}
+      onChange={(value) => table.setGlobalFilter(value)}
+      debounce={500}
       leftIcon={(
         <span className="text-sm">
           <IoSearchSharp />

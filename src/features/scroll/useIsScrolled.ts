@@ -6,6 +6,8 @@ export function useIsScrolled() {
   const [isYScrolled, setIsYScrolled] = useState(false);
 
   useEffect(() => {
+    // TODO replace debounce with a simple setTimeout?
+    // TODO otherwise return cleanup of debounce function (onScroll.cancel)
     const onScroll = debounce(() => {
       setIsXScrolled(window.scrollX > 0);
       setIsYScrolled(window.scrollY > 0);
