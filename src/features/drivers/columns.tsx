@@ -18,13 +18,14 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { Button } from '@/ui/Button';
 import { DriverDetails } from '@/features/drivers/hooks/useDrivers';
+import { Driver } from '@/features/drivers/hooks/useInfiniteDrivers';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { config } from '@/config/config';
 import { cn } from '@/utils/cn';
 import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/Cell';
 
 // ColumnDef for the table layout
-export const tableColumns: ColumnDef<DriverDetails>[] = [
+export const tableColumns: ColumnDef<Driver>[] = [
   {
     id: 'Select',
     header: () => <DataViewCheckbox.Header />,
@@ -85,16 +86,16 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
   },
   {
     id: 'Taxi',
-    accessorKey: 'active_taxi_number_plate',
+    accessorKey: 'number_plate',
     header: ({ column }) => <DataViewHeader column={column} header="Taxi" />,
     cell: ({ row }) => {
-      if (!row.original.active_taxi_id || !row.original.active_taxi_number_plate) {
+      if (!row.original.taxi_id || !row.original.number_plate) {
         return <NoDataCell />;
       }
 
       return (
-        <LinkCell to={`/taxi/${row.original.active_taxi_id}`}>
-          {row.original.active_taxi_number_plate}
+        <LinkCell to={`/taxi/${row.original.taxi_id}`}>
+          {row.original.number_plate}
         </LinkCell>
       );
     },
@@ -146,7 +147,7 @@ export const tableColumns: ColumnDef<DriverDetails>[] = [
 ];
 
 // another ColumnDef for the grid layout
-export const gridColumns: ColumnDef<DriverDetails>[] = [
+export const gridColumns: ColumnDef<Driver>[] = [
   {
     id: 'Avatar',
     accessorKey: 'picture_src',
@@ -194,17 +195,17 @@ export const gridColumns: ColumnDef<DriverDetails>[] = [
   },
   {
     id: 'Taxi',
-    accessorKey: 'active_taxi_number_plate',
+    accessorKey: 'number_plate',
     header: 'Taxi',
-    // cell: ({ row }) => row.original.active_taxi_number_plate || 'N/A',
+    // cell: ({ row }) => row.original.number_plate || 'N/A',
     cell: ({ row }) => {
-      if (!row.original.active_taxi_id || !row.original.active_taxi_number_plate) {
+      if (!row.original.taxi_id || !row.original.number_plate) {
         return <NoDataCell />;
       }
 
       return (
-        <LinkCell to={`/taxi/${row.original.active_taxi_id}`}>
-          {row.original.active_taxi_number_plate}
+        <LinkCell to={`/taxi/${row.original.taxi_id}`}>
+          {row.original.number_plate}
         </LinkCell>
       );
     },
