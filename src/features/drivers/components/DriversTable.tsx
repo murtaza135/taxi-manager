@@ -19,7 +19,6 @@ import {
   DataViewLayout,
 } from '@/ui/DataView';
 import { columns, mapper } from '@/features/drivers/columns';
-import { useDrivers } from '@/features/drivers/hooks/useDrivers';
 import { ReactTable } from '@/lib/tanstack-table/ReactTable';
 import { useInfiniteDrivers } from '@/features/drivers/hooks/useInfiniteDrivers';
 import { Button } from '@/ui/Button';
@@ -40,7 +39,7 @@ export function DriversTable() {
   );
 
   // const { data } = useDrivers();
-  const { data, fetchNextPage, isFetching, isLoading, status } = useInfiniteDrivers(globalFilter);
+  const { data, fetchNextPage, isFetching } = useInfiniteDrivers(globalFilter);
 
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page) ?? [],

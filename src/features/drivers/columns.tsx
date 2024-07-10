@@ -17,7 +17,6 @@ import {
 } from '@/ui/DataView';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { Button } from '@/ui/Button';
-import { DriverDetails } from '@/features/drivers/hooks/useDrivers';
 import { Driver } from '@/features/drivers/hooks/useInfiniteDrivers';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { config } from '@/config/config';

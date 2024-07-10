@@ -8,31 +8,9 @@ import { supabase } from '@/config/api/supabaseClient';
 import { buildAppErrorFromSupabaseError } from '@/errors/supabaseErrorUtils';
 import { AppError } from '@/errors/AppError';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
-
-// TODO separate driver details query and driver picture srcs query to allow for different levels of caching via staleTime
-// TODO add created_at
+import { driverPictureQueryOptions } from '@/features/drivers/hooks/useDriverPicture';
 
 const fetchSize = 50;
-
-export type Driver2 = Prettify<
-  Pick<
-    Tables<'driver'>,
-    'id' | 'phone_number' | 'email' | 'active_hire_agreement_id'
-  > & {
-    name: string;
-    picture_src: string | null;
-  } & {
-    active_taxi_id: Tables<'taxi'>['id'] | null;
-    active_taxi_number_plate: Tables<'taxi'>['number_plate'] | null;
-  }
->;
-
-// export type Driver = Prettify<
-//   Omit<Tables<'driver_view'>, 'first_names' | 'last_name' | 'picture_path'> & {
-//     name: string;
-//     picture_src: string | null;
-//   }
-// >;
 
 export type Driver = Prettify<
   Pick<
@@ -51,8 +29,8 @@ type DriversQueryFnOptions = {
   pageParam: number;
 };
 
-async function getAllDriversDetails(
-  { search = '', pageParam }: DriversQueryFnOptions,
+async function getDrivers(
+  { search = '', pageParam = 0 }: DriversQueryFnOptions,
 ): Promise<Driver[]> {
   const session = await queryClient.ensureQueryData(sessionOptions());
 
@@ -79,36 +57,25 @@ async function getAllDriversDetails(
       .build();
   }
 
-  const picturePaths = data.map(({ picture_path }) => picture_path ?? '');
-
-  const { data: urls } = await supabase
-    .storage
-    .from('main')
-    .createSignedUrls(picturePaths, 60, { download: true });
-
-  const srcs = urls?.map(({ signedUrl }) => signedUrl as string | null) ?? null;
-
-  const drivers = data.map((driver, index) => {
+  const drivers = data.map(async (driver) => {
     const { name, number_plate, picture_path, ...rest } = driver;
-    // const name = capitalizeEachWord(`${first_names} ${last_name}`);
-    // const picture_src = srcs?.[index] ?? null;
-    // const taxi_id = hire_agreement?.taxi_id ?? null;
-    // const active_taxi_number_plate = hire_agreement?.taxi?.number_plate.toUpperCase() ?? null;
     return {
       ...rest,
       name: capitalizeEachWord(name ?? 'Unknown'),
       number_plate: number_plate?.toUpperCase() ?? null,
-      picture_src: srcs?.[index] ?? null,
+      picture_src: picture_path
+        ? await queryClient.ensureQueryData(driverPictureQueryOptions(picture_path))
+        : null,
     };
   });
 
-  return drivers;
+  return Promise.all(drivers);
 }
 
-export function driversOptions(search: string = '') {
+export function driversQueryOptions(search: string = '') {
   return infiniteQueryOptions<Driver[], AppError, InfiniteData<Driver>, QueryKey, number>({
-    queryKey: ['drivers', { search }],
-    queryFn: ({ pageParam }) => getAllDriversDetails({ search, pageParam }),
+    queryKey: ['drivers', 'list', { search }],
+    queryFn: ({ pageParam }) => getDrivers({ search, pageParam }),
     staleTime: 1000 * 60, // 60 seconds,
     initialPageParam: 0,
     getNextPageParam: (_lastGroup, groups) => groups.length,
@@ -118,6 +85,6 @@ export function driversOptions(search: string = '') {
 }
 
 export function useInfiniteDrivers(search: string = '') {
-  const query = useSuspenseInfiniteQuery(driversOptions(search));
+  const query = useSuspenseInfiniteQuery(driversQueryOptions(search));
   return query;
 }
