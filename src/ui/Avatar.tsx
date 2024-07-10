@@ -41,4 +41,16 @@ const AvatarFallback = React.forwardRef<
 ));
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
-export { Avatar, AvatarImage, AvatarFallback };
+const AvatarPersistentFallback = React.forwardRef<
+  HTMLSpanElement,
+  React.HTMLAttributes<HTMLSpanElement>
+>(({ className, ...props }, ref) => (
+  <span
+    ref={ref}
+    className={cn('flex h-full w-full items-center justify-center rounded-full bg-primary-dark dark:bg-primary-light text-achromatic-lighter dark:text-achromatic-dark translate-y-0.5 text-sm font-semibold dark:font-normal', className)}
+    {...props}
+  />
+));
+AvatarPersistentFallback.displayName = 'AvatarPersistentFallback';
+
+export { Avatar, AvatarImage, AvatarFallback, AvatarPersistentFallback };

@@ -1,7 +1,8 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { Link } from 'react-router-dom';
 import { IoEllipsisVertical } from 'react-icons/io5';
-import urlJoin from 'url-join';
+import { FiEye } from 'react-icons/fi';
+import { FaTrashAlt } from 'react-icons/fa';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,16 +11,11 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/ui/DropdownMenu';
-import {
-  DataViewCheckbox,
-  DataViewHeader,
-  DataViewCardMainDataMapper,
-} from '@/ui/DataView';
-import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
+import { DataViewCheckbox, DataViewCardMainDataMapper } from '@/ui/DataView';
+import { Avatar, AvatarImage, AvatarPersistentFallback } from '@/ui/Avatar';
 import { Button } from '@/ui/Button';
 import { Driver } from '@/features/drivers/hooks/useInfiniteDrivers';
 import { extractInitials } from '@/utils/string/extractInitials';
-import { config } from '@/config/config';
 import { cn } from '@/utils/cn';
 import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/Cell';
 
@@ -45,9 +41,9 @@ export const tableColumns: ColumnDef<Driver>[] = [
             alt={`driver-${row.original.id}`}
           />
         )}
-        <AvatarFallback>
+        <AvatarPersistentFallback>
           {extractInitials(row.original.name)}
-        </AvatarFallback>
+        </AvatarPersistentFallback>
       </Avatar>
     ),
     enableSorting: false,
@@ -56,7 +52,7 @@ export const tableColumns: ColumnDef<Driver>[] = [
   {
     id: 'Name',
     accessorKey: 'name',
-    header: ({ column }) => <DataViewHeader column={column} header="Name" />,
+    header: 'Name',
     cell: ({ row }) => (
       <LinkCell to={`/driver/${row.original.id}`}>
         {row.original.name}
@@ -66,18 +62,16 @@ export const tableColumns: ColumnDef<Driver>[] = [
   {
     id: 'Phone Number',
     accessorKey: 'phone_number',
-    header: ({ column }) => <DataViewHeader column={column} header="Phone" />,
+    header: 'Phone',
     cell: ({ row }) => {
       if (!row.original.phone_number) return <NoDataCell />;
       return <PhoneNumberCell phone={row.original.phone_number} />;
     },
-    enableSorting: false,
-    enableGlobalFilter: false,
   },
   {
     id: 'Email',
     accessorKey: 'email',
-    header: ({ column }) => <DataViewHeader column={column} header="Email" />,
+    header: 'Email',
     cell: ({ row }) => {
       if (!row.original.email) return <NoDataCell />;
       return <EmailCell email={row.original.email} />;
@@ -86,7 +80,7 @@ export const tableColumns: ColumnDef<Driver>[] = [
   {
     id: 'Taxi',
     accessorKey: 'number_plate',
-    header: ({ column }) => <DataViewHeader column={column} header="Taxi" />,
+    header: 'Taxi',
     cell: ({ row }) => {
       if (!row.original.taxi_id || !row.original.number_plate) {
         return <NoDataCell />;
@@ -102,7 +96,7 @@ export const tableColumns: ColumnDef<Driver>[] = [
   {
     id: 'Hire Agreement',
     accessorKey: 'hire_agreement_id',
-    header: ({ column }) => <DataViewHeader column={column} header="Hire Agreement" className="text-nowrap" />,
+    header: () => <p className="text-nowrap">Hire Agreeemnt</p>,
     cell: ({ row }) => {
       if (!row.original.hire_agreement_id) return <NoDataCell />;
 
@@ -112,36 +106,25 @@ export const tableColumns: ColumnDef<Driver>[] = [
         </LinkCell>
       );
     },
-    enableSorting: false,
-    enableGlobalFilter: false,
   },
   {
-    id: 'Options',
-    cell: ({ row }) => {
-      const fullDriverUrl = urlJoin(
-        config.env.VITE_CLIENT_URL,
-        `/driver/${row.original.id}`,
-      );
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="cursor-pointer hover:opacity-70 transition-opacity">
-              <span className="sr-only">Options</span>
-              <IoEllipsisVertical />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(fullDriverUrl)}>
-              Copy Link
-            </DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    id: 'Actions',
+    header: 'Actions',
+    cell: ({ row }) => (
+      <div className="flex items-center gap-6">
+        <Link to={`/driver/${row.original.id}`} className="center">
+          <Button variant="ghost" className="p-0">
+            <FiEye className="text-xl" />
+          </Button>
+        </Link>
+        <Button variant="ghost" className="p-0">
+          <FaTrashAlt className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
+        </Button>
+      </div>
+    ),
+    enableSorting: false,
+    enableHiding: false,
+    enableGlobalFilter: false,
   },
 ];
 
@@ -159,9 +142,9 @@ export const gridColumns: ColumnDef<Driver>[] = [
             alt={`user-${row.original.id}`}
           />
         )}
-        <AvatarFallback className="text-3xl">
+        <AvatarPersistentFallback className="text-3xl">
           {extractInitials(row.original.name)}
-        </AvatarFallback>
+        </AvatarPersistentFallback>
       </Avatar>
     ),
     enableSorting: false,
@@ -180,8 +163,6 @@ export const gridColumns: ColumnDef<Driver>[] = [
       if (!row.original.phone_number) return <NoDataCell />;
       return <PhoneNumberCell phone={row.original.phone_number} />;
     },
-    enableSorting: false,
-    enableGlobalFilter: false,
   },
   {
     id: 'Email',
@@ -196,7 +177,6 @@ export const gridColumns: ColumnDef<Driver>[] = [
     id: 'Taxi',
     accessorKey: 'number_plate',
     header: 'Taxi',
-    // cell: ({ row }) => row.original.number_plate || 'N/A',
     cell: ({ row }) => {
       if (!row.original.taxi_id || !row.original.number_plate) {
         return <NoDataCell />;
@@ -213,7 +193,6 @@ export const gridColumns: ColumnDef<Driver>[] = [
     id: 'Hire Agreement',
     accessorKey: 'hire_agreement_id',
     header: 'Hire Agreement',
-    // cell: ({ row }) => row.original.hire_agreement_id || 'N/A',
     cell: ({ row }) => {
       if (!row.original.hire_agreement_id) return <NoDataCell />;
 
@@ -223,36 +202,27 @@ export const gridColumns: ColumnDef<Driver>[] = [
         </LinkCell>
       );
     },
-    enableSorting: false,
-    enableGlobalFilter: false,
   },
   {
     id: 'Options Top',
-    cell: ({ row }) => {
-      const fullDriverUrl = urlJoin(
-        config.env.VITE_CLIENT_URL,
-        `/driver/${row.original.id}`,
-      );
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild className="translate-x-2">
-            <div className="cursor-pointer hover:opacity-70 transition-opacity">
-              <span className="sr-only">Options</span>
-              <IoEllipsisVertical />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(fullDriverUrl)}>
-              Copy Link
-            </DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: () => (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild className="translate-x-2">
+          <div className="cursor-pointer hover:opacity-70 transition-opacity">
+            <span className="sr-only">Options</span>
+            <IoEllipsisVertical />
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Delete</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
+    enableSorting: false,
+    enableHiding: false,
+    enableGlobalFilter: false,
   },
   {
     id: 'Options Bottom',
@@ -261,6 +231,9 @@ export const gridColumns: ColumnDef<Driver>[] = [
         <Button className="w-full">Open</Button>
       </Link>
     ),
+    enableSorting: false,
+    enableHiding: false,
+    enableGlobalFilter: false,
   },
 ];
 
