@@ -145,7 +145,7 @@ INSERT INTO "public"."driver" ("id", "auth_id", "picture_path", "first_names", "
 	(3, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver3', 'driver3', NULL, NULL, NULL, NULL, false, '2024-05-15 16:03:47.37375+00', 3, NULL, 8, 5),
 	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/driver-pictures/driver1.jpg', 'driver1', 'driver1', '01234567890', 'driver1@test.com', '1990-01-31', 'AB123456C', false, '2024-05-15 16:01:47.140623+00', 1, NULL, 3, 1),
 	(6, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver6', 'driver6', '', 'driver6@test.com', '2024-05-04', 'AB123456C', false, '2024-05-15 16:12:32.810957+00', 7, NULL, 11, 9),
-	(7, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/driver-pictures/driver7.jpg', 'driver7', 'driver7', NULL, 'driver7', NULL, 'AB123456C', false, '2024-05-15 16:12:57.664063+00', NULL, 8, 12, 10),
+	(7, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/driver-pictures/driver7.jpg', 'driver7', 'driver7', NULL, 'driver7@test.com', NULL, 'AB123456C', false, '2024-05-15 16:12:57.664063+00', NULL, 8, 12, 10),
 	(5, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/driver-pictures/driver5.jpg', 'driver5', 'driver5', NULL, 'driver5@test.com', NULL, 'AB123456C', false, '2024-05-15 16:06:00.626866+00', 5, NULL, 10, 8),
 	(2, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver2', 'driver2', '01234567890', 'driver2@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:12.108898+00', 2, 5, 5, 3),
 	(100, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:12.108898+00', NULL, 5, 5, 3),
@@ -243,13 +243,13 @@ INSERT INTO "public"."vehicle" ("id", "auth_id", "make", "model", "cc", "fuel_ty
 --
 
 INSERT INTO "public"."taxi" ("id", "auth_id", "picture_path", "logbook_document_path", "number_plate", "colour", "chassis_number", "registration_date", "expected_expiry_date", "road_tax_expiry_date", "is_retired", "created_at", "vehicle_id", "active_hire_agreement_id", "active_insurance_id", "active_taxi_licence_id") VALUES
-	(2, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, NULL, 'taxi2', 'asdasd', 'dasdas', NULL, NULL, NULL, false, '2024-05-15 17:10:38.413034+00', 1, 2, 2, 3),
-	(5, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, NULL, 'taxi5', 'dasdas', 'dasdas', '2024-05-01', '2024-11-15', '2024-05-31', false, '2024-05-15 17:13:37.13274+00', 1, 5, 6, 7),
-	(7, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-7.png', NULL, 'taxi7', 'dasd', 'adsasd', NULL, NULL, '2024-06-06', false, '2024-05-15 17:14:27.956617+00', 1, NULL, 8, 9),
-	(6, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-6.png', 'taxi6', 'dasd', 'dasdas', NULL, '2024-05-30', '2024-06-01', false, '2024-05-15 17:14:01.451865+00', 1, 7, 7, 8),
-	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-1.png', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-1.png', 'taxi1', 'adasd', 'sadasdasd', '2024-03-06', '2025-03-13', NULL, false, '2024-05-15 17:10:21.095292+00', 1, 1, 1, 1),
-	(3, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-3.png', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-3.png', 'taxi3', 'dasdasd', 'dasdasd', '2024-02-14', '2024-09-05', '2024-11-14', false, '2024-05-15 17:11:33.226274+00', 1, 3, 4, 4),
-	(4, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-4.png', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-4.png', 'taxi4', 'adsasd', 'asdasd', NULL, '2024-05-08', '2024-05-09', false, '2024-05-15 17:13:14.795828+00', 1, 4, 5, 5);
+	(2, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, NULL, 'ab20abc', 'asdasd', 'dasdas', NULL, NULL, NULL, false, '2024-05-15 17:10:38.413034+00', 1, 2, 2, 3),
+	(5, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, NULL, 'ab50abc', 'dasdas', 'dasdas', '2024-05-01', '2024-11-15', '2024-05-31', false, '2024-05-15 17:13:37.13274+00', 1, 5, 6, 7),
+	(7, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-7.png', NULL, 'ab70abc', 'dasd', 'adsasd', NULL, NULL, '2024-06-06', false, '2024-05-15 17:14:27.956617+00', 1, NULL, 8, 9),
+	(6, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-6.png', 'ab60abc', 'dasd', 'dasdas', NULL, '2024-05-30', '2024-06-01', false, '2024-05-15 17:14:01.451865+00', 1, 7, 7, 8),
+	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-1.png', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-1.png', 'ab10abc', 'adasd', 'sadasdasd', '2024-03-06', '2025-03-13', NULL, false, '2024-05-15 17:10:21.095292+00', 1, 1, 1, 1),
+	(3, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-3.png', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-3.png', 'ab30abc', 'dasdasd', 'dasdasd', '2024-02-14', '2024-09-05', '2024-11-14', false, '2024-05-15 17:11:33.226274+00', 1, 3, 4, 4),
+	(4, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-4.png', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-4.png', 'ab40abc', 'adsasd', 'asdasd', NULL, '2024-05-08', '2024-05-09', false, '2024-05-15 17:13:14.795828+00', 1, 4, 5, 5);
 
 
 --

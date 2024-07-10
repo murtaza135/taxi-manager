@@ -102,13 +102,13 @@ export const tableColumns: ColumnDef<Driver>[] = [
   },
   {
     id: 'Hire Agreement',
-    accessorKey: 'active_hire_agreement_id',
+    accessorKey: 'hire_agreement_id',
     header: ({ column }) => <DataViewHeader column={column} header="Hire Agreement" className="text-nowrap" />,
     cell: ({ row }) => {
-      if (!row.original.active_hire_agreement_id) return <NoDataCell />;
+      if (!row.original.hire_agreement_id) return <NoDataCell />;
 
       return (
-        <LinkCell to={`/hire/${row.original.active_hire_agreement_id}`}>
+        <LinkCell to={`/hire/${row.original.hire_agreement_id}`}>
           Agreement
         </LinkCell>
       );
@@ -212,15 +212,15 @@ export const gridColumns: ColumnDef<Driver>[] = [
   },
   {
     id: 'Hire Agreement',
-    accessorKey: 'active_hire_agreement_id',
+    accessorKey: 'hire_agreement_id',
     header: 'Hire Agreement',
-    // cell: ({ row }) => row.original.active_hire_agreement_id || 'N/A',
+    // cell: ({ row }) => row.original.hire_agreement_id || 'N/A',
     cell: ({ row }) => {
-      if (!row.original.active_hire_agreement_id) return <NoDataCell />;
+      if (!row.original.hire_agreement_id) return <NoDataCell />;
 
       return (
-        <LinkCell to={`/hire/${row.original.active_hire_agreement_id}`}>
-          {row.original.active_hire_agreement_id}
+        <LinkCell to={`/hire/${row.original.hire_agreement_id}`}>
+          {row.original.hire_agreement_id}
         </LinkCell>
       );
     },

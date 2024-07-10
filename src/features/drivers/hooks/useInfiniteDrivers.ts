@@ -27,8 +27,20 @@ export type Driver2 = Prettify<
   }
 >;
 
+// export type Driver = Prettify<
+//   Omit<Tables<'driver_view'>, 'first_names' | 'last_name' | 'picture_path'> & {
+//     name: string;
+//     picture_src: string | null;
+//   }
+// >;
+
 export type Driver = Prettify<
-  Omit<Tables<'driver_view'>, 'first_names' | 'last_name' | 'picture_path'> & {
+  Pick<
+    Tables<'driver_view'>,
+    | 'id' | 'phone_number' | 'email'
+    | 'taxi_id' | 'number_plate'
+    | 'hire_agreement_id' | 'created_at'
+  > & {
     name: string;
     picture_src: string | null;
   }
@@ -49,45 +61,11 @@ async function getAllDriversDetails(
 
   const { data, error, status } = await supabase
     .from('driver_view')
-    .select()
+    .select('id, name, phone_number, email, picture_path, taxi_id, number_plate, hire_agreement_id, created_at')
     .eq('auth_id', session.user.id)
     .order('created_at', { ascending: false })
-    // eslint-disable-next-line max-len
-    .or(`first_names.ilike.%${search}%, last_name.ilike.%${search}%, email.ilike.%${search}%, number_plate.ilike.%${search}%`)
+    .or(`name.ilike.%${search}%, email.ilike.%${search}%, number_plate.ilike.%${search}%`)
     .range(from, to);
-
-  console.log(error);
-
-  // const { data, error, status } = await supabase
-  //   .from('driver')
-  //   .select(`
-  //     id,
-  //     first_names,
-  //     last_name,
-  //     phone_number,
-  //     email,
-  //     picture_path,
-  //     active_hire_agreement_id,
-  //     hire_agreement!driver_active_hire_agreement_id_fkey(
-  //       taxi_id,
-  //       taxi!hire_agreement_taxi_id_fkey(
-  //         number_plate
-  //       )
-  //     )
-  //   `)
-  //   .eq('auth_id', session.user.id)
-  //   // .ilike('first_names', `%${search}%`)
-  //   // .ilike('last_name', `%${search}%`)
-  //   // .ilike('email', `%${search}%`)
-  //   // .ilike('hire_agreement.taxi.number_plate', `%${search}%`)
-  //   // .textSearch('first_names', `'${search}'`, { config: 'english', type: 'plain' })
-  //   // .textSearch('last_name', search)
-  //   // .textSearch('email', search)
-  //   // .textSearch('hire_agreement.taxi.number_plate', search)
-  //   // .textSearch('hire_agreement.taxi.number_plate', search)
-  //   // .or(`first_names.ilike.%${search}%, last_name.ilike.%${search}%, email.ilike.%${search}%, number_plate.ilike.%${search}%`, { referencedTable: 'taxi' })
-  //   .order('created_at', { ascending: false })
-  //   .range(from, to);
 
   if (status === 404) return [];
 
@@ -111,12 +89,17 @@ async function getAllDriversDetails(
   const srcs = urls?.map(({ signedUrl }) => signedUrl as string | null) ?? null;
 
   const drivers = data.map((driver, index) => {
-    const { picture_path, first_names, last_name, number_plate, ...rest } = driver;
-    const name = capitalizeEachWord(`${first_names} ${last_name}`);
-    const picture_src = srcs?.[index] ?? null;
+    const { name, number_plate, picture_path, ...rest } = driver;
+    // const name = capitalizeEachWord(`${first_names} ${last_name}`);
+    // const picture_src = srcs?.[index] ?? null;
     // const taxi_id = hire_agreement?.taxi_id ?? null;
     // const active_taxi_number_plate = hire_agreement?.taxi?.number_plate.toUpperCase() ?? null;
-    return { ...rest, name, picture_src, number_plate: number_plate?.toUpperCase() ?? null };
+    return {
+      ...rest,
+      name: capitalizeEachWord(name ?? 'Unknown'),
+      number_plate: number_plate?.toUpperCase() ?? null,
+      picture_src: srcs?.[index] ?? null,
+    };
   });
 
   return drivers;
