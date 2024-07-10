@@ -26,7 +26,7 @@ import mapValues from 'lodash/mapValues';
 import { capitalCase } from 'change-case';
 import { flexRenderHeader, flexRenderCell } from '@/lib/tanstack-table/flexRender';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
-import { DebouncedInput, Input } from '@/ui/Input';
+import { DebouncedInput } from '@/ui/Input';
 import { Button } from '@/ui/Button';
 import {
   DropdownMenu,

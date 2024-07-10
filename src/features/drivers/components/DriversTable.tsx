@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -22,6 +22,7 @@ import { columns, mapper } from '@/features/drivers/columns';
 import { ReactTable } from '@/lib/tanstack-table/ReactTable';
 import { useInfiniteDrivers } from '@/features/drivers/hooks/useInfiniteDrivers';
 import { Button } from '@/ui/Button';
+import { useDriverCount } from '@/features/drivers/hooks/useDriverCount';
 
 export function DriversTable() {
   // const [sorting, setSorting] = useState<SortingState>([]);
@@ -38,13 +39,19 @@ export function DriversTable() {
     { deserializer: layoutDeserializer },
   );
 
+  // we need a reference to the scrolling element for logic down below
+  const tableContainerRef = useRef<HTMLElement>(null);
+
   // const { data } = useDrivers();
   const { data, fetchNextPage, isFetching } = useInfiniteDrivers(globalFilter);
+  const { data: count } = useDriverCount();
 
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page) ?? [],
     [data],
   );
+
+  const totalFetched = flatData.length;
 
   // console.log(status);
   // console.log(isFetching);
@@ -65,6 +72,43 @@ export function DriversTable() {
     state: { rowSelection, globalFilter },
     // state: { sorting, columnFilters, pagination, rowSelection, globalFilter },
   });
+
+  // called on scroll and possibly on mount to fetch more data as the user scrolls and reaches bottom of table
+  // const fetchMoreOnBottomReached = useCallback(
+  //   (containerRefElement?: HTMLElement | null) => {
+  //     if (containerRefElement) {
+  //       const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+
+  //       // console.log('calc:', scrollHeight - scrollTop - clientHeight);
+  //       console.log('isFetching:', isFetching);
+  //       console.log('totalFetched:', totalFetched);
+  //       console.log('totalCount:', count);
+
+  //       // once the user has scrolled within 500px of the bottom of the table, fetch more data if we can
+  //       if (
+  //         scrollHeight - scrollTop - clientHeight < 500
+  //         && !isFetching
+  //         && totalFetched < count
+  //       ) {
+  //         void fetchNextPage();
+  //       }
+  //     }
+  //   },
+  //   [fetchNextPage, isFetching, totalFetched, count],
+  // );
+
+  // const { scrollHeight, scrollTop, clientHeight } = document.body;
+  // const { scrollX, screenY, innerHeight, outerHeight, screenTop } = window;
+  // console.log('screenY:', screenY);
+  // console.log('screenTop:', screenTop);
+  // console.log('innerHeight:', innerHeight);
+  // console.log('outerHeight:', outerHeight);
+  // console.log('calc:', scrollHeight - scrollTop - clientHeight);
+
+  // a check on mount and after a fetch to see if the table is already scrolled to the bottom and immediately needs to fetch more data
+  // useEffect(() => {
+  //   fetchMoreOnBottomReached(document.body);
+  // }, [fetchMoreOnBottomReached]);
 
   return (
     <div className="flex flex-col gap-3">
