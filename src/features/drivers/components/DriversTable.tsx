@@ -17,12 +17,18 @@ import {
   DataViewTopBar,
   DataViewPagination,
   DataViewLayout,
+  DataViewTopBarSection,
+  DataViewSearchFilter,
+  DataViewRowsPerPageDropdown,
+  DataViewLayoutDropdown,
+  DataViewRowSelectionCount,
 } from '@/ui/DataView';
 import { columns, mapper } from '@/features/drivers/columns';
 import { ReactTable } from '@/lib/tanstack-table/ReactTable';
 import { useInfiniteDrivers } from '@/features/drivers/hooks/useInfiniteDrivers';
 import { Button } from '@/ui/Button';
 import { useDriverCount } from '@/features/drivers/hooks/useDriverCount';
+import { Separator } from '@/ui/Separator';
 
 export function DriversTable() {
   // const [sorting, setSorting] = useState<SortingState>([]);
@@ -52,6 +58,7 @@ export function DriversTable() {
   );
 
   const totalFetched = flatData.length;
+  console.log(Object.keys(rowSelection).length);
 
   // console.log(status);
   // console.log(isFetching);
@@ -68,8 +75,8 @@ export function DriversTable() {
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
     // onPaginationChange: setPagination,
-    meta: { layout, onLayoutChange: setLayout },
     state: { rowSelection, globalFilter },
+    meta: { layout, onLayoutChange: setLayout, totalCount: count },
     // state: { sorting, columnFilters, pagination, rowSelection, globalFilter },
   });
 
@@ -113,13 +120,23 @@ export function DriversTable() {
   return (
     <div className="flex flex-col gap-3">
       <ReactTable table={table}>
-        <DataViewTopBar
+        {/* <DataViewTopBar
           showGlobalFilterInput
           // showSortButton
           showVisibilityButton
           // showRowsPerPageButton
           showLayoutButton
-        />
+        /> */}
+        <DataViewTopBar>
+          <DataViewTopBarSection>
+            <Button size="sm" shape="circle" className="text-xl ml-2">+</Button>
+            <DataViewLayoutDropdown />
+            <DataViewRowsPerPageDropdown />
+          </DataViewTopBarSection>
+          <DataViewTopBarSection>
+            <DataViewRowSelectionCount />
+          </DataViewTopBarSection>
+        </DataViewTopBar>
         <DataViewLayout mapper={mapper} />
         <DataViewPagination
           showSelectedRows

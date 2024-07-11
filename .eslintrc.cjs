@@ -20,7 +20,7 @@ module.exports = {
     project: ['./tsconfig.json', './tsconfig.node.json'],
     tsconfigRootDir: __dirname,
   },
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', "@stylistic"],
   rules: {
     '@typescript-eslint/no-unused-vars': ['warn', {
       "ignoreRestSiblings": true,
@@ -41,6 +41,8 @@ module.exports = {
     'react/jsx-props-no-spreading': "off",
     'react/require-default-props': "off",
     "react/prop-types": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "@stylistic/jsx-one-expression-per-line": ["off", { "allow": "non-jsx" }], // todo allow?
     "max-len": ["error", { "code": 100, "ignoreStrings": true, "ignoreComments": true }],
     "@typescript-eslint/no-misused-promises": ["error", { "checksVoidReturn": false }],
     "@typescript-eslint/indent": "off",

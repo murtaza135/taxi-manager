@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import {
   Header as ReactTableHeader,
   Row as ReactTableRow,
@@ -258,6 +258,33 @@ function DataViewLayout({ mapper }: DataViewLayoutProps) {
   return <DataViewTable />;
 }
 
+type DataViewTopBarProps = {
+  children?: React.ReactNode;
+};
+
+function DataViewTopBar({ children }: DataViewTopBarProps) {
+  return (
+    <div>
+      <div className="flex justify-between items-center gap-4">
+        {children}
+      </div>
+      <Separator className="mt-2" />
+    </div>
+  );
+}
+
+type DataViewTopBarSectionProps = {
+  children?: React.ReactNode;
+};
+
+export function DataViewTopBarSection({ children }: DataViewTopBarSectionProps) {
+  return (
+    <div className="flex gap-3 items-center">
+      {children}
+    </div>
+  );
+}
+
 function DataViewSearchFilter() {
   const table = useReactTableContext();
   const ref = useRef<HTMLInputElement | null>(null);
@@ -472,40 +499,17 @@ function DataViewLayoutDropdown() {
   );
 }
 
-type DataViewTopBarProps = {
-  showGlobalFilterInput?: boolean;
-  showSortButton?: boolean;
-  showVisibilityButton?: boolean;
-  showRowsPerPageButton?: boolean;
-  showLayoutButton?: boolean;
-};
+export function DataViewRowSelectionCount() {
+  const table = useReactTableContext();
+  const { rowSelection } = table.getState();
+  const rowSelectionCount = Object.keys(rowSelection).length;
+  const totalCount = table.options.meta?.totalCount;
 
-function DataViewTopBar({
-  showGlobalFilterInput,
-  showSortButton,
-  showVisibilityButton,
-  showRowsPerPageButton,
-  showLayoutButton,
-}: DataViewTopBarProps) {
   return (
-    <div>
-      <div className="flex justify-between items-center gap-4">
-        {
-          showGlobalFilterInput
-            ? <DataViewSearchFilter />
-            : <div />
-        }
-
-        <div className="flex gap-3 items-center">
-          {showVisibilityButton && <DataViewColumnVisibilityDropdown />}
-          {showSortButton && <DataViewColumnSortDropdown />}
-          {showRowsPerPageButton && <DataViewRowsPerPageDropdown />}
-          {showLayoutButton && <DataViewLayoutDropdown />}
-          <Button size="sm" shape="circle" className="text-xl ml-2">+</Button>
-        </div>
-      </div>
-      <Separator className="mt-3" />
-    </div>
+    <p className="text-sm">
+      Selected {rowSelectionCount}
+      {totalCount && <> of {totalCount}</>}
+    </p>
   );
 }
 
