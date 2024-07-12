@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useRef } from 'react';
 import {
+  Table as ReactTableType,
   Header as ReactTableHeader,
   Row as ReactTableRow,
   RowData as ReactTableRowData,
@@ -42,7 +43,27 @@ import { Checkbox } from '@/ui/Checkbox';
 import { cn } from '@/utils/cn';
 import { Separator } from '@/ui/Separator';
 import { layouts } from '@/lib/tanstack-table/constants';
-import { useReactTableContext } from '@/lib/tanstack-table/ReactTable';
+import { useReactTableContext, ReactTable } from '@/lib/tanstack-table/ReactTable';
+
+// TODO remove single exports and add to global export at bottom
+
+type DataViewProps<TData extends ReactTableRowData = ReactTableRowData> = {
+  table: ReactTableType<TData>;
+  className?: string;
+  children: ReactNode;
+};
+
+function DataView<TData extends ReactTableRowData = ReactTableRowData>(
+  { table, className, children }: DataViewProps<TData>,
+) {
+  return (
+    <div className={cn('flex flex-col gap-3 h-[calc(100dvh-5rem)] pb-5 pwa:pb-[4.25rem]', className)}>
+      <ReactTable table={table}>
+        {children}
+      </ReactTable>
+    </div>
+  );
+}
 
 function DataViewTable() {
   const table = useReactTableContext();
@@ -51,7 +72,7 @@ function DataViewTable() {
   const columnDefs = table._getColumnDefs();
 
   return (
-    <div className="rounded-md overflow-auto w-full scrollbar">
+    <div className="w-full grid rounded-md overflow-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-corner-rounded-full">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -143,7 +164,7 @@ function DataViewCard(
   const subtitleElement = flexRenderCell(mainDataCellsMap.subtitle);
 
   return (
-    <div className="h-full min-h-[20rem] rounded-lg overflow-hidden bg-achromatic-lighter dark:bg-achromatic-dark">
+    <div className="min-h-[20rem] rounded-lg overflow-hidden bg-achromatic-lighter dark:bg-achromatic-dark">
       <div className={cn('h-28 relative', avatarElement && 'mb-16')}>
         {imageSrc
           ? <img src={imageSrc} alt="card background" className="object-cover object-center h-full w-full" />
@@ -235,10 +256,12 @@ function DataViewGrid({ mapper }: DataViewGridProps) {
   );
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
-      {table.getRowModel().rows.map((row) => (
-        <DataViewCard key={row.id} mapper={mapper} dataRow={row} headerRow={headerRow} />
-      ))}
+    <div className="pr-4 overflow-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
+        {table.getRowModel().rows.map((row) => (
+          <DataViewCard key={row.id} mapper={mapper} dataRow={row} headerRow={headerRow} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -260,12 +283,13 @@ function DataViewLayout({ mapper }: DataViewLayoutProps) {
 
 type DataViewTopBarProps = {
   children?: React.ReactNode;
+  className?: string;
 };
 
-function DataViewTopBar({ children }: DataViewTopBarProps) {
+function DataViewTopBar({ children, className }: DataViewTopBarProps) {
   return (
-    <div>
-      <div className="flex justify-between items-center gap-4">
+    <div className={cn(className)}>
+      <div className="flex justify-between items-center gap-4 sticky top-0">
         {children}
       </div>
       <Separator className="mt-2" />
@@ -689,6 +713,7 @@ const DataViewCheckbox = {
 
 export {
   // ReactTable,
+  DataView,
   useReactTableContext,
   DataViewTable,
   DataViewGrid,

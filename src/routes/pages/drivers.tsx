@@ -1,4 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
+import { useScrollLock } from 'usehooks-ts';
 import { Title } from '@/features/title/components/Title';
 import { DriversTable } from '@/features/drivers/components/DriversTable';
 
@@ -13,6 +14,8 @@ function DriversPageErrorBoundary() {
 }
 
 function DriversPageComponent() {
+  useScrollLock();
+
   return (
     <div>
       <Title title="Drivers" />

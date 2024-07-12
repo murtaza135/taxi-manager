@@ -14,6 +14,7 @@ import {
 import { useLocalStorage } from 'usehooks-ts';
 import { layoutDeserializer } from '@/lib/tanstack-table/utils';
 import {
+  DataView,
   DataViewTopBar,
   DataViewPagination,
   DataViewLayout,
@@ -58,10 +59,12 @@ export function DriversTable() {
   );
 
   const totalFetched = flatData.length;
-  console.log(Object.keys(rowSelection).length);
+  // console.log(Object.keys(rowSelection).length);
 
   // console.log(status);
   // console.log(isFetching);
+
+  const noData = useMemo(() => [], []);
 
   const table = useReactTable({
     data: flatData,
@@ -118,15 +121,8 @@ export function DriversTable() {
   // }, [fetchMoreOnBottomReached]);
 
   return (
-    <div className="flex flex-col gap-3">
-      <ReactTable table={table}>
-        {/* <DataViewTopBar
-          showGlobalFilterInput
-          // showSortButton
-          showVisibilityButton
-          // showRowsPerPageButton
-          showLayoutButton
-        /> */}
+    <>
+      <DataView table={table}>
         <DataViewTopBar>
           <DataViewTopBarSection>
             <Button size="sm" shape="circle" className="text-xl ml-2">+</Button>
@@ -138,19 +134,19 @@ export function DriversTable() {
           </DataViewTopBarSection>
         </DataViewTopBar>
         <DataViewLayout mapper={mapper} />
-        <DataViewPagination
+        {/* <DataViewPagination
           showSelectedRows
           showPageCount
           showPageButtons
-        />
-      </ReactTable>
-      <Button
+        /> */}
+      </DataView>
+      {/* <Button
         variant="primary"
         onClick={() => fetchNextPage()}
       >
         Load More
       </Button>
-      {isFetching && <p>Loading More...</p>}
-    </div>
+      {isFetching && <p>Loading More...</p>} */}
+    </>
   );
 }
