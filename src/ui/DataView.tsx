@@ -107,7 +107,7 @@ function DataViewTable() {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columnDefs.length} className="h-24 text-center">
+              <TableCell colSpan={columnDefs.length} className="h-24 md:text-center">
                 No Results.
               </TableCell>
             </TableRow>
@@ -266,20 +266,20 @@ function DataViewGrid({ mapper }: DataViewGridProps) {
   );
 }
 
-type DataViewLayoutProps = {
-  mapper?: DataViewCardMainDataMapper;
-};
+// type DataViewLayoutProps = {
+//   mapper?: DataViewCardMainDataMapper;
+// };
 
-function DataViewLayout({ mapper }: DataViewLayoutProps) {
-  const table = useReactTableContext();
-  const layout = table.options.meta?.layout ?? 'table';
+// function DataViewLayout({ mapper }: DataViewLayoutProps) {
+//   const table = useReactTableContext();
+//   const layout = table.options.meta?.layout ?? 'table';
 
-  if (layout === 'grid') {
-    return <DataViewGrid mapper={mapper ?? {}} />;
-  }
+//   if (layout === 'grid') {
+//     return <DataViewGrid mapper={mapper ?? {}} />;
+//   }
 
-  return <DataViewTable />;
-}
+//   return <DataViewTable />;
+// }
 
 type DataViewTopBarProps = {
   children?: React.ReactNode;
@@ -717,7 +717,7 @@ export {
   useReactTableContext,
   DataViewTable,
   DataViewGrid,
-  DataViewLayout,
+  // DataViewLayout,
   DataViewSearchFilter,
   DataViewColumnVisibilityDropdown,
   DataViewColumnSortDropdown,

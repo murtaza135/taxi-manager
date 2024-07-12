@@ -16,9 +16,11 @@ import { layoutDeserializer } from '@/lib/tanstack-table/utils';
 import {
   DataView,
   DataViewTopBar,
-  DataViewPagination,
-  DataViewLayout,
   DataViewTopBarSection,
+  DataViewPagination,
+  // DataViewLayout,
+  DataViewTable,
+  DataViewGrid,
   DataViewSearchFilter,
   DataViewRowsPerPageDropdown,
   DataViewLayoutDropdown,
@@ -30,6 +32,7 @@ import { useInfiniteDrivers } from '@/features/drivers/hooks/useInfiniteDrivers'
 import { Button } from '@/ui/Button';
 import { useDriverCount } from '@/features/drivers/hooks/useDriverCount';
 import { Separator } from '@/ui/Separator';
+import { Popover, PopoverContent, PopoverTrigger } from '@/ui/Popover';
 
 export function DriversTable() {
   // const [sorting, setSorting] = useState<SortingState>([]);
@@ -67,7 +70,7 @@ export function DriversTable() {
   const noData = useMemo(() => [], []);
 
   const table = useReactTable({
-    data: flatData,
+    data: noData,
     columns: columns[layout],
     getCoreRowModel: getCoreRowModel(),
     // getPaginationRowModel: getPaginationRowModel(),
@@ -133,12 +136,12 @@ export function DriversTable() {
             <DataViewRowSelectionCount />
           </DataViewTopBarSection>
         </DataViewTopBar>
-        <DataViewLayout mapper={mapper} />
-        {/* <DataViewPagination
-          showSelectedRows
-          showPageCount
-          showPageButtons
-        /> */}
+        {layout === 'table' && <DataViewTable />}
+        {layout === 'grid' && <DataViewGrid mapper={mapper} />}
+        <Popover>
+          <PopoverTrigger>Open</PopoverTrigger>
+          <PopoverContent>Place content for the popover here.</PopoverContent>
+        </Popover>
       </DataView>
       {/* <Button
         variant="primary"
