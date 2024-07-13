@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState, forwardRef } from 'react';
 import {
   Table as ReactTableType,
   Header as ReactTableHeader,
@@ -67,14 +67,21 @@ function DataView<TData extends ReactTableRowData = ReactTableRowData>(
   );
 }
 
-function DataViewTable() {
+const DataViewTable = forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
   const table = useReactTableContext();
 
   // eslint-disable-next-line no-underscore-dangle
   const columnDefs = table._getColumnDefs();
 
   return (
-    <div className="w-full grid rounded-md overflow-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-corner-rounded-full">
+    <div
+      ref={ref}
+      className={cn('w-full grid rounded-md overflow-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-corner-rounded-full')}
+      {...props}
+    >
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -118,7 +125,8 @@ function DataViewTable() {
       </Table>
     </div>
   );
-}
+});
+DataViewTable.displayName = 'DataViewTable';
 
 type DataViewCardCellPair = [
   ReactTableCell<unknown, unknown>,
@@ -239,12 +247,15 @@ type DataViewGridProps = {
   mapper: DataViewCardMainDataMapper;
 };
 
-function DataViewGrid({ mapper }: DataViewGridProps) {
+const DataViewGrid = forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & DataViewGridProps
+>(({ mapper, className, ...props }, ref) => {
   const table = useReactTableContext();
 
   if (!table.getRowModel().rows?.length) {
     return (
-      <div>
+      <div ref={ref} {...props}>
         <p className="w-full h-24 p-4 center text-sm rounded-lg transition-colors bg-achromatic-lighter hover:bg-achromatic-lighter/50 dark:bg-achromatic-dark dark:hover:bg-achromatic-dark/50">
           No Results.
         </p>
@@ -258,7 +269,11 @@ function DataViewGrid({ mapper }: DataViewGridProps) {
   );
 
   return (
-    <div className="pr-4 overflow-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full">
+    <div
+      ref={ref}
+      className={cn('pr-4 overflow-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full')}
+      {...props}
+    >
       <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
         {table.getRowModel().rows.map((row) => (
           <DataViewCard key={row.id} mapper={mapper} dataRow={row} headerRow={headerRow} />
@@ -266,7 +281,8 @@ function DataViewGrid({ mapper }: DataViewGridProps) {
       </div>
     </div>
   );
-}
+});
+DataViewGrid.displayName = 'DataViewGrid';
 
 type DataViewTopBarProps = {
   children?: React.ReactNode;

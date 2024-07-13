@@ -51,7 +51,7 @@ export function DriversTable() {
   );
 
   // we need a reference to the scrolling element for logic down below
-  const tableContainerRef = useRef<HTMLElement>(null);
+  const tableContainerRef = useRef<HTMLDivElement>(null);
 
   // const { data } = useDrivers();
   const { data, fetchNextPage, isFetching } = useInfiniteDrivers(globalFilter);
@@ -88,41 +88,29 @@ export function DriversTable() {
   });
 
   // called on scroll and possibly on mount to fetch more data as the user scrolls and reaches bottom of table
-  // const fetchMoreOnBottomReached = useCallback(
-  //   (containerRefElement?: HTMLElement | null) => {
-  //     if (containerRefElement) {
-  //       const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+  const fetchMoreOnBottomReached = useCallback(
+    (containerRefElement?: HTMLElement | null) => {
+      if (containerRefElement) {
+        const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+        const delta = layout === 'grid' ? 1000 : 500;
 
-  //       // console.log('calc:', scrollHeight - scrollTop - clientHeight);
-  //       console.log('isFetching:', isFetching);
-  //       console.log('totalFetched:', totalFetched);
-  //       console.log('totalCount:', count);
-
-  //       // once the user has scrolled within 500px of the bottom of the table, fetch more data if we can
-  //       if (
-  //         scrollHeight - scrollTop - clientHeight < 500
-  //         && !isFetching
-  //         && totalFetched < count
-  //       ) {
-  //         void fetchNextPage();
-  //       }
-  //     }
-  //   },
-  //   [fetchNextPage, isFetching, totalFetched, count],
-  // );
-
-  // const { scrollHeight, scrollTop, clientHeight } = document.body;
-  // const { scrollX, screenY, innerHeight, outerHeight, screenTop } = window;
-  // console.log('screenY:', screenY);
-  // console.log('screenTop:', screenTop);
-  // console.log('innerHeight:', innerHeight);
-  // console.log('outerHeight:', outerHeight);
-  // console.log('calc:', scrollHeight - scrollTop - clientHeight);
+        // once the user has scrolled within `delta` px of the bottom of the table, fetch more data if we can
+        if (
+          scrollHeight - scrollTop - clientHeight < delta
+          && !isFetching
+          && totalFetched < count
+        ) {
+          void fetchNextPage();
+        }
+      }
+    },
+    [fetchNextPage, isFetching, totalFetched, count, layout],
+  );
 
   // a check on mount and after a fetch to see if the table is already scrolled to the bottom and immediately needs to fetch more data
-  // useEffect(() => {
-  //   fetchMoreOnBottomReached(document.body);
-  // }, [fetchMoreOnBottomReached]);
+  useEffect(() => {
+    fetchMoreOnBottomReached(tableContainerRef.current);
+  }, [fetchMoreOnBottomReached]);
 
   return (
     <>
@@ -138,8 +126,19 @@ export function DriversTable() {
             <DataViewRowSelectionCount />
           </DataViewTopBarSection>
         </DataViewTopBar>
-        {layout === 'table' && <DataViewTable />}
-        {layout === 'grid' && <DataViewGrid mapper={mapper} />}
+        {layout === 'table' && (
+          <DataViewTable
+            ref={tableContainerRef}
+            onScroll={(event) => fetchMoreOnBottomReached(event.target as HTMLDivElement)}
+          />
+        )}
+        {layout === 'grid' && (
+          <DataViewGrid
+            mapper={mapper}
+            ref={tableContainerRef}
+            onScroll={(event) => fetchMoreOnBottomReached(event.target as HTMLDivElement)}
+          />
+        )}
       </DataView>
       {/* <Button
         variant="primary"
