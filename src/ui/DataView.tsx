@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import {
   Table as ReactTableType,
   Header as ReactTableHeader,
@@ -9,8 +9,8 @@ import {
   flexRender,
   LayoutState,
 } from '@tanstack/react-table';
-import { IoSearchSharp, IoSearchOutline, IoMenu } from 'react-icons/io5';
-import { MdClear, MdOutlineClose } from 'react-icons/md';
+import { IoSearchOutline } from 'react-icons/io5';
+import { MdClear } from 'react-icons/md';
 import { CgHashtag } from 'react-icons/cg';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { BiSortAlt2 } from 'react-icons/bi';
@@ -28,7 +28,7 @@ import { capitalCase } from 'change-case';
 import { z } from 'zod';
 import { flexRenderHeader, flexRenderCell } from '@/lib/tanstack-table/flexRender';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
-import { DebouncedInput, Input } from '@/ui/Input';
+import { Input } from '@/ui/Input';
 import { Button } from '@/ui/Button';
 import {
   DropdownMenu,
@@ -48,8 +48,6 @@ import { useReactTableContext, ReactTable } from '@/lib/tanstack-table/ReactTabl
 import { Popover, PopoverTrigger, PopoverContent } from '@/ui/Popover';
 import { useZodForm, FormProvider, Form, FormTitle, FormField, FormGroup } from '@/ui/Form';
 import { TooltipWrapper } from '@/ui/Tooltip';
-
-// TODO remove single exports and add to global export at bottom
 
 type DataViewProps<TData extends ReactTableRowData = ReactTableRowData> = {
   table: ReactTableType<TData>;
@@ -270,21 +268,6 @@ function DataViewGrid({ mapper }: DataViewGridProps) {
   );
 }
 
-// type DataViewLayoutProps = {
-//   mapper?: DataViewCardMainDataMapper;
-// };
-
-// function DataViewLayout({ mapper }: DataViewLayoutProps) {
-//   const table = useReactTableContext();
-//   const layout = table.options.meta?.layout ?? 'table';
-
-//   if (layout === 'grid') {
-//     return <DataViewGrid mapper={mapper ?? {}} />;
-//   }
-
-//   return <DataViewTable />;
-// }
-
 type DataViewTopBarProps = {
   children?: React.ReactNode;
   className?: string;
@@ -305,7 +288,7 @@ type DataViewTopBarSectionProps = {
   children?: React.ReactNode;
 };
 
-export function DataViewTopBarSection({ children }: DataViewTopBarSectionProps) {
+function DataViewTopBarSection({ children }: DataViewTopBarSectionProps) {
   return (
     <div className="flex gap-3 items-center">
       {children}
@@ -315,7 +298,7 @@ export function DataViewTopBarSection({ children }: DataViewTopBarSectionProps) 
 
 const searchSchema = z.object({ search: z.string() });
 
-export function DataViewSearchPopover() {
+function DataViewSearchPopover() {
   const [open, setOpen] = useState<boolean>(false);
   const table = useReactTableContext();
   const defaultSearch = table.getState().globalFilter as string;
@@ -575,7 +558,7 @@ function DataViewLayoutDropdown() {
   );
 }
 
-export function DataViewRowSelectionCount() {
+function DataViewRowSelectionCount() {
   const table = useReactTableContext();
   const { rowSelection } = table.getState();
   const rowSelectionCount = Object.keys(rowSelection).length;
@@ -764,17 +747,18 @@ const DataViewCheckbox = {
 };
 
 export {
-  // ReactTable,
   DataView,
   useReactTableContext,
   DataViewTable,
   DataViewGrid,
-  // DataViewLayout,
+  DataViewTopBar,
+  DataViewTopBarSection,
+  DataViewSearchPopover,
   DataViewColumnVisibilityDropdown,
   DataViewColumnSortDropdown,
   DataViewRowsPerPageDropdown,
   DataViewLayoutDropdown,
-  DataViewTopBar,
+  DataViewRowSelectionCount,
   DataViewPagination,
   DataViewCheckbox,
   DataViewHeader,

@@ -21,7 +21,7 @@ import {
   // DataViewLayout,
   DataViewTable,
   DataViewGrid,
-  DataViewSearchFilter,
+  // DataViewSearchFilter,
   DataViewRowsPerPageDropdown,
   DataViewLayoutDropdown,
   DataViewRowSelectionCount,
