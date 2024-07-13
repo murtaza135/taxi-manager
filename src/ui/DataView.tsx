@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import {
   Table as ReactTableType,
   Header as ReactTableHeader,
@@ -9,8 +9,8 @@ import {
   flexRender,
   LayoutState,
 } from '@tanstack/react-table';
-import { IoSearchSharp } from 'react-icons/io5';
-import { MdOutlineClose } from 'react-icons/md';
+import { IoSearchSharp, IoSearchOutline, IoMenu } from 'react-icons/io5';
+import { MdClear, MdOutlineClose } from 'react-icons/md';
 import { CgHashtag } from 'react-icons/cg';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { BiSortAlt2 } from 'react-icons/bi';
@@ -25,9 +25,10 @@ import partition from 'lodash/partition';
 import keyBy from 'lodash/keyBy';
 import mapValues from 'lodash/mapValues';
 import { capitalCase } from 'change-case';
+import { z } from 'zod';
 import { flexRenderHeader, flexRenderCell } from '@/lib/tanstack-table/flexRender';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
-import { DebouncedInput } from '@/ui/Input';
+import { DebouncedInput, Input } from '@/ui/Input';
 import { Button } from '@/ui/Button';
 import {
   DropdownMenu,
@@ -44,6 +45,9 @@ import { cn } from '@/utils/cn';
 import { Separator } from '@/ui/Separator';
 import { layouts } from '@/lib/tanstack-table/constants';
 import { useReactTableContext, ReactTable } from '@/lib/tanstack-table/ReactTable';
+import { Popover, PopoverTrigger, PopoverContent } from '@/ui/Popover';
+import { useZodForm, FormProvider, Form, FormTitle, FormField, FormGroup } from '@/ui/Form';
+import { TooltipWrapper } from '@/ui/Tooltip';
 
 // TODO remove single exports and add to global export at bottom
 
@@ -309,39 +313,87 @@ export function DataViewTopBarSection({ children }: DataViewTopBarSectionProps) 
   );
 }
 
-function DataViewSearchFilter() {
-  const table = useReactTableContext();
-  const ref = useRef<HTMLInputElement | null>(null);
+const searchSchema = z.object({ search: z.string() });
 
-  function handleClearSearchFilter() {
+export function DataViewSearchPopover() {
+  const [open, setOpen] = useState<boolean>(false);
+  const table = useReactTableContext();
+  const defaultSearch = table.getState().globalFilter as string;
+  const form = useZodForm({
+    schema: searchSchema,
+    defaultValues: { search: '' },
+  });
+
+  const handleSubmitSearchInput = form.handleSubmit(({ search }) => {
+    table.setGlobalFilter(search);
+    setOpen(false);
+  });
+
+  const handleClearSearchInput: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault();
     table.setGlobalFilter('');
-    ref.current?.focus();
-  }
+    form.reset();
+    setOpen(false);
+  };
 
   return (
-    <DebouncedInput
-      name="search"
-      placeholder="Search..."
-      value={table.getState().globalFilter as string}
-      onChange={(value) => table.setGlobalFilter(value)}
-      debounce={500}
-      leftIcon={(
-        <span className="text-sm">
-          <IoSearchSharp />
-        </span>
-      )}
-      rightIcon={(
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger>
         <Button
           variant="ghost"
           size="auto"
-          onClick={() => handleClearSearchFilter()}
+          className="text-xl center"
         >
-          <MdOutlineClose />
+          <IoSearchOutline />
         </Button>
-      )}
-      className="max-w-40 py-1.5 border-none"
-      ref={ref}
-    />
+      </PopoverTrigger>
+      <PopoverContent className="relative">
+        <FormProvider {...form}>
+          <Form
+            onSubmit={handleSubmitSearchInput}
+            className="space-y-2 px-3 py-2"
+          >
+            <FormTitle className="text-start">Search</FormTitle>
+            <FormField
+              control={form.control}
+              name="search"
+              render={({ field }) => (
+                <FormGroup>
+                  <Input placeholder="Search" defaultValue={defaultSearch} {...field} />
+                </FormGroup>
+              )}
+            />
+            <div className="flex gap-2 justify-end items-center pt-1">
+              <TooltipWrapper text="Clear">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  className="flex gap-1 items-center"
+                  onClick={handleClearSearchInput}
+                >
+                  <MdClear className="text-base" />
+                </Button>
+              </TooltipWrapper>
+              <TooltipWrapper text="Search">
+                <Button type="submit" size="sm" className="flex gap-1 items-center">
+                  <IoSearchOutline className="text-base" />
+                </Button>
+              </TooltipWrapper>
+            </div>
+          </Form>
+        </FormProvider>
+        <Button
+          type="button"
+          size="auto"
+          variant="ghost"
+          className="absolute top-2 right-2 opacity-40 hover:opacity-25"
+          onClick={() => setOpen(false)}
+        >
+          <MdClear className="text-base" />
+        </Button>
+      </PopoverContent>
+    </Popover>
   );
 }
 
@@ -718,7 +770,6 @@ export {
   DataViewTable,
   DataViewGrid,
   // DataViewLayout,
-  DataViewSearchFilter,
   DataViewColumnVisibilityDropdown,
   DataViewColumnSortDropdown,
   DataViewRowsPerPageDropdown,

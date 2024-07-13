@@ -36,13 +36,21 @@ const useZodForm = <
 const Form = React.forwardRef<
   HTMLFormElement,
   React.HTMLAttributes<HTMLFormElement>
->(({ className, ...props }, ref) => (
-  <form
-    className={cn('bg-achromatic-lighter dark:bg-achromatic-dark text-primary-dark dark:text-primary-light px-7 py-6 rounded-lg', className)}
-    ref={ref}
-    {...props}
-  />
-));
+>(({ className, onSubmit, ...props }, ref) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    onSubmit?.(event);
+  };
+
+  return (
+    <form
+      className={cn('bg-achromatic-lighter dark:bg-achromatic-dark text-primary-dark dark:text-primary-light px-7 py-6 rounded-lg', className)}
+      ref={ref}
+      onSubmit={handleSubmit}
+      {...props}
+    />
+  );
+});
 Form.displayName = 'Form';
 
 const FormTitle = React.forwardRef<

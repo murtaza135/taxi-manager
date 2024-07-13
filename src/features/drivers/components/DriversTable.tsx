@@ -25,6 +25,7 @@ import {
   DataViewRowsPerPageDropdown,
   DataViewLayoutDropdown,
   DataViewRowSelectionCount,
+  DataViewSearchPopover,
 } from '@/ui/DataView';
 import { columns, mapper } from '@/features/drivers/columns';
 import { ReactTable } from '@/lib/tanstack-table/ReactTable';
@@ -70,7 +71,7 @@ export function DriversTable() {
   const noData = useMemo(() => [], []);
 
   const table = useReactTable({
-    data: noData,
+    data: flatData,
     columns: columns[layout],
     getCoreRowModel: getCoreRowModel(),
     // getPaginationRowModel: getPaginationRowModel(),
@@ -129,6 +130,7 @@ export function DriversTable() {
         <DataViewTopBar>
           <DataViewTopBarSection>
             <Button size="sm" shape="circle" className="text-xl ml-2">+</Button>
+            <DataViewSearchPopover />
             <DataViewLayoutDropdown />
             <DataViewRowsPerPageDropdown />
           </DataViewTopBarSection>
@@ -138,10 +140,6 @@ export function DriversTable() {
         </DataViewTopBar>
         {layout === 'table' && <DataViewTable />}
         {layout === 'grid' && <DataViewGrid mapper={mapper} />}
-        <Popover>
-          <PopoverTrigger>Open</PopoverTrigger>
-          <PopoverContent>Place content for the popover here.</PopoverContent>
-        </Popover>
       </DataView>
       {/* <Button
         variant="primary"
