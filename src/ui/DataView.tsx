@@ -48,6 +48,7 @@ import { useReactTableContext, ReactTable } from '@/lib/tanstack-table/ReactTabl
 import { Popover, PopoverTrigger, PopoverContent } from '@/ui/Popover';
 import { useZodForm, FormProvider, Form, FormTitle, FormField, FormGroup } from '@/ui/Form';
 import { TooltipWrapper } from '@/ui/Tooltip';
+import { Skeleton } from '@/ui/Skeleton';
 
 type DataViewProps<TData extends ReactTableRowData = ReactTableRowData> = {
   table: ReactTableType<TData>;
@@ -121,6 +122,16 @@ const DataViewTable = forwardRef<
               </TableCell>
             </TableRow>
           )}
+          {/* <TableRow>
+            <TableCell className="w-full p-0" colSpan={columnDefs.length}>
+              <Skeleton className="h-16 w-full flex-grow rounded-none dark:bg-achromatic-darker" />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="w-full p-0" colSpan={columnDefs.length}>
+              <Skeleton className="h-16 w-full flex-grow rounded-none dark:bg-achromatic-darker" />
+            </TableCell>
+          </TableRow> */}
         </TableBody>
       </Table>
     </div>
@@ -764,7 +775,6 @@ const DataViewCheckbox = {
 
 export {
   DataView,
-  useReactTableContext,
   DataViewTable,
   DataViewGrid,
   DataViewTopBar,

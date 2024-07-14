@@ -1,47 +1,25 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
-import {
-  useReactTable,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  SortingState,
-  ColumnFiltersState,
-  PaginationState,
-  RowSelectionState,
-  LayoutState,
-} from '@tanstack/react-table';
+import { useReactTable, getCoreRowModel, RowSelectionState, LayoutState } from '@tanstack/react-table';
 import { useLocalStorage } from 'usehooks-ts';
 import { layoutDeserializer } from '@/lib/tanstack-table/utils';
 import {
   DataView,
   DataViewTopBar,
   DataViewTopBarSection,
-  DataViewPagination,
-  // DataViewLayout,
   DataViewTable,
   DataViewGrid,
-  // DataViewSearchFilter,
   DataViewRowsPerPageDropdown,
   DataViewLayoutDropdown,
   DataViewRowSelectionCount,
   DataViewSearchPopover,
+  DataViewColumnVisibilityDropdown,
 } from '@/ui/DataView';
 import { columns, mapper } from '@/features/drivers/columns';
-import { ReactTable } from '@/lib/tanstack-table/ReactTable';
 import { useInfiniteDrivers } from '@/features/drivers/hooks/useInfiniteDrivers';
 import { Button } from '@/ui/Button';
 import { useDriverCount } from '@/features/drivers/hooks/useDriverCount';
-import { Separator } from '@/ui/Separator';
-import { Popover, PopoverContent, PopoverTrigger } from '@/ui/Popover';
 
 export function DriversTable() {
-  // const [sorting, setSorting] = useState<SortingState>([]);
-  // const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  // const [pagination, setPagination] = useState<PaginationState>({
-  //   pageIndex: 0,
-  //   pageSize: 1000,
-  // });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [globalFilter, setGlobalFilter] = useState<string>('');
   const [layout, setLayout] = useLocalStorage<LayoutState>(
@@ -109,6 +87,7 @@ export function DriversTable() {
 
   // a check on mount and after a fetch to see if the table is already scrolled to the bottom and immediately needs to fetch more data
   useEffect(() => {
+    // TODO BUG runs over and over when all rows visible on screen, tries to fetch more over and over without terminating
     fetchMoreOnBottomReached(tableContainerRef.current);
   }, [fetchMoreOnBottomReached]);
 
@@ -120,7 +99,7 @@ export function DriversTable() {
             <Button size="sm" shape="circle" className="text-xl ml-2">+</Button>
             <DataViewSearchPopover />
             <DataViewLayoutDropdown />
-            <DataViewRowsPerPageDropdown />
+            <DataViewColumnVisibilityDropdown />
           </DataViewTopBarSection>
           <DataViewTopBarSection>
             <DataViewRowSelectionCount />
