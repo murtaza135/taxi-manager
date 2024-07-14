@@ -139,6 +139,77 @@ const DataViewTable = forwardRef<
 });
 DataViewTable.displayName = 'DataViewTable';
 
+const DataViewInfiniteTable = forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  const table = useReactTableContext();
+
+  // eslint-disable-next-line no-underscore-dangle
+  const columnDefs = table._getColumnDefs();
+
+  return (
+    <div
+      ref={ref}
+      className={cn('w-full grid rounded-md overflow-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-corner-rounded-full')}
+      {...props}
+    >
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <TableHead key={header.id}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                </TableHead>
+              ))}
+            </TableRow>
+          ))}
+        </TableHeader>
+
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && 'selected'}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columnDefs.length} className="h-24 md:text-center">
+                No Results.
+              </TableCell>
+            </TableRow>
+          )}
+          <TableRow>
+            <TableCell className="w-full p-0" colSpan={columnDefs.length}>
+              <Skeleton className="h-16 w-full flex-grow rounded-none dark:bg-achromatic-darker" />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell className="w-full p-0" colSpan={columnDefs.length}>
+              <Skeleton className="h-16 w-full flex-grow rounded-none dark:bg-achromatic-darker" />
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
+  );
+});
+DataViewInfiniteTable.displayName = 'DataViewInfiniteTable';
+
 type DataViewCardCellPair = [
   ReactTableCell<unknown, unknown>,
   ReactTableCell<unknown, unknown> | undefined,
