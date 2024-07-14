@@ -33,7 +33,7 @@ export function DriversTable() {
 
   // const { data } = useDrivers();
   const { data, fetchNextPage, isFetching } = useInfiniteDrivers(globalFilter);
-  const { data: count } = useDriverCount();
+  const { data: count } = useDriverCount(globalFilter);
 
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page) ?? [],
@@ -71,6 +71,18 @@ export function DriversTable() {
       if (containerRefElement) {
         const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
         const delta = layout === 'grid' ? 1000 : 500;
+
+        // console.log('---------------------------------------------------------');
+        // console.log('delta:', delta);
+        // console.log('calc:', scrollHeight - scrollTop - clientHeight);
+        // console.log('totalFetched:', totalFetched);
+        // console.log('count:', count);
+        // console.log('isDeltaInRange:', scrollHeight - scrollTop - clientHeight < delta);
+        // console.log('isNotFetching:', !isFetching);
+        // console.log('hasMoreToFetch:', totalFetched < count);
+        // console.log('condition:', scrollHeight - scrollTop - clientHeight < delta
+        //   && !isFetching
+        //   && totalFetched < count);
 
         // once the user has scrolled within `delta` px of the bottom of the table, fetch more data if we can
         if (

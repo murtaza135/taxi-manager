@@ -2,7 +2,7 @@ import { useEffect, useCallback, RefObject } from 'react';
 
 type UsePrefetchOnScrollOptions<TData = unknown, TElement extends HTMLElement = HTMLElement> = {
   ref: RefObject<TElement>;
-  fetchFn: () => Promise<TData> | null;
+  fetchFn: () => Promise<TData | null>;
   isFetching: boolean;
   deltaFromBottom: number;
   fetchedCount?: number;

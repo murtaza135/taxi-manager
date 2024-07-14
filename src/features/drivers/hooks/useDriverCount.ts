@@ -5,13 +5,14 @@ import { queryClient } from '@/config/api/queryClient';
 import { buildAppErrorFromSupabaseError } from '@/errors/supabaseErrorUtils';
 import { AppError } from '@/errors/AppError';
 
-async function getDriverCount() {
+async function getDriverCount(search: string = '') {
   const session = await queryClient.ensureQueryData(sessionOptions());
 
   const { count, error, status } = await supabase
     .from('driver_view')
     .select('*', { count: 'exact', head: true })
-    .eq('auth_id', session.user.id);
+    .eq('auth_id', session.user.id)
+    .or(`name.ilike.%${search}%, email.ilike.%${search}%, number_plate.ilike.%${search}%`);
 
   if (error) {
     throw buildAppErrorFromSupabaseError(error, status)
@@ -25,15 +26,15 @@ async function getDriverCount() {
   return count ?? 0;
 }
 
-export function driverCountQueryOptions() {
+export function driverCountQueryOptions(search: string = '') {
   return queryOptions<number, AppError>({
-    queryKey: ['drivers', 'list', 'count'],
-    queryFn: getDriverCount,
+    queryKey: ['drivers', 'list', { search }, 'count'],
+    queryFn: () => getDriverCount(search),
     staleTime: 1000 * 60, // 60 seconds
   });
 }
 
-export function useDriverCount() {
-  const query = useSuspenseQuery(driverCountQueryOptions());
+export function useDriverCount(search: string = '') {
+  const query = useSuspenseQuery(driverCountQueryOptions(search));
   return query;
 }
