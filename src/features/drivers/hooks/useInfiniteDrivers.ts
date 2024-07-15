@@ -9,6 +9,7 @@ import { buildAppErrorFromSupabaseError } from '@/errors/supabaseErrorUtils';
 import { AppError } from '@/errors/AppError';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { driverPictureQueryOptions } from '@/features/drivers/hooks/useDriverPicture';
+import { sleep } from '@/utils/sleep';
 
 const fetchSize = 50;
 
@@ -24,6 +25,11 @@ export type Driver = Prettify<
   }
 >;
 
+export type DriversResult = {
+  data: Driver[];
+  count: number;
+};
+
 type DriversQueryFnOptions = {
   search: string;
   pageParam: number;
@@ -31,21 +37,25 @@ type DriversQueryFnOptions = {
 
 async function getDrivers(
   { search = '', pageParam = 0 }: DriversQueryFnOptions,
-): Promise<Driver[]> {
+): Promise<DriversResult> {
+  // await sleep(5000);
   const session = await queryClient.ensureQueryData(sessionOptions());
 
   const from = fetchSize * pageParam;
   const to = from + fetchSize - 1;
 
-  const { data, error, status } = await supabase
+  const { data, error, status, count } = await supabase
     .from('driver_view')
-    .select('id, name, phone_number, email, picture_path, taxi_id, number_plate, hire_agreement_id, created_at')
+    .select(
+      'id, name, phone_number, email, picture_path, taxi_id, number_plate, hire_agreement_id, created_at',
+      { count: 'estimated' },
+    )
     .eq('auth_id', session.user.id)
     .order('created_at', { ascending: false })
     .or(`name.ilike.%${search}%, email.ilike.%${search}%, number_plate.ilike.%${search}%`)
     .range(from, to);
 
-  if (status === 404) return [];
+  if (status === 404) return { data: [], count: 0 };
 
   if (error) {
     throw buildAppErrorFromSupabaseError(error, status)
@@ -69,11 +79,16 @@ async function getDrivers(
     };
   });
 
-  return Promise.all(drivers);
+  return {
+    data: await Promise.all(drivers),
+    count: count ?? 0,
+  };
 }
 
 export function driversQueryOptions(search: string = '') {
-  return infiniteQueryOptions<Driver[], AppError, InfiniteData<Driver>, QueryKey, number>({
+  return infiniteQueryOptions<
+    DriversResult, AppError, InfiniteData<DriversResult, number>, QueryKey, number
+  >({
     queryKey: ['drivers', 'list', { search }],
     queryFn: ({ pageParam }) => getDrivers({ search, pageParam }),
     staleTime: 1000 * 60, // 60 seconds,

@@ -6,7 +6,8 @@ declare module '@tanstack/table-core' {
   interface TableMeta<TData extends RowData> extends Record<string, unknown> {
     layout?: LayoutState;
     onLayoutChange?: (layout: LayoutState) => void;
-    totalCount?: number;
+    fetchedCount?: number;
+    totalFetchableCount?: number;
   }
 }
 
