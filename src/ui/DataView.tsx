@@ -68,6 +68,20 @@ function DataView<TData extends ReactTableRowData = ReactTableRowData>(
   );
 }
 
+type DataViewTableRowSkeletonProps = {
+  colSpan?: number;
+};
+
+function DataViewTableRowSkeleton({ colSpan }: DataViewTableRowSkeletonProps) {
+  return (
+    <TableRow>
+      <TableCell className="w-full p-0" colSpan={colSpan}>
+        <Skeleton className="h-16 w-full flex-grow rounded-none dark:bg-achromatic-darker" />
+      </TableCell>
+    </TableRow>
+  );
+}
+
 type DataViewTableProps = {
   isFetching?: boolean;
 };
@@ -128,17 +142,8 @@ const DataViewTable = forwardRef<
           )}
           {isFetching && (
             <>
-              {/* TODO make better skeletons */}
-              <TableRow>
-                <TableCell className="w-full p-0" colSpan={columnDefs.length}>
-                  <Skeleton className="h-16 w-full flex-grow rounded-none dark:bg-achromatic-darker" />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="w-full p-0" colSpan={columnDefs.length}>
-                  <Skeleton className="h-16 w-full flex-grow rounded-none dark:bg-achromatic-darker" />
-                </TableCell>
-              </TableRow>
+              <DataViewTableRowSkeleton colSpan={columnDefs.length} />
+              <DataViewTableRowSkeleton colSpan={columnDefs.length} />
             </>
           )}
         </TableBody>
@@ -263,14 +268,25 @@ function DataViewCard(
   );
 }
 
+type DataViewCardSkeletonProps = {
+  numDataCells: number;
+};
+
+function DataViewCardSkeleton({ numDataCells }: DataViewCardSkeletonProps) {
+  return (
+    <Skeleton className="h-full w-full flex flex-col gap-10 justify-start items-center rounded-lg overflow-hidden" />
+  );
+}
+
 type DataViewGridProps = {
   mapper: DataViewCardMainDataMapper;
+  isFetching?: boolean;
 };
 
 const DataViewGrid = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & DataViewGridProps
->(({ mapper, className, ...props }, ref) => {
+>(({ mapper, isFetching, className, ...props }, ref) => {
   const table = useReactTableContext();
 
   if (!table.getRowModel().rows?.length) {
@@ -298,7 +314,12 @@ const DataViewGrid = forwardRef<
         {table.getRowModel().rows.map((row) => (
           <DataViewCard key={row.id} mapper={mapper} dataRow={row} headerRow={headerRow} />
         ))}
-        <Skeleton />
+        {isFetching && (
+          <>
+            <DataViewCardSkeleton numDataCells={1} />
+            <DataViewCardSkeleton numDataCells={1} />
+          </>
+        )}
       </div>
     </div>
   );

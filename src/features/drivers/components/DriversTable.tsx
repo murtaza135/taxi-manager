@@ -89,6 +89,7 @@ export function DriversTable() {
         <DataViewGrid
           mapper={mapper}
           ref={ref}
+          isFetching={isFetchingData}
           onScroll={prefetchOnScroll}
         />
       )}
