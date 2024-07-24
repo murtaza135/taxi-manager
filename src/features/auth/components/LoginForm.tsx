@@ -64,20 +64,14 @@ export function LoginForm() {
           <Button type="submit" variant="base" className="w-full">Login</Button>
         </div>
 
-        <div className="pt-1">
-          <Button
-            type="button"
-            className="w-full inline-block"
-            variant="ghost"
-            onClick={() => anonymousLogin()}
-          >
-            <span className="text-achromatic-lighter/70 dark:text-achromatic-500">
-              Don&apos;t have an account?
-            </span>
-            &nbsp;
-            GUEST LOGIN
-          </Button>
-        </div>
+        <Button
+          type="button"
+          className="w-full inline-block text-achromatic-lighter/70 dark:text-achromatic-500"
+          variant="ghost"
+          onClick={() => anonymousLogin()}
+        >
+          Continue as Guest
+        </Button>
       </Form>
     </FormProvider>
   );

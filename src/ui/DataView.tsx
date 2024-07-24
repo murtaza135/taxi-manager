@@ -135,7 +135,7 @@ const DataViewTable = forwardRef<
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columnDefs.length} className="h-24 md:text-center">
+              <TableCell colSpan={columnDefs.length} className="">
                 No Results.
               </TableCell>
             </TableRow>
@@ -625,7 +625,7 @@ function DataViewRowSelectionCount() {
   return (
     <p className="text-sm">
       Selected {rowSelectionCount}
-      {fetchableCount && <> of {fetchableCount}</>}
+      {typeof fetchableCount !== 'undefined' && <> of {fetchableCount}</>}
     </p>
   );
 }

@@ -29,7 +29,6 @@ export function DriversTable() {
 
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteDrivers(globalFilter);
 
-  // TODO combine into useInfiniteDrivers
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.data) ?? [],
     [data],
