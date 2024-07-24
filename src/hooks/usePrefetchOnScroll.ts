@@ -1,7 +1,6 @@
-import { useCallback, RefObject } from 'react';
+import { useCallback, useRef, RefObject } from 'react';
 
-type UsePrefetchOnScrollOptions<TData = unknown, TElement extends HTMLElement = HTMLElement> = {
-  ref: RefObject<TElement>;
+type UsePrefetchOnScrollOptions<TData = unknown> = {
   fetchFn: () => Promise<TData | null>;
   isFetching: boolean;
   deltaFromBottom: number;
@@ -9,21 +8,24 @@ type UsePrefetchOnScrollOptions<TData = unknown, TElement extends HTMLElement = 
   totalFetchableCount: number;
 };
 
-type UsePrefetchOnScrollResult<TData = unknown> = [boolean, () => Promise<TData | null>];
+type UsePrefetchOnScrollResult<TElement extends HTMLElement = HTMLElement, TData = unknown> = {
+  ref: RefObject<TElement>;
+  isFetching: boolean;
+  prefetchOnScroll: () => Promise<TData | null>;
+};
 
-export function usePrefetchOnScroll<TData = unknown, TElement extends HTMLElement = HTMLElement>({
-  ref,
+export function usePrefetchOnScroll<TElement extends HTMLElement = HTMLElement, TData = unknown>({
   fetchFn,
   isFetching,
   deltaFromBottom,
   fetchedCount,
   totalFetchableCount,
-}: UsePrefetchOnScrollOptions<TData, TElement>): UsePrefetchOnScrollResult<TData> {
-  const element = ref.current;
+}: UsePrefetchOnScrollOptions<TData>): UsePrefetchOnScrollResult<TElement, TData> {
+  const ref = useRef<TElement>(null);
 
   const prefetchOnScroll = useCallback(async () => {
-    if (element) {
-      const { scrollHeight, scrollTop, clientHeight } = element;
+    if (ref.current) {
+      const { scrollHeight, scrollTop, clientHeight } = ref.current;
       const currentDeltaFromBottom = scrollHeight - scrollTop - clientHeight;
 
       const shouldFetch = currentDeltaFromBottom < deltaFromBottom
@@ -35,7 +37,7 @@ export function usePrefetchOnScroll<TData = unknown, TElement extends HTMLElemen
       }
     }
     return null;
-  }, [element, fetchFn, isFetching, deltaFromBottom, fetchedCount, totalFetchableCount]);
+  }, [ref, fetchFn, isFetching, deltaFromBottom, fetchedCount, totalFetchableCount]);
 
-  return [isFetching, prefetchOnScroll] as const;
+  return { ref, isFetching, prefetchOnScroll } as const;
 }

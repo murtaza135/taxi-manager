@@ -48,10 +48,10 @@ export function DriversTable() {
   });
 
   // we need a reference to the scrolling element for logic down below
-  const ref = useRef<HTMLDivElement>(null);
+  // const ref = useRef<HTMLDivElement>(null);
 
-  const [isFetchingData, prefetchOnScroll] = usePrefetchOnScroll({
-    ref,
+  // eslint-disable-next-line max-len
+  const { ref, isFetching: isFetchingData, prefetchOnScroll } = usePrefetchOnScroll<HTMLDivElement>({
     fetchFn: fetchNextPage,
     isFetching,
     deltaFromBottom: layout === 'grid' ? 1000 : 500,
