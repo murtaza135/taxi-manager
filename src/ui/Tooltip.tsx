@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
-import { type XOR } from 'ts-essentials';
 import { cn } from '@/utils/cn';
 
 const TooltipProvider = TooltipPrimitive.Provider;
@@ -25,25 +24,4 @@ const TooltipContent = React.forwardRef<
 ));
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
-type TooltipWrapperProps = XOR<
-  { text: string; },
-  { content: React.ReactNode; }
-> & {
-  className?: string;
-  children?: React.ReactNode;
-};
-
-function TooltipWrapper({ text, content, className, children }: TooltipWrapperProps) {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger>{children}</TooltipTrigger>
-        <TooltipContent className={cn(className)}>
-          {content ?? text}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-}
-
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider, TooltipWrapper };
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };

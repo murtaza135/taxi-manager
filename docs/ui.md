@@ -6,7 +6,6 @@
   - [MultiStepForm](#multistepform)
   - [Accordion](#accordion)
   - [Swiper](#swiper)
-  - [Tooltip](#tooltip)
 
 <br>
 
@@ -489,17 +488,3 @@ export default function Page() {
 ```
 
 <br>
-
-## Tooltip
-```tsx
-// @/Page.tsx
-import { TooltipWrapper } from '@/ui/Tooltip';
-
-export default function Page() {
-  return (
-    <TooltipWrapper text="Tooltip Text on Hover">
-      <p>Some Content</p>
-    </TooltipWrapper>
-  );
-}
-```

@@ -29,7 +29,7 @@ import { z } from 'zod';
 import { flexRenderHeader, flexRenderCell } from '@/lib/tanstack-table/flexRender';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
 import { Input } from '@/ui/Input';
-import { Button } from '@/ui/Button';
+import { Button, buttonVariants } from '@/ui/Button';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -47,7 +47,7 @@ import { layouts } from '@/lib/tanstack-table/constants';
 import { useReactTableContext, ReactTable } from '@/lib/tanstack-table/ReactTable';
 import { Popover, PopoverTrigger, PopoverContent } from '@/ui/Popover';
 import { useZodForm, FormProvider, Form, FormTitle, FormField, FormGroup } from '@/ui/Form';
-import { TooltipWrapper } from '@/ui/Tooltip';
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/ui/Tooltip';
 import { Skeleton } from '@/ui/Skeleton';
 
 type DataViewProps<TData extends ReactTableRowData = ReactTableRowData> = {
@@ -362,7 +362,7 @@ function DataViewSearchPopover() {
   const defaultSearch = table.getState().globalFilter as string;
   const form = useZodForm({
     schema: searchSchema,
-    defaultValues: { search: '' },
+    defaultValues: { search: defaultSearch },
   });
 
   const handleSubmitSearchInput = form.handleSubmit(({ search }) => {
@@ -379,14 +379,8 @@ function DataViewSearchPopover() {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger>
-        <Button
-          variant="ghost"
-          size="auto"
-          className="text-xl center"
-        >
-          <IoSearchOutline />
-        </Button>
+      <PopoverTrigger className={buttonVariants({ variant: 'ghost', size: 'auto', className: 'text-xl center' })}>
+        <IoSearchOutline />
       </PopoverTrigger>
       <PopoverContent className="relative">
         <FormProvider {...form}>
@@ -400,27 +394,35 @@ function DataViewSearchPopover() {
               name="search"
               render={({ field }) => (
                 <FormGroup>
-                  <Input placeholder="Search" defaultValue={defaultSearch} {...field} />
+                  <Input placeholder="Search" {...field} />
                 </FormGroup>
               )}
             />
             <div className="flex gap-2 justify-end items-center pt-1">
-              <TooltipWrapper text="Clear">
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  className="flex gap-1 items-center"
-                  onClick={handleClearSearchInput}
-                >
-                  <MdClear className="text-base" />
-                </Button>
-              </TooltipWrapper>
-              <TooltipWrapper text="Search">
-                <Button type="submit" size="sm" className="flex gap-1 items-center">
-                  <IoSearchOutline className="text-base" />
-                </Button>
-              </TooltipWrapper>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger
+                    type="button"
+                    onClick={handleClearSearchInput}
+                    className={buttonVariants({ variant: 'outline', size: 'sm', className: 'flex gap-1 items-center' })}
+                  >
+                    <MdClear className="text-base" />
+                  </TooltipTrigger>
+                  <TooltipContent>Clear</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger
+                    type="submit"
+                    className={buttonVariants({ size: 'sm', className: 'flex gap-1 items-center' })}
+                  >
+                    <IoSearchOutline className="text-base" />
+                  </TooltipTrigger>
+                  <TooltipContent>Search</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </Form>
         </FormProvider>
