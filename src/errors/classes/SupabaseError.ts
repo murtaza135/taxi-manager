@@ -1,14 +1,14 @@
 import { PostgrestError, AuthError } from '@supabase/supabase-js';
-import { APIError } from '@/errors2/classes/APIError';
-import { ErrorType, APIErrorLike } from '@/errors2/types';
-import { extractErrorTypeFromSupabaseError } from '@/errors2/utils';
-import { errorTitles, errorDescriptions } from '@/errors2/errorMessages';
+import { APIError } from '@/errors/classes/APIError';
+import { ErrorType, APIErrorLike } from '@/errors/types';
+import { extractErrorTypeFromSupabaseError } from '@/errors/utils';
+import { errorTitles, errorDescriptions } from '@/errors/errorMessages';
 
 export type SupabaseErrorConstructorOptions = {
   globalTitle?: string;
   globalDescription?: string;
-  titles: Record<ErrorType, string>;
-  descriptions: Record<ErrorType, string>;
+  titles?: Record<ErrorType, string>;
+  descriptions?: Record<ErrorType, string>;
 };
 
 export class SupabaseError extends APIError {
@@ -23,11 +23,11 @@ export class SupabaseError extends APIError {
 
     const type = extractErrorTypeFromSupabaseError(error, status);
 
-    const title = options?.titles[type]
+    const title = options?.titles?.[type]
       ?? options?.globalTitle
       ?? errorTitles[type];
 
-    const description = options?.descriptions[type]
+    const description = options?.descriptions?.[type]
       ?? options?.globalDescription
       ?? errorDescriptions[type];
 

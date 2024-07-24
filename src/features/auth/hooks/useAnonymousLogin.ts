@@ -3,8 +3,7 @@ import { useNavigate, useRevalidator } from 'react-router-dom';
 import { User, Session } from '@supabase/supabase-js';
 import { useToast } from '@/ui/toast';
 import { supabase } from '@/config/api/supabaseClient';
-import { AppError } from '@/errors/AppError';
-import { buildAppErrorFromSupabaseError } from '@/errors/supabaseErrorUtils';
+import { SupabaseError } from '@/errors/classes/SupabaseError';
 
 export type AnonymousAuthResponseSuccessData = {
   user: User;
@@ -13,16 +12,7 @@ export type AnonymousAuthResponseSuccessData = {
 
 export async function anonymousLogin() {
   const { data, error } = await supabase.auth.signInAnonymously();
-
-  if (error) {
-    throw buildAppErrorFromSupabaseError(error)
-      .setTitle('Login Error')
-      .setDescription('Looks like things didn\'t go as planned. Maybe you would like to retry?')
-      .setDescription('offline', 'You are offline! Please reconnect to the internet to continue using the app.')
-      .setDescription('tooManyRequests', 'Too many login attempts! Please try again later.')
-      .build();
-  }
-
+  if (error) throw new SupabaseError(error, null, { globalTitle: 'Login Error' });
   return data as AnonymousAuthResponseSuccessData;
 }
 
@@ -38,7 +28,7 @@ export function useAnonymousLogin(options?: Options) {
 
   const mutation = useMutation<
     AnonymousAuthResponseSuccessData,
-    AppError
+    SupabaseError
   >({
     mutationFn: anonymousLogin,
     onSuccess: async () => {

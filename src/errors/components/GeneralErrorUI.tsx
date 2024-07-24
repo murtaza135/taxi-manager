@@ -2,11 +2,12 @@ import { useNavigate, useRevalidator, useRouteError } from 'react-router-dom';
 import { FaTriangleExclamation } from 'react-icons/fa6';
 import { ErrorContainer, ErrorIcon, ErrorTitle, ErrorMessage, ErrorButtons } from '@/ui/Error';
 import { Button } from '@/ui/Button';
-import { AppError } from '@/errors/AppError';
+import { AppError } from '@/errors/classes/AppError';
+import { errorTitles, errorDescriptions } from '@/errors/errorMessages';
 
 const defaultErrorData = {
-  title: 'Oops! Something went wrong!',
-  description: 'Looks like things didn\'t go as planned. Maybe you would like to retry?',
+  title: errorTitles.unknown,
+  description: errorDescriptions.unknown,
 };
 
 export function GeneralErrorUI() {
@@ -14,16 +15,16 @@ export function GeneralErrorUI() {
   const { revalidate } = useRevalidator();
   const error = useRouteError();
 
-  const errorData = error instanceof AppError
-    ? { title: error.title, description: error.description }
+  const { title, description } = error instanceof AppError
+    ? error
     : defaultErrorData;
 
   return (
     <ErrorContainer>
       <ErrorIcon icon={<FaTriangleExclamation />} color="danger" className="pb-2" />
       <div className="space-y-2">
-        <ErrorTitle className="text-2xl">{errorData.title}</ErrorTitle>
-        <ErrorMessage>{errorData.description}</ErrorMessage>
+        <ErrorTitle className="text-2xl">{title}</ErrorTitle>
+        <ErrorMessage>{description}</ErrorMessage>
       </div>
       <ErrorButtons>
         <Button

@@ -5,10 +5,9 @@ import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { supabase } from '@/config/api/supabaseClient';
-import { buildAppErrorFromSupabaseError } from '@/errors/supabaseErrorUtils';
-import { AppError } from '@/errors/AppError';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { driverPictureQueryOptions } from '@/features/drivers/hooks/useDriverPicture';
+import { SupabaseError } from '@/errors/classes/SupabaseError';
 
 const fetchSize = 50;
 
@@ -56,13 +55,9 @@ async function getDrivers(
   if (status === 404) return { data: [], count: 0 };
 
   if (error) {
-    throw buildAppErrorFromSupabaseError(error, status)
-      .setTitle('Could not fetch drivers')
-      .setDescription('Something went wrong')
-      .setDescription('notFound', 'You currently have no drivers')
-      .setDescription('offline', 'You are offline! Please reconnect to continue using the app.')
-      .setDescription('tooManyRequests', 'Something went wrong. Please try again later.')
-      .build();
+    throw new SupabaseError(error, status, {
+      globalTitle: 'Could not fetch drivers',
+    });
   }
 
   const drivers = await Promise.all(
@@ -84,7 +79,7 @@ async function getDrivers(
 
 export function driversQueryOptions(search: string = '') {
   return infiniteQueryOptions<
-    DriversResult, AppError, InfiniteData<DriversResult, number>, QueryKey, number
+    DriversResult, SupabaseError, InfiniteData<DriversResult, number>, QueryKey, number
   >({
     queryKey: ['drivers', 'list', { search }],
     queryFn: ({ pageParam }) => getDrivers({ search, pageParam }),

@@ -4,7 +4,7 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { companyOptions } from '@/features/auth/hooks/useCompany';
 import { companyLogoOptions } from '@/features/auth/hooks/useCompanyLogo';
 import { getLocalSession } from '@/features/auth/hooks/useLocalSession';
-import { AppError } from '@/errors/AppError';
+import { AppError } from '@/errors/classes/AppError';
 import { logout } from '@/features/auth/hooks/useLogout';
 import { toast } from '@/ui/toast';
 import { ContentContainer } from '@/ui/Container';

@@ -3,8 +3,7 @@ import { supabase } from '@/config/api/supabaseClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
-import { AppError } from '@/errors/AppError';
-import { buildAppErrorFromSupabaseError } from '@/errors/supabaseErrorUtils';
+import { SupabaseError } from '@/errors/classes/SupabaseError';
 
 type CompanyDetails = Pick<
   Tables<'company'>,
@@ -22,17 +21,16 @@ async function getCompany(): Promise<CompanyDetails> {
     .single();
 
   if (error) {
-    throw buildAppErrorFromSupabaseError(error, status)
-      .setTitle('Could not load company data')
-      .setDescription('Looks like things didn\'t go as planned. Maybe you would like to retry?')
-      .build();
+    throw new SupabaseError(error, status, {
+      globalTitle: 'Could not load company data',
+    });
   }
 
   return data;
 }
 
 export function companyOptions() {
-  return queryOptions<CompanyDetails, AppError>({
+  return queryOptions<CompanyDetails, SupabaseError>({
     queryKey: ['auth', 'company'],
     queryFn: getCompany,
   });

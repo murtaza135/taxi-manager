@@ -1,4 +1,4 @@
-import { ErrorType } from '@/errors2/types';
+import { ErrorType } from '@/errors/types';
 
 export const errorTitles: Record<ErrorType, string> = {
   offline: 'No Internet Connection',
@@ -9,7 +9,7 @@ export const errorTitles: Record<ErrorType, string> = {
   conflict: 'Resource Already Exists',
   tooManyRequests: 'Too Many Requests',
   server: 'Server Error',
-  unknown: 'Something Went Wrong.',
+  unknown: 'Oops! Something went wrong!',
 } as const;
 
 export const errorDescriptions: Record<ErrorType, string> = {

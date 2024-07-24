@@ -8,3 +8,9 @@ export type ErrorLike = {
   [key: string]: unknown;
   message: string;
 };
+
+export type APIErrorLike = {
+  [key: string]: unknown;
+  message: string;
+  status: number;
+};

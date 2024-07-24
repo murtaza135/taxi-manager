@@ -4,21 +4,16 @@ import { User, Session, WeakPassword } from '@supabase/supabase-js';
 import { useToast } from '@/ui/toast';
 import { supabase } from '@/config/api/supabaseClient';
 import { LoginFormSchema } from '@/features/auth/schemas';
-import { AppError } from '@/errors/AppError';
-import { buildAppErrorFromSupabaseError } from '@/errors/supabaseErrorUtils';
+import { SupabaseError } from '@/errors/classes/SupabaseError';
 
 export async function login(args: LoginFormSchema) {
   const { data, error } = await supabase.auth.signInWithPassword(args);
 
   if (error) {
-    throw buildAppErrorFromSupabaseError(error)
-      .setTitle('Could not login')
-      .setDescription('Invalid credentials')
-      .setDescription('offline', 'You are offline! Please reconnect to the internet to login.')
-      .setDescription('tooManyRequests', 'Too many login attempts! Please try again later.')
-      .setDescription('unknown', 'Something went wrong')
-      .setDescription('server', 'Something went wrong')
-      .build();
+    throw new SupabaseError(error, null, {
+      globalTitle: 'Could not login',
+      globalDescription: 'Invalid credentials',
+    });
   }
 
   return data;
@@ -42,7 +37,7 @@ export function useLogin(options?: Options) {
 
   const mutation = useMutation<
     AuthTokenResponsePasswordSuccessData,
-    AppError,
+    SupabaseError,
     LoginFormSchema
   >({
     mutationFn: login,

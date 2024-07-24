@@ -1,5 +1,5 @@
 import { PostgrestError, AuthError, isAuthError } from '@supabase/supabase-js';
-import { ErrorLike, APIErrorLike, ErrorType } from '@/errors2/types';
+import { ErrorLike, APIErrorLike, ErrorType } from '@/errors/types';
 
 export function isErrorLike(error: unknown): error is ErrorLike {
   return !!error
@@ -18,7 +18,7 @@ export function extractErrorTypeFromSupabaseError(
   error: AuthError | PostgrestError | APIErrorLike,
   status?: number | null | undefined,
 ): ErrorType {
-  if (!status) return 'unknown';
+  if (status === null || status === undefined) return 'unknown';
   if (status === 0 && !window.navigator.onLine) return 'offline';
   if (status === 0 && window.navigator.onLine) return 'server';
   if (status >= 500) return 'server';
