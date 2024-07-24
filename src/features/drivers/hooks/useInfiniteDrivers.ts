@@ -65,20 +65,19 @@ async function getDrivers(
       .build();
   }
 
-  const drivers = data.map(async (driver) => {
-    const { name, number_plate, picture_path, ...rest } = driver;
-    return {
+  const drivers = await Promise.all(
+    data.map(async ({ name, number_plate, picture_path, ...rest }) => ({
       ...rest,
       name: capitalizeEachWord(name ?? 'Unknown'),
       number_plate: number_plate?.toUpperCase() ?? null,
       picture_src: picture_path
         ? await queryClient.ensureQueryData(driverPictureQueryOptions(picture_path))
         : null,
-    };
-  });
+    })),
+  );
 
   return {
-    data: await Promise.all(drivers),
+    data: drivers,
     count: count ?? 0,
   };
 }

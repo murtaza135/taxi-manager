@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useReactTable, getCoreRowModel, RowSelectionState, LayoutState } from '@tanstack/react-table';
 import { useLocalStorage } from 'usehooks-ts';
 import { layoutDeserializer } from '@/lib/tanstack-table/utils';
