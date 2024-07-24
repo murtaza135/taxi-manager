@@ -16,7 +16,7 @@ import {
 import { columns, mapper } from '@/features/drivers/columns';
 import { useInfiniteDrivers } from '@/features/drivers/hooks/useInfiniteDrivers';
 import { Button } from '@/ui/Button';
-import { usePrefetchOnScroll } from '@/hooks/usePrefetchOnScroll';
+import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 
 export function DriversTable() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
@@ -27,15 +27,16 @@ export function DriversTable() {
     { deserializer: layoutDeserializer },
   );
 
-  const { data, fetchNextPage, isFetching } = useInfiniteDrivers(globalFilter);
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteDrivers(globalFilter);
 
+  // TODO combine into useInfiniteDrivers
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.data) ?? [],
     [data],
   );
 
   const fetchedCount = flatData.length;
-  const totalFetchableCount = data.pages[0].count;
+  const fetchableCount = data.pages[0].count;
 
   const table = useReactTable({
     data: flatData,
@@ -44,26 +45,21 @@ export function DriversTable() {
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
     state: { rowSelection, globalFilter },
-    meta: { layout, onLayoutChange: setLayout, fetchedCount, totalFetchableCount },
+    meta: { layout, onLayoutChange: setLayout, fetchedCount, fetchableCount },
   });
 
-  // we need a reference to the scrolling element for logic down below
-  // const ref = useRef<HTMLDivElement>(null);
-
-  // eslint-disable-next-line max-len
-  const { ref, isFetching: isFetchingData, prefetchOnScroll } = usePrefetchOnScroll<HTMLDivElement>({
-    fetchFn: fetchNextPage,
-    isFetching,
-    deltaFromBottom: layout === 'grid' ? 1000 : 500,
-    fetchedCount: flatData.length,
-    totalFetchableCount: data.pages[0].count,
+  const { ref, fetchOnScroll } = useFetchOnScroll<HTMLDivElement>({
+    fetchNext: fetchNextPage,
+    hasMore: fetchedCount < fetchableCount,
+    fetchCondition: !isFetchingNextPage,
+    scrollThreshold: layout === 'grid' ? 1000 : 500,
   });
 
   // a check on mount and after a fetch to see if the table is already
-  // scrolled to the bottomand immediately needs to fetch more data
+  // scrolled to the bottom and immediately needs to fetch more data
   useEffect(() => {
-    void prefetchOnScroll();
-  }, [prefetchOnScroll]);
+    void fetchOnScroll();
+  }, [fetchOnScroll]);
 
   return (
     <DataView table={table}>
@@ -81,16 +77,16 @@ export function DriversTable() {
       {layout === 'table' && (
         <DataViewTable
           ref={ref}
-          isFetching={isFetchingData}
-          onScroll={prefetchOnScroll}
+          isFetching={isFetchingNextPage}
+          onScroll={fetchOnScroll}
         />
       )}
       {layout === 'grid' && (
         <DataViewGrid
           mapper={mapper}
           ref={ref}
-          isFetching={isFetchingData}
-          onScroll={prefetchOnScroll}
+          isFetching={isFetchingNextPage}
+          onScroll={fetchOnScroll}
         />
       )}
     </DataView>

@@ -620,12 +620,12 @@ function DataViewRowSelectionCount() {
   const table = useReactTableContext();
   const { rowSelection } = table.getState();
   const rowSelectionCount = Object.keys(rowSelection).length;
-  const totalFetchableCount = table.options.meta?.totalFetchableCount;
+  const fetchableCount = table.options.meta?.fetchableCount;
 
   return (
     <p className="text-sm">
       Selected {rowSelectionCount}
-      {totalFetchableCount && <> of {totalFetchableCount}</>}
+      {fetchableCount && <> of {fetchableCount}</>}
     </p>
   );
 }

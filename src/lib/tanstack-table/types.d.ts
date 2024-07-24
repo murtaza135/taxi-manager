@@ -7,7 +7,7 @@ declare module '@tanstack/table-core' {
     layout?: LayoutState;
     onLayoutChange?: (layout: LayoutState) => void;
     fetchedCount?: number;
-    totalFetchableCount?: number;
+    fetchableCount?: number;
   }
 }
 
