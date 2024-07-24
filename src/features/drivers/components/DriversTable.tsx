@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useReactTable, getCoreRowModel, RowSelectionState, LayoutState } from '@tanstack/react-table';
+import { useReactTable, getCoreRowModel, RowSelectionState, LayoutState, VisibilityState } from '@tanstack/react-table';
 import { useLocalStorage } from 'usehooks-ts';
 import { layoutDeserializer } from '@/lib/tanstack-table/utils';
 import {
@@ -17,17 +17,22 @@ import { columns, mapper } from '@/features/drivers/columns';
 import { useInfiniteDrivers } from '@/features/drivers/hooks/useInfiniteDrivers';
 import { Button } from '@/ui/Button';
 import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
+import { useSearchParam } from '@/hooks/useSearchParam';
 
 export function DriversTable() {
+  const [globalFilter, setGlobalFilter] = useSearchParam<string>('search');
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-  const [globalFilter, setGlobalFilter] = useState<string>('');
+  const [columnVisibility, setColumnVisibility] = useLocalStorage<VisibilityState>(
+    'drivers.dataview.column-visibility',
+    {},
+  );
   const [layout, setLayout] = useLocalStorage<LayoutState>(
     'drivers.dataview.layout',
     'table',
     { deserializer: layoutDeserializer },
   );
 
-  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteDrivers(globalFilter);
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteDrivers(globalFilter ?? '');
 
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.data) ?? [],
@@ -41,9 +46,10 @@ export function DriversTable() {
     data: flatData,
     columns: columns[layout],
     getCoreRowModel: getCoreRowModel(),
-    onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
-    state: { rowSelection, globalFilter },
+    onRowSelectionChange: setRowSelection,
+    onColumnVisibilityChange: setColumnVisibility,
+    state: { globalFilter, rowSelection, columnVisibility },
     meta: { layout, onLayoutChange: setLayout, fetchedCount, fetchableCount },
   });
 
