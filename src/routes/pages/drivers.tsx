@@ -3,11 +3,23 @@ import { useScrollLock } from 'usehooks-ts';
 import { Title } from '@/features/title/components/Title';
 import { DriversTable } from '@/features/drivers/components/DriversTable';
 import { GeneralErrorUI } from '@/errors/components/GeneralErrorUI';
+import {
+  DataViewTableSkeleton,
+  DataViewContainerSkeleton,
+  DataViewTopBarSkeleton,
+} from '@/ui/dataview/DataView.skeleton';
 
 const driversPageLoader = (_queryClient: QueryClient) => () => null;
 
 function DriversPageSuspenseBoundary() {
-  return <div>DriversPageSuspenseBoundary</div>;
+  useScrollLock();
+
+  return (
+    <DataViewContainerSkeleton>
+      <DataViewTopBarSkeleton />
+      <DataViewTableSkeleton />
+    </DataViewContainerSkeleton>
+  );
 }
 
 function DriversPageErrorBoundary() {

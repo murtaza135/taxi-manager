@@ -121,7 +121,7 @@ const DataViewTable = forwardRef<
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columnDefs.length} className="">
+              <TableCell colSpan={columnDefs.length}>
                 No Results.
               </TableCell>
             </TableRow>

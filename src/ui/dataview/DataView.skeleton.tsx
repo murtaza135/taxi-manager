@@ -1,7 +1,22 @@
+import { ReactNode } from 'react';
 import { useReactTableContext } from '@/lib/tanstack-table/ReactTable';
-import { TableRow, TableCell } from '@/ui/dataview/Table';
+import { Table, TableBody, TableRow, TableCell } from '@/ui/dataview/Table';
 import { Skeleton } from '@/ui/Skeleton';
 import { Separator } from '@/ui/Separator';
+import { cn } from '@/utils/cn';
+
+type DataViewContainerSkeletonProps = {
+  className?: string;
+  children?: ReactNode;
+};
+
+function DataViewContainerSkeleton({ children, className }: DataViewContainerSkeletonProps) {
+  return (
+    <div className={cn('flex flex-col gap-3 h-[calc(100dvh-5rem)] pb-5 pwa:pb-[4.25rem]', className)}>
+      {children}
+    </div>
+  );
+}
 
 function DataViewTopBarSkeleton() {
   return (
@@ -17,6 +32,28 @@ function DataViewTopBarSkeleton() {
         <Skeleton className="h-5 w-full max-w-32" />
       </div>
       <Separator className="mt-2" />
+    </div>
+  );
+}
+
+function DataViewTableSkeleton() {
+  return (
+    <div className={cn('w-full grid rounded-md overflow-hidden')}>
+      <Table>
+        <TableBody>
+          {[...Array(16).keys()].map((rowIndex) => (
+            <TableRow key={rowIndex}>
+              {[...Array(5).keys()].map((index) => (
+                <TableCell key={index} className="w-fit p-0">
+                  <Skeleton className="py-4 px-10 h-12 rounded-none bg-achromatic-light dark:bg-achromatic-darker">
+                    <Skeleton className="h-full min-w-10 bg-achromatic-lighter dark:bg-achromatic-dark" />
+                  </Skeleton>
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 }
@@ -60,7 +97,9 @@ function DataViewCardSkeleton() {
 }
 
 export {
+  DataViewContainerSkeleton,
   DataViewTopBarSkeleton,
+  DataViewTableSkeleton,
   DataViewTableRowSkeleton,
   DataViewCardSkeleton,
 };
