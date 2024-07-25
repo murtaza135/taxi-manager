@@ -1,6 +1,25 @@
 import { useReactTableContext } from '@/lib/tanstack-table/ReactTable';
 import { TableRow, TableCell } from '@/ui/dataview/Table';
 import { Skeleton } from '@/ui/Skeleton';
+import { Separator } from '@/ui/Separator';
+
+function DataViewTopBarSkeleton() {
+  return (
+    <div>
+      <div className="flex justify-between items-center gap-4 sticky top-0">
+        <div className="flex gap-3 items-center">
+          <Skeleton className="h-8 w-8 rounded-full" />
+          <Skeleton className="h-6 w-6" />
+          <Skeleton className="h-6 w-6" />
+          <Skeleton className="h-6 w-6" />
+          <Skeleton className="h-6 w-6" />
+        </div>
+        <Skeleton className="h-5 w-full max-w-32" />
+      </div>
+      <Separator className="mt-2" />
+    </div>
+  );
+}
 
 function DataViewTableRowSkeleton() {
   const table = useReactTableContext();
@@ -41,6 +60,7 @@ function DataViewCardSkeleton() {
 }
 
 export {
+  DataViewTopBarSkeleton,
   DataViewTableRowSkeleton,
   DataViewCardSkeleton,
 };

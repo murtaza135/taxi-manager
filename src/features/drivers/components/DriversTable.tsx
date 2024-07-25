@@ -20,6 +20,7 @@ import { useInfiniteDrivers } from '@/features/drivers/hooks/useInfiniteDrivers'
 import { Button } from '@/ui/Button';
 import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 import { useSearchParam } from '@/hooks/useSearchParam';
+import { DataViewTopBarSkeleton } from '@/ui/dataview/DataView.skeleton';
 
 export function DriversTable() {
   const [globalFilter, setGlobalFilter] = useSearchParam<string>('search');
@@ -76,6 +77,7 @@ export function DriversTable() {
 
   return (
     <DataView table={table}>
+      <DataViewTopBarSkeleton />
       <DataViewTopBar>
         <DataViewTopBarSection>
           <Button size="sm" shape="circle" className="text-xl">+</Button>
