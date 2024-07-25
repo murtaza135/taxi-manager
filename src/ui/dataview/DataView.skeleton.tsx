@@ -37,6 +37,28 @@ function DataViewTopBarSkeleton() {
   );
 }
 
+const tableCellSizes = {
+  xs: 'min-w-5',
+  sm: 'min-w-10',
+  md: 'min-w-16',
+  lg: 'min-w-24',
+  xl: 'min-w-32',
+} as const;
+
+type DataViewTableCellSkeletonProps = {
+  size?: keyof typeof tableCellSizes;
+};
+
+function DataViewTableCellSkeleton({ size = 'md' }: DataViewTableCellSkeletonProps) {
+  return (
+    <TableCell className="w-fit p-0">
+      <div className="py-4 px-10 h-12 rounded-none bg-achromatic-lighter dark:bg-achromatic-dark">
+        <Skeleton className={cn('h-full bg-achromatic-light dark:bg-achromatic-darker', tableCellSizes[size])} />
+      </div>
+    </TableCell>
+  );
+}
+
 function DataViewTableRowSkeleton() {
   const table = useReactTableContext();
   const cells = table.getRowModel().rows[1].getVisibleCells();
@@ -44,19 +66,35 @@ function DataViewTableRowSkeleton() {
   return (
     <TableRow>
       {cells.map((cell) => (
-        <TableCell key={cell.id} className="w-full p-0">
-          <Skeleton className="py-4 px-10 h-12 rounded-none bg-achromatic-light dark:bg-achromatic-darker">
-            <Skeleton className="h-full min-w-5 bg-achromatic-lighter dark:bg-achromatic-dark" />
-          </Skeleton>
-        </TableCell>
+        <DataViewTableCellSkeleton key={cell.id} size="xs" />
       ))}
     </TableRow>
   );
 }
 
+function DataViewTableSkeleton() {
+  return (
+    <div className="w-full grid rounded-md overflow-hidden">
+      <Table>
+        <TableBody>
+          {range(16).map((rowIndex) => (
+            <TableRow key={rowIndex}>
+              <DataViewTableCellSkeleton size="xs" />
+              <DataViewTableCellSkeleton size="lg" />
+              <DataViewTableCellSkeleton size="sm" />
+              <DataViewTableCellSkeleton size="md" />
+              <DataViewTableCellSkeleton size="lg" />
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
 function DataViewCardSkeleton() {
   return (
-    <Skeleton className="min-h-[20rem] h-fit w-full flex flex-col gap-10 justify-start items-center rounded-lg overflow-hidden">
+    <Skeleton className="min-h-[20rem] h-full w-full flex flex-col gap-10 justify-start items-center rounded-lg overflow-hidden">
       <div className="h-28 relative mb-10">
         <Skeleton className="h-32 w-32 center rounded-full absolute top-full left-1/2 -translate-x-1/2 -translate-y-1/2 bg-achromatic-light dark:bg-achromatic-darker" />
       </div>
@@ -72,28 +110,6 @@ function DataViewCardSkeleton() {
         <Skeleton className="h-4 max-w-48 w-full bg-achromatic-light dark:bg-achromatic-darker" />
       </div>
     </Skeleton>
-  );
-}
-
-function DataViewTableSkeleton() {
-  return (
-    <div className="w-full grid rounded-md overflow-hidden">
-      <Table>
-        <TableBody>
-          {range(16).map((rowIndex) => (
-            <TableRow key={rowIndex}>
-              {range(5).map((index) => (
-                <TableCell key={index} className="w-fit p-0">
-                  <Skeleton className="py-4 px-10 h-12 rounded-none bg-achromatic-light dark:bg-achromatic-darker">
-                    <Skeleton className="h-full min-w-10 bg-achromatic-lighter dark:bg-achromatic-dark" />
-                  </Skeleton>
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
   );
 }
 
@@ -113,8 +129,9 @@ function DataViewGridSkeleton() {
 export {
   DataViewContainerSkeleton,
   DataViewTopBarSkeleton,
+  DataViewTableCellSkeleton,
   DataViewTableRowSkeleton,
-  DataViewCardSkeleton,
   DataViewTableSkeleton,
+  DataViewCardSkeleton,
   DataViewGridSkeleton,
 };

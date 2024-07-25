@@ -18,7 +18,7 @@ function DriversPageSuspenseBoundary() {
   return (
     <DataViewContainerSkeleton>
       <DataViewTopBarSkeleton />
-      <DataViewTableSkeleton />
+      <DataViewGridSkeleton />
     </DataViewContainerSkeleton>
   );
 }
