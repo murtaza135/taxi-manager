@@ -94,7 +94,8 @@ export function DriversTable() {
       {layout === 'table' && (
         <DataViewTable
           ref={ref}
-          isFetching={isFetchingNextPage}
+          // isFetching={isFetchingNextPage}
+          isFetching
           onScroll={fetchOnScroll}
         />
       )}

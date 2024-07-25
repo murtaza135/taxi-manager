@@ -14,7 +14,6 @@ import { MdClear } from 'react-icons/md';
 import { CgHashtag } from 'react-icons/cg';
 import { FaChevronLeft, FaChevronRight, FaTrashAlt } from 'react-icons/fa';
 import { BiSortAlt2 } from 'react-icons/bi';
-
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import { RiArrowLeftDoubleFill, RiArrowRightDoubleFill } from 'react-icons/ri';
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon, EyeNoneIcon } from '@radix-ui/react-icons';
@@ -69,16 +68,19 @@ function DataView<TData extends ReactTableRowData = ReactTableRowData>(
   );
 }
 
-type DataViewTableRowSkeletonProps = {
-  colSpan?: number;
-};
+function DataViewTableRowSkeleton() {
+  const table = useReactTableContext();
+  const cells = table.getRowModel().rows[1].getVisibleCells();
 
-function DataViewTableRowSkeleton({ colSpan }: DataViewTableRowSkeletonProps) {
   return (
     <TableRow>
-      <TableCell className="w-full p-0" colSpan={colSpan}>
-        <Skeleton className="h-16 w-full flex-grow rounded-none dark:bg-achromatic-darker" />
-      </TableCell>
+      {cells.map((cell) => (
+        <TableCell key={cell.id} className="w-full p-0">
+          <Skeleton className="py-4 px-10 h-12 rounded-none bg-achromatic-light dark:bg-achromatic-darker">
+            <Skeleton className="h-full min-w-5 bg-achromatic-lighter dark:bg-achromatic-dark" />
+          </Skeleton>
+        </TableCell>
+      ))}
     </TableRow>
   );
 }
@@ -143,8 +145,8 @@ const DataViewTable = forwardRef<
           )}
           {isFetching && (
             <>
-              <DataViewTableRowSkeleton colSpan={columnDefs.length} />
-              <DataViewTableRowSkeleton colSpan={columnDefs.length} />
+              <DataViewTableRowSkeleton />
+              <DataViewTableRowSkeleton />
             </>
           )}
         </TableBody>
