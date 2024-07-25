@@ -4,6 +4,7 @@ import { Table, TableBody, TableRow, TableCell } from '@/ui/dataview/Table';
 import { Skeleton } from '@/ui/Skeleton';
 import { Separator } from '@/ui/Separator';
 import { cn } from '@/utils/cn';
+import { range } from '@/utils/array/range';
 
 type DataViewContainerSkeletonProps = {
   className?: string;
@@ -79,9 +80,9 @@ function DataViewTableSkeleton() {
     <div className="w-full grid rounded-md overflow-hidden">
       <Table>
         <TableBody>
-          {[...Array(16).keys()].map((rowIndex) => (
+          {range(16).map((rowIndex) => (
             <TableRow key={rowIndex}>
-              {[...Array(5).keys()].map((index) => (
+              {range(5).map((index) => (
                 <TableCell key={index} className="w-fit p-0">
                   <Skeleton className="py-4 px-10 h-12 rounded-none bg-achromatic-light dark:bg-achromatic-darker">
                     <Skeleton className="h-full min-w-10 bg-achromatic-lighter dark:bg-achromatic-dark" />
@@ -100,7 +101,7 @@ function DataViewGridSkeleton() {
   return (
     <div className="flex gap-4 h-full overflow-hidden">
       <div className="w-full h-fit grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
-        {[...Array(2).keys()].map((index) => (
+        {range(4).map((index) => (
           <DataViewCardSkeleton key={index} />
         ))}
       </div>
