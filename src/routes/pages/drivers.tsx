@@ -2,6 +2,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { useScrollLock } from 'usehooks-ts';
 import { Title } from '@/features/title/components/Title';
 import { DriversTable } from '@/features/drivers/components/DriversTable';
+import { GeneralErrorUI } from '@/errors/components/GeneralErrorUI';
 
 const driversPageLoader = (_queryClient: QueryClient) => () => null;
 
@@ -10,7 +11,7 @@ function DriversPageSuspenseBoundary() {
 }
 
 function DriversPageErrorBoundary() {
-  return <div>DriversPageErrorBoundary</div>;
+  return <GeneralErrorUI />;
 }
 
 function DriversPageComponent() {

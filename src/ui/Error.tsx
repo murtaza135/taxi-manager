@@ -8,7 +8,7 @@ const ErrorContainer = React.forwardRef<
 >(
   ({ className, ...props }, ref) => (
     <div
-      className={cn('flex flex-col justify-center items-center gap-4 text-center max-w-[40rem]', className)}
+      className={cn('flex flex-col justify-center items-center gap-4 text-center', className)}
       ref={ref}
       {...props}
     />
