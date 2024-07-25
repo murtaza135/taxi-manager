@@ -18,6 +18,7 @@ import { Driver } from '@/features/drivers/hooks/queries/useInfiniteDrivers';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { cn } from '@/utils/cn';
 import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
+import { useDeleteDriver } from '@/features/drivers/hooks/mutations/useDeleteDriver';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<Driver>[] = [
@@ -110,18 +111,22 @@ export const tableColumns: ColumnDef<Driver>[] = [
   {
     id: 'Actions',
     header: 'Actions',
-    cell: ({ row }) => (
-      <div className="flex items-center gap-6">
-        <Link to={`/driver/${row.original.id}`} className="center">
-          <Button variant="ghost" className="p-0">
-            <FiEye className="text-xl" />
+    cell: function ActionsCell({ row }) {
+      const { mutate: deleteDriver } = useDeleteDriver(row.original.id);
+
+      return (
+        <div className="flex items-center gap-6">
+          <Link to={`/driver/${row.original.id}`} className="center">
+            <Button variant="ghost" className="p-0">
+              <FiEye className="text-xl" />
+            </Button>
+          </Link>
+          <Button variant="ghost" className="p-0" onClick={() => deleteDriver()}>
+            <FaTrashAlt className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
           </Button>
-        </Link>
-        <Button variant="ghost" className="p-0">
-          <FaTrashAlt className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
-        </Button>
-      </div>
-    ),
+        </div>
+      );
+    },
     enableSorting: false,
     enableHiding: false,
     enableGlobalFilter: false,
