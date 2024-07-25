@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useReactTable, getCoreRowModel, RowSelectionState, LayoutState, VisibilityState } from '@tanstack/react-table';
 import { useLocalStorage } from 'usehooks-ts';
+import { IoReload } from 'react-icons/io5';
 import { layoutDeserializer } from '@/lib/tanstack-table/utils';
 import {
   DataView,
@@ -9,6 +10,7 @@ import {
   DataViewTable,
   DataViewGrid,
   DataViewLayoutDropdown,
+  DataViewDeleteSelectedRowsButton,
   DataViewRowSelectionCount,
   DataViewSearchPopover,
   DataViewColumnVisibilityDropdown,
@@ -32,7 +34,9 @@ export function DriversTable() {
     { deserializer: layoutDeserializer },
   );
 
-  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteDrivers(globalFilter ?? '');
+  // console.log(rowSelection);
+
+  const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteDrivers(globalFilter ?? '');
 
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.data) ?? [],
@@ -46,6 +50,7 @@ export function DriversTable() {
     data: flatData,
     columns: columns[layout],
     getCoreRowModel: getCoreRowModel(),
+    getRowId: ({ id }) => `${id}`,
     onGlobalFilterChange: setGlobalFilter,
     onRowSelectionChange: setRowSelection,
     onColumnVisibilityChange: setColumnVisibility,
@@ -74,6 +79,10 @@ export function DriversTable() {
           <DataViewSearchPopover />
           <DataViewLayoutDropdown />
           <DataViewColumnVisibilityDropdown />
+          <Button variant="ghost" size="auto" className="text-xl center" onClick={() => refetch()}>
+            <IoReload />
+          </Button>
+          <DataViewDeleteSelectedRowsButton onDelete={(ids) => console.log(ids)} />
         </DataViewTopBarSection>
         <DataViewTopBarSection>
           <DataViewRowSelectionCount />

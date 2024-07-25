@@ -12,8 +12,9 @@ import {
 import { IoSearchOutline } from 'react-icons/io5';
 import { MdClear } from 'react-icons/md';
 import { CgHashtag } from 'react-icons/cg';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaTrashAlt } from 'react-icons/fa';
 import { BiSortAlt2 } from 'react-icons/bi';
+
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import { RiArrowLeftDoubleFill, RiArrowRightDoubleFill } from 'react-icons/ri';
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon, EyeNoneIcon } from '@radix-ui/react-icons';
@@ -618,6 +619,37 @@ function DataViewLayoutDropdown() {
   );
 }
 
+type DataViewDeleteSelectedRowsButtonProps = {
+  onDelete?: (ids: string[]) => void;
+};
+
+function DataViewDeleteSelectedRowsButton({
+  onDelete,
+}: DataViewDeleteSelectedRowsButtonProps) {
+  const table = useReactTableContext();
+  const { rowSelection } = table.getState();
+  const disabled = Object.keys(rowSelection).length === 0;
+
+  const handleDelete = () => {
+    if (onDelete) {
+      const selectedIds = Object.keys(rowSelection);
+      onDelete(selectedIds);
+    }
+  };
+
+  return (
+    <Button
+      variant="ghost"
+      size="auto"
+      className="text-lg center text-red-800/90 dark:text-red-500/70"
+      disabled={disabled}
+      onClick={() => handleDelete()}
+    >
+      <FaTrashAlt />
+    </Button>
+  );
+}
+
 function DataViewRowSelectionCount() {
   const table = useReactTableContext();
   const { rowSelection } = table.getState();
@@ -817,6 +849,7 @@ export {
   DataViewColumnSortDropdown,
   DataViewRowsPerPageDropdown,
   DataViewLayoutDropdown,
+  DataViewDeleteSelectedRowsButton,
   DataViewRowSelectionCount,
   DataViewPagination,
   DataViewCheckbox,

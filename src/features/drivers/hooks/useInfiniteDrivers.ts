@@ -13,10 +13,11 @@ const fetchSize = 50;
 export type Driver = Prettify<
   Pick<
     Tables<'driver_view'>,
-    | 'id' | 'phone_number' | 'email'
+    | 'phone_number' | 'email'
     | 'taxi_id' | 'number_plate'
     | 'hire_agreement_id' | 'created_at'
   > & {
+    id: number;
     name: string;
     picture_src: string | null;
   }
@@ -71,7 +72,7 @@ async function getDrivers(
   );
 
   return {
-    data: drivers,
+    data: drivers as Driver[],
     count: count ?? 0,
   };
 }
