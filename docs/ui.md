@@ -57,14 +57,17 @@ export const tableColumns: ColumnDef<CustomData>[] = [
     enableGlobalFilter: false,
   },
   {
+    id: "id",
     accessorKey: 'id',
     header: 'ID',
   },
   {
+    id: "name",
     accessorKey: 'name',
     header: ({ column }) => <DataViewHeader column={column} header="Name" />,
   },
   {
+    id: "avatar",
     accessorKey: 'avatar',
     header: 'Avatar',
     cell: ({ row }) => (
@@ -104,10 +107,12 @@ export const tableColumns: ColumnDef<CustomData>[] = [
 // another ColumnDef for the grid layout
 export const gridColumns: ColumnDef<CustomData>[] = [
   {
+    id: "name",
     accessorKey: 'name',
     header: 'Name',
   },
   {
+    id: "avatar",
     accessorKey: 'avatar',
     header: 'Avatar',
   },
@@ -197,13 +202,20 @@ import {
   ColumnFiltersState,
   PaginationState,
   RowSelectionState,
+  LayoutState,
 } from '@tanstack/react-table';
 import {
+  DataView,
   DataViewTopBar,
-  DataViewPagination,
-  DataViewLayoutType,
-  DataViewLayout,
-} from '@/ui/DataView';
+  DataViewTopBarSection,
+  DataViewTable,
+  DataViewGrid,
+  DataViewLayoutDropdown,
+  DataViewDeleteSelectedRowsButton,
+  DataViewRowSelectionCount,
+  DataViewSearchPopover,
+  DataViewColumnVisibilityDropdown,
+} from '@/ui/dataview/DataView';
 import { columns, mapper } from '@/columns';
 import { data } from '@/data';
 
@@ -213,11 +225,15 @@ export default function Page() {
   const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 50 });
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [globalFilter, setGlobalFilter] = useState<string>('');
-  const [layout, setLayout] = useState<DataViewLayoutType>('table');
+  const [layout, setLayout] = useState<LayoutState>('table');
+
+  const fetchedCount = data.length;
+  const fetchableCount = data.length;
 
   const table = useReactTable({
     data,
     columns: columns[layout],
+    getRowId: ({ id }) => `${id}`,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -228,50 +244,30 @@ export default function Page() {
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     state: { sorting, columnFilters, pagination, rowSelection, globalFilter },
+    meta: { layout, onLayoutChange: setLayout, fetchedCount, fetchableCount },
   });
 
   return (
-    <div className="flex flex-col gap-3">
-      <DataViewTopBar
-        table={table}
-        showSortButton
-        showVisibilityButton
-        showRowsPerPageButton
-        showGlobalFilterInput
-        layout={layout}
-        onChangeLayout={setLayout}
-      />
-      <DataViewLayout
-        layout={layout}
-        table={table}
-        mapper={mapper}
-      />
-      <DataViewPagination
-        table={table}
-        showSelectedRows
-        showPageCount
-        showPageButtons
-      />
-    </div>
+    <DataView table={table}>
+      <DataViewTopBar>
+        <DataViewTopBarSection>
+          <Button size="sm" shape="circle" className="text-xl">+</Button>
+          <DataViewSearchPopover />
+          <DataViewLayoutDropdown />
+          <DataViewColumnVisibilityDropdown />
+          <Button variant="ghost" size="auto" className="text-xl center" onClick={() => refetch()}>
+            <IoReload />
+          </Button>
+          <DataViewDeleteSelectedRowsButton onDelete={(ids) => deleteSelectedRows(ids)} />
+        </DataViewTopBarSection>
+        <DataViewTopBarSection>
+          <DataViewRowSelectionCount />
+        </DataViewTopBarSection>
+      </DataViewTopBar>
+      {layout === 'table' && <DataViewTable />}
+      {layout === 'grid' && <DataViewGrid mapper={mapper} />}
+    </DataView>
   );
-}
-```
-
-### Lower Level Components
-```tsx
-export function LowerLevelComponents() {
-  // hooks
-  // ...
-
-  return (
-    <>
-      <DataViewSearchFilter table={table} />
-      <DataViewColumnVisibilityDropdown table={table} />
-      <DataViewColumnSortDropdown table={table} />
-      <DataViewRowsPerPageDropdown table={table} />
-      <DataViewLayoutDropdown layout={layout} onChangeLayout={onChangeLayout} />
-    </>
-  )
 }
 ```
 
