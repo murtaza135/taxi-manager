@@ -78,7 +78,7 @@ export function DriversTable() {
     <DataView table={table}>
       <DataViewTopBar>
         <DataViewTopBarSection>
-          <Button size="sm" shape="circle" className="text-xl ml-2">+</Button>
+          <Button size="sm" shape="circle" className="text-xl">+</Button>
           <DataViewSearchPopover />
           <DataViewLayoutDropdown />
           <DataViewColumnVisibilityDropdown />

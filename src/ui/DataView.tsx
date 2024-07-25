@@ -335,7 +335,7 @@ type DataViewTopBarProps = {
 function DataViewTopBar({ children, className }: DataViewTopBarProps) {
   return (
     <div className={cn(className)}>
-      <div className="flex justify-between items-center gap-4 sticky top-0">
+      <div className="flex justify-between items-center gap-4 sticky top-0 flex-wrap-reverse">
         {children}
       </div>
       <Separator className="mt-2" />
