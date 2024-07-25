@@ -11,13 +11,13 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/ui/DropdownMenu';
-import { DataViewCheckbox, DataViewCardMainDataMapper } from '@/ui/DataView';
+import { DataViewCheckbox, DataViewCardMainDataMapper } from '@/ui/dataview/DataView';
 import { Avatar, AvatarImage, AvatarPersistentFallback } from '@/ui/Avatar';
 import { Button } from '@/ui/Button';
 import { Driver } from '@/features/drivers/hooks/useInfiniteDrivers';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { cn } from '@/utils/cn';
-import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/Cell';
+import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<Driver>[] = [

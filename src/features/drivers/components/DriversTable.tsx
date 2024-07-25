@@ -14,7 +14,7 @@ import {
   DataViewRowSelectionCount,
   DataViewSearchPopover,
   DataViewColumnVisibilityDropdown,
-} from '@/ui/DataView';
+} from '@/ui/dataview/DataView';
 import { columns, mapper } from '@/features/drivers/columns';
 import { useInfiniteDrivers } from '@/features/drivers/hooks/useInfiniteDrivers';
 import { Button } from '@/ui/Button';

@@ -27,7 +27,7 @@ import mapValues from 'lodash/mapValues';
 import { capitalCase } from 'change-case';
 import { z } from 'zod';
 import { flexRenderHeader, flexRenderCell } from '@/lib/tanstack-table/flexRender';
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/Table';
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/dataview/Table';
 import { Input } from '@/ui/Input';
 import { Button, buttonVariants } from '@/ui/Button';
 import {
@@ -48,7 +48,7 @@ import { useReactTableContext, ReactTable } from '@/lib/tanstack-table/ReactTabl
 import { Popover, PopoverTrigger, PopoverContent } from '@/ui/Popover';
 import { useZodForm, FormProvider, Form, FormTitle, FormField, FormGroup } from '@/ui/Form';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/ui/Tooltip';
-import { Skeleton } from '@/ui/Skeleton';
+import { DataViewTableRowSkeleton, DataViewCardSkeleton } from '@/ui/dataview/DataView.skeleton';
 
 type DataViewProps<TData extends ReactTableRowData = ReactTableRowData> = {
   table: ReactTableType<TData>;
@@ -65,23 +65,6 @@ function DataView<TData extends ReactTableRowData = ReactTableRowData>(
         {children}
       </ReactTable>
     </div>
-  );
-}
-
-function DataViewTableRowSkeleton() {
-  const table = useReactTableContext();
-  const cells = table.getRowModel().rows[1].getVisibleCells();
-
-  return (
-    <TableRow>
-      {cells.map((cell) => (
-        <TableCell key={cell.id} className="w-full p-0">
-          <Skeleton className="py-4 px-10 h-12 rounded-none bg-achromatic-light dark:bg-achromatic-darker">
-            <Skeleton className="h-full min-w-5 bg-achromatic-lighter dark:bg-achromatic-dark" />
-          </Skeleton>
-        </TableCell>
-      ))}
-    </TableRow>
   );
 }
 
@@ -268,27 +251,6 @@ function DataViewCard(
         )}
       </div>
     </div>
-  );
-}
-
-function DataViewCardSkeleton() {
-  return (
-    <Skeleton className="min-h-[20rem] h-full w-full flex flex-col gap-10 justify-start items-center rounded-lg overflow-hidden">
-      <div className="h-28 relative mb-10">
-        <Skeleton className="h-32 w-32 center rounded-full absolute top-full left-1/2 -translate-x-1/2 -translate-y-1/2 bg-achromatic-light dark:bg-achromatic-darker" />
-      </div>
-      <Skeleton className="h-8 max-w-48 w-full bg-achromatic-light dark:bg-achromatic-darker" />
-      <div className="px-6 pb-8 w-full h-fit flex flex-col items-center gap-4">
-        <Skeleton className="h-4 max-w-32 w-full bg-achromatic-light dark:bg-achromatic-darker" />
-        <Skeleton className="h-4 max-w-48 w-full bg-achromatic-light dark:bg-achromatic-darker" />
-        <Skeleton className="h-4 max-w-24 w-full bg-achromatic-light dark:bg-achromatic-darker" />
-        <Skeleton className="h-4 max-w-32 w-full bg-achromatic-light dark:bg-achromatic-darker" />
-        <Skeleton className="h-4 max-w-20 w-full bg-achromatic-light dark:bg-achromatic-darker" />
-        <Skeleton className="h-4 max-w-40 w-full bg-achromatic-light dark:bg-achromatic-darker" />
-        <Skeleton className="h-4 max-w-28 w-full bg-achromatic-light dark:bg-achromatic-darker" />
-        <Skeleton className="h-4 max-w-48 w-full bg-achromatic-light dark:bg-achromatic-darker" />
-      </div>
-    </Skeleton>
   );
 }
 
