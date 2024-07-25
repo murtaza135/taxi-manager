@@ -19,6 +19,7 @@ import { extractInitials } from '@/utils/string/extractInitials';
 import { cn } from '@/utils/cn';
 import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
 import { useDeleteDriver } from '@/features/drivers/hooks/mutations/useDeleteDriver';
+import { useReactTableContext } from '@/lib/tanstack-table/ReactTable';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<Driver>[] = [
@@ -112,7 +113,13 @@ export const tableColumns: ColumnDef<Driver>[] = [
     id: 'Actions',
     header: 'Actions',
     cell: function ActionsCell({ row }) {
-      const { mutate: deleteDriver } = useDeleteDriver(row.original.id);
+      const table = useReactTableContext();
+      const { mutateAsync: deleteDriver } = useDeleteDriver();
+
+      const handleDeleteDriver = async () => {
+        await deleteDriver(row.original.id);
+        table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
+      };
 
       return (
         <div className="flex items-center gap-6">
@@ -121,7 +128,7 @@ export const tableColumns: ColumnDef<Driver>[] = [
               <FiEye className="text-xl" />
             </Button>
           </Link>
-          <Button variant="ghost" className="p-0" onClick={() => deleteDriver()}>
+          <Button variant="ghost" className="p-0" onClick={handleDeleteDriver}>
             <FaTrashAlt className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
           </Button>
         </div>

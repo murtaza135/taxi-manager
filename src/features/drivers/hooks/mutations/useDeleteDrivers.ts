@@ -6,18 +6,18 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
 
-export async function deleteDriver(id: number) {
+export async function deleteDrivers(ids: number[]) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
 
   const { error, status } = await supabase
     .from('driver')
     .delete()
     .eq('auth_id', session.user.id)
-    .eq('id', id);
+    .in('id', ids);
 
   if (error) {
     throw new SupabaseError(error, status, {
-      globalTitle: 'Could not delete driver',
+      globalTitle: 'Could not delete drivers',
       globalDescription: 'Something went wrong',
     });
   }
@@ -25,18 +25,23 @@ export async function deleteDriver(id: number) {
   return null;
 }
 
-export function useDeleteDriver() {
+export function useDeleteDrivers() {
   const queryClient = useQueryClient();
   const { revalidate } = useRevalidator();
   const { toast } = useToast();
 
-  const mutation = useMutation<null, SupabaseError, number>({
-    mutationFn: deleteDriver,
-    onSuccess: async (_data, id) => {
+  const mutation = useMutation<null, SupabaseError, number[]>({
+    mutationFn: deleteDrivers,
+    onSuccess: async (_data, ids) => {
+      const queryInvalidations = ids.map((id) => (
+        queryClient.invalidateQueries({ queryKey: ['drivers', id] })
+      ));
+
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['drivers', 'list'] }),
-        queryClient.invalidateQueries({ queryKey: ['drivers', id] }),
+        ...queryInvalidations,
       ]);
+
       revalidate();
     },
     onError: (error) => {

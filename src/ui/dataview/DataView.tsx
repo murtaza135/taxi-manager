@@ -629,7 +629,9 @@ function DataViewDeleteSelectedRowsButton({
 function DataViewRowSelectionCount() {
   const table = useReactTableContext();
   const { rowSelection } = table.getState();
-  const rowSelectionCount = Object.keys(rowSelection).length;
+  const rowSelectionCount = Object.values(rowSelection)
+    .filter((isSelected) => isSelected)
+    .length;
   const fetchableCount = table.options.meta?.fetchableCount;
 
   return (

@@ -20,12 +20,15 @@ import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 import { useSearchParam } from '@/hooks/useSearchParam';
 import { useDriversColumnVisibility } from '@/features/drivers/hooks/table/useDriversColumnVisibility';
 import { useDriversLayout } from '@/features/drivers/hooks/table/useDriversLayout';
+import { useDeleteDrivers } from '@/features/drivers/hooks/mutations/useDeleteDrivers';
 
 export function DriversTable() {
   const [globalFilter, setGlobalFilter] = useSearchParam<string>('search');
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [columnVisibility, setColumnVisibility] = useDriversColumnVisibility();
   const [layout, setLayout] = useDriversLayout();
+
+  const { mutateAsync: deleteDrivers } = useDeleteDrivers();
 
   const {
     data,
@@ -67,6 +70,15 @@ export function DriversTable() {
     void fetchOnScroll();
   }, [fetchOnScroll]);
 
+  const handleDeleteDrivers = async (ids: string[]) => {
+    const idNumbers = ids
+      .map((id) => Number(id))
+      .filter((id) => !Number.isNaN(id));
+
+    await deleteDrivers(idNumbers);
+    table.resetRowSelection();
+  };
+
   return (
     <DataView table={table}>
       <DataViewTopBar>
@@ -78,7 +90,7 @@ export function DriversTable() {
           <Button variant="ghost" size="auto" className="text-xl center" onClick={() => refetch()}>
             <IoReload />
           </Button>
-          <DataViewDeleteSelectedRowsButton onDelete={(ids) => console.log(ids)} />
+          <DataViewDeleteSelectedRowsButton onDelete={handleDeleteDrivers} />
         </DataViewTopBarSection>
         <DataViewTopBarSection>
           <DataViewRowSelectionCount />
