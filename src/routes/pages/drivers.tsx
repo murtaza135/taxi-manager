@@ -10,8 +10,12 @@ import {
   DataViewGridSkeleton,
 } from '@/ui/dataview/DataView.skeleton';
 import { useDriversLayout } from '@/features/drivers/hooks/table/useDriversLayout';
+import { driversInfiniteQueryOptions } from '@/features/drivers/hooks/queries/useInfiniteDrivers';
 
-const driversPageLoader = (_queryClient: QueryClient) => () => null;
+const driversPageLoader = (queryClient: QueryClient) => () => {
+  void queryClient.prefetchInfiniteQuery(driversInfiniteQueryOptions());
+  return null;
+};
 
 function DriversPageSuspenseBoundary() {
   useScrollLock();
@@ -34,10 +38,10 @@ function DriversPageComponent() {
   useScrollLock();
 
   return (
-    <div>
+    <>
       <Title title="Drivers" />
       <DriversTable />
-    </div>
+    </>
   );
 }
 

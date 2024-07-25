@@ -90,7 +90,7 @@ async function getDrivers(
   };
 }
 
-export function driversQueryOptions(search: string = '') {
+export function driversInfiniteQueryOptions(search: string = '') {
   return infiniteQueryOptions<
     DriversResult, SupabaseError, InfiniteData<DriversResult, number>, QueryKey, number
   >({
@@ -105,6 +105,6 @@ export function driversQueryOptions(search: string = '') {
 }
 
 export function useInfiniteDrivers(search: string = '') {
-  const query = useSuspenseInfiniteQuery(driversQueryOptions(search));
+  const query = useSuspenseInfiniteQuery(driversInfiniteQueryOptions(search));
   return query;
 }
