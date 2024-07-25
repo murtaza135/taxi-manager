@@ -38,7 +38,7 @@ function DataViewTopBarSkeleton() {
 }
 
 const tableCellSizes = {
-  xs: 'min-w-5',
+  xs: 'min-w-4',
   sm: 'min-w-10',
   md: 'min-w-16',
   lg: 'min-w-24',
@@ -46,14 +46,14 @@ const tableCellSizes = {
 } as const;
 
 type DataViewTableCellSkeletonProps = {
-  size?: keyof typeof tableCellSizes;
+  minSize?: keyof typeof tableCellSizes;
 };
 
-function DataViewTableCellSkeleton({ size = 'md' }: DataViewTableCellSkeletonProps) {
+function DataViewTableCellSkeleton({ minSize = 'md' }: DataViewTableCellSkeletonProps) {
   return (
     <TableCell className="w-fit p-0">
       <div className="py-4 px-10 h-12 rounded-none bg-achromatic-lighter dark:bg-achromatic-dark">
-        <Skeleton className={cn('h-full bg-achromatic-light dark:bg-achromatic-darker', tableCellSizes[size])} />
+        <Skeleton className={cn('h-full bg-achromatic-light dark:bg-achromatic-darker', tableCellSizes[minSize])} />
       </div>
     </TableCell>
   );
@@ -66,7 +66,7 @@ function DataViewTableRowSkeleton() {
   return (
     <TableRow>
       {cells.map((cell) => (
-        <DataViewTableCellSkeleton key={cell.id} size="xs" />
+        <DataViewTableCellSkeleton key={cell.id} minSize="xs" />
       ))}
     </TableRow>
   );
@@ -79,11 +79,11 @@ function DataViewTableSkeleton() {
         <TableBody>
           {range(16).map((rowIndex) => (
             <TableRow key={rowIndex}>
-              <DataViewTableCellSkeleton size="xs" />
-              <DataViewTableCellSkeleton size="lg" />
-              <DataViewTableCellSkeleton size="sm" />
-              <DataViewTableCellSkeleton size="md" />
-              <DataViewTableCellSkeleton size="lg" />
+              <DataViewTableCellSkeleton minSize="xs" />
+              <DataViewTableCellSkeleton minSize="lg" />
+              <DataViewTableCellSkeleton minSize="sm" />
+              <DataViewTableCellSkeleton minSize="md" />
+              <DataViewTableCellSkeleton minSize="lg" />
             </TableRow>
           ))}
         </TableBody>
