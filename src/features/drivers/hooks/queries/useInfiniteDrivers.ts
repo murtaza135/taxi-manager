@@ -7,7 +7,6 @@ import { supabase } from '@/config/api/supabaseClient';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { driverPictureQueryOptions } from '@/features/drivers/hooks/queries/useDriverPicture';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
-import { sleep } from '@/utils/sleep';
 
 const fetchSize = 50;
 
@@ -49,7 +48,6 @@ type DriversQueryFnOptions = {
 async function getDrivers(
   { search = '', pageParam = 0 }: DriversQueryFnOptions,
 ): Promise<DriversResult> {
-  await sleep(5000);
   const session = await queryClient.ensureQueryData(sessionOptions());
 
   const from = fetchSize * pageParam;
