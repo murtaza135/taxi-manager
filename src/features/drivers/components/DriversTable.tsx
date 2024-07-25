@@ -34,8 +34,6 @@ export function DriversTable() {
     { deserializer: layoutDeserializer },
   );
 
-  // console.log(rowSelection);
-
   const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteDrivers(globalFilter ?? '');
 
   const flatData = useMemo(

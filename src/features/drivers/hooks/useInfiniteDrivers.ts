@@ -10,6 +10,18 @@ import { SupabaseError } from '@/errors/classes/SupabaseError';
 
 const fetchSize = 50;
 
+type DriverDataFromSupabase = {
+  id: number;
+  name: string | null;
+  phone_number: string | null;
+  email: string | null;
+  picture_path: string | null;
+  taxi_id: number | null;
+  number_plate: string | null;
+  hire_agreement_id: number | null;
+  created_at: string | null;
+};
+
 export type Driver = Prettify<
   Pick<
     Tables<'driver_view'>,
@@ -50,7 +62,8 @@ async function getDrivers(
     .eq('auth_id', session.user.id)
     .order('created_at', { ascending: false })
     .or(`name.ilike.%${search}%, email.ilike.%${search}%, number_plate.ilike.%${search}%`)
-    .range(from, to);
+    .range(from, to)
+    .returns<DriverDataFromSupabase[]>();
 
   if (status === 404) return { data: [], count: 0 };
 
@@ -72,7 +85,7 @@ async function getDrivers(
   );
 
   return {
-    data: drivers as Driver[],
+    data: drivers,
     count: count ?? 0,
   };
 }
