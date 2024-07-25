@@ -1,8 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useReactTable, getCoreRowModel, RowSelectionState, LayoutState, VisibilityState } from '@tanstack/react-table';
-import { useLocalStorage } from 'usehooks-ts';
+import { useReactTable, getCoreRowModel, RowSelectionState } from '@tanstack/react-table';
 import { IoReload } from 'react-icons/io5';
-import { layoutDeserializer } from '@/lib/tanstack-table/utils';
 import {
   DataView,
   DataViewTopBar,

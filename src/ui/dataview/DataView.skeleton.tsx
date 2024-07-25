@@ -22,7 +22,7 @@ function DataViewContainerSkeleton({ children, className }: DataViewContainerSke
 function DataViewTopBarSkeleton() {
   return (
     <div>
-      <div className="flex justify-between items-center gap-4 sticky top-0">
+      <div className="flex justify-between items-center gap-4 sticky top-0 flex-wrap-reverse">
         <div className="flex gap-3 items-center">
           <Skeleton className="h-8 w-8 rounded-full" />
           <Skeleton className="h-6 w-6" />
