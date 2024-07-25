@@ -14,7 +14,7 @@ import {
 import { z, AnyZodObject } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { cn } from '@/utils/cn';
-import { Label } from '@/ui/Label';
+import { Label } from '@/ui/form/Label';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type UseZodFormProps<TSchema extends AnyZodObject, TContext = any> =

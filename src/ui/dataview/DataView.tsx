@@ -28,7 +28,7 @@ import { capitalCase } from 'change-case';
 import { z } from 'zod';
 import { flexRenderHeader, flexRenderCell } from '@/lib/tanstack-table/flexRender';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/ui/dataview/Table';
-import { Input } from '@/ui/Input';
+import { Input } from '@/ui/form/Input';
 import { Button, buttonVariants } from '@/ui/Button';
 import {
   DropdownMenu,
@@ -46,7 +46,7 @@ import { Separator } from '@/ui/Separator';
 import { layouts } from '@/lib/tanstack-table/constants';
 import { useReactTableContext, ReactTable } from '@/lib/tanstack-table/ReactTable';
 import { Popover, PopoverTrigger, PopoverContent } from '@/ui/Popover';
-import { useZodForm, FormProvider, Form, FormTitle, FormField, FormGroup } from '@/ui/Form';
+import { useZodForm, FormProvider, Form, FormTitle, FormField, FormGroup } from '@/ui/form/Form';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/ui/Tooltip';
 import { DataViewTableRowSkeleton, DataViewCardSkeleton } from '@/ui/dataview/DataView.skeleton';
 

@@ -1,4 +1,4 @@
-import { useFormField, FormItem, FormControl, FormLabel, FormDescription, FormMessage } from '@/ui/Form';
+import { useFormField, FormItem, FormControl, FormLabel, FormDescription, FormMessage } from '@/ui/form/Form';
 import { cn } from '@/utils/cn';
 
 type Props = {

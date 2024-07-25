@@ -5,8 +5,8 @@ import {
   FormTitle,
   FormField,
   useZodForm,
-} from '@/ui/Form';
-import { Input } from '@/ui/Input';
+} from '@/ui/form/Form';
+import { Input } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { loginFormSchema } from '@/features/auth/schemas';
 import { useLogin } from '@/features/auth/hooks/useLogin';
