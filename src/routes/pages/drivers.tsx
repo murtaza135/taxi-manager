@@ -4,9 +4,10 @@ import { Title } from '@/features/title/components/Title';
 import { DriversTable } from '@/features/drivers/components/DriversTable';
 import { GeneralErrorUI } from '@/errors/components/GeneralErrorUI';
 import {
-  DataViewTableSkeleton,
   DataViewContainerSkeleton,
   DataViewTopBarSkeleton,
+  DataViewTableSkeleton,
+  DataViewGridSkeleton,
 } from '@/ui/dataview/DataView.skeleton';
 
 const driversPageLoader = (_queryClient: QueryClient) => () => null;
@@ -17,7 +18,7 @@ function DriversPageSuspenseBoundary() {
   return (
     <DataViewContainerSkeleton>
       <DataViewTopBarSkeleton />
-      <DataViewTableSkeleton />
+      <DataViewGridSkeleton />
     </DataViewContainerSkeleton>
   );
 }

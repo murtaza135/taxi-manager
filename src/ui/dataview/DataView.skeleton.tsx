@@ -36,28 +36,6 @@ function DataViewTopBarSkeleton() {
   );
 }
 
-function DataViewTableSkeleton() {
-  return (
-    <div className={cn('w-full grid rounded-md overflow-hidden')}>
-      <Table>
-        <TableBody>
-          {[...Array(16).keys()].map((rowIndex) => (
-            <TableRow key={rowIndex}>
-              {[...Array(5).keys()].map((index) => (
-                <TableCell key={index} className="w-fit p-0">
-                  <Skeleton className="py-4 px-10 h-12 rounded-none bg-achromatic-light dark:bg-achromatic-darker">
-                    <Skeleton className="h-full min-w-10 bg-achromatic-lighter dark:bg-achromatic-dark" />
-                  </Skeleton>
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
-  );
-}
-
 function DataViewTableRowSkeleton() {
   const table = useReactTableContext();
   const cells = table.getRowModel().rows[1].getVisibleCells();
@@ -77,7 +55,7 @@ function DataViewTableRowSkeleton() {
 
 function DataViewCardSkeleton() {
   return (
-    <Skeleton className="min-h-[20rem] h-full w-full flex flex-col gap-10 justify-start items-center rounded-lg overflow-hidden">
+    <Skeleton className="min-h-[20rem] h-fit w-full flex flex-col gap-10 justify-start items-center rounded-lg overflow-hidden">
       <div className="h-28 relative mb-10">
         <Skeleton className="h-32 w-32 center rounded-full absolute top-full left-1/2 -translate-x-1/2 -translate-y-1/2 bg-achromatic-light dark:bg-achromatic-darker" />
       </div>
@@ -96,10 +74,46 @@ function DataViewCardSkeleton() {
   );
 }
 
+function DataViewTableSkeleton() {
+  return (
+    <div className="w-full grid rounded-md overflow-hidden">
+      <Table>
+        <TableBody>
+          {[...Array(16).keys()].map((rowIndex) => (
+            <TableRow key={rowIndex}>
+              {[...Array(5).keys()].map((index) => (
+                <TableCell key={index} className="w-fit p-0">
+                  <Skeleton className="py-4 px-10 h-12 rounded-none bg-achromatic-light dark:bg-achromatic-darker">
+                    <Skeleton className="h-full min-w-10 bg-achromatic-lighter dark:bg-achromatic-dark" />
+                  </Skeleton>
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
+function DataViewGridSkeleton() {
+  return (
+    <div className="flex gap-4 h-full overflow-hidden">
+      <div className="w-full h-fit grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
+        {[...Array(2).keys()].map((index) => (
+          <DataViewCardSkeleton key={index} />
+        ))}
+      </div>
+      <div className="h-full w-2 rounded-md bg-achromatic-lighter dark:bg-achromatic-dark" />
+    </div>
+  );
+}
+
 export {
   DataViewContainerSkeleton,
   DataViewTopBarSkeleton,
-  DataViewTableSkeleton,
   DataViewTableRowSkeleton,
   DataViewCardSkeleton,
+  DataViewTableSkeleton,
+  DataViewGridSkeleton,
 };

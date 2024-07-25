@@ -283,7 +283,7 @@ const DataViewGrid = forwardRef<
   return (
     <div
       ref={ref}
-      className={cn('pr-4 overflow-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full')}
+      className={cn('h-full pr-4 overflow-x-hidden overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full')}
       {...props}
     >
       <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-4">
