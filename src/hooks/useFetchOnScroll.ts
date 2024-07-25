@@ -32,7 +32,8 @@ export function useFetchOnScroll<
       const { scrollHeight, scrollTop, clientHeight } = element;
       const currentDeltaFromBottom = scrollHeight - scrollTop - clientHeight;
 
-      const shouldFetch = currentDeltaFromBottom <= scrollThreshold
+      const shouldFetch = clientHeight !== 0
+        && currentDeltaFromBottom <= scrollThreshold
         && hasMore
         && fetchCondition;
 
