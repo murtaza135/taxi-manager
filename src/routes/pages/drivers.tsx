@@ -9,16 +9,19 @@ import {
   DataViewTableSkeleton,
   DataViewGridSkeleton,
 } from '@/ui/dataview/DataView.skeleton';
+import { useDriversLayout } from '@/features/drivers/hooks/table/useDriversLayout';
 
 const driversPageLoader = (_queryClient: QueryClient) => () => null;
 
 function DriversPageSuspenseBoundary() {
   useScrollLock();
+  const [layout] = useDriversLayout();
 
   return (
     <DataViewContainerSkeleton>
       <DataViewTopBarSkeleton />
-      <DataViewGridSkeleton />
+      {layout === 'table' && <DataViewTableSkeleton />}
+      {layout === 'grid' && <DataViewGridSkeleton />}
     </DataViewContainerSkeleton>
   );
 }

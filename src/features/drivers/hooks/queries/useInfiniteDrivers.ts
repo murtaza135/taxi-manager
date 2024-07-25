@@ -5,7 +5,7 @@ import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { supabase } from '@/config/api/supabaseClient';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
-import { driverPictureQueryOptions } from '@/features/drivers/hooks/useDriverPicture';
+import { driverPictureQueryOptions } from '@/features/drivers/hooks/queries/useDriverPicture';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { sleep } from '@/utils/sleep';
 

@@ -16,23 +16,18 @@ import {
   DataViewColumnVisibilityDropdown,
 } from '@/ui/dataview/DataView';
 import { columns, mapper } from '@/features/drivers/columns';
-import { useInfiniteDrivers } from '@/features/drivers/hooks/useInfiniteDrivers';
+import { useInfiniteDrivers } from '@/features/drivers/hooks/queries/useInfiniteDrivers';
 import { Button } from '@/ui/Button';
 import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 import { useSearchParam } from '@/hooks/useSearchParam';
+import { useDriversColumnVisibility } from '@/features/drivers/hooks/table/useDriversColumnVisibility';
+import { useDriversLayout } from '@/features/drivers/hooks/table/useDriversLayout';
 
 export function DriversTable() {
   const [globalFilter, setGlobalFilter] = useSearchParam<string>('search');
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-  const [columnVisibility, setColumnVisibility] = useLocalStorage<VisibilityState>(
-    'drivers.dataview.column-visibility',
-    {},
-  );
-  const [layout, setLayout] = useLocalStorage<LayoutState>(
-    'drivers.dataview.layout',
-    'table',
-    { deserializer: layoutDeserializer },
-  );
+  const [columnVisibility, setColumnVisibility] = useDriversColumnVisibility();
+  const [layout, setLayout] = useDriversLayout();
 
   const {
     data,

@@ -14,7 +14,7 @@ import {
 import { DataViewCheckbox, DataViewCardMainDataMapper } from '@/ui/dataview/DataView';
 import { Avatar, AvatarImage, AvatarPersistentFallback } from '@/ui/Avatar';
 import { Button } from '@/ui/Button';
-import { Driver } from '@/features/drivers/hooks/useInfiniteDrivers';
+import { Driver } from '@/features/drivers/hooks/queries/useInfiniteDrivers';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { cn } from '@/utils/cn';
 import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
