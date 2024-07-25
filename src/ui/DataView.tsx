@@ -271,13 +271,24 @@ function DataViewCard(
   );
 }
 
-type DataViewCardSkeletonProps = {
-  numDataCells: number;
-};
-
-function DataViewCardSkeleton({ numDataCells }: DataViewCardSkeletonProps) {
+function DataViewCardSkeleton() {
   return (
-    <Skeleton className="h-full w-full flex flex-col gap-10 justify-start items-center rounded-lg overflow-hidden" />
+    <Skeleton className="min-h-[20rem] h-full w-full flex flex-col gap-10 justify-start items-center rounded-lg overflow-hidden">
+      <div className="h-28 relative mb-10">
+        <Skeleton className="h-32 w-32 center rounded-full absolute top-full left-1/2 -translate-x-1/2 -translate-y-1/2 bg-achromatic-light dark:bg-achromatic-darker" />
+      </div>
+      <Skeleton className="h-8 max-w-48 w-full bg-achromatic-light dark:bg-achromatic-darker" />
+      <div className="px-6 pb-8 w-full h-fit flex flex-col items-center gap-4">
+        <Skeleton className="h-4 max-w-32 w-full bg-achromatic-light dark:bg-achromatic-darker" />
+        <Skeleton className="h-4 max-w-48 w-full bg-achromatic-light dark:bg-achromatic-darker" />
+        <Skeleton className="h-4 max-w-24 w-full bg-achromatic-light dark:bg-achromatic-darker" />
+        <Skeleton className="h-4 max-w-32 w-full bg-achromatic-light dark:bg-achromatic-darker" />
+        <Skeleton className="h-4 max-w-20 w-full bg-achromatic-light dark:bg-achromatic-darker" />
+        <Skeleton className="h-4 max-w-40 w-full bg-achromatic-light dark:bg-achromatic-darker" />
+        <Skeleton className="h-4 max-w-28 w-full bg-achromatic-light dark:bg-achromatic-darker" />
+        <Skeleton className="h-4 max-w-48 w-full bg-achromatic-light dark:bg-achromatic-darker" />
+      </div>
+    </Skeleton>
   );
 }
 
@@ -319,8 +330,9 @@ const DataViewGrid = forwardRef<
         ))}
         {isFetching && (
           <>
-            <DataViewCardSkeleton numDataCells={1} />
-            <DataViewCardSkeleton numDataCells={1} />
+            <DataViewCardSkeleton />
+            <DataViewCardSkeleton />
+            <DataViewCardSkeleton />
           </>
         )}
       </div>
