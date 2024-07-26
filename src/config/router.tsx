@@ -9,6 +9,7 @@ import * as startPageOptions from '@/routes/pages/start';
 
 const driverPageOptions = () => import('@/routes/pages/driver');
 const driversPageOptions = () => import('@/routes/pages/drivers');
+const addNewDriverPageOptions = () => import('@/routes/pages/addNewDriver');
 const hirePageOptions = () => import('@/routes/pages/hire');
 const hiresPageOptions = () => import('@/routes/pages/hires');
 const homePageOptions = () => import('@/routes/pages/home');
@@ -24,6 +25,7 @@ const privateLayoutProps = createRouteOptions(privateLayoutOptions, queryClient)
 const startPageProps = createRouteOptions(startPageOptions, queryClient);
 const driverPageProps = createRouteOptions(driverPageOptions, queryClient);
 const driversPageProps = createRouteOptions(driversPageOptions, queryClient);
+const addNewDriverPageProps = createRouteOptions(addNewDriverPageOptions, queryClient);
 const hirePageProps = createRouteOptions(hirePageOptions, queryClient);
 const hiresPageProps = createRouteOptions(hiresPageOptions, queryClient);
 const homePageProps = createRouteOptions(homePageOptions, queryClient);
@@ -42,6 +44,7 @@ const routes = createRoutesFromElements(
     <Route {...privateLayoutProps}>
       <Route path="/driver/:id" lazy={driverPageProps} />
       <Route path="/drivers" lazy={driversPageProps} />
+      <Route path="/drivers/add" lazy={addNewDriverPageProps} />
       <Route path="/hire/:id" lazy={hirePageProps} />
       <Route path="/hires" lazy={hiresPageProps} />
       <Route path="/home" lazy={homePageProps} />
