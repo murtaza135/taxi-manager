@@ -13,10 +13,10 @@ export const addNewDriverDetailsSchema = z.object({
   national_insurance_number: z.string().length(1, 'Invalid national insurance number').optional(),
   date_of_birth: z.string().datetime({ message: 'Invalid date of birth' }).optional(),
   picture: z.instanceof(FileList)
-    .refine((fileList) => fileList.length === 1, { message: 'Invalid File' })
-    .transform((fileList) => fileList[0])
-    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((file) => !!file.type.match(ACCEPTED_IMAGE_MIME_TYPE), 'File must be an image')
+    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Invalid file type' })
+    .transform((fileList) => fileList[0] as File | undefined)
+    .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => !file || !!file?.type?.match(ACCEPTED_IMAGE_MIME_TYPE), 'File must be an image')
     .optional(),
 });
 
