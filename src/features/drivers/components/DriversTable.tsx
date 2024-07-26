@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useReactTable, getCoreRowModel, RowSelectionState } from '@tanstack/react-table';
 import { IoReload } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
 import {
   DataView,
   DataViewTopBar,
@@ -106,7 +107,9 @@ export function DriversTable() {
     <DataView table={table}>
       <DataViewTopBar>
         <DataViewTopBarSection>
-          <Button size="sm" shape="circle" className="text-xl">+</Button>
+          <Link to="/drivers/add">
+            <Button size="sm" shape="circle" className="text-xl">+</Button>
+          </Link>
           <DataViewSearchPopover />
           <DataViewRowFilterDropdown />
           <DataViewLayoutDropdown />

@@ -1,6 +1,6 @@
-import { useParams } from 'react-router-dom';
 import { QueryClient } from '@tanstack/react-query';
 import { Title } from '@/features/title/components/Title';
+import { AddNewDriverMultiStepForm } from '@/features/drivers/components/AddNewDriverMultiStepForm';
 
 const addNewDriverPageLoader = (_queryClient: QueryClient) => () => null;
 
@@ -17,13 +17,11 @@ function AddNewDriverPageErrorBoundary() {
 }
 
 function AddNewDriverPageComponent() {
-  const { id } = useParams();
-
   return (
-    <div>
-      <Title title={`Driver ${id}`} />
-      <div>AddNewDriverPageComponent</div>
-    </div>
+    <>
+      <Title title="Add New Driver" />
+      <AddNewDriverMultiStepForm />
+    </>
   );
 }
 

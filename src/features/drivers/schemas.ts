@@ -6,13 +6,15 @@ const ACCEPTED_IMAGE_MIME_TYPE = /image\/.+/;
 const ACCEPTED_DOCUMENT_MIME_TYPE = /image\/.+|application\/pdf/;
 
 export const addNewDriverDetailsSchema = z.object({
-  first_names: z.string().length(1, 'First name required'),
-  last_name: z.string().length(1, 'Last name required'),
-  phone_number: z.string().refine((val) => isMobilePhone(val), 'Invalid phone number').optional(),
+  first_names: z.string({ required_error: 'First name required' }).min(1, 'First name required'),
+  last_name: z.string({ required_error: 'Last name required' }).min(1, 'Last name required'),
   email: z.string().email({ message: 'Invalid email address' }).optional(),
-  date_of_birth: z.date({ invalid_type_error: 'Invalid date of birth' }).optional(),
+  phone_number: z.string().refine((val) => isMobilePhone(val), 'Invalid phone number').optional(),
   national_insurance_number: z.string().length(1, 'Invalid national insurance number').optional(),
-  picture: z.instanceof(File)
+  date_of_birth: z.string().datetime({ message: 'Invalid date of birth' }).optional(),
+  picture: z.instanceof(FileList)
+    .refine((fileList) => fileList.length === 1, { message: 'Invalid File' })
+    .transform((fileList) => fileList[0])
     .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
     .refine((file) => !!file.type.match(ACCEPTED_IMAGE_MIME_TYPE), 'File must be an image')
     .optional(),
