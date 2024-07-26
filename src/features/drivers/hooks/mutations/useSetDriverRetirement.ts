@@ -22,8 +22,9 @@ export async function setDriverRetirement({ id, isRetired }: SetDriverRetirement
 
   if (error) {
     throw new SupabaseError(error, status, {
-      globalTitle: 'Could not delete driver',
-      globalDescription: 'Something went wrong',
+      globalTitle: isRetired
+        ? 'Could not retire driver'
+        : 'Could not recover driver',
     });
   }
 
