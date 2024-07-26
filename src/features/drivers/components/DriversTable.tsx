@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useReactTable, getCoreRowModel, RowSelectionState } from '@tanstack/react-table';
-import { IoReload, IoFileTrayFull } from 'react-icons/io5';
+import { IoReload } from 'react-icons/io5';
 import {
   DataView,
   DataViewTopBar,
@@ -58,7 +58,14 @@ export function DriversTable() {
     onRowSelectionChange: setRowSelection,
     onColumnVisibilityChange: setColumnVisibility,
     state: { globalFilter, rowSelection, columnVisibility },
-    meta: { layout, onLayoutChange: setLayout, fetchedCount, fetchableCount },
+    meta: {
+      layout,
+      onLayoutChange: setLayout,
+      view,
+      onViewChange: setView,
+      fetchedCount,
+      fetchableCount,
+    },
   });
 
   const { ref, fetchOnScroll } = useFetchOnScroll<HTMLDivElement>({

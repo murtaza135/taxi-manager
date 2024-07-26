@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { IoEllipsisVertical } from 'react-icons/io5';
 import { FiEye } from 'react-icons/fi';
 import { FaTrashAlt } from 'react-icons/fa';
+import { PiArrowUDownLeftBold } from 'react-icons/pi';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,8 +19,9 @@ import { Driver } from '@/features/drivers/hooks/queries/useInfiniteDrivers';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { cn } from '@/utils/cn';
 import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
-import { useDeleteDriver } from '@/features/drivers/hooks/mutations/useDeleteDriver';
+import { useSetDriverRetirement } from '@/features/drivers/hooks/mutations/useSetDriverRetirement';
 import { useReactTableContext } from '@/lib/tanstack-table/ReactTable';
+import { ViewState } from '@/features/drivers/types';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<Driver>[] = [
@@ -114,10 +116,11 @@ export const tableColumns: ColumnDef<Driver>[] = [
     header: 'Actions',
     cell: function ActionsCell({ row }) {
       const table = useReactTableContext();
-      const { mutateAsync: deleteDriver } = useDeleteDriver();
+      const view = table.options.meta?.view as ViewState;
+      const { mutateAsync: setDriverRetirement } = useSetDriverRetirement();
 
-      const handleDeleteDriver = async () => {
-        await deleteDriver(row.original.id);
+      const handleSetDriverRetirement = async (isRetired: boolean) => {
+        await setDriverRetirement({ id: row.original.id, isRetired });
         table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
       };
 
@@ -128,9 +131,16 @@ export const tableColumns: ColumnDef<Driver>[] = [
               <FiEye className="text-xl" />
             </Button>
           </Link>
-          <Button variant="ghost" className="p-0" onClick={handleDeleteDriver}>
-            <FaTrashAlt className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
-          </Button>
+          {view === 'notRetired' && (
+            <Button variant="ghost" className="p-0" onClick={() => handleSetDriverRetirement(true)}>
+              <FaTrashAlt className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
+            </Button>
+          )}
+          {view === 'retired' && (
+            <Button variant="ghost" className="p-0" onClick={() => handleSetDriverRetirement(false)}>
+              <PiArrowUDownLeftBold className="text-xl text-primary-dark dark:text-achromatic-lighter" />
+            </Button>
+          )}
         </div>
       );
     },

@@ -6,12 +6,17 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
 
-export async function deleteDriver(id: number) {
+type SetDriverRetirementVariables = {
+  id: number;
+  isRetired: boolean;
+};
+
+export async function setDriverRetirement({ id, isRetired }: SetDriverRetirementVariables) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
 
   const { error, status } = await supabase
     .from('driver')
-    .delete()
+    .update({ is_retired: isRetired })
     .eq('auth_id', session.user.id)
     .eq('id', id);
 
@@ -25,14 +30,14 @@ export async function deleteDriver(id: number) {
   return null;
 }
 
-export function useDeleteDriver() {
+export function useSetDriverRetirement() {
   const queryClient = useQueryClient();
   const { revalidate } = useRevalidator();
   const { toast } = useToast();
 
-  const mutation = useMutation<null, SupabaseError, number>({
-    mutationFn: deleteDriver,
-    onSuccess: async (_data, id) => {
+  const mutation = useMutation<null, SupabaseError, SetDriverRetirementVariables>({
+    mutationFn: setDriverRetirement,
+    onSuccess: async (_data, { id }) => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['drivers', 'list'] }),
         queryClient.invalidateQueries({ queryKey: ['drivers', id] }),
