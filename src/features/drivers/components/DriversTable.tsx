@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useReactTable, getCoreRowModel, RowSelectionState } from '@tanstack/react-table';
-import { IoReload } from 'react-icons/io5';
+import { IoReload, IoFileTrayFull } from 'react-icons/io5';
 import {
   DataView,
   DataViewTopBar,
@@ -21,12 +21,15 @@ import { useSearchParam } from '@/hooks/useSearchParam';
 import { useDriversColumnVisibility } from '@/features/drivers/hooks/table/useDriversColumnVisibility';
 import { useDriversLayout } from '@/features/drivers/hooks/table/useDriversLayout';
 import { useDeleteDrivers } from '@/features/drivers/hooks/mutations/useDeleteDrivers';
+import { useDriversView } from '@/features/drivers/hooks/table/useDriversView';
+import { DriversViewDropdown } from '@/features/drivers/components/DriversViewDropdown';
 
 export function DriversTable() {
   const [globalFilterBase, setGlobalFilter] = useSearchParam<string>('search');
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [columnVisibility, setColumnVisibility] = useDriversColumnVisibility();
   const [layout, setLayout] = useDriversLayout();
+  const [view, setView] = useDriversView();
   const globalFilter = globalFilterBase ?? '';
 
   const { mutateAsync: deleteDrivers } = useDeleteDrivers();
@@ -36,7 +39,7 @@ export function DriversTable() {
     fetchNextPage,
     isFetchingNextPage,
     refetch,
-  } = useInfiniteDrivers(globalFilter);
+  } = useInfiniteDrivers({ search: globalFilter, view });
 
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.data) ?? [],
@@ -86,6 +89,7 @@ export function DriversTable() {
         <DataViewTopBarSection>
           <Button size="sm" shape="circle" className="text-xl">+</Button>
           <DataViewSearchPopover />
+          <DriversViewDropdown view={view} onViewChange={setView} />
           <DataViewLayoutDropdown />
           <DataViewColumnVisibilityDropdown />
           <Button variant="ghost" size="auto" className="text-xl center" onClick={() => refetch()}>

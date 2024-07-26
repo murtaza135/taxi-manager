@@ -431,7 +431,7 @@ function DataViewColumnVisibilityDropdown() {
           <TbColumnRemove />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[150px]">
+      <DropdownMenuContent align="center" className="min-w-[150px]">
         <DropdownMenuLabel>Show/Hide Columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
@@ -476,7 +476,7 @@ function DataViewColumnSortDropdown() {
           <BiSortAlt2 />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[150px]">
+      <DropdownMenuContent align="center" className="min-w-[150px]">
         <DropdownMenuLabel>Sort Columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {columns.map((column) => (
@@ -524,7 +524,7 @@ function DataViewRowsPerPageDropdown() {
           <CgHashtag />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[150px]">
+      <DropdownMenuContent align="center" className="min-w-[150px]">
         <DropdownMenuLabel>Rows Per Page</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
@@ -573,7 +573,7 @@ function DataViewLayoutDropdown() {
           <FiLayout />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[150px]">
+      <DropdownMenuContent align="center" className="min-w-[150px]">
         <DropdownMenuLabel>Select Layout</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup

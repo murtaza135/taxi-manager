@@ -7,6 +7,7 @@ import { supabase } from '@/config/api/supabaseClient';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { driverPictureQueryOptions } from '@/features/drivers/hooks/queries/useDriverPicture';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
+import { ViewState } from '@/features/drivers/types';
 
 const fetchSize = 50;
 
@@ -40,18 +41,25 @@ export type DriversResult = {
   count: number;
 };
 
-type DriversQueryFnOptions = {
+type DriversInfiniteQueryOptions = {
   search: string;
+  view: ViewState;
+};
+
+type DriversQueryFnOptions = DriversInfiniteQueryOptions & {
   pageParam: number;
 };
 
-async function getDrivers(
-  { search = '', pageParam = 0 }: DriversQueryFnOptions,
-): Promise<DriversResult> {
+async function getDrivers({
+  search = '',
+  view = 'notRetired',
+  pageParam = 0,
+}: DriversQueryFnOptions): Promise<DriversResult> {
   const session = await queryClient.ensureQueryData(sessionOptions());
 
   const from = fetchSize * pageParam;
   const to = from + fetchSize - 1;
+  const isRetired = view !== 'notRetired';
 
   const { data, error, status, count } = await supabase
     .from('driver_view')
@@ -60,6 +68,7 @@ async function getDrivers(
       { count: 'estimated' },
     )
     .eq('auth_id', session.user.id)
+    .eq('is_retired', isRetired)
     .order('created_at', { ascending: false })
     .or(`name.ilike.%${search}%, email.ilike.%${search}%, number_plate.ilike.%${search}%`)
     .range(from, to)
@@ -90,12 +99,14 @@ async function getDrivers(
   };
 }
 
-export function driversInfiniteQueryOptions(search: string = '') {
+export function driversInfiniteQueryOptions(options?: DriversInfiniteQueryOptions) {
+  const { search, view } = options ?? { search: '', view: 'notRetired' };
+
   return infiniteQueryOptions<
     DriversResult, SupabaseError, InfiniteData<DriversResult, number>, QueryKey, number
   >({
-    queryKey: ['drivers', 'list', { search }],
-    queryFn: ({ pageParam }) => getDrivers({ search, pageParam }),
+    queryKey: ['drivers', 'list', view, { search }],
+    queryFn: ({ pageParam }) => getDrivers({ search, view, pageParam }),
     staleTime: 1000 * 60, // 60 seconds,
     initialPageParam: 0,
     getNextPageParam: (_lastGroup, groups) => groups.length,
@@ -104,7 +115,7 @@ export function driversInfiniteQueryOptions(search: string = '') {
   });
 }
 
-export function useInfiniteDrivers(search: string = '') {
-  const query = useSuspenseInfiniteQuery(driversInfiniteQueryOptions(search));
+export function useInfiniteDrivers(options?: DriversInfiniteQueryOptions) {
+  const query = useSuspenseInfiniteQuery(driversInfiniteQueryOptions(options));
   return query;
 }
