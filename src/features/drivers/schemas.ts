@@ -11,7 +11,13 @@ export const addNewDriverDetailsSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }).optional(),
   phone_number: z.string().refine((val) => isMobilePhone(val), 'Invalid phone number').optional(),
   national_insurance_number: z.string().length(1, 'Invalid national insurance number').optional(),
-  date_of_birth: z.string().datetime({ message: 'Invalid date of birth' }).optional(),
+  date_of_birth: z.string()
+    .optional()
+    .transform((val) => {
+      if (val === undefined || val === '') return undefined;
+      return new Date(val);
+    })
+    .refine((val) => !val || !Number.isNaN(val.valueOf()), { message: 'Invalid date of birth' }),
   picture: z.instanceof(FileList)
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Invalid file type' })
     .transform((fileList) => fileList[0] as File | undefined)

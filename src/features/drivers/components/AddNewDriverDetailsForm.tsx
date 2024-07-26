@@ -38,6 +38,8 @@ export function AddNewDriverDetailsForm() {
   });
 
   const fileRef = form.register('picture');
+  const dateRef = form.register('date_of_birth');
+  // const ref = useRef<HTMLInputElement>(null);
 
   return (
     <FormProvider {...form}>
@@ -102,7 +104,7 @@ export function AddNewDriverDetailsForm() {
           name="date_of_birth"
           render={({ field }) => (
             <FormGroup label="Date of Birth">
-              <Input placeholder="Date of Birth" type="date" {...field} />
+              <Input placeholder="Date of Birth" type="date" {...dateRef} />
             </FormGroup>
           )}
         />
