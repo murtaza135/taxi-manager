@@ -20,9 +20,14 @@ import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 import { useSearchParam } from '@/hooks/useSearchParam';
 import { useDriversColumnVisibility } from '@/features/drivers/hooks/table/useDriversColumnVisibility';
 import { useDriversLayout } from '@/features/drivers/hooks/table/useDriversLayout';
-import { useDeleteDrivers } from '@/features/drivers/hooks/mutations/useDeleteDrivers';
+import { useSetDriversRetirements } from '@/features/drivers/hooks/mutations/useSetDriversRetirements';
 import { useDriversView } from '@/features/drivers/hooks/table/useDriversView';
 import { DriversViewDropdown } from '@/features/drivers/components/DriversViewDropdown';
+
+type HandleSetDriversRetirementsAttributes = {
+  ids: string[];
+  isRetired: boolean;
+};
 
 export function DriversTable() {
   const [globalFilterBase, setGlobalFilter] = useSearchParam<string>('search');
@@ -32,7 +37,7 @@ export function DriversTable() {
   const [view, setView] = useDriversView();
   const globalFilter = globalFilterBase ?? '';
 
-  const { mutateAsync: deleteDrivers } = useDeleteDrivers();
+  const { mutateAsync: setDriversRetirements } = useSetDriversRetirements();
 
   const {
     data,
@@ -81,12 +86,15 @@ export function DriversTable() {
     void fetchOnScroll();
   }, [fetchOnScroll]);
 
-  const handleDeleteDrivers = async (ids: string[]) => {
+  const handleSetDriversRetirements = async ({
+    ids,
+    isRetired,
+  }: HandleSetDriversRetirementsAttributes) => {
     const idNumbers = ids
       .map((id) => Number(id))
       .filter((id) => !Number.isNaN(id));
 
-    await deleteDrivers(idNumbers);
+    await setDriversRetirements({ ids: idNumbers, isRetired });
     table.resetRowSelection();
   };
 
@@ -102,7 +110,11 @@ export function DriversTable() {
           <Button variant="ghost" size="auto" className="text-xl center" onClick={() => refetch()}>
             <IoReload />
           </Button>
-          <DataViewDeleteSelectedRowsButton onDelete={handleDeleteDrivers} />
+          {view === 'notRetired' && (
+            <DataViewDeleteSelectedRowsButton
+              onDelete={(ids) => handleSetDriversRetirements({ ids, isRetired: true })}
+            />
+          )}
         </DataViewTopBarSection>
         <DataViewTopBarSection>
           <DataViewRowSelectionCount />
