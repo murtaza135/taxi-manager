@@ -7,7 +7,7 @@ import { supabase } from '@/config/api/supabaseClient';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { driverPictureQueryOptions } from '@/features/drivers/hooks/queries/useDriverPicture';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
-import { ViewState } from '@/features/drivers/types';
+import { DriversRowFilterState } from '@/features/drivers/types';
 
 const fetchSize = 50;
 
@@ -43,7 +43,7 @@ export type DriversResult = {
 
 type DriversInfiniteQueryOptions = {
   search: string;
-  view: ViewState;
+  rowFilter: DriversRowFilterState;
 };
 
 type DriversQueryFnOptions = DriversInfiniteQueryOptions & {
@@ -52,14 +52,14 @@ type DriversQueryFnOptions = DriversInfiniteQueryOptions & {
 
 async function getDrivers({
   search = '',
-  view = 'notRetired',
+  rowFilter = 'notRetired',
   pageParam = 0,
 }: DriversQueryFnOptions): Promise<DriversResult> {
   const session = await queryClient.ensureQueryData(sessionOptions());
 
   const from = fetchSize * pageParam;
   const to = from + fetchSize - 1;
-  const isRetired = view !== 'notRetired';
+  const isRetired = rowFilter !== 'notRetired';
 
   const { data, error, status, count } = await supabase
     .from('driver_view')
@@ -100,13 +100,13 @@ async function getDrivers({
 }
 
 export function driversInfiniteQueryOptions(options?: DriversInfiniteQueryOptions) {
-  const { search, view } = options ?? { search: '', view: 'notRetired' };
+  const { search, rowFilter } = options ?? { search: '', rowFilter: 'notRetired' };
 
   return infiniteQueryOptions<
     DriversResult, SupabaseError, InfiniteData<DriversResult, number>, QueryKey, number
   >({
-    queryKey: ['drivers', 'list', view, { search }],
-    queryFn: ({ pageParam }) => getDrivers({ search, view, pageParam }),
+    queryKey: ['drivers', 'list', rowFilter, { search }],
+    queryFn: ({ pageParam }) => getDrivers({ search, rowFilter, pageParam }),
     staleTime: 1000 * 60, // 60 seconds,
     initialPageParam: 0,
     getNextPageParam: (_lastGroup, groups) => groups.length,

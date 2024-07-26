@@ -10,7 +10,7 @@ import {
   LayoutState,
 } from '@tanstack/react-table';
 import { IoSearchOutline } from 'react-icons/io5';
-import { MdClear } from 'react-icons/md';
+import { MdFilterAlt, MdClear } from 'react-icons/md';
 import { CgHashtag } from 'react-icons/cg';
 import { FaChevronLeft, FaChevronRight, FaTrashAlt } from 'react-icons/fa';
 import { BiSortAlt2 } from 'react-icons/bi';
@@ -414,6 +414,49 @@ function DataViewSearchPopover() {
         </Button>
       </PopoverContent>
     </Popover>
+  );
+}
+
+function DataViewRowFilterDropdown() {
+  const table = useReactTableContext();
+  const rowFilters = table.options.meta?.rowFilters;
+  const rowFilter = table.options.meta?.rowFilter;
+  const onRowFilterChange = table.options.meta?.onRowFilterChange;
+
+  if (rowFilters === undefined || rowFilter === undefined || onRowFilterChange === undefined) {
+    return null;
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="auto"
+          className="[font-size:1.4rem] [line-height:2rem] center"
+        >
+          <MdFilterAlt />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="center" className="min-w-[150px]">
+        <DropdownMenuLabel>Select Filter</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup
+          value={rowFilter}
+          onValueChange={onRowFilterChange}
+        >
+          {rowFilters.map((rowFilterValue) => (
+            <DropdownMenuRadioItem
+              key={rowFilterValue}
+              className="capitalize"
+              value={rowFilterValue}
+            >
+              {capitalCase(rowFilterValue)}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
@@ -823,6 +866,7 @@ export {
   DataViewTopBar,
   DataViewTopBarSection,
   DataViewSearchPopover,
+  DataViewRowFilterDropdown,
   DataViewColumnVisibilityDropdown,
   DataViewColumnSortDropdown,
   DataViewRowsPerPageDropdown,

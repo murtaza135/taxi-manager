@@ -11,6 +11,7 @@ import {
   DataViewDeleteSelectedRowsButton,
   DataViewRowSelectionCount,
   DataViewSearchPopover,
+  DataViewRowFilterDropdown,
   DataViewColumnVisibilityDropdown,
 } from '@/ui/dataview/DataView';
 import { columns, mapper } from '@/features/drivers/columns';
@@ -21,8 +22,10 @@ import { useSearchParam } from '@/hooks/useSearchParam';
 import { useDriversColumnVisibility } from '@/features/drivers/hooks/table/useDriversColumnVisibility';
 import { useDriversLayout } from '@/features/drivers/hooks/table/useDriversLayout';
 import { useSetDriversRetirements } from '@/features/drivers/hooks/mutations/useSetDriversRetirements';
-import { useDriversView } from '@/features/drivers/hooks/table/useDriversView';
-import { DriversViewDropdown } from '@/features/drivers/components/DriversViewDropdown';
+import { useDriversRowFilter } from '@/features/drivers/hooks/table/useDriversRowFilter';
+import { DriversRowFilterState } from '@/features/drivers/types';
+
+const rowFilters: DriversRowFilterState[] = ['notRetired', 'retired'];
 
 type HandleSetDriversRetirementsAttributes = {
   ids: string[];
@@ -34,7 +37,7 @@ export function DriversTable() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [columnVisibility, setColumnVisibility] = useDriversColumnVisibility();
   const [layout, setLayout] = useDriversLayout();
-  const [view, setView] = useDriversView();
+  const [rowFilter, setRowFilter] = useDriversRowFilter();
   const globalFilter = globalFilterBase ?? '';
 
   const { mutateAsync: setDriversRetirements } = useSetDriversRetirements();
@@ -44,7 +47,7 @@ export function DriversTable() {
     fetchNextPage,
     isFetchingNextPage,
     refetch,
-  } = useInfiniteDrivers({ search: globalFilter, view });
+  } = useInfiniteDrivers({ search: globalFilter, rowFilter });
 
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.data) ?? [],
@@ -66,8 +69,9 @@ export function DriversTable() {
     meta: {
       layout,
       onLayoutChange: setLayout,
-      view,
-      onViewChange: setView,
+      rowFilters,
+      rowFilter,
+      onRowFilterChange: (filter) => setRowFilter(filter as DriversRowFilterState),
       fetchedCount,
       fetchableCount,
     },
@@ -104,13 +108,13 @@ export function DriversTable() {
         <DataViewTopBarSection>
           <Button size="sm" shape="circle" className="text-xl">+</Button>
           <DataViewSearchPopover />
-          <DriversViewDropdown view={view} onViewChange={setView} />
+          <DataViewRowFilterDropdown />
           <DataViewLayoutDropdown />
           <DataViewColumnVisibilityDropdown />
           <Button variant="ghost" size="auto" className="text-xl center" onClick={() => refetch()}>
             <IoReload />
           </Button>
-          {view === 'notRetired' && (
+          {rowFilter === 'notRetired' && (
             <DataViewDeleteSelectedRowsButton
               onDelete={(ids) => handleSetDriversRetirements({ ids, isRetired: true })}
             />

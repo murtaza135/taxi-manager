@@ -8,6 +8,9 @@ declare module '@tanstack/table-core' {
     onLayoutChange?: (layout: LayoutState) => void;
     fetchedCount?: number;
     fetchableCount?: number;
+    rowFilters?: string[];
+    rowFilter?: string;
+    onRowFilterChange?: (filter: string) => void;
   }
 }
 

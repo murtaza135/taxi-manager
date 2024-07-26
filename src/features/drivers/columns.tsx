@@ -21,7 +21,7 @@ import { cn } from '@/utils/cn';
 import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
 import { useSetDriverRetirement } from '@/features/drivers/hooks/mutations/useSetDriverRetirement';
 import { useReactTableContext } from '@/lib/tanstack-table/ReactTable';
-import { ViewState } from '@/features/drivers/types';
+import { DriversRowFilterState } from '@/features/drivers/types';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<Driver>[] = [
@@ -116,7 +116,7 @@ export const tableColumns: ColumnDef<Driver>[] = [
     header: 'Actions',
     cell: function ActionsCell({ row }) {
       const table = useReactTableContext();
-      const view = table.options.meta?.view as ViewState;
+      const rowFilter = table.options.meta?.rowFilter as DriversRowFilterState | undefined;
       const { mutateAsync: setDriverRetirement } = useSetDriverRetirement();
 
       const handleSetDriverRetirement = async (isRetired: boolean) => {
@@ -131,12 +131,12 @@ export const tableColumns: ColumnDef<Driver>[] = [
               <FiEye className="text-xl" />
             </Button>
           </Link>
-          {view === 'notRetired' && (
+          {rowFilter === 'notRetired' && (
             <Button variant="ghost" className="p-0" onClick={() => handleSetDriverRetirement(true)}>
               <FaTrashAlt className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
             </Button>
           )}
-          {view === 'retired' && (
+          {rowFilter === 'retired' && (
             <Button variant="ghost" className="p-0" onClick={() => handleSetDriverRetirement(false)}>
               <PiArrowUDownLeftBold className="text-xl text-primary-dark dark:text-achromatic-lighter" />
             </Button>
@@ -227,21 +227,45 @@ export const gridColumns: ColumnDef<Driver>[] = [
   },
   {
     id: 'Options Top',
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild className="translate-x-2">
-          <div className="cursor-pointer hover:opacity-70 transition-opacity">
-            <span className="sr-only">Options</span>
-            <IoEllipsisVertical />
-          </div>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+    cell: function ActionsCell({ row }) {
+      const table = useReactTableContext();
+      const rowFilter = table.options.meta?.rowFilter as DriversRowFilterState | undefined;
+      const { mutateAsync: setDriverRetirement } = useSetDriverRetirement();
+
+      const handleSetDriverRetirement = async (isRetired: boolean) => {
+        await setDriverRetirement({ id: row.original.id, isRetired });
+        table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
+      };
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild className="translate-x-2">
+            <div className="cursor-pointer hover:opacity-70 transition-opacity">
+              <span className="sr-only">Options</span>
+              <IoEllipsisVertical />
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="hover:!opacity-100">
+              {rowFilter === 'notRetired' && (
+                <Button variant="ghost" className="p-0 gap-2" onClick={() => handleSetDriverRetirement(true)}>
+                  <FaTrashAlt className="text-red-600 dark:text-red-500/70" />
+                  <p className="translate-y-[1px]">Retire</p>
+                </Button>
+              )}
+              {rowFilter === 'retired' && (
+                <Button variant="ghost" className="p-0 gap-2" onClick={() => handleSetDriverRetirement(false)}>
+                  <PiArrowUDownLeftBold className="text-primary-dark dark:text-achromatic-lighter" />
+                  <p>Recover</p>
+                </Button>
+              )}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
     enableSorting: false,
     enableHiding: false,
     enableGlobalFilter: false,
