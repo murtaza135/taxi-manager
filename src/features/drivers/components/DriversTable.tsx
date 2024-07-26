@@ -23,10 +23,11 @@ import { useDriversLayout } from '@/features/drivers/hooks/table/useDriversLayou
 import { useDeleteDrivers } from '@/features/drivers/hooks/mutations/useDeleteDrivers';
 
 export function DriversTable() {
-  const [globalFilter, setGlobalFilter] = useSearchParam<string>('search');
+  const [globalFilterBase, setGlobalFilter] = useSearchParam<string>('search');
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [columnVisibility, setColumnVisibility] = useDriversColumnVisibility();
   const [layout, setLayout] = useDriversLayout();
+  const globalFilter = globalFilterBase ?? '';
 
   const { mutateAsync: deleteDrivers } = useDeleteDrivers();
 
@@ -35,7 +36,7 @@ export function DriversTable() {
     fetchNextPage,
     isFetchingNextPage,
     refetch,
-  } = useInfiniteDrivers(globalFilter ?? '');
+  } = useInfiniteDrivers(globalFilter);
 
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.data) ?? [],
