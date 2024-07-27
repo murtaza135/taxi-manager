@@ -11,15 +11,9 @@ import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { addNewDriverTaxiBadgeSchema, AddNewDriverTaxiBadgeSchema } from '@/features/drivers/schemas';
 
-const defaultValues: AddNewDriverTaxiBadgeSchema = {
-  badge_number: '',
-  badge_start_date: '',
-  badge_end_date: '',
-  badge_document: undefined,
-};
-
 export function AddNewDriverTaxiBadgeForm() {
   const {
+    formState,
     nextStep,
     prevStep,
     updateFormState,
@@ -27,7 +21,7 @@ export function AddNewDriverTaxiBadgeForm() {
 
   const form = useZodForm({
     schema: addNewDriverTaxiBadgeSchema,
-    defaultValues,
+    defaultValues: formState,
   });
 
   // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81

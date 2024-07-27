@@ -8,10 +8,29 @@ import {
 import { AddNewDriverDetailsForm } from '@/features/drivers/components/AddNewDriverDetailsForm';
 import { AddNewDriversLicenceForm } from '@/features/drivers/components/AddNewDriversLicenceForm';
 import { AddNewDriverTaxiBadgeForm } from '@/features/drivers/components/AddNewDriverTaxiBadgeForm';
+import { AddNewDriverSchema } from '@/features/drivers/schemas';
+
+const initialFormState: AddNewDriverSchema = {
+  first_names: '',
+  last_name: '',
+  email: '',
+  phone_number: '',
+  national_insurance_number: '',
+  date_of_birth: '',
+  picture: undefined,
+  licence_number: '',
+  licence_start_date: '',
+  licence_end_date: '',
+  licence_document: undefined,
+  badge_number: '',
+  badge_start_date: '',
+  badge_end_date: '',
+  badge_document: undefined,
+};
 
 export function AddNewDriverMultiStepForm() {
   return (
-    <MultiStepForm min={1} max={3}>
+    <MultiStepForm min={1} max={3} initialFormState={initialFormState}>
       <MultiStepFormStepper>
         <MultiStepFormStepperItem step={1} title="Driver" />
         <MultiStepFormStepperItem step={2} title="Drivers Licence" />

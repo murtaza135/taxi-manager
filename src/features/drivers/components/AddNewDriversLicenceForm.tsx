@@ -11,15 +11,9 @@ import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { addNewDriversLicenceSchema, AddNewDriversLicenceSchema } from '@/features/drivers/schemas';
 
-const defaultValues: AddNewDriversLicenceSchema = {
-  licence_number: '',
-  licence_start_date: '',
-  licence_end_date: '',
-  licence_document: undefined,
-};
-
 export function AddNewDriversLicenceForm() {
   const {
+    formState,
     nextStep,
     prevStep,
     updateFormState,
@@ -27,7 +21,7 @@ export function AddNewDriversLicenceForm() {
 
   const form = useZodForm({
     schema: addNewDriversLicenceSchema,
-    defaultValues,
+    defaultValues: formState,
   });
 
   // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81

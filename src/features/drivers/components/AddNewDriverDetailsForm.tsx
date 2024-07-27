@@ -11,24 +11,16 @@ import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { addNewDriverDetailsSchema, AddNewDriverDetailsSchema } from '@/features/drivers/schemas';
 
-const defaultValues: AddNewDriverDetailsSchema = {
-  first_names: '',
-  last_name: '',
-  email: '',
-  phone_number: '',
-  national_insurance_number: '',
-  date_of_birth: '',
-};
-
 export function AddNewDriverDetailsForm() {
   const {
+    formState,
     nextStep,
     updateFormState,
   } = useMultiStepFormContext<AddNewDriverDetailsSchema>();
 
   const form = useZodForm({
     schema: addNewDriverDetailsSchema,
-    defaultValues,
+    defaultValues: formState,
   });
 
   // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
