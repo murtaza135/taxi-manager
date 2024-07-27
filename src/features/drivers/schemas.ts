@@ -34,30 +34,48 @@ export const addNewDriverDetailsSchema = z.object({
     .optional()
     .or(z.literal('').transform(() => undefined)),
   picture: z.instanceof(FileList)
-    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Invalid file type' })
+    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images' })
     .transform((fileList) => fileList[0] as File | undefined)
     .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((file) => !file || !!file?.type?.match(ACCEPTED_IMAGE_MIME_TYPE), 'File must be an image')
+    .refine((file) => !file || !!file?.type?.match(ACCEPTED_IMAGE_MIME_TYPE), 'Allowed file types: images')
     .optional(),
 });
 
 export const addNewDriversLicenceSchema = z.object({
-  licence_number: z.string().length(1, 'Licence number required'),
-  licence_start_date: z.date({ required_error: 'Start date required', invalid_type_error: 'Invalid start date' }),
-  licence_end_date: z.date({ required_error: 'End date required', invalid_type_error: 'Invalid end date' }),
-  licence_document: z.instanceof(File)
-    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((file) => !!file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'File must be an image or a PDF')
+  licence_number: z
+    .string({ required_error: 'Licence number required' })
+    .min(1, 'Licence number required'),
+  licence_start_date: z
+    .string({ required_error: 'Start date required' })
+    .refine((val) => isDate(val), { message: 'Invalid start date' }),
+  licence_end_date: z
+    .string({ required_error: 'End date required' })
+    .refine((val) => isDate(val), { message: 'Invalid end date' }),
+  licence_document: z.instanceof(FileList)
+    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
+    .transform((fileList) => fileList[0] as File | undefined)
+    .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => !file || !!file?.type?.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
 });
 
 export const addNewDriverTaxiBadgeSchema = z.object({
-  badge_number: z.string().length(1, 'Taxi badge number required'),
-  badge_start_date: z.date({ invalid_type_error: 'Invalid start date' }).optional(),
-  badge_end_date: z.date({ required_error: 'End date required', invalid_type_error: 'Invalid end date' }),
-  badge_document: z.instanceof(File)
-    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((file) => !!file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'File must be an image or a PDF')
+  badge_number: z
+    .string({ required_error: 'Taxi badge number required' })
+    .min(1, 'Taxi badge number required'),
+  badge_start_date: z
+    .string()
+    .refine((val) => isDate(val), { message: 'Invalid start date' })
+    .optional()
+    .or(z.literal('').transform(() => undefined)),
+  badge_end_date: z
+    .string({ required_error: 'End date required' })
+    .refine((val) => isDate(val), { message: 'Invalid end date' }),
+  badge_document: z.instanceof(FileList)
+    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
+    .transform((fileList) => fileList[0] as File | undefined)
+    .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => !file || !!file?.type?.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
 });
 
