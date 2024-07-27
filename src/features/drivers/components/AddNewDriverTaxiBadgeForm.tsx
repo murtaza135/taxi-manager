@@ -9,29 +9,29 @@ import {
 import { Input } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
-import { addNewDriversLicenceSchema, AddNewDriversLicenceSchema } from '@/features/drivers/schemas';
+import { addNewDriverTaxiBadgeSchema, AddNewDriverTaxiBadgeSchema } from '@/features/drivers/schemas';
 
-const defaultValues: AddNewDriversLicenceSchema = {
-  licence_number: '',
-  licence_start_date: '',
-  licence_end_date: '',
-  licence_document: undefined,
+const defaultValues: AddNewDriverTaxiBadgeSchema = {
+  badge_number: '',
+  badge_start_date: '',
+  badge_end_date: '',
+  badge_document: undefined,
 };
 
-export function AddNewDriversLicenceForm() {
+export function AddNewDriverTaxiBadgeForm() {
   const {
     nextStep,
     prevStep,
     updateFormState,
-  } = useMultiStepFormContext<AddNewDriversLicenceSchema>();
+  } = useMultiStepFormContext<AddNewDriverTaxiBadgeSchema>();
 
   const form = useZodForm({
-    schema: addNewDriversLicenceSchema,
+    schema: addNewDriverTaxiBadgeSchema,
     defaultValues,
   });
 
   // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const fileField = form.register('licence_document');
+  const fileField = form.register('badge_document');
 
   const handleSubmit = form.handleSubmit((data) => {
     updateFormState(data);
@@ -50,23 +50,23 @@ export function AddNewDriversLicenceForm() {
         onSubmit={handleSubmit}
         className="w-full max-w-[32rem] space-y-4"
       >
-        <FormTitle>Drivers Licence</FormTitle>
+        <FormTitle>Taxi Badge</FormTitle>
 
         <FormField
           control={form.control}
-          name="licence_number"
+          name="badge_number"
           render={({ field }) => (
-            <FormGroup label="* Licence Number">
-              <Input placeholder="Licence Number" {...field} />
+            <FormGroup label="* Badge Number">
+              <Input placeholder="Badge Number" {...field} />
             </FormGroup>
           )}
         />
 
         <FormField
           control={form.control}
-          name="licence_start_date"
+          name="badge_start_date"
           render={({ field }) => (
-            <FormGroup label="* Start Date">
+            <FormGroup label="Start Date">
               <Input
                 placeholder="Start Date"
                 type="date"
@@ -79,7 +79,7 @@ export function AddNewDriversLicenceForm() {
 
         <FormField
           control={form.control}
-          name="licence_end_date"
+          name="badge_end_date"
           render={({ field }) => (
             <FormGroup label="* End Date">
               <Input
@@ -94,10 +94,10 @@ export function AddNewDriversLicenceForm() {
 
         <FormField
           control={form.control}
-          name="licence_document"
+          name="badge_document"
           render={() => (
-            <FormGroup label="Drivers Licence">
-              <Input placeholder="Drivers Licence" type="file" accept="image/*,.pdf" {...fileField} />
+            <FormGroup label="Taxi Badge">
+              <Input placeholder="Taxi Badge" type="file" accept="image/*,.pdf" {...fileField} />
             </FormGroup>
           )}
         />
