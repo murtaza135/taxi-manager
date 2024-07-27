@@ -32,6 +32,7 @@ export function AddNewDriverDetailsForm() {
     defaultValues,
   });
 
+  // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
   const fileField = form.register('picture');
 
   const handleSubmit = form.handleSubmit((data) => {
@@ -45,7 +46,7 @@ export function AddNewDriverDetailsForm() {
     <FormProvider {...form}>
       <Form
         onSubmit={handleSubmit}
-        className="w-full max-w-[24rem] space-y-4 bg-primary-dark text-achromatic-lighter"
+        className="w-full max-w-[32rem] space-y-4"
       >
         <FormTitle>Login</FormTitle>
 
@@ -104,7 +105,12 @@ export function AddNewDriverDetailsForm() {
           name="date_of_birth"
           render={({ field }) => (
             <FormGroup label="Date of Birth">
-              <Input placeholder="Date of Birth" type="date" {...field} />
+              <Input
+                placeholder="Date of Birth"
+                type="date"
+                onFocus={(event) => event.target.showPicker()}
+                {...field}
+              />
             </FormGroup>
           )}
         />
@@ -120,7 +126,7 @@ export function AddNewDriverDetailsForm() {
         />
 
         <div className="pt-3 flex justify-end">
-          <Button type="submit" variant="base">Next</Button>
+          <Button type="submit" variant="primary">Next</Button>
         </div>
       </Form>
     </FormProvider>
