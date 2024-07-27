@@ -23,7 +23,6 @@ const defaultValues: AddNewDriverDetailsSchema = {
 export function AddNewDriverDetailsForm() {
   const {
     nextStep,
-    prevStep,
     updateFormState,
   } = useMultiStepFormContext<AddNewDriverDetailsSchema>();
 
@@ -36,7 +35,6 @@ export function AddNewDriverDetailsForm() {
   const fileField = form.register('picture');
 
   const handleSubmit = form.handleSubmit((data) => {
-    console.log(data);
     updateFormState(data);
     nextStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -48,13 +46,13 @@ export function AddNewDriverDetailsForm() {
         onSubmit={handleSubmit}
         className="w-full max-w-[32rem] space-y-4"
       >
-        <FormTitle>Login</FormTitle>
+        <FormTitle>Driver</FormTitle>
 
         <FormField
           control={form.control}
           name="first_names"
           render={({ field }) => (
-            <FormGroup label="First Name">
+            <FormGroup label="* First Name">
               <Input placeholder="First Name" {...field} />
             </FormGroup>
           )}
@@ -64,7 +62,7 @@ export function AddNewDriverDetailsForm() {
           control={form.control}
           name="last_name"
           render={({ field }) => (
-            <FormGroup label="Last Name">
+            <FormGroup label="* Last Name">
               <Input placeholder="Last Name" {...field} />
             </FormGroup>
           )}
@@ -120,12 +118,12 @@ export function AddNewDriverDetailsForm() {
           name="picture"
           render={() => (
             <FormGroup label="Picture">
-              <Input placeholder="Picture" type="file" {...fileField} />
+              <Input placeholder="Picture" type="file" accept="image/*" {...fileField} />
             </FormGroup>
           )}
         />
 
-        <div className="pt-3 flex justify-end">
+        <div className="pt-3 flex justify-end gap-3">
           <Button type="submit" variant="primary">Next</Button>
         </div>
       </Form>

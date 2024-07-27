@@ -6,6 +6,7 @@ import {
   MultiStepFormStepperItem,
 } from '@/ui/form/MultiStepForm';
 import { AddNewDriverDetailsForm } from '@/features/drivers/components/AddNewDriverDetailsForm';
+import { AddNewDriversLicenceForm } from '@/features/drivers/components/AddNewDriversLicenceForm';
 
 export function AddNewDriverMultiStepForm() {
   return (
@@ -18,7 +19,7 @@ export function AddNewDriverMultiStepForm() {
 
       <MultiStepFormItems className="flex justify-center items-start">
         <MultiStepFormItem step={1}><AddNewDriverDetailsForm /></MultiStepFormItem>
-        {/* <MultiStepFormItem step={2}><Form2 /></MultiStepFormItem> */}
+        <MultiStepFormItem step={2}><AddNewDriversLicenceForm /></MultiStepFormItem>
         {/* <MultiStepFormItem step={3}><Form3 /></MultiStepFormItem> */}
       </MultiStepFormItems>
     </MultiStepForm>
