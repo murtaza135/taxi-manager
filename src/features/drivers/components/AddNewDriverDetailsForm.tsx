@@ -1,5 +1,3 @@
-import { useRef } from 'react';
-import { useForm } from 'react-hook-form';
 import {
   FormProvider,
   Form,
@@ -16,6 +14,10 @@ import { addNewDriverDetailsSchema, AddNewDriverDetailsSchema } from '@/features
 const defaultValues: AddNewDriverDetailsSchema = {
   first_names: '',
   last_name: '',
+  email: '',
+  phone_number: '',
+  national_insurance_number: '',
+  date_of_birth: '',
 };
 
 export function AddNewDriverDetailsForm() {
@@ -30,16 +32,14 @@ export function AddNewDriverDetailsForm() {
     defaultValues,
   });
 
+  const fileField = form.register('picture');
+
   const handleSubmit = form.handleSubmit((data) => {
     console.log(data);
     updateFormState(data);
     nextStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   });
-
-  const fileRef = form.register('picture');
-  const dateRef = form.register('date_of_birth');
-  // const ref = useRef<HTMLInputElement>(null);
 
   return (
     <FormProvider {...form}>
@@ -104,7 +104,7 @@ export function AddNewDriverDetailsForm() {
           name="date_of_birth"
           render={({ field }) => (
             <FormGroup label="Date of Birth">
-              <Input placeholder="Date of Birth" type="date" {...dateRef} />
+              <Input placeholder="Date of Birth" type="date" {...field} />
             </FormGroup>
           )}
         />
@@ -112,18 +112,9 @@ export function AddNewDriverDetailsForm() {
         <FormField
           control={form.control}
           name="picture"
-          render={({ field }) => (
+          render={() => (
             <FormGroup label="Picture">
-              <Input
-                placeholder="Picture"
-                type="file"
-                // {...field}
-                // onChange={(event) => {
-                //   console.log(event.target.files);
-                //   field.onChange(event.target?.files?.[0] ?? undefined);
-                // }}
-                {...fileRef}
-              />
+              <Input placeholder="Picture" type="file" {...fileField} />
             </FormGroup>
           )}
         />

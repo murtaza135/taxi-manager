@@ -1,23 +1,38 @@
 import { z } from 'zod';
 import isMobilePhone from 'validator/es/lib/isMobilePhone';
+import isDate from 'validator/es/lib/isDate';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; // 5MB
 const ACCEPTED_IMAGE_MIME_TYPE = /image\/.+/;
 const ACCEPTED_DOCUMENT_MIME_TYPE = /image\/.+|application\/pdf/;
 
 export const addNewDriverDetailsSchema = z.object({
-  first_names: z.string({ required_error: 'First name required' }).min(1, 'First name required'),
-  last_name: z.string({ required_error: 'Last name required' }).min(1, 'Last name required'),
-  email: z.string().email({ message: 'Invalid email address' }).optional(),
-  phone_number: z.string().refine((val) => isMobilePhone(val), 'Invalid phone number').optional(),
-  national_insurance_number: z.string().length(1, 'Invalid national insurance number').optional(),
-  date_of_birth: z.string()
+  first_names: z
+    .string({ required_error: 'First name required' })
+    .min(1, 'First name required'),
+  last_name: z
+    .string({ required_error: 'Last name required' })
+    .min(1, 'Last name required'),
+  email: z
+    .string()
+    .email({ message: 'Invalid email address' })
     .optional()
-    .transform((val) => {
-      if (val === undefined || val === '') return undefined;
-      return new Date(val);
-    })
-    .refine((val) => !val || !Number.isNaN(val.valueOf()), { message: 'Invalid date of birth' }),
+    .or(z.literal('').transform(() => undefined)),
+  phone_number: z
+    .string()
+    .refine((val) => isMobilePhone(val), 'Invalid phone number')
+    .optional()
+    .or(z.literal('').transform(() => undefined)),
+  national_insurance_number: z
+    .string()
+    .min(1, 'Invalid national insurance number')
+    .optional()
+    .or(z.literal('').transform(() => undefined)),
+  date_of_birth: z
+    .string()
+    .refine((val) => isDate(val), { message: 'Invalid date of birth' })
+    .optional()
+    .or(z.literal('').transform(() => undefined)),
   picture: z.instanceof(FileList)
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Invalid file type' })
     .transform((fileList) => fileList[0] as File | undefined)
