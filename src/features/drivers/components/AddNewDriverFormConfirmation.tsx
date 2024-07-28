@@ -35,7 +35,7 @@ export function AddNewDriverFormConfirmation() {
           <FormConfirmationField title="Phone Number" value={formState.phone_number} />
           <FormConfirmationField title="National Insurance Number" value={formState.national_insurance_number} />
           <FormConfirmationField title="Date of Birth" value={formState.date_of_birth} />
-          <FormConfirmationField title="Picture" value={formState.picture?.name} />
+          <FormConfirmationField title="Picture" value={formState.picture?.[0]?.name} />
         </div>
       </div>
 

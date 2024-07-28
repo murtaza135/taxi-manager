@@ -36,10 +36,16 @@ export const addNewDriverDetailsSchema = z.object({
   picture: z
     .instanceof(FileList, { message: 'Allowed file types: images' })
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images' })
-    .transform((fileList) => fileList[0] as File | undefined)
-    .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((file) => !file || !!file?.type?.match(ACCEPTED_IMAGE_MIME_TYPE), 'Allowed file types: images')
+    .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_IMAGE_MIME_TYPE), 'Allowed file types: images')
     .optional(),
+  // picture: z
+  //   .instanceof(FileList, { message: 'Allowed file types: images' })
+  //   .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images' })
+  //   .transform((fileList) => fileList[0] as File | undefined)
+  //   .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+  //   .refine((file) => !file || !!file?.type?.match(ACCEPTED_IMAGE_MIME_TYPE), 'Allowed file types: images')
+  //   .optional(),
 });
 
 export const addNewDriversLicenceSchema = z.object({

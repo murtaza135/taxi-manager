@@ -6,7 +6,7 @@ import {
   FormGroup,
   useZodForm,
 } from '@/ui/form/Form';
-import { Input } from '@/ui/form/Input';
+import { Input, FileInput } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { addNewDriverDetailsSchema, AddNewDriverDetailsSchema } from '@/features/drivers/schemas';
@@ -24,9 +24,13 @@ export function AddNewDriverDetailsForm() {
   });
 
   // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const fileField = form.register('picture');
+  const fileField = {
+    ...form.register('picture'),
+    displayValue: formState.picture?.[0]?.name,
+  };
 
   const handleSubmit = form.handleSubmit((data) => {
+    console.log(data);
     updateFormState(data);
     nextStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -108,9 +112,9 @@ export function AddNewDriverDetailsForm() {
         <FormField
           control={form.control}
           name="picture"
-          render={() => (
+          render={({ field }) => (
             <FormGroup label="Picture">
-              <Input placeholder="Picture" type="file" accept="image/*" {...fileField} />
+              <FileInput placeholder="Picture" type="file" accept="image/*" {...fileField} />
             </FormGroup>
           )}
         />
