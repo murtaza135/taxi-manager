@@ -40,10 +40,10 @@ export function AddNewDriverMultiStepForm() {
       </MultiStepFormStepper>
 
       <MultiStepFormItems className="flex justify-center items-start">
-        <MultiStepFormItem step={4}><AddNewDriverDetailsForm /></MultiStepFormItem>
+        <MultiStepFormItem step={1}><AddNewDriverDetailsForm /></MultiStepFormItem>
         <MultiStepFormItem step={2}><AddNewDriversLicenceForm /></MultiStepFormItem>
         <MultiStepFormItem step={3}><AddNewDriverTaxiBadgeForm /></MultiStepFormItem>
-        <MultiStepFormItem step={1}><AddNewDriverFormConfirmation /></MultiStepFormItem>
+        <MultiStepFormItem step={4}><AddNewDriverFormConfirmation /></MultiStepFormItem>
       </MultiStepFormItems>
     </MultiStepForm>
   );
