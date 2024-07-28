@@ -8,7 +8,7 @@ import {
 import { AddNewDriverDetailsForm } from '@/features/drivers/components/AddNewDriverDetailsForm';
 import { AddNewDriversLicenceForm } from '@/features/drivers/components/AddNewDriversLicenceForm';
 import { AddNewDriverTaxiBadgeForm } from '@/features/drivers/components/AddNewDriverTaxiBadgeForm';
-import { Temp } from '@/features/drivers/components/Temp';
+import { AddNewDriverFormConfirmation } from '@/features/drivers/components/AddNewDriverFormConfirmation';
 import { AddNewDriverSchema } from '@/features/drivers/schemas';
 
 const initialFormState: AddNewDriverSchema = {
@@ -40,10 +40,10 @@ export function AddNewDriverMultiStepForm() {
       </MultiStepFormStepper>
 
       <MultiStepFormItems className="flex justify-center items-start">
-        <MultiStepFormItem step={1}><AddNewDriverDetailsForm /></MultiStepFormItem>
+        <MultiStepFormItem step={4}><AddNewDriverDetailsForm /></MultiStepFormItem>
         <MultiStepFormItem step={2}><AddNewDriversLicenceForm /></MultiStepFormItem>
         <MultiStepFormItem step={3}><AddNewDriverTaxiBadgeForm /></MultiStepFormItem>
-        <MultiStepFormItem step={4}><Temp /></MultiStepFormItem>
+        <MultiStepFormItem step={1}><AddNewDriverFormConfirmation /></MultiStepFormItem>
       </MultiStepFormItems>
     </MultiStepForm>
   );

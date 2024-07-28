@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card } from '@/ui/Card';
+import { Card, CardTitle } from '@/ui/Card';
 import { Separator } from '@/ui/Separator';
 import { Button } from '@/ui/Button';
 import { cn } from '@/utils/cn';
@@ -14,6 +14,19 @@ function FormConfirmation({ className, children }: FormConfirmationProps) {
     <Card className={cn('w-full max-w-[32rem] space-y-8', className)}>
       {children}
     </Card>
+  );
+}
+
+type FormConfirmationTitleProps = {
+  className?: string;
+  children?: React.ReactNode;
+};
+
+function FormConfirmationTitle({ className, children }: FormConfirmationTitleProps) {
+  return (
+    <CardTitle className={cn(className)}>
+      {children}
+    </CardTitle>
   );
 }
 
@@ -39,20 +52,23 @@ function FormConfirmationHeader({ title, onEdit, className }: FormConfirmationHe
 
 type FormConfirmationFieldProps = {
   title: string;
-  value: string;
+  value?: string;
 };
 
 function FormConfirmationField({ title, value }: FormConfirmationFieldProps) {
   return (
     <div>
       <p className="font-bold">{title}</p>
-      <p className="text-sm text-primary-dark/80 dark:text-primary-light/65">{value}</p>
+      {value
+        ? <p className="text-sm text-primary-dark/80 dark:text-primary-light/65">{value}</p>
+        : <p className="text-sm text-achromatic-dark/60 dark:text-achromatic-lighter/50">N/A</p>}
     </div>
   );
 }
 
 export {
   FormConfirmation,
+  FormConfirmationTitle,
   FormConfirmationHeader,
   FormConfirmationField,
 };
