@@ -33,7 +33,7 @@ export const addNewDriverDetailsSchema = z.object({
     .refine((val) => isDate(val), { message: 'Invalid date of birth' })
     .optional()
     .or(z.literal('').transform(() => undefined)),
-  picture: z.instanceof(FileList)
+  picture: z.instanceof(FileList, { message: 'Allowed file types: images' })
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images' })
     .transform((fileList) => fileList[0] as File | undefined)
     .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
@@ -51,7 +51,7 @@ export const addNewDriversLicenceSchema = z.object({
   licence_end_date: z
     .string({ required_error: 'End date required' })
     .refine((val) => isDate(val), { message: 'Invalid end date' }),
-  licence_document: z.instanceof(FileList)
+  licence_document: z.instanceof(FileList, { message: 'Allowed file types: images' })
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
     .transform((fileList) => fileList[0] as File | undefined)
     .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
@@ -71,7 +71,7 @@ export const addNewDriverTaxiBadgeSchema = z.object({
   badge_end_date: z
     .string({ required_error: 'End date required' })
     .refine((val) => isDate(val), { message: 'Invalid end date' }),
-  badge_document: z.instanceof(FileList)
+  badge_document: z.instanceof(FileList, { message: 'Allowed file types: images' })
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
     .transform((fileList) => fileList[0] as File | undefined)
     .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
