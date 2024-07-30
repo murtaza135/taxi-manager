@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { IoClose } from 'react-icons/io5';
+import { MdOutlineUploadFile } from 'react-icons/md';
 import { cn } from '@/utils/cn';
+import { Button } from '@/ui/Button';
 
 type InputProps = {
   leftIcon?: React.ReactNode;
@@ -25,32 +27,49 @@ const Input = React.forwardRef<
 ));
 Input.displayName = 'Input';
 
+type FileInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & {
+  rightIcon?: React.ReactNode;
+  fileList?: FileList;
+  onReset?: () => void;
+};
+
 const FileInput = React.forwardRef<
   HTMLInputElement,
-  React.InputHTMLAttributes<HTMLInputElement> & InputProps & { displayValue?: string; }
->(({ className, leftIcon, rightIcon, displayValue, ...props }, ref) => {
-  const temp1 = 1;
-  // React.useEffect(() => {
-  //   console.log(ref);
-  // }, [ref]);
-  // const { getValues } = useFormContext();
+  FileInputProps
+>(({ fileList, onReset, id, className, ...props }, ref) => {
+  const internalId = React.useId();
+  const displayValue = fileList?.[0]?.name;
 
-  console.log(displayValue);
-  // const temp2 = getValues(props.name ?? '') as FileList | undefined;
-  // console.log(temp2?.[0].name);
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    if (event.target.value) {
+      props.onChange?.(event);
+    }
+  };
 
   return (
-    <div className={cn('flex items-center gap-2 w-full rounded-lg border border-primary-dark bg-achromatic-lighter px-3 py-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-primary-light dark:bg-achromatic-dark', className)}>
-      {!!leftIcon && leftIcon}
-
+    <label htmlFor={id ?? internalId} className={cn('flex items-center gap-2 w-full rounded-lg border border-primary-dark bg-achromatic-lighter px-3 py-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-primary-light dark:bg-achromatic-dark', className)}>
       <input
-        className="w-full min-w-4 translate-y-[1px] outline-none text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-achromatic-dark dark:file:text-achromatic-light bg-transparent placeholder:text-primary-dark/70 disabled:cursor-not-allowed disabled:opacity-50 dark:placeholder:text-achromatic-400"
+        className="hidden"
+        type="file"
         ref={ref}
+        id={id ?? internalId}
         {...props}
+        onChange={handleChange}
       />
 
-      {!!rightIcon && rightIcon}
-    </div>
+      <div className="flex items-center gap-2 translate-y-[1px] w-full">
+        <MdOutlineUploadFile className={cn('text-xl', !displayValue && 'text-primary-dark/70 dark:text-achromatic-400')} />
+        <p className={cn('text-sm', !displayValue && 'text-primary-dark/70 dark:text-achromatic-400')}>
+          {displayValue ?? 'No File Chosen'}
+        </p>
+      </div>
+
+      {onReset && (
+        <Button type="button" variant="ghost" className="p-0 text-lg translate-y-[1px]" onClick={onReset}>
+          <IoClose />
+        </Button>
+      )}
+    </label>
   );
 });
 FileInput.displayName = 'FileInput';

@@ -24,10 +24,7 @@ export function AddNewDriverDetailsForm() {
   });
 
   // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const fileField = {
-    ...form.register('picture'),
-    displayValue: formState.picture?.[0]?.name,
-  };
+  const fileListField = form.registerFileList('picture');
 
   const handleSubmit = form.handleSubmit((data) => {
     console.log(data);
@@ -112,9 +109,9 @@ export function AddNewDriverDetailsForm() {
         <FormField
           control={form.control}
           name="picture"
-          render={({ field }) => (
+          render={() => (
             <FormGroup label="Picture">
-              <FileInput placeholder="Picture" type="file" accept="image/*" {...fileField} />
+              <FileInput placeholder="Picture" accept="image/*" {...fileListField} />
             </FormGroup>
           )}
         />

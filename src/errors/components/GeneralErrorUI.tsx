@@ -1,9 +1,11 @@
 import { useNavigate, useRevalidator, useRouteError } from 'react-router-dom';
 import { FaTriangleExclamation } from 'react-icons/fa6';
+import { useEffect } from 'react';
 import { ErrorContainer, ErrorIcon, ErrorTitle, ErrorMessage, ErrorButtons } from '@/ui/Error';
 import { Button } from '@/ui/Button';
 import { AppError } from '@/errors/classes/AppError';
 import { errorTitles, errorDescriptions } from '@/errors/errorMessages';
+import { config } from '@/config/config';
 
 const defaultErrorData = {
   title: errorTitles.unknown,
@@ -14,6 +16,13 @@ export function GeneralErrorUI() {
   const navigate = useNavigate();
   const { revalidate } = useRevalidator();
   const error = useRouteError();
+
+  useEffect(() => {
+    if (!config.env.PROD) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  }, [error]);
 
   const { title, description } = error instanceof AppError
     ? error

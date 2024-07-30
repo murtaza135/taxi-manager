@@ -10,6 +10,11 @@ import {
   useFormContext,
   useForm,
   UseFormProps,
+  UseFormReturn,
+  Path,
+  RegisterOptions,
+  UseFormRegisterReturn,
+  PathValue,
 } from 'react-hook-form';
 import { z, AnyZodObject } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -22,16 +27,53 @@ type UseZodFormProps<TSchema extends AnyZodObject, TContext = any> =
     schema: TSchema;
   };
 
+type UseZodFormReturn<
+  TSchema extends AnyZodObject,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  TContext = any,
+  TTransformedValues extends FieldValues | undefined = undefined,
+> = UseFormReturn<z.TypeOf<TSchema>, TContext, TTransformedValues> & {
+  registerFileList: (
+    name: Path<z.TypeOf<TSchema>>,
+    options?: RegisterOptions<z.TypeOf<TSchema>, Path<z.TypeOf<TSchema>>> | undefined,
+  ) => UseFormRegisterReturn<Path<z.TypeOf<TSchema>>> & {
+    fileList?: FileList,
+    onReset: () => void;
+  };
+};
+
 const useZodForm = <
   TSchema extends AnyZodObject,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,
   TTransformedValues extends FieldValues | undefined = undefined,
->({ schema, ...rest }: UseZodFormProps<TSchema>) => (
-  useForm<z.infer<TSchema>, TContext, TTransformedValues>(
+>(
+  { schema, ...rest }: UseZodFormProps<TSchema, TContext>,
+): UseZodFormReturn<TSchema, TContext, TTransformedValues> => {
+  const form = useForm<z.infer<TSchema>, TContext, TTransformedValues>(
     { resolver: zodResolver(schema), ...rest },
-  )
-);
+  );
+
+  type RegisterFileList = UseZodFormReturn<TSchema, TContext, TTransformedValues>['registerFileList'];
+
+  const registerFileList: RegisterFileList = React.useCallback((name, options) => {
+    const field = form.register(name, options);
+
+    const fileList = form.watch(name) as unknown;
+    if (!(fileList instanceof FileList) && (typeof fileList !== 'undefined')) {
+      throw new Error(`Form field \`${name}\` is not of type \`FileList\``);
+    }
+
+    const onReset = () => form.setValue(
+      name,
+      undefined as PathValue<z.TypeOf<TSchema>, Path<z.TypeOf<TSchema>>>,
+    );
+
+    return { ...field, fileList, onReset };
+  }, [form]);
+
+  return { ...form, registerFileList };
+};
 
 const Form = React.forwardRef<
   HTMLFormElement,
