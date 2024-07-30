@@ -52,11 +52,10 @@ export const addNewDriversLicenceSchema = z.object({
     .string({ required_error: 'End date required' })
     .refine((val) => isDate(val), { message: 'Invalid end date' }),
   licence_document: z
-    .instanceof(FileList, { message: 'Allowed file types: images' })
+    .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
-    .transform((fileList) => fileList[0] as File | undefined)
-    .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((file) => !file || !!file?.type?.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+    .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
 });
 
@@ -73,11 +72,10 @@ export const addNewDriverTaxiBadgeSchema = z.object({
     .string({ required_error: 'End date required' })
     .refine((val) => isDate(val), { message: 'Invalid end date' }),
   badge_document: z
-    .instanceof(FileList, { message: 'Allowed file types: images' })
+    .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
-    .transform((fileList) => fileList[0] as File | undefined)
-    .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((file) => !file || !!file?.type?.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+    .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
 });
 

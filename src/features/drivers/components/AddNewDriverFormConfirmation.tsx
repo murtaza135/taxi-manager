@@ -45,7 +45,7 @@ export function AddNewDriverFormConfirmation() {
           <FormConfirmationField title="Licence Number" value={formState.licence_number} />
           <FormConfirmationField title="Start Date" value={formState.licence_start_date} />
           <FormConfirmationField title="End Date" value={formState.licence_end_date} />
-          <FormConfirmationField title="Drivers Licence" value={formState.licence_document?.name} />
+          <FormConfirmationField title="Drivers Licence" value={formState.licence_document?.[0]?.name} />
         </div>
       </div>
 
@@ -55,7 +55,7 @@ export function AddNewDriverFormConfirmation() {
           <FormConfirmationField title="Badge Number" value={formState.badge_number} />
           <FormConfirmationField title="Start Date" value={formState.badge_start_date} />
           <FormConfirmationField title="End Date" value={formState.badge_end_date} />
-          <FormConfirmationField title="Taxi Badge" value={formState.badge_document?.name} />
+          <FormConfirmationField title="Taxi Badge" value={formState.badge_document?.[0]?.name} />
         </div>
       </div>
 
