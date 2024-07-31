@@ -173,7 +173,7 @@ const BasicDisplayInput = React.forwardRef<
       {...props}
       ref={ref}
       className={cn('w-full min-w-4 translate-y-[1px] outline-none text-sm text-primary-dark/80 dark:text-primary-light/65 bg-transparent placeholder:text-primary-dark/70 dark:placeholder:text-achromatic-400 file:hidden', className)}
-      placeholder="N/A"
+      placeholder={props.placeholder || 'N/A'}
       readOnly
     />
   </div>
@@ -195,7 +195,7 @@ const FileDisplayInput = React.forwardRef<
     <div>
       <p className="font-bold">{title}</p>
       <p className={cn('w-full min-w-4 pt-0.5 translate-y-[1px] outline-none text-sm text-primary-dark/80 dark:text-primary-light/65 bg-transparent', !displayValue && 'text-primary-dark/70 dark:text-achromatic-400', className)}>
-        {displayValue ?? 'N/A'}
+        {displayValue || props.placeholder || 'N/A'}
       </p>
       <input
         {...props}
@@ -220,7 +220,7 @@ const DateDisplayInput = React.forwardRef<
   <div>
     <p className="font-bold">{title}</p>
     <p className={cn('w-full min-w-4 pt-0.5 translate-y-[1px] outline-none text-sm text-primary-dark/80 dark:text-primary-light/65 bg-transparent', !props.value && 'text-primary-dark/70 dark:text-achromatic-400', className)}>
-      {props.value || 'N/A'}
+      {props.value || props.placeholder || 'N/A'}
     </p>
     <input
       {...props}

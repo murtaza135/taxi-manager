@@ -58,6 +58,7 @@ const useZodForm = <
 
   type RegisterFileList = UseZodFormReturn<TSchema, TContext, TTransformedValues>['registerFileList'];
 
+  // TODO either add to useFormContext ot remove from useZodForm
   const registerFileList: RegisterFileList = React.useCallback((name, options) => {
     const field = form.register(name, options);
 

@@ -28,7 +28,6 @@ export function AddNewDriversLicenceForm() {
   const fileField = form.registerFileList('licence_document');
 
   const handleSubmit = form.handleSubmit((data) => {
-    console.log(data);
     updateFormState(data);
     nextStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });

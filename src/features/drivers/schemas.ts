@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import isMobilePhone from 'validator/es/lib/isMobilePhone';
 import isDate from 'validator/es/lib/isDate';
+import mapValues from 'lodash/mapValues';
+import { MergeOverwrite } from '@/types/utils';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; // 5MB
 const ACCEPTED_IMAGE_MIME_TYPE = /image\/.+/;
@@ -17,22 +19,22 @@ export const addNewDriverDetailsSchema = z.object({
     .string()
     .email({ message: 'Invalid email address' })
     .optional()
-    .or(z.literal('').transform(() => undefined)),
+    .or(z.literal('')),
   phone_number: z
     .string()
     .refine((val) => isMobilePhone(val), 'Invalid phone number')
     .optional()
-    .or(z.literal('').transform(() => undefined)),
+    .or(z.literal('')),
   national_insurance_number: z
     .string()
     .min(1, 'Invalid national insurance number')
     .optional()
-    .or(z.literal('').transform(() => undefined)),
+    .or(z.literal('')),
   date_of_birth: z
     .string()
     .refine((val) => isDate(val), { message: 'Invalid date of birth' })
     .optional()
-    .or(z.literal('').transform(() => undefined)),
+    .or(z.literal('')),
   picture: z
     .instanceof(FileList, { message: 'Allowed file types: images' })
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images' })
@@ -67,7 +69,7 @@ export const addNewDriverTaxiBadgeSchema = z.object({
     .string()
     .refine((val) => isDate(val), { message: 'Invalid start date' })
     .optional()
-    .or(z.literal('').transform(() => undefined)),
+    .or(z.literal('')),
   badge_end_date: z
     .string({ required_error: 'End date required' })
     .refine((val) => isDate(val), { message: 'Invalid end date' }),
@@ -83,7 +85,73 @@ export const addNewDriverSchema = addNewDriverDetailsSchema
   .merge(addNewDriversLicenceSchema)
   .merge(addNewDriverTaxiBadgeSchema);
 
+// // transform empty strings to undefined and FileList objects to File objects
+// export const addNewDriverTransformedSchema = addNewDriverSchema.extend({
+//   email: z
+//     .string()
+//     .email({ message: 'Invalid email address' })
+//     .optional()
+//     .or(z.literal('').transform(() => undefined)),
+//   phone_number: z
+//     .string()
+//     .refine((val) => isMobilePhone(val), 'Invalid phone number')
+//     .optional()
+//     .or(z.literal('').transform(() => undefined)),
+//   national_insurance_number: z
+//     .string()
+//     .min(1, 'Invalid national insurance number')
+//     .optional()
+//     .or(z.literal('').transform(() => undefined)),
+//   date_of_birth: z
+//     .string()
+//     .refine((val) => isDate(val), { message: 'Invalid date of birth' })
+//     .optional()
+//     .or(z.literal('').transform(() => undefined)),
+//   picture: z
+//     .instanceof(FileList, { message: 'Allowed file types: images' })
+//     .transform((fileList) => fileList[0] as File | undefined)
+//     .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+//     .refine((file) => !file || file.type.match(ACCEPTED_IMAGE_MIME_TYPE), 'Allowed file types: images')
+//     .optional(),
+//   badge_start_date: z
+//     .string()
+//     .refine((val) => isDate(val), { message: 'Invalid start date' })
+//     .optional()
+//     .or(z.literal('').transform(() => undefined)),
+//   licence_document: z
+//     .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
+//     .transform((fileList) => fileList[0] as File | undefined)
+//     .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+//     .refine((file) => !file || file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+//     .optional(),
+//   badge_document: z
+//     .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
+//     .transform((fileList) => fileList[0] as File | undefined)
+//     .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+//     .refine((file) => !file || file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+//     .optional(),
+// });
+
+export const addNewDriverTransformer = (data: AddNewDriverSchema) => (
+  mapValues(data, (val) => {
+    if (!val) return undefined;
+    if (val instanceof FileList) return val[0];
+    return val;
+  }) as AddNewDriverTransformedSchema
+);
+
 export type AddNewDriverDetailsSchema = z.infer<typeof addNewDriverDetailsSchema>;
 export type AddNewDriversLicenceSchema = z.infer<typeof addNewDriversLicenceSchema>;
 export type AddNewDriverTaxiBadgeSchema = z.infer<typeof addNewDriverTaxiBadgeSchema>;
 export type AddNewDriverSchema = z.infer<typeof addNewDriverSchema>;
+
+export type AddNewDriverTransformedSchema = MergeOverwrite<AddNewDriverSchema, {
+  email?: string | undefined;
+  phone_number?: string | undefined;
+  national_insurance_number?: string | undefined;
+  date_of_birth?: string | undefined;
+  picture?: File | undefined;
+  badge_start_date?: string | undefined;
+  licence_document?: File | undefined;
+  badge_document?: File | undefined;
+}>;

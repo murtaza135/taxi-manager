@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { Button } from '@/ui/Button';
 import { Separator } from '@/ui/Separator';
-import { addNewDriverSchema, AddNewDriverSchema } from '@/features/drivers/schemas';
+import { addNewDriverSchema, AddNewDriverSchema, addNewDriverTransformer } from '@/features/drivers/schemas';
 import { useZodForm, FormProvider, Form, FormTitle, FormSection, FormField } from '@/ui/form/Form';
 import { DisplayInput } from '@/ui/form/Input';
 import { useToast } from '@/ui/toast';
@@ -28,7 +28,8 @@ export function AddNewDriverFormConfirmation() {
 
   const handleSubmit = form.handleSubmit(
     (data) => {
-      console.log(data);
+      const transformedData = addNewDriverTransformer(data);
+      console.log(transformedData);
     },
     () => {
       toast({
