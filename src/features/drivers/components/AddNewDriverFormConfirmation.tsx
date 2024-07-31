@@ -4,6 +4,8 @@ import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { Button } from '@/ui/Button';
 import { Separator } from '@/ui/Separator';
 import { addNewDriverSchema, AddNewDriverSchema } from '@/features/drivers/schemas';
+import { FormSection } from '@/ui/form/Form';
+import { DisplayInput } from '@/ui/form/Input';
 
 export function AddNewDriverFormConfirmation() {
   const { formState, prevStep, setStep } = useMultiStepFormContext<AddNewDriverSchema>();
@@ -25,6 +27,16 @@ export function AddNewDriverFormConfirmation() {
   return (
     <FormConfirmation>
       <FormConfirmationTitle>Confirmation</FormConfirmationTitle>
+
+      <FormSection title="Driver" onEdit={() => setStep(1)}>
+        <DisplayInput title="First Name" value={formState.first_names} type="text" />
+        <DisplayInput title="Last Name" value={formState.last_name} />
+        <DisplayInput title="Email" value={formState.email} />
+        <DisplayInput title="Phone Number" value={formState.phone_number} />
+        <DisplayInput title="National Insurance Number" value={formState.national_insurance_number} />
+        <DisplayInput type="date" title="Date of Birth" value={formState.date_of_birth} />
+        <DisplayInput type="file" title="Picture" />
+      </FormSection>
 
       <div className="space-y-4">
         <FormConfirmationHeader title="Driver" onEdit={() => setStep(1)} />

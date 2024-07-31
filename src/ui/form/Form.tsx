@@ -20,6 +20,8 @@ import { z, AnyZodObject } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { cn } from '@/utils/cn';
 import { Label } from '@/ui/form/Label';
+import { Button } from '@/ui/Button';
+import { Separator } from '@/ui/Separator';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type UseZodFormProps<TSchema extends AnyZodObject, TContext = any> =
@@ -108,6 +110,37 @@ const FormTitle = React.forwardRef<
   </h2>
 ));
 FormTitle.displayName = 'FormTitle';
+
+type FormSectionProps = {
+  title: string;
+  onEdit?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+};
+
+const FormSection = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & FormSectionProps
+>(({ title, onEdit, className, children, ...props }, ref) => (
+  <div className="space-y-4">
+    <div>
+      <div className="flex justify-between items-center gap-2 pb-3">
+        <h2 className="text-2xl font-bold">{title}</h2>
+        {onEdit && (
+          <Button variant="ghost" className="p-0" onClick={onEdit}>Edit</Button>
+        )}
+      </div>
+      <Separator className="bg-primary-dark dark:bg-primary-light" />
+    </div>
+
+    <div
+      className={cn('space-y-2', className)}
+      ref={ref}
+      {...props}
+    >
+      {children}
+    </div>
+  </div>
+));
+FormSection.displayName = 'FormSection';
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -285,6 +318,7 @@ export {
   FormProvider,
   Form,
   FormTitle,
+  FormSection,
   FormItem,
   FormLabel,
   FormControl,

@@ -3,6 +3,7 @@ import { IoClose } from 'react-icons/io5';
 import { MdOutlineUploadFile } from 'react-icons/md';
 import { cn } from '@/utils/cn';
 import { Button } from '@/ui/Button';
+import { OptionalObjectGroup } from '@/types/utils';
 
 type InputProps = {
   leftIcon?: React.ReactNode;
@@ -28,7 +29,6 @@ const Input = React.forwardRef<
 Input.displayName = 'Input';
 
 type FileInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & {
-  rightIcon?: React.ReactNode;
   fileList?: FileList;
   onReset?: () => void;
 };
@@ -49,11 +49,11 @@ const FileInput = React.forwardRef<
   return (
     <label htmlFor={id ?? internalId} className={cn('flex items-center gap-2 w-full rounded-lg border border-primary-dark bg-achromatic-lighter px-3 py-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-primary-light dark:bg-achromatic-dark', className)}>
       <input
+        {...props}
         className="hidden"
         type="file"
         ref={ref}
         id={id ?? internalId}
-        {...props}
         onChange={handleChange}
       />
 
@@ -130,8 +130,115 @@ const DebouncedInput = React.forwardRef<HTMLInputElement, DebouncedInputProps>((
 });
 DebouncedInput.displayName = 'DebouncedInput';
 
+type BasicDisplayInputProps = {
+  title: string;
+};
+
+const BasicDisplayInput = React.forwardRef<
+  HTMLInputElement,
+  React.InputHTMLAttributes<HTMLInputElement> & BasicDisplayInputProps
+>(({ title, className, ...props }, ref) => (
+  <div>
+    <p className="font-bold">{title}</p>
+    <input
+      {...props}
+      ref={ref}
+      className={cn('w-full min-w-4 translate-y-[1px] outline-none text-sm text-primary-dark/80 dark:text-primary-light/65 bg-transparent placeholder:text-primary-dark/70 dark:placeholder:text-achromatic-400 file:hidden', className)}
+      placeholder="N/A"
+      readOnly
+    />
+  </div>
+));
+BasicDisplayInput.displayName = 'BasicDisplayInput';
+
+type FileDisplayInputProps = {
+  title: string;
+  fileList?: FileList;
+};
+
+const FileDisplayInput = React.forwardRef<
+  HTMLInputElement,
+  React.InputHTMLAttributes<HTMLInputElement> & FileDisplayInputProps
+>(({ title, fileList, className, ...props }, ref) => {
+  const displayValue = fileList?.[0]?.name;
+
+  return (
+    <div>
+      <p className="font-bold">{title}</p>
+      <p className={cn('w-full min-w-4 pt-0.5 translate-y-[1px] outline-none text-sm text-primary-dark/80 dark:text-primary-light/65 bg-transparent', !displayValue && 'text-primary-dark/70 dark:text-achromatic-400', className)}>
+        {displayValue ?? 'N/A'}
+      </p>
+      <input
+        {...props}
+        className="hidden"
+        type="file"
+        ref={ref}
+        readOnly
+      />
+    </div>
+  );
+});
+FileDisplayInput.displayName = 'FileDisplayInput';
+
+type DateDisplayInputProps = {
+  title: string;
+};
+
+const DateDisplayInput = React.forwardRef<
+  HTMLInputElement,
+  React.InputHTMLAttributes<HTMLInputElement> & DateDisplayInputProps
+>(({ title, className, ...props }, ref) => (
+  <div>
+    <p className="font-bold">{title}</p>
+    <p className={cn('w-full min-w-4 pt-0.5 translate-y-[1px] outline-none text-sm text-primary-dark/80 dark:text-primary-light/65 bg-transparent', !props.value && 'text-primary-dark/70 dark:text-achromatic-400', className)}>
+      {props.value || 'N/A'}
+    </p>
+    <input
+      {...props}
+      className="hidden"
+      type="date"
+      ref={ref}
+      readOnly
+    />
+  </div>
+));
+DateDisplayInput.displayName = 'DateDisplayInput';
+
+type DisplayInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  title: string;
+} & ({
+  type: 'file',
+  fileList?: FileList;
+} | {
+  type?: React.HTMLInputTypeAttribute;
+  fileList?: undefined;
+});
+
+const DisplayInput = React.forwardRef<
+  HTMLInputElement,
+  DisplayInputProps
+>((props, ref) => {
+  if (props.type === 'file') {
+    return (
+      <FileDisplayInput {...props} ref={ref} />
+    );
+  }
+
+  if (props.type === 'date') {
+    return (
+      <DateDisplayInput {...props} ref={ref} />
+    );
+  }
+
+  return (
+    <BasicDisplayInput {...props} ref={ref} />
+  );
+});
+DisplayInput.displayName = 'DisplayInput';
+
 export {
   Input,
   FileInput,
   DebouncedInput,
+  DisplayInput,
 };
