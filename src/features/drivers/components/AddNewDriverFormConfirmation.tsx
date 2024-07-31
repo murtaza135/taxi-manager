@@ -9,7 +9,11 @@ import { useToast } from '@/ui/toast';
 
 export function AddNewDriverFormConfirmation() {
   const { toast } = useToast();
-  const { formState, prevStep, setStep } = useMultiStepFormContext<AddNewDriverSchema>();
+  const {
+    formState,
+    prevStep,
+    setStep,
+  } = useMultiStepFormContext<AddNewDriverSchema>();
 
   const form = useZodForm({
     schema: addNewDriverSchema,

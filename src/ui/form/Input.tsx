@@ -4,14 +4,14 @@ import { MdOutlineUploadFile } from 'react-icons/md';
 import { cn } from '@/utils/cn';
 import { Button } from '@/ui/Button';
 
-type InputProps = {
+type BasicInputProps = {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
 };
 
-const Input = React.forwardRef<
+const BasicInput = React.forwardRef<
   HTMLInputElement,
-  React.InputHTMLAttributes<HTMLInputElement> & InputProps
+  React.InputHTMLAttributes<HTMLInputElement> & BasicInputProps
 >(({ className, leftIcon, rightIcon, ...props }, ref) => (
   <div className={cn('flex items-center gap-2 w-full rounded-lg border border-primary-dark bg-achromatic-lighter px-3 py-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-primary-light dark:bg-achromatic-dark', className)}>
     {!!leftIcon && leftIcon}
@@ -25,7 +25,7 @@ const Input = React.forwardRef<
     {!!rightIcon && rightIcon}
   </div>
 ));
-Input.displayName = 'Input';
+BasicInput.displayName = 'BasicInput';
 
 type FileInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & {
   fileList?: FileList;
@@ -72,6 +72,36 @@ const FileInput = React.forwardRef<
   );
 });
 FileInput.displayName = 'FileInput';
+
+type InputProps = React.InputHTMLAttributes<HTMLInputElement> & ({
+  type: 'file',
+  fileList?: FileList;
+  onReset?: () => void;
+  leftIcon?: undefined;
+  rightIcon?: undefined;
+} | {
+  type?: React.HTMLInputTypeAttribute;
+  fileList?: undefined;
+  onReset?: undefined;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+});
+
+const Input = React.forwardRef<
+  HTMLInputElement,
+  InputProps
+>((props, ref) => {
+  if (props.type === 'file') {
+    return (
+      <FileInput {...props} ref={ref} />
+    );
+  }
+
+  return (
+    <BasicInput {...props} ref={ref} />
+  );
+});
+Input.displayName = 'Input';
 
 type DebouncedInputProps =
   Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> &
@@ -150,14 +180,14 @@ const BasicDisplayInput = React.forwardRef<
 ));
 BasicDisplayInput.displayName = 'BasicDisplayInput';
 
-type FileDisplayInputProps = {
+type FileDisplayInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & {
   title: string;
   fileList?: FileList;
 };
 
 const FileDisplayInput = React.forwardRef<
   HTMLInputElement,
-  React.InputHTMLAttributes<HTMLInputElement> & FileDisplayInputProps
+  FileDisplayInputProps
 >(({ title, fileList, className, ...props }, ref) => {
   const displayValue = fileList?.[0]?.name;
 
@@ -179,13 +209,13 @@ const FileDisplayInput = React.forwardRef<
 });
 FileDisplayInput.displayName = 'FileDisplayInput';
 
-type DateDisplayInputProps = {
+type DateDisplayInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & {
   title: string;
 };
 
 const DateDisplayInput = React.forwardRef<
   HTMLInputElement,
-  React.InputHTMLAttributes<HTMLInputElement> & DateDisplayInputProps
+  DateDisplayInputProps
 >(({ title, className, ...props }, ref) => (
   <div>
     <p className="font-bold">{title}</p>
@@ -237,7 +267,6 @@ DisplayInput.displayName = 'DisplayInput';
 
 export {
   Input,
-  FileInput,
   DebouncedInput,
   DisplayInput,
 };

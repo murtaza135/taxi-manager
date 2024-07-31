@@ -40,7 +40,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from '@/ui/DropdownMenu';
-import { Checkbox } from '@/ui/Checkbox';
+import { Checkbox } from '@/ui/form/Checkbox';
 import { cn } from '@/utils/cn';
 import { Separator } from '@/ui/Separator';
 import { layouts } from '@/lib/tanstack-table/constants';

@@ -6,7 +6,7 @@ import {
   FormGroup,
   useZodForm,
 } from '@/ui/form/Form';
-import { Input, FileInput } from '@/ui/form/Input';
+import { Input } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { addNewDriverDetailsSchema, AddNewDriverDetailsSchema } from '@/features/drivers/schemas';
@@ -27,6 +27,7 @@ export function AddNewDriverDetailsForm() {
   const fileListField = form.registerFileList('picture');
 
   const handleSubmit = form.handleSubmit((data) => {
+    console.log(data);
     updateFormState(data);
     nextStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -110,7 +111,7 @@ export function AddNewDriverDetailsForm() {
           name="picture"
           render={() => (
             <FormGroup label="Picture">
-              <FileInput placeholder="Picture" accept="image/*" {...fileListField} />
+              <Input type="file" placeholder="Picture" accept="image/*" {...fileListField} />
             </FormGroup>
           )}
         />

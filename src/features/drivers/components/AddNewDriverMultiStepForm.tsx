@@ -31,7 +31,7 @@ const initialFormState: AddNewDriverSchema = {
 
 export function AddNewDriverMultiStepForm() {
   return (
-    <MultiStepForm min={1} max={4} initialStep={4} initialFormState={initialFormState}>
+    <MultiStepForm min={1} max={4} initialFormState={initialFormState}>
       <MultiStepFormStepper>
         <MultiStepFormStepperItem step={1} title="Driver" />
         <MultiStepFormStepperItem step={2} title="Drivers Licence" />
