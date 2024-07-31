@@ -200,7 +200,7 @@ const MultiStepFormStepper = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <ol
     ref={ref}
-    className={cn('flex flex-wrap mb-12', className)}
+    className={cn('grid grid-flow-col auto-cols-fr mb-12', className)}
     {...props}
   >
     {children}
@@ -224,7 +224,7 @@ const MultiStepFormStepperItem = React.forwardRef<
   return (
     <li
       ref={ref}
-      className={cn('flex-1 flex flex-col justify-center items-center text-center gap-2', className)}
+      className={cn('flex-1 flex flex-col justify-start items-center text-center text-wrap px-1 gap-2', className)}
       {...props}
     >
       <div className="relative w-full center">
@@ -249,7 +249,11 @@ const MultiStepFormStepperItem = React.forwardRef<
         </span>
       </div>
 
-      {!!title && <p className="text-primary-dark dark:text-primary-light">{title}</p>}
+      {!!title && (
+        <p className="text-primary-dark dark:text-primary-light w-full overflow-hidden text-ellipsis">
+          {title}
+        </p>
+      )}
     </li>
   );
 });
