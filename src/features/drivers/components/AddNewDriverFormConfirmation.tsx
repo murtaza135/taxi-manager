@@ -4,7 +4,7 @@ import { Button } from '@/ui/Button';
 import { Separator } from '@/ui/Separator';
 import { addNewDriverSchema, AddNewDriverSchema, addNewDriverTransformer } from '@/features/drivers/schemas';
 import { useZodForm, FormProvider, Form, FormTitle, FormSection, FormField } from '@/ui/form/Form';
-import { DisplayInput } from '@/ui/form/Input';
+import { ReadOnlyInput } from '@/ui/form/Input';
 import { useToast } from '@/ui/toast';
 
 export function AddNewDriverFormConfirmation() {
@@ -58,7 +58,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="first_names"
             render={({ field }) => (
-              <DisplayInput title="First Name" {...field} />
+              <ReadOnlyInput title="First Name" {...field} />
             )}
           />
 
@@ -66,7 +66,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="last_name"
             render={({ field }) => (
-              <DisplayInput title="Last Name" {...field} />
+              <ReadOnlyInput title="Last Name" {...field} />
             )}
           />
 
@@ -74,7 +74,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <DisplayInput title="Email" type="email" {...field} />
+              <ReadOnlyInput title="Email" type="email" {...field} />
             )}
           />
 
@@ -82,7 +82,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="phone_number"
             render={({ field }) => (
-              <DisplayInput title="Phone Number" type="tel" {...field} />
+              <ReadOnlyInput title="Phone Number" type="tel" {...field} />
             )}
           />
 
@@ -90,7 +90,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="national_insurance_number"
             render={({ field }) => (
-              <DisplayInput title="National Insurance Number" {...field} />
+              <ReadOnlyInput title="National Insurance Number" {...field} />
             )}
           />
 
@@ -98,7 +98,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="date_of_birth"
             render={({ field }) => (
-              <DisplayInput title="Date of Birth" type="date" {...field} />
+              <ReadOnlyInput title="Date of Birth" type="date" {...field} />
             )}
           />
 
@@ -106,7 +106,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="picture"
             render={() => (
-              <DisplayInput title="Picture" type="file" accept="image/*" {...driverPictureFileListField} />
+              <ReadOnlyInput title="Picture" type="file" accept="image/*" {...driverPictureFileListField} />
             )}
           />
         </FormSection>
@@ -116,7 +116,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="licence_number"
             render={({ field }) => (
-              <DisplayInput title="Licence Number" {...field} />
+              <ReadOnlyInput title="Licence Number" {...field} />
             )}
           />
 
@@ -124,7 +124,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="licence_start_date"
             render={({ field }) => (
-              <DisplayInput title="Start Date" type="date" {...field} />
+              <ReadOnlyInput title="Start Date" type="date" {...field} />
             )}
           />
 
@@ -132,7 +132,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="licence_end_date"
             render={({ field }) => (
-              <DisplayInput title="End Date" type="date" {...field} />
+              <ReadOnlyInput title="End Date" type="date" {...field} />
             )}
           />
 
@@ -140,7 +140,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="licence_document"
             render={() => (
-              <DisplayInput title="Drivers Licence" type="file" accept="image/*,.pdf" {...driversLicenceFileListField} />
+              <ReadOnlyInput title="Drivers Licence" type="file" accept="image/*,.pdf" {...driversLicenceFileListField} />
             )}
           />
         </FormSection>
@@ -150,7 +150,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="badge_number"
             render={({ field }) => (
-              <DisplayInput title="Badge Number" {...field} />
+              <ReadOnlyInput title="Badge Number" {...field} />
             )}
           />
 
@@ -158,7 +158,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="badge_start_date"
             render={({ field }) => (
-              <DisplayInput title="Start Date" type="date" {...field} />
+              <ReadOnlyInput title="Start Date" type="date" {...field} />
             )}
           />
 
@@ -166,7 +166,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="badge_end_date"
             render={({ field }) => (
-              <DisplayInput title="End Date" type="date" {...field} />
+              <ReadOnlyInput title="End Date" type="date" {...field} />
             )}
           />
 
@@ -174,7 +174,7 @@ export function AddNewDriverFormConfirmation() {
             control={form.control}
             name="badge_document"
             render={() => (
-              <DisplayInput title="Taxi Badge" type="file" accept="image/*,.pdf" {...taxiBadgeFileListField} />
+              <ReadOnlyInput title="Taxi Badge" type="file" accept="image/*,.pdf" {...taxiBadgeFileListField} />
             )}
           />
         </FormSection>

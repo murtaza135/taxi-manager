@@ -85,57 +85,10 @@ export const addNewDriverSchema = addNewDriverDetailsSchema
   .merge(addNewDriversLicenceSchema)
   .merge(addNewDriverTaxiBadgeSchema);
 
-// // transform empty strings to undefined and FileList objects to File objects
-// export const addNewDriverTransformedSchema = addNewDriverSchema.extend({
-//   email: z
-//     .string()
-//     .email({ message: 'Invalid email address' })
-//     .optional()
-//     .or(z.literal('').transform(() => undefined)),
-//   phone_number: z
-//     .string()
-//     .refine((val) => isMobilePhone(val), 'Invalid phone number')
-//     .optional()
-//     .or(z.literal('').transform(() => undefined)),
-//   national_insurance_number: z
-//     .string()
-//     .min(1, 'Invalid national insurance number')
-//     .optional()
-//     .or(z.literal('').transform(() => undefined)),
-//   date_of_birth: z
-//     .string()
-//     .refine((val) => isDate(val), { message: 'Invalid date of birth' })
-//     .optional()
-//     .or(z.literal('').transform(() => undefined)),
-//   picture: z
-//     .instanceof(FileList, { message: 'Allowed file types: images' })
-//     .transform((fileList) => fileList[0] as File | undefined)
-//     .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-//     .refine((file) => !file || file.type.match(ACCEPTED_IMAGE_MIME_TYPE), 'Allowed file types: images')
-//     .optional(),
-//   badge_start_date: z
-//     .string()
-//     .refine((val) => isDate(val), { message: 'Invalid start date' })
-//     .optional()
-//     .or(z.literal('').transform(() => undefined)),
-//   licence_document: z
-//     .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
-//     .transform((fileList) => fileList[0] as File | undefined)
-//     .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-//     .refine((file) => !file || file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
-//     .optional(),
-//   badge_document: z
-//     .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
-//     .transform((fileList) => fileList[0] as File | undefined)
-//     .refine((file) => !file || file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-//     .refine((file) => !file || file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
-//     .optional(),
-// });
-
 export const addNewDriverTransformer = (data: AddNewDriverSchema) => (
   mapValues(data, (val) => {
     if (!val) return undefined;
-    if (val instanceof FileList) return val[0];
+    if (val instanceof FileList) return val[0] as File | undefined;
     return val;
   }) as AddNewDriverTransformedSchema
 );

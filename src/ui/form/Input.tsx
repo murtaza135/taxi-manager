@@ -159,13 +159,13 @@ const DebouncedInput = React.forwardRef<HTMLInputElement, DebouncedInputProps>((
 });
 DebouncedInput.displayName = 'DebouncedInput';
 
-type BasicDisplayInputProps = {
+type BasicReadOnlyInputProps = {
   title: string;
 };
 
-const BasicDisplayInput = React.forwardRef<
+const BasicReadOnlyInput = React.forwardRef<
   HTMLInputElement,
-  React.InputHTMLAttributes<HTMLInputElement> & BasicDisplayInputProps
+  React.InputHTMLAttributes<HTMLInputElement> & BasicReadOnlyInputProps
 >(({ title, className, ...props }, ref) => (
   <div>
     <p className="font-bold">{title}</p>
@@ -178,16 +178,16 @@ const BasicDisplayInput = React.forwardRef<
     />
   </div>
 ));
-BasicDisplayInput.displayName = 'BasicDisplayInput';
+BasicReadOnlyInput.displayName = 'BasicReadOnlyInput';
 
-type FileDisplayInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & {
+type FileReadOnlyInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & {
   title: string;
   fileList?: FileList;
 };
 
-const FileDisplayInput = React.forwardRef<
+const FileReadOnlyInput = React.forwardRef<
   HTMLInputElement,
-  FileDisplayInputProps
+  FileReadOnlyInputProps
 >(({ title, fileList, className, ...props }, ref) => {
   const displayValue = fileList?.[0]?.name;
 
@@ -207,15 +207,15 @@ const FileDisplayInput = React.forwardRef<
     </div>
   );
 });
-FileDisplayInput.displayName = 'FileDisplayInput';
+FileReadOnlyInput.displayName = 'FileReadOnlyInput';
 
-type DateDisplayInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & {
+type DateReadOnlyInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> & {
   title: string;
 };
 
-const DateDisplayInput = React.forwardRef<
+const DateReadOnlyInput = React.forwardRef<
   HTMLInputElement,
-  DateDisplayInputProps
+  DateReadOnlyInputProps
 >(({ title, className, ...props }, ref) => (
   <div>
     <p className="font-bold">{title}</p>
@@ -231,9 +231,9 @@ const DateDisplayInput = React.forwardRef<
     />
   </div>
 ));
-DateDisplayInput.displayName = 'DateDisplayInput';
+DateReadOnlyInput.displayName = 'DateReadOnlyInput';
 
-type DisplayInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type ReadOnlyInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   title: string;
 } & ({
   type: 'file',
@@ -243,30 +243,30 @@ type DisplayInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   fileList?: undefined;
 });
 
-const DisplayInput = React.forwardRef<
+const ReadOnlyInput = React.forwardRef<
   HTMLInputElement,
-  DisplayInputProps
+  ReadOnlyInputProps
 >((props, ref) => {
   if (props.type === 'file') {
     return (
-      <FileDisplayInput {...props} ref={ref} />
+      <FileReadOnlyInput {...props} ref={ref} />
     );
   }
 
   if (props.type === 'date') {
     return (
-      <DateDisplayInput {...props} ref={ref} />
+      <DateReadOnlyInput {...props} ref={ref} />
     );
   }
 
   return (
-    <BasicDisplayInput {...props} ref={ref} />
+    <BasicReadOnlyInput {...props} ref={ref} />
   );
 });
-DisplayInput.displayName = 'DisplayInput';
+ReadOnlyInput.displayName = 'ReadOnlyInput';
 
 export {
   Input,
   DebouncedInput,
-  DisplayInput,
+  ReadOnlyInput,
 };
