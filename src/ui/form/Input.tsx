@@ -3,7 +3,6 @@ import { IoClose } from 'react-icons/io5';
 import { MdOutlineUploadFile } from 'react-icons/md';
 import { cn } from '@/utils/cn';
 import { Button } from '@/ui/Button';
-import { OptionalObjectGroup } from '@/types/utils';
 
 type InputProps = {
   leftIcon?: React.ReactNode;

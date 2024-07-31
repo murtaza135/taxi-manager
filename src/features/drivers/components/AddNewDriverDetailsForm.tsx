@@ -27,7 +27,6 @@ export function AddNewDriverDetailsForm() {
   const fileListField = form.registerFileList('picture');
 
   const handleSubmit = form.handleSubmit((data) => {
-    console.log(data);
     updateFormState(data);
     nextStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });

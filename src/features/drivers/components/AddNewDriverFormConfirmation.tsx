@@ -1,23 +1,39 @@
 import { Link } from 'react-router-dom';
-import { FormConfirmation, FormConfirmationTitle, FormConfirmationHeader, FormConfirmationField } from '@/ui/form/FormConfirmation';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { Button } from '@/ui/Button';
 import { Separator } from '@/ui/Separator';
 import { addNewDriverSchema, AddNewDriverSchema } from '@/features/drivers/schemas';
-import { FormSection } from '@/ui/form/Form';
+import { useZodForm, FormProvider, Form, FormTitle, FormSection, FormField } from '@/ui/form/Form';
 import { DisplayInput } from '@/ui/form/Input';
+import { useToast } from '@/ui/toast';
 
 export function AddNewDriverFormConfirmation() {
+  const { toast } = useToast();
   const { formState, prevStep, setStep } = useMultiStepFormContext<AddNewDriverSchema>();
 
-  const handleSubmit = () => {
-    const result = addNewDriverSchema.safeParse(formState);
-    if (result.success) {
-      console.log(result.data);
-    } else {
-      console.log(result.error.errors);
-    }
-  };
+  const form = useZodForm({
+    schema: addNewDriverSchema,
+    defaultValues: formState,
+    shouldFocusError: false,
+  });
+
+  // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
+  const driverPictureFileListField = form.registerFileList('picture');
+  const driversLicenceFileListField = form.registerFileList('licence_document');
+  const taxiBadgeFileListField = form.registerFileList('badge_document');
+
+  const handleSubmit = form.handleSubmit(
+    (data) => {
+      console.log(data);
+    },
+    () => {
+      toast({
+        title: 'Something went wrong',
+        description: 'Please try again later.',
+        variant: 'destructive',
+      });
+    },
+  );
 
   const goPrevStep = () => {
     prevStep();
@@ -25,61 +41,149 @@ export function AddNewDriverFormConfirmation() {
   };
 
   return (
-    <FormConfirmation>
-      <FormConfirmationTitle>Confirmation</FormConfirmationTitle>
+    <FormProvider {...form}>
+      <Form
+        onSubmit={handleSubmit}
+        className="w-full max-w-[32rem] space-y-8"
+      >
+        <FormTitle>Confirmation</FormTitle>
 
-      <FormSection title="Driver" onEdit={() => setStep(1)}>
-        <DisplayInput title="First Name" value={formState.first_names} type="text" />
-        <DisplayInput title="Last Name" value={formState.last_name} />
-        <DisplayInput title="Email" value={formState.email} />
-        <DisplayInput title="Phone Number" value={formState.phone_number} />
-        <DisplayInput title="National Insurance Number" value={formState.national_insurance_number} />
-        <DisplayInput type="date" title="Date of Birth" value={formState.date_of_birth} />
-        <DisplayInput type="file" title="Picture" />
-      </FormSection>
+        <FormSection title="Driver" onEdit={() => setStep(1)}>
+          <FormField
+            control={form.control}
+            name="first_names"
+            render={({ field }) => (
+              <DisplayInput title="First Name" {...field} />
+            )}
+          />
 
-      <div className="space-y-4">
-        <FormConfirmationHeader title="Driver" onEdit={() => setStep(1)} />
-        <div className="space-y-2">
-          <FormConfirmationField title="First Name" value={formState.first_names} />
-          <FormConfirmationField title="Last Name" value={formState.last_name} />
-          <FormConfirmationField title="Email" value={formState.email} />
-          <FormConfirmationField title="Phone Number" value={formState.phone_number} />
-          <FormConfirmationField title="National Insurance Number" value={formState.national_insurance_number} />
-          <FormConfirmationField title="Date of Birth" value={formState.date_of_birth} />
-          <FormConfirmationField title="Picture" value={formState.picture?.[0]?.name} />
+          <FormField
+            control={form.control}
+            name="last_name"
+            render={({ field }) => (
+              <DisplayInput title="Last Name" {...field} />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <DisplayInput title="Email" type="email" {...field} />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="phone_number"
+            render={({ field }) => (
+              <DisplayInput title="Phone Number" type="tel" {...field} />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="national_insurance_number"
+            render={({ field }) => (
+              <DisplayInput title="National Insurance Number" {...field} />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="date_of_birth"
+            render={({ field }) => (
+              <DisplayInput title="Date of Birth" type="date" {...field} />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="picture"
+            render={() => (
+              <DisplayInput title="Picture" type="file" accept="image/*" {...driverPictureFileListField} />
+            )}
+          />
+        </FormSection>
+
+        <FormSection title="Drivers Licence" onEdit={() => setStep(2)}>
+          <FormField
+            control={form.control}
+            name="licence_number"
+            render={({ field }) => (
+              <DisplayInput title="Licence Number" {...field} />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="licence_start_date"
+            render={({ field }) => (
+              <DisplayInput title="Start Date" type="date" {...field} />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="licence_end_date"
+            render={({ field }) => (
+              <DisplayInput title="End Date" type="date" {...field} />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="licence_document"
+            render={() => (
+              <DisplayInput title="Drivers Licence" type="file" accept="image/*,.pdf" {...driversLicenceFileListField} />
+            )}
+          />
+        </FormSection>
+
+        <FormSection title="Taxi Badge" onEdit={() => setStep(3)}>
+          <FormField
+            control={form.control}
+            name="badge_number"
+            render={({ field }) => (
+              <DisplayInput title="Badge Number" {...field} />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="badge_start_date"
+            render={({ field }) => (
+              <DisplayInput title="Start Date" type="date" {...field} />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="badge_end_date"
+            render={({ field }) => (
+              <DisplayInput title="End Date" type="date" {...field} />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="badge_document"
+            render={() => (
+              <DisplayInput title="Taxi Badge" type="file" accept="image/*,.pdf" {...taxiBadgeFileListField} />
+            )}
+          />
+        </FormSection>
+
+        <Separator className="bg-primary-dark dark:bg-primary-light" />
+
+        <div className="flex justify-end gap-3">
+          <Button type="button" variant="outline" onClick={goPrevStep}>Back</Button>
+          <Link to="/drivers">
+            <Button type="button" variant="danger">Cancel</Button>
+          </Link>
+          <Button type="submit" variant="primary">Submit</Button>
         </div>
-      </div>
-
-      <div className="space-y-4">
-        <FormConfirmationHeader title="Drivers Licence" onEdit={() => setStep(2)} />
-        <div className="space-y-2">
-          <FormConfirmationField title="Licence Number" value={formState.licence_number} />
-          <FormConfirmationField title="Start Date" value={formState.licence_start_date} />
-          <FormConfirmationField title="End Date" value={formState.licence_end_date} />
-          <FormConfirmationField title="Drivers Licence" value={formState.licence_document?.[0]?.name} />
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <FormConfirmationHeader title="Taxi Badge" onEdit={() => setStep(3)} />
-        <div className="space-y-2">
-          <FormConfirmationField title="Badge Number" value={formState.badge_number} />
-          <FormConfirmationField title="Start Date" value={formState.badge_start_date} />
-          <FormConfirmationField title="End Date" value={formState.badge_end_date} />
-          <FormConfirmationField title="Taxi Badge" value={formState.badge_document?.[0]?.name} />
-        </div>
-      </div>
-
-      <Separator className="bg-primary-dark dark:bg-primary-light" />
-
-      <div className="flex justify-end gap-3">
-        <Button type="button" variant="outline" onClick={goPrevStep}>Back</Button>
-        <Link to="/drivers">
-          <Button type="button" variant="danger">Cancel</Button>
-        </Link>
-        <Button type="button" variant="primary" onClick={handleSubmit}>Submit</Button>
-      </div>
-    </FormConfirmation>
+      </Form>
+    </FormProvider>
   );
 }
