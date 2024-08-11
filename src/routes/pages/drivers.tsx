@@ -11,6 +11,7 @@ import {
 } from '@/ui/dataview/DataView.skeleton';
 import { useDriversLayout } from '@/features/drivers/hooks/table/useDriversLayout';
 import { driversInfiniteQueryOptions } from '@/features/drivers/hooks/queries/useInfiniteDrivers';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 const driversPageLoader = (queryClient: QueryClient) => () => {
   void queryClient.prefetchInfiniteQuery(driversInfiniteQueryOptions());
@@ -35,6 +36,7 @@ function DriversPageErrorBoundary() {
 }
 
 function DriversPageComponent() {
+  useScrollToTop();
   useScrollLock();
 
   return (
