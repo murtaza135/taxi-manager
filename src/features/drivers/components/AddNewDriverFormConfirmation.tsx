@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { Button } from '@/ui/Button';
 import { Separator } from '@/ui/Separator';
@@ -6,9 +6,13 @@ import { addNewDriverSchema, AddNewDriverSchema, addNewDriverTransformer } from 
 import { useZodForm, FormProvider, Form, FormTitle, FormSection, FormField } from '@/ui/form/Form';
 import { ReadOnlyInput } from '@/ui/form/Input';
 import { useToast } from '@/ui/toast';
+import { useAddNewDriver } from '@/features/drivers/hooks/mutations/useAddNewDriver';
 
 export function AddNewDriverFormConfirmation() {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { mutate: addNewDriver } = useAddNewDriver();
+
   const {
     formState,
     prevStep,
@@ -29,7 +33,9 @@ export function AddNewDriverFormConfirmation() {
   const handleSubmit = form.handleSubmit(
     (data) => {
       const transformedData = addNewDriverTransformer(data);
-      console.log(transformedData);
+      addNewDriver(transformedData, {
+        onSuccess: () => navigate('/drivers', { preventScrollReset: false }),
+      });
     },
     () => {
       toast({

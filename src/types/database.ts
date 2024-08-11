@@ -1067,7 +1067,26 @@ export type Database = {
       };
     };
     Functions: {
-      [_ in never]: never
+      add_new_driver: {
+        Args: {
+          first_names: string;
+          last_name: string;
+          licence_number: string;
+          licence_start_date: string;
+          licence_end_date: string;
+          badge_number: string;
+          badge_end_date: string;
+          picture_path?: string;
+          phone_number?: string;
+          email?: string;
+          date_of_birth?: string;
+          national_insurance_number?: string;
+          licence_document_path?: string;
+          badge_document_path?: string;
+          badge_start_date?: string;
+        };
+        Returns: number;
+      };
     };
     Enums: {
       [_ in never]: never

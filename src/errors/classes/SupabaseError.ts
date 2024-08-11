@@ -1,6 +1,6 @@
 import { PostgrestError, AuthError } from '@supabase/supabase-js';
 import { APIError } from '@/errors/classes/APIError';
-import { ErrorType, APIErrorLike } from '@/errors/types';
+import { ErrorType } from '@/errors/types';
 import { extractErrorTypeFromSupabaseError } from '@/errors/utils';
 import { errorTitles, errorDescriptions } from '@/errors/errorMessages';
 
@@ -13,7 +13,8 @@ export type SupabaseErrorConstructorOptions = {
 
 export class SupabaseError extends APIError {
   constructor(
-    error: AuthError | PostgrestError | APIErrorLike,
+    // TODO Error was originally ErrorLike, the remaining code is behaving as though it is still an ErrorLike, determine if Error is suitable and make the appropriate changes to the remaining code
+    error: AuthError | PostgrestError | Error,
     status?: number | null | undefined,
     options?: SupabaseErrorConstructorOptions,
   ) {

@@ -15,7 +15,7 @@ export function isAPIErrorLike(error: unknown): error is APIErrorLike {
 }
 
 export function extractErrorTypeFromSupabaseError(
-  error: AuthError | PostgrestError | APIErrorLike,
+  error: AuthError | PostgrestError | Error,
   status?: number | null | undefined,
 ): ErrorType {
   if (status === null || status === undefined) return 'unknown';
