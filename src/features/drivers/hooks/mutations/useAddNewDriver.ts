@@ -20,6 +20,7 @@ export async function addNewDriver(formData: AddNewDriverTransformedSchema) {
   const documentPaths: DriverDocumentPathsObject = {};
   const { badge_document, licence_document, picture, ...nonFileFormData } = formData;
 
+  // TODO add storage rollback on error
   if (picture) {
     const { data: storageData } = await supabase
       .storage
@@ -71,9 +72,7 @@ export async function addNewDriver(formData: AddNewDriverTransformedSchema) {
   );
 
   if (error) {
-    throw new SupabaseError(error, status, {
-      globalTitle: 'Could not add new driver',
-    });
+    throw new SupabaseError(error, status);
   }
 
   return driverId;
