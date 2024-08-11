@@ -9,7 +9,7 @@ import { queryClient as globalQueryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { supabase } from '@/config/api/supabaseClient';
 
-type DocumentPathsObject = {
+type DriverDocumentPathsObject = {
   picture_path?: string,
   licence_document_path?: string,
   badge_document_path?: string;
@@ -17,7 +17,7 @@ type DocumentPathsObject = {
 
 export async function addNewDriver(formData: AddNewDriverTransformedSchema) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
-  const documentPaths: DocumentPathsObject = {};
+  const documentPaths: DriverDocumentPathsObject = {};
   const { badge_document, licence_document, picture, ...nonFileFormData } = formData;
 
   if (picture) {

@@ -38,8 +38,6 @@ export async function setDriversRetirements({
         : 'Could not recover some drivers',
     });
   }
-
-  return null;
 }
 
 export function useSetDriversRetirements() {
@@ -47,7 +45,7 @@ export function useSetDriversRetirements() {
   const { revalidate } = useRevalidator();
   const { toast } = useToast();
 
-  const mutation = useMutation<null, SupabaseError, SetDriversRetirementsVariables>({
+  const mutation = useMutation<void, SupabaseError, SetDriversRetirementsVariables>({
     mutationFn: setDriversRetirements,
     onSuccess: async (_data, { ids }) => {
       const queryInvalidations = ids.map((id) => (

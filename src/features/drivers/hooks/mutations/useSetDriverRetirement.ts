@@ -27,8 +27,6 @@ export async function setDriverRetirement({ id, isRetired }: SetDriverRetirement
         : 'Could not recover driver',
     });
   }
-
-  return null;
 }
 
 export function useSetDriverRetirement() {
@@ -36,7 +34,7 @@ export function useSetDriverRetirement() {
   const { revalidate } = useRevalidator();
   const { toast } = useToast();
 
-  const mutation = useMutation<null, SupabaseError, SetDriverRetirementVariables>({
+  const mutation = useMutation<void, SupabaseError, SetDriverRetirementVariables>({
     mutationFn: setDriverRetirement,
     onSuccess: async (_data, { id }) => {
       await Promise.all([
