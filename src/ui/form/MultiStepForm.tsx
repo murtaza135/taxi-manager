@@ -4,6 +4,8 @@ import { LazyMotion } from '@/lib/framer-motion/LazyMotion';
 import { cn } from '@/utils/cn';
 import { clamp } from '@/utils/math/clamp';
 import { useSearchParam } from '@/hooks/useSearchParam';
+import { Button } from '@/ui/Button';
+import { useMax } from '@/hooks/useMax';
 
 type Direction = 'forwards' | 'backwards';
 type BaseFormState = Record<string, unknown>;
@@ -14,6 +16,8 @@ type MultiStepFormContextValue<TFormState extends BaseFormState = BaseFormState>
   setStep: React.Dispatch<React.SetStateAction<number>>;
   nextStep: (value?: number) => void;
   prevStep: (value?: number) => void;
+  highestReachedStep: number;
+  setHighestReachedStep: (value: number) => void;
   min: number;
   max: number;
   formState: Partial<TFormState>;
@@ -59,6 +63,7 @@ function MultiStepForm({
 }: MultiStepFormProps) {
   const [internalStepBase, setInternalStep] = useSearchParam('step', step ?? initialStep ?? min);
   const internalStep = internalStepBase ?? step ?? initialStep ?? min;
+  const [highestReachedStep, setHighestReachedStep] = useMax(internalStep);
   const [direction, setDirection] = React.useState<Direction>('forwards');
   const [formStateObject, setFormStateObject] = React.useState<Partial<BaseFormState>>(
     initialFormState ?? {},
@@ -75,9 +80,10 @@ function MultiStepForm({
   const setStep = React.useCallback((value: React.SetStateAction<number>) => {
     const newStepValue = clamp(typeof value === 'function' ? value(internalStep) : value, min, max);
     setInternalStep(newStepValue);
+    setHighestReachedStep(newStepValue);
     setDirection(newStepValue >= internalStep ? 'forwards' : 'backwards');
     onStepChange?.(newStepValue);
-  }, [internalStep, setInternalStep, setDirection, onStepChange, min, max]);
+  }, [internalStep, setInternalStep, setHighestReachedStep, setDirection, onStepChange, min, max]);
 
   const nextStep = React.useCallback((value?: number) => {
     setStep((i) => i + (value ?? 1));
@@ -98,6 +104,8 @@ function MultiStepForm({
       setStep,
       nextStep,
       prevStep,
+      highestReachedStep,
+      setHighestReachedStep,
       min,
       max,
       formState: formStateObject,
@@ -110,6 +118,8 @@ function MultiStepForm({
       setStep,
       nextStep,
       prevStep,
+      highestReachedStep,
+      setHighestReachedStep,
       min,
       max,
       formStateObject,
@@ -217,9 +227,16 @@ const MultiStepFormStepperItem = React.forwardRef<
   HTMLLIElement,
   React.HTMLAttributes<HTMLLIElement> & MultiStepFormStepperItemProps
 >(({ step, title, className, ...props }, ref) => {
-  const { step: currentStep, max } = useMultiStepFormContext();
+  const { step: currentStep, max, setStep, highestReachedStep } = useMultiStepFormContext();
   const hideLine = step === max;
   const complete = step < currentStep;
+
+  const goToStep = () => {
+    if (step <= highestReachedStep) {
+      setStep(step);
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+  };
 
   return (
     <li
@@ -238,21 +255,31 @@ const MultiStepFormStepperItem = React.forwardRef<
           />
         )}
 
-        <span
+        <Button
+          variant="ghost"
           className={cn(
-            'w-9 h-9 rounded-full text-xl font-semibold flex justify-center items-center text-center z-[1]',
+            'w-9 h-9 p-0 hover:opacity-100 rounded-full text-xl font-semibold flex justify-center items-center text-center z-[1]',
             complete && 'bg-primary-dark dark:bg-primary-light text-achromatic-lighter dark:text-achromatic-dark',
             !complete && 'bg-achromatic-lighter dark:bg-achromatic-dark text-primary-dark dark:text-primary-light',
+            step <= highestReachedStep ? 'cursor-pointer' : 'cursor-default',
           )}
+          onClick={goToStep}
         >
           {step}
-        </span>
+        </Button>
       </div>
 
       {!!title && (
-        <p className="text-primary-dark dark:text-primary-light w-full overflow-hidden text-ellipsis">
+        <Button
+          variant="ghost"
+          className={cn(
+            'p-0 text-base font-normal text-primary-dark dark:text-primary-light w-full overflow-hidden text-ellipsis hover:opacity-100',
+            step <= highestReachedStep ? 'cursor-pointer' : 'cursor-default',
+          )}
+          onClick={goToStep}
+        >
           {title}
-        </p>
+        </Button>
       )}
     </li>
   );
