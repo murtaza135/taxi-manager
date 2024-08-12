@@ -16,21 +16,23 @@ import {
   UseFormRegisterReturn,
   PathValue,
 } from 'react-hook-form';
-import { z, AnyZodObject } from 'zod';
+import { z, AnyZodObject, ZodEffects } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { cn } from '@/utils/cn';
 import { Label } from '@/ui/form/Label';
 import { Button } from '@/ui/Button';
 import { Separator } from '@/ui/Separator';
 
+type AnyZodObjectOrEffect = AnyZodObject | ZodEffects<AnyZodObject>;
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type UseZodFormProps<TSchema extends AnyZodObject, TContext = any> =
+type UseZodFormProps<TSchema extends AnyZodObjectOrEffect, TContext = any> =
   Omit<UseFormProps<z.infer<TSchema>, TContext>, 'resolver'> & {
     schema: TSchema;
   };
 
 type UseZodFormReturn<
-  TSchema extends AnyZodObject,
+  TSchema extends AnyZodObjectOrEffect,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,
   TTransformedValues extends FieldValues | undefined = undefined,
@@ -45,7 +47,7 @@ type UseZodFormReturn<
 };
 
 const useZodForm = <
-  TSchema extends AnyZodObject,
+  TSchema extends AnyZodObjectOrEffect,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,
   TTransformedValues extends FieldValues | undefined = undefined,
