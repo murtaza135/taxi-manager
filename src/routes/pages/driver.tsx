@@ -1,8 +1,13 @@
 import { useParams } from 'react-router-dom';
 import { QueryClient } from '@tanstack/react-query';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
+import { DriverSwiper } from '@/features/drivers/components/DriverSwiper';
 
-const driverPageLoader = (_queryClient: QueryClient) => () => null;
+const driverPageLoader = (queryClient: QueryClient) => () => {
+  // void queryClient.prefetchInfiniteQuery();
+  const temp = 0;
+  return null;
+};
 
 function DriverPageSuspenseBoundary() {
   const { id } = useParams();
@@ -27,7 +32,7 @@ function DriverPageComponent() {
   useDocumentTitle(`Driver ${id}`);
 
   return (
-    <div>DriverPageComponent</div>
+    <DriverSwiper />
   );
 }
 
