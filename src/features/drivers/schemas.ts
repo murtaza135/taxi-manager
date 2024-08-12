@@ -81,9 +81,39 @@ export const addNewDriverTaxiBadgeSchema = z.object({
     .optional(),
 });
 
+// combine all schemas and make all fields regarding drivers licence and taxi badge optional
 export const addNewDriverSchema = addNewDriverDetailsSchema
   .merge(addNewDriversLicenceSchema)
-  .merge(addNewDriverTaxiBadgeSchema);
+  .merge(addNewDriverTaxiBadgeSchema)
+  .extend({
+    licence_number: z
+      .string()
+      .min(1, 'Licence number required')
+      .optional()
+      .or(z.literal('')),
+    licence_start_date: z
+      .string()
+      .refine((val) => isDate(val), { message: 'Invalid start date' })
+      .optional()
+      .or(z.literal('')),
+    licence_end_date: z
+      .string()
+      .refine((val) => isDate(val), { message: 'Invalid end date' })
+      .optional()
+      .or(z.literal('')),
+  })
+  .extend({
+    badge_number: z
+      .string()
+      .min(1, 'Taxi badge number required')
+      .optional()
+      .or(z.literal('')),
+    badge_end_date: z
+      .string()
+      .refine((val) => isDate(val), { message: 'Invalid end date' })
+      .optional()
+      .or(z.literal('')),
+  });
 
 export const addNewDriverTransformer = (data: AddNewDriverSchema) => (
   mapValues(data, (val) => {
@@ -99,12 +129,7 @@ export type AddNewDriverTaxiBadgeSchema = z.infer<typeof addNewDriverTaxiBadgeSc
 export type AddNewDriverSchema = z.infer<typeof addNewDriverSchema>;
 
 export type AddNewDriverTransformedSchema = MergeOverwrite<AddNewDriverSchema, {
-  email?: string | undefined;
-  phone_number?: string | undefined;
-  national_insurance_number?: string | undefined;
-  date_of_birth?: string | undefined;
   picture?: File | undefined;
-  badge_start_date?: string | undefined;
   licence_document?: File | undefined;
   badge_document?: File | undefined;
 }>;

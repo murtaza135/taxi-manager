@@ -1,11 +1,11 @@
 CREATE FUNCTION add_new_driver (
   first_names text,
   last_name text,
-  licence_number text,
-  licence_start_date date,
-  licence_end_date date,
-  badge_number text,
-  badge_end_date date,
+  licence_number text default null,
+  licence_start_date date default null,
+  licence_end_date date default null,
+  badge_number text default null,
+  badge_end_date date default null,
   picture_path text default null,
   phone_number text default null,
   email text default null,
@@ -26,14 +26,18 @@ BEGIN
     RETURNING id INTO driver_id;
 
     -- Insert data into drivers_licence table
-    INSERT INTO drivers_licence (driver_id, document_path, licence_number, start_date, end_date)
-    VALUES (driver_id, licence_document_path, licence_number, licence_start_date, licence_end_date)
-    RETURNING id INTO licence_id;
+    IF licence_number IS NOT NULL THEN
+      INSERT INTO drivers_licence (driver_id, document_path, licence_number, start_date, end_date)
+      VALUES (driver_id, licence_document_path, licence_number, licence_start_date, licence_end_date)
+      RETURNING id INTO licence_id;
+    END IF;
 
     -- Insert data into taxi_badge table
-    INSERT INTO drivers_taxi_badge (driver_id, document_path, badge_number, start_date, end_date)
-    VALUES (driver_id, badge_document_path, badge_number, badge_start_date, badge_end_date)
-    RETURNING id INTO badge_id;
+    IF badge_number IS NOT NULL THEN
+      INSERT INTO drivers_taxi_badge (driver_id, document_path, badge_number, start_date, end_date)
+      VALUES (driver_id, badge_document_path, badge_number, badge_start_date, badge_end_date)
+      RETURNING id INTO badge_id;
+    END IF;
 
     -- Update driver, add the active drivers_licence and taxi_badge
     UPDATE driver

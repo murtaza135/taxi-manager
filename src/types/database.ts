@@ -1071,11 +1071,11 @@ export type Database = {
         Args: {
           first_names: string;
           last_name: string;
-          licence_number: string;
-          licence_start_date: string;
-          licence_end_date: string;
-          badge_number: string;
-          badge_end_date: string;
+          licence_number?: string;
+          licence_start_date?: string;
+          licence_end_date?: string;
+          badge_number?: string;
+          badge_end_date?: string;
           picture_path?: string;
           phone_number?: string;
           email?: string;

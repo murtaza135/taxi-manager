@@ -38,6 +38,11 @@ export function AddNewDriverTaxiBadgeForm() {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
+  const goNextStep = () => {
+    nextStep();
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  };
+
   return (
     <FormProvider {...form}>
       <Form
@@ -98,6 +103,7 @@ export function AddNewDriverTaxiBadgeForm() {
 
         <div className="pt-3 flex justify-end gap-3">
           <Button type="button" variant="outline" onClick={goPrevStep}>Back</Button>
+          <Button type="button" variant="ghost" onClick={goNextStep}>Skip</Button>
           <Button type="submit" variant="primary">Next</Button>
         </div>
       </Form>
