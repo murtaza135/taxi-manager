@@ -1,22 +1,23 @@
 import { QueryClient } from '@tanstack/react-query';
-import { Title } from '@/features/title/components/Title';
+import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 
 const homePageLoader = (_queryClient: QueryClient) => () => null;
 
 function HomePageSuspenseBoundary() {
+  useDocumentTitle('Home');
   return <div>HomePageSuspenseBoundary</div>;
 }
 
 function HomePageErrorBoundary() {
+  useDocumentTitle('Home');
   return <div>HomePageErrorBoundary</div>;
 }
 
 function HomePageComponent() {
+  useDocumentTitle('Home');
+
   return (
-    <div>
-      <Title title="Home" />
-      <div>HomePageComponent</div>
-    </div>
+    <div>HomePageComponent</div>
   );
 }
 

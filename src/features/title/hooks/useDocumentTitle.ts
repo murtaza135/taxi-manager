@@ -2,11 +2,7 @@ import { useEffect } from 'react';
 import { useTitleStore, useTitleActions } from '@/features/title/state/titleStore';
 import { config } from '@/config/config';
 
-type Props = {
-  title: string;
-};
-
-export function Title({ title }: Props) {
+export function useDocumentTitle(title: string) {
   const { setTitle } = useTitleActions();
 
   // set title in titleStore
@@ -28,6 +24,4 @@ export function Title({ title }: Props) {
       document.title = oldTitle;
     };
   }, [title]);
-
-  return null;
 }

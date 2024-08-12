@@ -1,22 +1,23 @@
 import { QueryClient } from '@tanstack/react-query';
-import { Title } from '@/features/title/components/Title';
+import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 
 const rentPageLoader = (_queryClient: QueryClient) => () => null;
 
 function RentPageSuspenseBoundary() {
+  useDocumentTitle('Rent');
   return <div>RentPageSuspenseBoundary</div>;
 }
 
 function RentPageErrorBoundary() {
+  useDocumentTitle('Rent');
   return <div>RentPageErrorBoundary</div>;
 }
 
 function RentPageComponent() {
+  useDocumentTitle('Rent');
+
   return (
-    <div>
-      <Title title="Rent" />
-      <div>RentPageComponent</div>
-    </div>
+    <div>RentPageComponent</div>
   );
 }
 

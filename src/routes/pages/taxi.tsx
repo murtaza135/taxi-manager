@@ -1,25 +1,27 @@
 import { useParams } from 'react-router-dom';
 import { QueryClient } from '@tanstack/react-query';
-import { Title } from '@/features/title/components/Title';
+import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 
 const taxiPageLoader = (_queryClient: QueryClient) => () => null;
 
 function TaxiPageSuspenseBoundary() {
+  const { id } = useParams();
+  useDocumentTitle(`Taxi ${id}`);
   return <div>TaxiPageSuspenseBoundary</div>;
 }
 
 function TaxiPageErrorBoundary() {
+  const { id } = useParams();
+  useDocumentTitle(`Taxi ${id}`);
   return <div>TaxiPageErrorBoundary</div>;
 }
 
 function TaxiPageComponent() {
   const { id } = useParams();
+  useDocumentTitle(`Taxi ${id}`);
 
   return (
-    <div>
-      <Title title={`Taxi ${id}`} />
-      <div>TaxiPageComponent</div>
-    </div>
+    <div>TaxiPageComponent</div>
   );
 }
 

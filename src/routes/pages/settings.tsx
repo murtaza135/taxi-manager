@@ -1,22 +1,23 @@
 import { QueryClient } from '@tanstack/react-query';
-import { Title } from '@/features/title/components/Title';
+import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 
 const settingsPageLoader = (_queryClient: QueryClient) => () => null;
 
 function SettingsPageSuspenseBoundary() {
+  useDocumentTitle('Rent');
   return <div>SettingsPageSuspenseBoundary</div>;
 }
 
 function SettingsPageErrorBoundary() {
+  useDocumentTitle('Rent');
   return <div>SettingsPageErrorBoundary</div>;
 }
 
 function SettingsPageComponent() {
+  useDocumentTitle('Settings');
+
   return (
-    <div>
-      <Title title="Settings" />
-      <div>SettingsPageComponent</div>
-    </div>
+    <div>SettingsPageComponent</div>
   );
 }
 

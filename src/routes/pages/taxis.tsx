@@ -1,22 +1,23 @@
 import { QueryClient } from '@tanstack/react-query';
-import { Title } from '@/features/title/components/Title';
+import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 
 const taxisPageLoader = (_queryClient: QueryClient) => () => null;
 
 function TaxisPageSuspenseBoundary() {
+  useDocumentTitle('Taxis');
   return <div>TaxisPageSuspenseBoundary</div>;
 }
 
 function TaxisPageErrorBoundary() {
+  useDocumentTitle('Taxis');
   return <div>TaxisPageErrorBoundary</div>;
 }
 
 function TaxisPageComponent() {
+  useDocumentTitle('Taxis');
+
   return (
-    <div>
-      <Title title="Taxis" />
-      <div>TaxisPageComponent</div>
-    </div>
+    <div>TaxisPageComponent</div>
   );
 }
 

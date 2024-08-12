@@ -1,12 +1,11 @@
-import { Title } from '@/features/title/components/Title';
+import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { AddNewDriverMultiStepForm } from '@/features/drivers/components/AddNewDriverMultiStepForm';
 
 function AddNewDriverPageComponent() {
+  useDocumentTitle('Add New Driver');
+
   return (
-    <>
-      <Title title="Add New Driver" />
-      <AddNewDriverMultiStepForm />
-    </>
+    <AddNewDriverMultiStepForm />
   );
 }
 

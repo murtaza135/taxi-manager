@@ -1,16 +1,22 @@
 import { useParams } from 'react-router-dom';
 import { QueryClient } from '@tanstack/react-query';
-import { Title } from '@/features/title/components/Title';
+import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 
 const driverPageLoader = (_queryClient: QueryClient) => () => null;
 
 function DriverPageSuspenseBoundary() {
+  const { id } = useParams();
+  useDocumentTitle(`Driver ${id}`);
+
   return (
     <div>DriverPageSuspenseBoundary</div>
   );
 }
 
 function DriverPageErrorBoundary() {
+  const { id } = useParams();
+  useDocumentTitle(`Driver ${id}`);
+
   return (
     <div>DriverPageErrorBoundary</div>
   );
@@ -18,12 +24,10 @@ function DriverPageErrorBoundary() {
 
 function DriverPageComponent() {
   const { id } = useParams();
+  useDocumentTitle(`Driver ${id}`);
 
   return (
-    <div>
-      <Title title={`Driver ${id}`} />
-      <div>DriverPageComponent</div>
-    </div>
+    <div>DriverPageComponent</div>
   );
 }
 
