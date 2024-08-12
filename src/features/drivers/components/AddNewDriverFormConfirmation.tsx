@@ -187,12 +187,14 @@ export function AddNewDriverFormConfirmation() {
 
         <Separator className="bg-primary-dark dark:bg-primary-light" />
 
-        <div className="flex justify-end gap-3">
+        <div className="pt-3 flex justify-between gap-3 flex-wrap-reverse">
           <Button type="button" variant="outline" onClick={goPrevStep}>Back</Button>
-          <Link to="/drivers">
-            <Button type="button" variant="danger">Cancel</Button>
-          </Link>
-          <Button type="submit" variant="primary">Submit</Button>
+          <div className="flex gap-3 flex-wrap-reverse">
+            <Link to="/drivers">
+              <Button type="button" variant="danger">Cancel</Button>
+            </Link>
+            <Button type="submit" variant="primary">Submit</Button>
+          </div>
         </div>
       </Form>
     </FormProvider>

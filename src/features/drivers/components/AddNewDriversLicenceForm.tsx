@@ -101,10 +101,12 @@ export function AddNewDriversLicenceForm() {
           )}
         />
 
-        <div className="pt-3 flex justify-end gap-3">
+        <div className="pt-3 flex justify-between gap-3 flex-wrap-reverse">
           <Button type="button" variant="outline" onClick={goPrevStep}>Back</Button>
-          <Button type="button" variant="ghost" onClick={goNextStep}>Skip</Button>
-          <Button type="submit" variant="primary">Next</Button>
+          <div className="flex gap-3 flex-wrap-reverse">
+            <Button type="button" variant="outline" onClick={goNextStep}>Skip</Button>
+            <Button type="submit" variant="primary">Next</Button>
+          </div>
         </div>
       </Form>
     </FormProvider>
