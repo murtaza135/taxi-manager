@@ -2,6 +2,7 @@ import { z } from 'zod';
 import isMobilePhone from 'validator/es/lib/isMobilePhone';
 import isDate from 'validator/es/lib/isDate';
 import mapValues from 'lodash/mapValues';
+import { isBefore } from 'date-fns';
 import { MergeOverwrite } from '@/types/utils';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; // 5MB
@@ -59,7 +60,14 @@ export const addNewDriversLicenceSchema = z.object({
     .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
     .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
-});
+})
+  .refine(
+    ({ licence_start_date, licence_end_date }) => isBefore(licence_start_date, licence_end_date),
+    {
+      message: 'End date must come after start date',
+      path: ['licence_end_date'],
+    },
+  );
 
 export const addNewDriverTaxiBadgeSchema = z.object({
   badge_number: z
@@ -79,12 +87,24 @@ export const addNewDriverTaxiBadgeSchema = z.object({
     .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
     .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
-});
+})
+  .refine(
+    ({ badge_start_date, badge_end_date }) => {
+      if (badge_start_date) {
+        return isBefore(badge_start_date, badge_end_date);
+      }
+      return true;
+    },
+    {
+      message: 'End date must come after start date',
+      path: ['badge_end_date'],
+    },
+  );
 
 // combine all schemas and make all fields regarding drivers licence and taxi badge optional
 export const addNewDriverSchema = addNewDriverDetailsSchema
-  .merge(addNewDriversLicenceSchema)
-  .merge(addNewDriverTaxiBadgeSchema)
+  .merge(addNewDriversLicenceSchema.innerType())
+  .merge(addNewDriverTaxiBadgeSchema.innerType())
   .extend({
     licence_number: z
       .string()
