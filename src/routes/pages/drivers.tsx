@@ -19,6 +19,7 @@ const driversPageLoader = (queryClient: QueryClient) => () => {
 };
 
 function DriversPageSuspenseBoundary() {
+  useScrollToTop();
   useScrollLock();
   const [layout] = useDriversLayout();
 

@@ -273,12 +273,14 @@ const MultiStepFormStepperItem = React.forwardRef<
         <Button
           variant="ghost"
           className={cn(
-            'p-0 text-base font-normal text-primary-dark dark:text-primary-light w-full overflow-hidden text-ellipsis hover:opacity-100',
+            'p-0 text-base font-normal w-full overflow-hidden text-ellipsis hover:opacity-100',
             step <= highestReachedStep ? 'cursor-pointer' : 'cursor-default',
           )}
           onClick={goToStep}
         >
-          {title}
+          <p className="text-primary-dark dark:text-primary-light w-full overflow-hidden text-ellipsis">
+            {title}
+          </p>
         </Button>
       )}
     </li>
