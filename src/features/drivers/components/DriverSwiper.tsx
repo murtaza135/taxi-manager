@@ -36,7 +36,7 @@ export function DriverSwiper() {
           </SwiperSelect>
         )}
 
-      <SwiperItems className="flex-grow">
+      <SwiperItems disableDrag className="flex-grow">
         <SwiperItem index={1}><DriverDetailsSwiperItem /></SwiperItem>
         <SwiperItem index={2}><DriverTaxisSwiperItem /></SwiperItem>
         <SwiperItem index={3}><DriverAgreementsSwiperItem /></SwiperItem>

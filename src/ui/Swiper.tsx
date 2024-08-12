@@ -153,10 +153,14 @@ const variants: Variants = {
 const SWIPE_CONFIDENCE_THRESHOLD = 10000;
 const swipePower = (offset: number, velocity: number) => Math.abs(offset) * velocity;
 
+type SwiperItemsProps = {
+  disableDrag?: boolean;
+};
+
 const SwiperItems = React.forwardRef<
   HTMLDivElement,
-  HTMLMotionProps<'div'>
->(({ className, children, ...props }, ref) => {
+  HTMLMotionProps<'div'> & SwiperItemsProps
+>(({ disableDrag, className, children, ...props }, ref) => {
   const { index, direction, nextIndex, prevIndex, orientation } = useSwiperContext();
 
   function handleDragEnd(_event: Event, { offset, velocity }: PanInfo) {
@@ -184,7 +188,7 @@ const SwiperItems = React.forwardRef<
             y: { type: 'spring', stiffness: 300, damping: 30 },
             opacity: { duration: 1.5 },
           }}
-          drag="x"
+          drag={!disableDrag && 'x'}
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.8}
           onDragEnd={handleDragEnd}
