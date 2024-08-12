@@ -108,7 +108,7 @@ export function DriversTable() {
       <DataViewTopBar>
         <DataViewTopBarSection>
           <Link to="/drivers/add">
-            <Button size="sm" shape="circle" className="text-xl">+</Button>
+            <Button className="px-3 py-1">New</Button>
           </Link>
           <DataViewSearchPopover />
           <DataViewRowFilterDropdown />
