@@ -298,7 +298,7 @@ const EditableInput = React.forwardRef<
         <input
           {...props}
           ref={innerRef}
-          className={cn('w-full min-w-4 pr-7 pl-0 xs:pl-0 outline-none bg-transparent placeholder:text-achromatic-dark/65 dark:placeholder:text-achromatic-500 file:hidden overflow-ellipsis overflow-hidden whitespace-nowrap', readOnly && 'cursor-default', !readOnly && 'cursor-auto', className)}
+          className={cn('w-full min-w-4 pr-7 pl-0 xs:pl-0 outline-none bg-transparent file:hidden overflow-ellipsis overflow-hidden whitespace-nowrap', readOnly && 'cursor-default placeholder:text-achromatic-darker dark:placeholder:text-achromatic-lighter', !readOnly && 'cursor-auto placeholder:text-achromatic-dark/65 dark:placeholder:text-achromatic-500', className)}
           placeholder={props.placeholder || 'N/A'}
           readOnly={readOnly}
           onKeyUp={(event) => (event.key === 'Enter' && handleSave())}
