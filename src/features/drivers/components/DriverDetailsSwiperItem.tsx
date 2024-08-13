@@ -21,9 +21,9 @@ export function DriverDetailsSwiperItem() {
     <Accordion type="multiple">
       <AccordionItem value="details">
         <AccordionNonCollapsibleContent>
-          <div className="flex items-center gap-6 flex-col xs:flex-row xs:items-start">
-            <div>
-              <Avatar className="w-full h-full max-w-40 max-h-40">
+          <div className="flex justify-start items-start gap-8 xs:gap-10 sm:gap-14 flex-col xs:flex-row py-3 px-2">
+            <div className="flex flex-col justify-start items-start gap-4 xs:max-w-48">
+              <Avatar className="w-full h-full max-w-24 max-h-24 xs:max-w-40 xs:max-h-40">
                 {data.picture_src && (
                   <AvatarImage
                     src={data.picture_src}
@@ -34,11 +34,24 @@ export function DriverDetailsSwiperItem() {
                   {extractInitials(data.name)}
                 </AvatarFallback>
               </Avatar>
+              <EditableInput defaultValue={capitalizeEachWord(data.name)} className="text-2xl font-bold" onSave={(value) => console.log(value)} />
             </div>
 
-            <div className="space-y-4 flex-grow w-full xs:w-fit">
-              <h2 className="text-2xl font-bold text-center xs:text-start">{capitalizeEachWord(data.name)}</h2>
-              <div>
+            <div className="flex gap-8 flex-wrap flex-grow overflow-hidden [&_input]:w-fit">
+              <div className="space-y-2">
+                <EditableInput title="lol" defaultValue="hehehe" onSave={(value) => console.log(value)} />
+                <EditableInput title="lol" defaultValue="hehehe" onSave={(value) => console.log(value)} />
+                <EditableInput title="lol" defaultValue="hehehe" onSave={(value) => console.log(value)} />
+                <EditableInput title="lol" defaultValue="hehehe" onSave={(value) => console.log(value)} />
+                <EditableInput title="lol" defaultValue="hehehedasdasdsadasdasdasdasdad" onSave={(value) => console.log(value)} />
+                <EditableInput title="lol" defaultValue="hehehe" onSave={(value) => console.log(value)} />
+              </div>
+              <div className="space-y-2">
+                <EditableInput title="lol" defaultValue="hehehe" onSave={(value) => console.log(value)} />
+                <EditableInput title="lol" defaultValue="hehehe" onSave={(value) => console.log(value)} />
+                <EditableInput title="lol" defaultValue="hehehe" onSave={(value) => console.log(value)} />
+                <EditableInput title="lol" defaultValue="hehehe" onSave={(value) => console.log(value)} />
+                <EditableInput title="lol" defaultValue="hehehe" onSave={(value) => console.log(value)} />
                 <EditableInput title="lol" defaultValue="hehehe" onSave={(value) => console.log(value)} />
               </div>
             </div>
