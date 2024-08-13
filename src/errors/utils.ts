@@ -14,6 +14,17 @@ export function isAPIErrorLike(error: unknown): error is APIErrorLike {
     && typeof error.status === 'number';
 }
 
+export function extractStatusCodeFromSupabaseError(
+  error: AuthError | PostgrestError | Error,
+  status?: number | null | undefined,
+) {
+  const statusCode = 'status' in error && typeof error.status === 'number'
+    ? error.status
+    : status;
+
+  return statusCode === 406 ? 404 : statusCode;
+}
+
 export function extractErrorTypeFromSupabaseError(
   error: AuthError | PostgrestError | Error,
   status?: number | null | undefined,

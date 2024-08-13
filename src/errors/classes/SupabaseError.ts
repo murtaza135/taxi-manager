@@ -1,7 +1,7 @@
 import { PostgrestError, AuthError } from '@supabase/supabase-js';
 import { APIError } from '@/errors/classes/APIError';
 import { ErrorType } from '@/errors/types';
-import { extractErrorTypeFromSupabaseError } from '@/errors/utils';
+import { extractStatusCodeFromSupabaseError, extractErrorTypeFromSupabaseError } from '@/errors/utils';
 import { errorTitles, errorDescriptions } from '@/errors/errorMessages';
 
 export type SupabaseErrorConstructorOptions = {
@@ -18,11 +18,8 @@ export class SupabaseError extends APIError {
     status?: number | null | undefined,
     options?: SupabaseErrorConstructorOptions,
   ) {
-    const statusCode = 'status' in error && typeof error.status === 'number'
-      ? error.status
-      : status;
-
-    const type = extractErrorTypeFromSupabaseError(error, status);
+    const statusCode = extractStatusCodeFromSupabaseError(error, status);
+    const type = extractErrorTypeFromSupabaseError(error, statusCode);
 
     const title = options?.titles?.[type]
       ?? options?.globalTitle
