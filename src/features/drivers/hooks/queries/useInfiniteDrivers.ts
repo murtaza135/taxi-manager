@@ -5,7 +5,8 @@ import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { supabase } from '@/config/api/supabaseClient';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
-import { driverPictureQueryOptions } from '@/features/drivers/hooks/queries/useDriverPicture';
+// import { driverPictureQueryOptions } from '@/features/drivers/hooks/queries/useDriverPicture';
+import { supabaseStorageQueryOptions } from '@/lib/supabase/useSupabaseStorage';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { DriversRowFilterState } from '@/features/drivers/types';
 
@@ -88,7 +89,7 @@ async function getDrivers({
       name: capitalizeEachWord(name ?? 'Unknown'),
       number_plate: number_plate?.toUpperCase() ?? null,
       picture_src: picture_path
-        ? await queryClient.ensureQueryData(driverPictureQueryOptions(picture_path))
+        ? await queryClient.ensureQueryData(supabaseStorageQueryOptions(picture_path))
         : null,
     })),
   );

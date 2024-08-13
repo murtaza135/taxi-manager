@@ -6,7 +6,8 @@ import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Prettify } from '@/types/utils';
-import { driverPictureQueryOptions } from '@/features/drivers/hooks/queries/useDriverPicture';
+// import { driverPictureQueryOptions } from '@/features/drivers/hooks/queries/useDriverPicture';
+import { supabaseStorageQueryOptions } from '@/lib/supabase/useSupabaseStorage';
 
 type DriverDataFromSupabase = Prettify<
   Omit<Tables<'driver_view'>, 'id'> & {
@@ -40,7 +41,7 @@ async function getDriver(id: number): Promise<Driver> {
   }
 
   const picture_src = data.picture_path
-    ? await queryClient.ensureQueryData(driverPictureQueryOptions(data.picture_path))
+    ? await queryClient.ensureQueryData(supabaseStorageQueryOptions(data.picture_path))
     : null;
 
   const { picture_path, ...rest } = data;
