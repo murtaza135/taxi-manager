@@ -119,7 +119,21 @@ export type Database = {
             foreignKeyName: "council_application_taxi_id_fkey";
             columns: ["taxi_id"];
             isOneToOne: false;
+            referencedRelation: "hire_agreement_view";
+            referencedColumns: ["taxi_id"];
+          },
+          {
+            foreignKeyName: "council_application_taxi_id_fkey";
+            columns: ["taxi_id"];
+            isOneToOne: false;
             referencedRelation: "taxi";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "council_application_taxi_id_fkey";
+            columns: ["taxi_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
             referencedColumns: ["id"];
           },
         ];
@@ -165,7 +179,21 @@ export type Database = {
             foreignKeyName: "council_application_receipt_taxi_id_fkey";
             columns: ["taxi_id"];
             isOneToOne: false;
+            referencedRelation: "hire_agreement_view";
+            referencedColumns: ["taxi_id"];
+          },
+          {
+            foreignKeyName: "council_application_receipt_taxi_id_fkey";
+            columns: ["taxi_id"];
+            isOneToOne: false;
             referencedRelation: "taxi";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "council_application_receipt_taxi_id_fkey";
+            columns: ["taxi_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
             referencedColumns: ["id"];
           },
         ];
@@ -227,8 +255,22 @@ export type Database = {
             foreignKeyName: "driver_active_drivers_licence_id_fkey";
             columns: ["active_drivers_licence_id"];
             isOneToOne: false;
+            referencedRelation: "driver_view";
+            referencedColumns: ["drivers_licence_id"];
+          },
+          {
+            foreignKeyName: "driver_active_drivers_licence_id_fkey";
+            columns: ["active_drivers_licence_id"];
+            isOneToOne: false;
             referencedRelation: "drivers_licence";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_active_drivers_taxi_badge_id_fkey";
+            columns: ["active_drivers_taxi_badge_id"];
+            isOneToOne: false;
+            referencedRelation: "driver_view";
+            referencedColumns: ["drivers_taxi_badge_id"];
           },
           {
             foreignKeyName: "driver_active_drivers_taxi_badge_id_fkey";
@@ -252,11 +294,39 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "driver_active_hire_agreement_id_fkey";
+            columns: ["active_hire_agreement_id"];
+            isOneToOne: false;
+            referencedRelation: "hire_agreement_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_active_hire_agreement_id_fkey";
+            columns: ["active_hire_agreement_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
+            referencedColumns: ["hire_agreement_id"];
+          },
+          {
+            foreignKeyName: "driver_active_insurance_id_fkey";
+            columns: ["active_insurance_id"];
+            isOneToOne: false;
+            referencedRelation: "driver_view";
+            referencedColumns: ["insurance_id"];
+          },
+          {
             foreignKeyName: "driver_active_insurance_id_fkey";
             columns: ["active_insurance_id"];
             isOneToOne: false;
             referencedRelation: "insurance";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_active_insurance_id_fkey";
+            columns: ["active_insurance_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
+            referencedColumns: ["insurance_id"];
           },
           {
             foreignKeyName: "driver_auth_id_fkey";
@@ -401,6 +471,20 @@ export type Database = {
             referencedRelation: "driver_view";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "drivers_licence_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "hire_agreement_view";
+            referencedColumns: ["driver_id"];
+          },
+          {
+            foreignKeyName: "drivers_licence_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
+            referencedColumns: ["driver_id"];
+          },
         ];
       };
       drivers_taxi_badge: {
@@ -455,6 +539,20 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "driver_view";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "drivers_taxi_badge_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "hire_agreement_view";
+            referencedColumns: ["driver_id"];
+          },
+          {
+            foreignKeyName: "drivers_taxi_badge_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
+            referencedColumns: ["driver_id"];
           },
         ];
       };
@@ -587,6 +685,20 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "hire_agreement_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "hire_agreement_view";
+            referencedColumns: ["driver_id"];
+          },
+          {
+            foreignKeyName: "hire_agreement_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
+            referencedColumns: ["driver_id"];
+          },
+          {
             foreignKeyName: "hire_agreement_taxi_id_fkey";
             columns: ["taxi_id"];
             isOneToOne: false;
@@ -597,7 +709,21 @@ export type Database = {
             foreignKeyName: "hire_agreement_taxi_id_fkey";
             columns: ["taxi_id"];
             isOneToOne: false;
+            referencedRelation: "hire_agreement_view";
+            referencedColumns: ["taxi_id"];
+          },
+          {
+            foreignKeyName: "hire_agreement_taxi_id_fkey";
+            columns: ["taxi_id"];
+            isOneToOne: false;
             referencedRelation: "taxi";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "hire_agreement_taxi_id_fkey";
+            columns: ["taxi_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
             referencedColumns: ["id"];
           },
         ];
@@ -662,6 +788,20 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "insurance_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "hire_agreement_view";
+            referencedColumns: ["driver_id"];
+          },
+          {
+            foreignKeyName: "insurance_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
+            referencedColumns: ["driver_id"];
+          },
+          {
             foreignKeyName: "insurance_taxi_id_fkey";
             columns: ["taxi_id"];
             isOneToOne: false;
@@ -672,7 +812,21 @@ export type Database = {
             foreignKeyName: "insurance_taxi_id_fkey";
             columns: ["taxi_id"];
             isOneToOne: false;
+            referencedRelation: "hire_agreement_view";
+            referencedColumns: ["taxi_id"];
+          },
+          {
+            foreignKeyName: "insurance_taxi_id_fkey";
+            columns: ["taxi_id"];
+            isOneToOne: false;
             referencedRelation: "taxi";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "insurance_taxi_id_fkey";
+            columns: ["taxi_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
             referencedColumns: ["id"];
           },
         ];
@@ -723,6 +877,20 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "hire_agreement";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "picture_hire_id_fkey";
+            columns: ["hire_id"];
+            isOneToOne: false;
+            referencedRelation: "hire_agreement_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "picture_hire_id_fkey";
+            columns: ["hire_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
+            referencedColumns: ["hire_agreement_id"];
           },
         ];
       };
@@ -781,6 +949,20 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "hire_agreement";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "rent_hire_id_fkey";
+            columns: ["hire_id"];
+            isOneToOne: false;
+            referencedRelation: "hire_agreement_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "rent_hire_id_fkey";
+            columns: ["hire_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
+            referencedColumns: ["hire_agreement_id"];
           },
         ];
       };
@@ -855,11 +1037,39 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "taxi_active_hire_agreement_id_fkey";
+            columns: ["active_hire_agreement_id"];
+            isOneToOne: false;
+            referencedRelation: "hire_agreement_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "taxi_active_hire_agreement_id_fkey";
+            columns: ["active_hire_agreement_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
+            referencedColumns: ["hire_agreement_id"];
+          },
+          {
+            foreignKeyName: "taxi_active_insurance_id_fkey";
+            columns: ["active_insurance_id"];
+            isOneToOne: false;
+            referencedRelation: "driver_view";
+            referencedColumns: ["insurance_id"];
+          },
+          {
             foreignKeyName: "taxi_active_insurance_id_fkey";
             columns: ["active_insurance_id"];
             isOneToOne: false;
             referencedRelation: "insurance";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "taxi_active_insurance_id_fkey";
+            columns: ["active_insurance_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
+            referencedColumns: ["insurance_id"];
           },
           {
             foreignKeyName: "taxi_active_taxi_licence_id_fkey";
@@ -869,11 +1079,25 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "taxi_active_taxi_licence_id_fkey";
+            columns: ["active_taxi_licence_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
+            referencedColumns: ["taxi_licence_id"];
+          },
+          {
             foreignKeyName: "taxi_auth_id_fkey";
             columns: ["auth_id"];
             isOneToOne: false;
             referencedRelation: "users";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "taxi_vehicle_id_fkey";
+            columns: ["vehicle_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
+            referencedColumns: ["vehicle_id"];
           },
           {
             foreignKeyName: "taxi_vehicle_id_fkey";
@@ -940,7 +1164,21 @@ export type Database = {
             foreignKeyName: "taxi_licence_taxi_id_fkey";
             columns: ["taxi_id"];
             isOneToOne: false;
+            referencedRelation: "hire_agreement_view";
+            referencedColumns: ["taxi_id"];
+          },
+          {
+            foreignKeyName: "taxi_licence_taxi_id_fkey";
+            columns: ["taxi_id"];
+            isOneToOne: false;
             referencedRelation: "taxi";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "taxi_licence_taxi_id_fkey";
+            columns: ["taxi_id"];
+            isOneToOne: false;
+            referencedRelation: "taxi_view";
             referencedColumns: ["id"];
           },
         ];
@@ -988,60 +1226,35 @@ export type Database = {
       driver_view: {
         Row: {
           auth_id: string | null;
-          chassis_number: string | null;
-          colour: string | null;
-          contract_document_path: string | null;
+          badge_number: string | null;
           created_at: string | null;
           date_of_birth: string | null;
-          deposit_amount: number | null;
-          deposit_receipt_document_path: string | null;
+          drivers_licence_document_path: string | null;
+          drivers_licence_end_date: string | null;
           drivers_licence_id: number | null;
+          drivers_licence_start_date: string | null;
+          drivers_taxi_badge_document_path: string | null;
+          drivers_taxi_badge_end_date: string | null;
           drivers_taxi_badge_id: number | null;
+          drivers_taxi_badge_start_date: string | null;
           email: string | null;
-          expected_expiry_date: string | null;
           hire_agreement_id: number | null;
-          hire_end_date: string | null;
-          hire_start_date: string | null;
           id: number | null;
+          insurance_document_path: string | null;
+          insurance_end_date: string | null;
           insurance_id: number | null;
+          insurance_start_date: string | null;
           is_retired: boolean | null;
-          logbook_document_path: string | null;
+          licence_number: string | null;
           name: string | null;
           national_insurance_number: string | null;
           number_plate: string | null;
-          permission_letter_document_path: string | null;
           phone_number: string | null;
           picture_path: string | null;
-          registration_date: string | null;
-          rent_amount: number | null;
-          road_tax_expiry_date: string | null;
+          policy_number: string | null;
           taxi_id: number | null;
-          taxi_licence_id: number | null;
-          taxi_picture_path: string | null;
-          vehicle_id: number | null;
         };
         Relationships: [
-          {
-            foreignKeyName: "driver_active_drivers_licence_id_fkey";
-            columns: ["drivers_licence_id"];
-            isOneToOne: false;
-            referencedRelation: "drivers_licence";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "driver_active_drivers_taxi_badge_id_fkey";
-            columns: ["drivers_taxi_badge_id"];
-            isOneToOne: false;
-            referencedRelation: "drivers_taxi_badge";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "driver_active_insurance_id_fkey";
-            columns: ["insurance_id"];
-            isOneToOne: false;
-            referencedRelation: "insurance";
-            referencedColumns: ["id"];
-          },
           {
             foreignKeyName: "driver_auth_id_fkey";
             columns: ["auth_id"];
@@ -1049,18 +1262,78 @@ export type Database = {
             referencedRelation: "users";
             referencedColumns: ["id"];
           },
+        ];
+      };
+      hire_agreement_view: {
+        Row: {
+          auth_id: string | null;
+          contract_document_path: string | null;
+          created_at: string | null;
+          deposit_amount: number | null;
+          deposit_receipt_document_path: string | null;
+          driver_id: number | null;
+          driver_name: string | null;
+          end_date: string | null;
+          id: number | null;
+          is_retired: boolean | null;
+          number_plate: string | null;
+          permission_letter_document_path: string | null;
+          rent_amount: number | null;
+          start_date: string | null;
+          taxi_id: number | null;
+        };
+        Relationships: [
           {
-            foreignKeyName: "taxi_active_taxi_licence_id_fkey";
-            columns: ["taxi_licence_id"];
+            foreignKeyName: "hire_agreement_auth_id_fkey";
+            columns: ["auth_id"];
             isOneToOne: false;
-            referencedRelation: "taxi_licence";
+            referencedRelation: "users";
             referencedColumns: ["id"];
           },
+        ];
+      };
+      taxi_view: {
+        Row: {
+          auth_id: string | null;
+          cc: number | null;
+          chassis_number: string | null;
+          colour: string | null;
+          compliance_certificate_document_path: string | null;
+          compliance_certificate_licence_number: string | null;
+          created_at: string | null;
+          driver_id: number | null;
+          driver_name: string | null;
+          expected_expiry_date: string | null;
+          fuel_type: string | null;
+          hire_agreement_id: number | null;
+          id: number | null;
+          insurance_document_path: string | null;
+          insurance_end_date: string | null;
+          insurance_id: number | null;
+          insurance_start_date: string | null;
+          is_any_driver: boolean | null;
+          is_retired: boolean | null;
+          logbook_document_path: string | null;
+          make: string | null;
+          model: string | null;
+          number_plate: string | null;
+          phc_licence_document_path: string | null;
+          phc_number: string | null;
+          picture_path: string | null;
+          policy_number: string | null;
+          registration_date: string | null;
+          road_tax_expiry_date: string | null;
+          taxi_licence_end_date: string | null;
+          taxi_licence_id: number | null;
+          taxi_licence_start_date: string | null;
+          vehicle_id: number | null;
+        };
+        Relationships: [
           {
-            foreignKeyName: "taxi_vehicle_id_fkey";
-            columns: ["vehicle_id"];
+            foreignKeyName: "taxi_auth_id_fkey";
+            columns: ["auth_id"];
             isOneToOne: false;
-            referencedRelation: "vehicle";
+            referencedRelation: "users";
             referencedColumns: ["id"];
           },
         ];
