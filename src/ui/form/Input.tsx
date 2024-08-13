@@ -290,22 +290,20 @@ const EditableInput = React.forwardRef<
   };
 
   return (
-    <div className="group">
+    <div className="group overflow-hidden">
       {title && (
         <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500">{title}</p>
       )}
-      <div className={cn('flex justify-between items-center gap-2 border-achromatic-dark/65 dark:border-achromatic-500 relative', !readOnly && 'border-b')}>
-        {/* <input
+      <div className={cn('flex justify-between items-center gap-2 overflow-hidden border-achromatic-dark/65 dark:border-achromatic-500 relative', !readOnly && 'border-b')}>
+        <input
           {...props}
           ref={innerRef}
-          className={cn('w-full min-w-4 pr-7 pl-0 xs:pl-0 outline-none bg-transparent placeholder:text-achromatic-dark/65 dark:placeholder:text-achromatic-500 file:hidden', readOnly && 'cursor-default', !readOnly && 'cursor-auto', className)}
+          className={cn('w-full min-w-4 pr-7 pl-0 xs:pl-0 outline-none bg-transparent placeholder:text-achromatic-dark/65 dark:placeholder:text-achromatic-500 file:hidden overflow-ellipsis overflow-hidden whitespace-nowrap', readOnly && 'cursor-default', !readOnly && 'cursor-auto', className)}
           placeholder={props.placeholder || 'N/A'}
           readOnly={readOnly}
           onKeyUp={(event) => (event.key === 'Enter' && handleSave())}
-        /> */}
-        <p className={cn('w-full min-w-4 pr-7 pl-0 xs:pl-0 outline-none bg-transparent placeholder:text-achromatic-dark/65 dark:placeholder:text-achromatic-500 file:hidden', readOnly && 'cursor-default', !readOnly && 'cursor-auto', className)}>
-          {props.value ?? props.defaultValue ?? 'N/A'}
-        </p>
+        />
+
         {readOnly
           ? (
             <Button

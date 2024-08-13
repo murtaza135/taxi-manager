@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 import colors from "tailwindcss/colors";
 import plugin from "tailwindcss/plugin";
+import { screens } from "tailwindcss/defaultTheme";
 
 export default {
   content: [
@@ -30,6 +31,7 @@ export default {
       },
       screens: {
         xs: "425px",
+        ...screens,
         pwa: { raw: '(max-width: 640px) and (display-mode: standalone)' },
       },
       keyframes: {
