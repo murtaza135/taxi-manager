@@ -127,6 +127,7 @@ export function DriversTable() {
           <DataViewRowSelectionCount />
         </DataViewTopBarSection>
       </DataViewTopBar>
+
       {layout === 'table' && (
         <DataViewTable
           ref={ref}
@@ -134,6 +135,7 @@ export function DriversTable() {
           onScroll={fetchOnScroll}
         />
       )}
+
       {layout === 'grid' && (
         <DataViewGrid
           mapper={mapper}

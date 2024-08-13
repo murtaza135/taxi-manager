@@ -7,8 +7,8 @@ import { errorTitles, errorDescriptions } from '@/errors/errorMessages';
 export type SupabaseErrorConstructorOptions = {
   globalTitle?: string;
   globalDescription?: string;
-  titles?: Record<ErrorType, string>;
-  descriptions?: Record<ErrorType, string>;
+  titles?: Partial<Record<ErrorType, string>>;
+  descriptions?: Partial<Record<ErrorType, string>>;
 };
 
 export class SupabaseError extends APIError {
