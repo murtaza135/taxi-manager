@@ -1,26 +1,36 @@
 import { useParams } from 'react-router-dom';
 import { MdModeEdit } from 'react-icons/md';
 import { FaTrashAlt } from 'react-icons/fa';
+import { HiDotsHorizontal } from 'react-icons/hi';
 import { PiArrowUDownLeftBold } from 'react-icons/pi';
 import { useId } from 'react';
 import { useDriver } from '@/features/drivers/hooks/queries/useDriver';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
-import { EditableInput } from '@/ui/form/Input';
+import { EditableInput, OnSaveArgs } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { toDateInputString } from '@/utils/date/toDateInputString';
 import { Checkbox } from '@/ui/form/Checkbox';
+import { useUpdateDriver, UpdateDriverVariables } from '@/features/drivers/hooks/mutations/useUpdateDriver';
 
 export function DriverDetailsSection() {
   const { id } = useParams();
   const { data } = useDriver(Number(id));
   const inputId = useId();
+  const { mutate } = useUpdateDriver();
   console.log(data);
+
+  const handleSave = (value: string, name?: string) => {
+    if (name) {
+      console.log(data[name as keyof UpdateDriverVariables]);
+      console.log(value);
+    }
+  };
 
   return (
     <div className="flex justify-start items-start gap-8 xs:gap-10 sm:gap-14 flex-col xs:flex-row py-3 px-2">
-      <div className="flex flex-col justify-start items-start gap-4 flex-shrink-0">
+      <div className="flex flex-row xs:flex-col justify-start items-start gap-4 flex-shrink-0">
         <label htmlFor={inputId} className="relative group">
           <input
             id={inputId}
@@ -45,45 +55,49 @@ export function DriverDetailsSection() {
           </p>
         </label>
 
-        <div className="flex gap-3 justify-center items-center w-full" />
+        <div className="flex gap-3 justify-center items-center w-full">
+          <Button size="sm" className="w-full flex justify-center items-center gap-1">
+            <MdModeEdit className="text-base" />
+            Edit
+          </Button>
+        </div>
       </div>
 
       <div className="space-y-3 flex-grow max-w-96">
         <EditableInput
+          name="name"
           type="text"
-          value={capitalizeEachWord(data.name)}
-          className="text-2xl font-bold"
-          onSave={(value) => console.log(value)}
+          defaultValue={capitalizeEachWord(data.name)}
+          className="text-2xl font-bold flex-grow"
+          onSave={handleSave}
         />
         <EditableInput
+          name="phone_number"
           type="tel"
           title="Phone Number"
-          value={data.phone_number ?? ''}
-          onSave={(value) => console.log(value)}
+          defaultValue={data.phone_number ?? ''}
+          onSave={handleSave}
         />
         <EditableInput
+          name="email"
           type="email"
           title="Email"
-          value={data.email ?? ''}
-          onSave={(value) => console.log(value)}
+          defaultValue={data.email ?? ''}
+          onSave={handleSave}
         />
         <EditableInput
+          name="date_of_birth"
           type="date"
           title="Date of Birth"
-          value={data.date_of_birth ?? ''}
-          onSave={(value) => console.log(value)}
+          defaultValue={data.date_of_birth ?? ''}
+          onSave={handleSave}
         />
         <EditableInput
+          name="national_insurance_number"
           type="text"
           title="National Insurance Number"
-          value={data.national_insurance_number ?? ''}
-          onSave={(value) => console.log(value)}
-        />
-        <EditableInput
-          type="text"
-          title="Retired"
-          value={data.is_retired ? 'Yes' : 'No'}
-          onSave={(value) => console.log(value)}
+          defaultValue={data.national_insurance_number ?? ''}
+          onSave={handleSave}
         />
         <div className="space-y-0.5">
           <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500">Retired</p>
@@ -93,10 +107,11 @@ export function DriverDetailsSection() {
           </div>
         </div>
         <EditableInput
+          name="created_at"
           type="date"
           title="Creation Date"
-          value={toDateInputString(new Date(data.created_at ?? ''))}
-          onSave={(value) => console.log(value)}
+          defaultValue={toDateInputString(new Date(data.created_at ?? ''))}
+          onSave={handleSave}
         />
       </div>
     </div>

@@ -266,9 +266,15 @@ const ReadOnlyInput = React.forwardRef<
 });
 ReadOnlyInput.displayName = 'ReadOnlyInput';
 
+export type OnSaveArgs = {
+  name?: string,
+  value: string,
+  target: EventTarget;
+};
+
 type EditableInputProps = {
   title?: string;
-  onSave?: (value: string) => void;
+  onSave?: (value: string, name?: string) => void;
 };
 
 const EditableInput = React.forwardRef<
@@ -286,11 +292,11 @@ const EditableInput = React.forwardRef<
 
   const handleSave = () => {
     setReadOnly(true);
-    onSave?.(innerRef.current?.value ?? '');
+    onSave?.(innerRef.current?.value ?? '', props.name);
   };
 
   return (
-    <div className="group overflow-hidden">
+    <div className={cn('group overflow-hidden', className)}>
       {title && (
         <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500">{title}</p>
       )}
@@ -298,7 +304,7 @@ const EditableInput = React.forwardRef<
         <input
           {...props}
           ref={innerRef}
-          className={cn('w-full min-w-4 pr-7 pl-0 xs:pl-0 outline-none bg-transparent file:hidden overflow-ellipsis overflow-hidden whitespace-nowrap', readOnly && 'cursor-default placeholder:text-achromatic-darker dark:placeholder:text-achromatic-lighter', !readOnly && 'cursor-auto placeholder:text-achromatic-dark/65 dark:placeholder:text-achromatic-500', className)}
+          className={cn('w-full min-w-4 pr-7 pl-0 xs:pl-0 outline-none bg-transparent file:hidden overflow-ellipsis overflow-hidden whitespace-nowrap', readOnly && 'cursor-default placeholder:text-achromatic-darker dark:placeholder:text-achromatic-lighter', !readOnly && 'cursor-auto placeholder:text-achromatic-dark/65 dark:placeholder:text-achromatic-500')}
           placeholder={props.placeholder || 'N/A'}
           readOnly={readOnly}
           onKeyUp={(event) => (event.key === 'Enter' && handleSave())}
