@@ -10,12 +10,9 @@ const ACCEPTED_IMAGE_MIME_TYPE = /image\/.+/;
 const ACCEPTED_DOCUMENT_MIME_TYPE = /image\/.+|application\/pdf/;
 
 export const addNewDriverDetailsSchema = z.object({
-  first_names: z
+  name: z
     .string({ required_error: 'First name required' })
-    .min(1, 'First name required'),
-  last_name: z
-    .string({ required_error: 'Last name required' })
-    .min(1, 'Last name required'),
+    .min(1, 'Name required'),
   email: z
     .string()
     .email({ message: 'Invalid email address' })

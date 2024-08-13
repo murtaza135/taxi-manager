@@ -140,65 +140,65 @@ INSERT INTO "public"."company" ("id", "auth_id", "logo_path", "name", "company_n
 -- Data for Name: driver; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."driver" ("id", "auth_id", "picture_path", "first_names", "last_name", "phone_number", "email", "date_of_birth", "national_insurance_number", "is_retired", "created_at", "active_hire_agreement_id", "active_insurance_id", "active_drivers_licence_id", "active_drivers_taxi_badge_id") VALUES
-	(4, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver4', 'driver4', '01234567890', NULL, '2024-04-29', NULL, false, '2024-05-15 16:05:22.943012+00', 4, NULL, 9, 7),
-	(3, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver3', 'driver3', NULL, NULL, NULL, NULL, false, '2024-05-15 16:03:47.37375+00', 3, NULL, 8, 5),
-	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/driver-pictures/driver1.jpg', 'driver1', 'driver1', '01234567890', 'driver1@test.com', '1990-01-31', 'AB123456C', false, '2024-05-15 16:01:47.140623+00', 1, NULL, 3, 1),
-	(6, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver6', 'driver6', '', 'driver6@test.com', '2024-05-04', 'AB123456C', false, '2024-05-15 16:12:32.810957+00', 7, NULL, 11, 9),
-	(7, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/driver-pictures/driver7.jpg', 'driver7', 'driver7', NULL, 'driver7@test.com', NULL, 'AB123456C', false, '2024-05-15 16:12:57.664063+00', NULL, 8, 12, 10),
-	(5, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/driver-pictures/driver5.jpg', 'driver5', 'driver5', NULL, 'driver5@test.com', NULL, 'AB123456C', false, '2024-05-15 16:06:00.626866+00', 5, NULL, 10, 8),
-	(2, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver2', 'driver2', '01234567890', 'driver2@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:12.108898+00', 2, 5, 5, 3),
-	(100, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver100', 'driver100', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:12.108898+00', NULL, 5, 5, 3),
-	(101, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver101', 'driver101', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:12.108898+00', NULL, 5, 5, 3),
-	(102, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver102', 'driver102', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:12.108898+00', NULL, 5, 5, 3),
-	(103, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:12.108898+00', NULL, 5, 5, 3),
-	(104, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:13.108898+00', NULL, 5, 5, 3),
-	(105, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:14.108898+00', NULL, 5, 5, 3),
-	(106, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:15.108898+00', NULL, 5, 5, 3),
-	(107, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:16.108898+00', NULL, 5, 5, 3),
-	(108, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:17.108898+00', NULL, 5, 5, 3),
-	(109, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:18.108898+00', NULL, 5, 5, 3),
-	(110, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:19.108898+00', NULL, 5, 5, 3),
-	(111, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:20.108898+00', NULL, 5, 5, 3),
-	(112, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:21.108898+00', NULL, 5, 5, 3),
-	(113, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:22.108898+00', NULL, 5, 5, 3),
-	(114, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:23.108898+00', NULL, 5, 5, 3),
-	(115, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:24.108898+00', NULL, 5, 5, 3),
-	(116, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:25.108898+00', NULL, 5, 5, 3),
-	(117, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:26.108898+00', NULL, 5, 5, 3),
-	(118, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:27.108898+00', NULL, 5, 5, 3),
-	(119, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:28.108898+00', NULL, 5, 5, 3),
-	(120, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:29.108898+00', NULL, 5, 5, 3),
-	(121, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:30.108898+00', NULL, 5, 5, 3),
-	(122, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:31.108898+00', NULL, 5, 5, 3),
-	(123, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:32.108898+00', NULL, 5, 5, 3),
-	(124, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:33.108898+00', NULL, 5, 5, 3),
-	(125, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:34.108898+00', NULL, 5, 5, 3),
-	(126, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:35.108898+00', NULL, 5, 5, 3),
-	(127, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:36.108898+00', NULL, 5, 5, 3),
-	(128, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:37.108898+00', NULL, 5, 5, 3),
-	(129, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:38.108898+00', NULL, 5, 5, 3),
-	(130, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:39.108898+00', NULL, 5, 5, 3),
-	(131, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:40.108898+00', NULL, 5, 5, 3),
-	(132, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:41.108898+00', NULL, 5, 5, 3),
-	(133, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:42.108898+00', NULL, 5, 5, 3),
-	(134, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:43.108898+00', NULL, 5, 5, 3),
-	(135, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:44.108898+00', NULL, 5, 5, 3),
-	(136, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:45.108898+00', NULL, 5, 5, 3),
-	(137, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:46.108898+00', NULL, 5, 5, 3),
-	(138, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:46.108898+00', NULL, 5, 5, 3),
-	(139, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:48.108898+00', NULL, 5, 5, 3),
-	(140, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:49.108898+00', NULL, 5, 5, 3),
-	(141, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:50.108898+00', NULL, 5, 5, 3),
-	(142, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:51.108898+00', NULL, 5, 5, 3),
-	(143, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:52.108898+00', NULL, 5, 5, 3),
-	(144, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:53.108898+00', NULL, 5, 5, 3),
-	(145, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:54.108898+00', NULL, 5, 5, 3),
-	(146, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:55.108898+00', NULL, 5, 5, 3),
-	(147, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:56.108898+00', NULL, 5, 5, 3),
-	(148, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:57.108898+00', NULL, 5, 5, 3),
-	(149, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:58.108898+00', NULL, 5, 5, 3),
-	(150, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver', 'driver', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:59.108898+00', NULL, 5, 5, 3);
+INSERT INTO "public"."driver" ("id", "auth_id", "picture_path", "name", "phone_number", "email", "date_of_birth", "national_insurance_number", "is_retired", "created_at", "active_hire_agreement_id", "active_insurance_id", "active_drivers_licence_id", "active_drivers_taxi_badge_id") VALUES
+	(4, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver4', '01234567890', NULL, '2024-04-29', NULL, false, '2024-05-15 16:05:22.943012+00', 4, NULL, 9, 7),
+	(3, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver3', NULL, NULL, NULL, NULL, false, '2024-05-15 16:03:47.37375+00', 3, NULL, 8, 5),
+	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/driver-pictures/driver1.jpg', 'driver1', '01234567890', 'driver1@test.com', '1990-01-31', 'AB123456C', false, '2024-05-15 16:01:47.140623+00', 1, NULL, 3, 1),
+	(6, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver6', '', 'driver6@test.com', '2024-05-04', 'AB123456C', false, '2024-05-15 16:12:32.810957+00', 7, NULL, 11, 9),
+	(7, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/driver-pictures/driver7.jpg', 'driver7', NULL, 'driver7@test.com', NULL, 'AB123456C', false, '2024-05-15 16:12:57.664063+00', NULL, 8, 12, 10),
+	(5, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/driver-pictures/driver5.jpg', 'driver5', NULL, 'driver5@test.com', NULL, 'AB123456C', false, '2024-05-15 16:06:00.626866+00', 5, NULL, 10, 8),
+	(2, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver2', '01234567890', 'driver2@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:12.108898+00', 2, 5, 5, 3),
+	(100, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver100', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:12.108898+00', NULL, 5, 5, 3),
+	(101, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver101', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:12.108898+00', NULL, 5, 5, 3),
+	(102, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver102', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:12.108898+00', NULL, 5, 5, 3),
+	(103, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:12.108898+00', NULL, 5, 5, 3),
+	(104, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:13.108898+00', NULL, 5, 5, 3),
+	(105, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:14.108898+00', NULL, 5, 5, 3),
+	(106, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:15.108898+00', NULL, 5, 5, 3),
+	(107, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:16.108898+00', NULL, 5, 5, 3),
+	(108, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:17.108898+00', NULL, 5, 5, 3),
+	(109, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:18.108898+00', NULL, 5, 5, 3),
+	(110, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:19.108898+00', NULL, 5, 5, 3),
+	(111, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:20.108898+00', NULL, 5, 5, 3),
+	(112, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:21.108898+00', NULL, 5, 5, 3),
+	(113, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:22.108898+00', NULL, 5, 5, 3),
+	(114, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:23.108898+00', NULL, 5, 5, 3),
+	(115, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:24.108898+00', NULL, 5, 5, 3),
+	(116, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:25.108898+00', NULL, 5, 5, 3),
+	(117, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:26.108898+00', NULL, 5, 5, 3),
+	(118, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:27.108898+00', NULL, 5, 5, 3),
+	(119, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:28.108898+00', NULL, 5, 5, 3),
+	(120, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:29.108898+00', NULL, 5, 5, 3),
+	(121, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:30.108898+00', NULL, 5, 5, 3),
+	(122, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:31.108898+00', NULL, 5, 5, 3),
+	(123, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:32.108898+00', NULL, 5, 5, 3),
+	(124, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:33.108898+00', NULL, 5, 5, 3),
+	(125, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:34.108898+00', NULL, 5, 5, 3),
+	(126, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:35.108898+00', NULL, 5, 5, 3),
+	(127, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:36.108898+00', NULL, 5, 5, 3),
+	(128, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:37.108898+00', NULL, 5, 5, 3),
+	(129, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:38.108898+00', NULL, 5, 5, 3),
+	(130, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:39.108898+00', NULL, 5, 5, 3),
+	(131, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:40.108898+00', NULL, 5, 5, 3),
+	(132, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:41.108898+00', NULL, 5, 5, 3),
+	(133, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:42.108898+00', NULL, 5, 5, 3),
+	(134, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:43.108898+00', NULL, 5, 5, 3),
+	(135, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:44.108898+00', NULL, 5, 5, 3),
+	(136, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:45.108898+00', NULL, 5, 5, 3),
+	(137, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:46.108898+00', NULL, 5, 5, 3),
+	(138, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:46.108898+00', NULL, 5, 5, 3),
+	(139, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:48.108898+00', NULL, 5, 5, 3),
+	(140, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:49.108898+00', NULL, 5, 5, 3),
+	(141, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:50.108898+00', NULL, 5, 5, 3),
+	(142, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:51.108898+00', NULL, 5, 5, 3),
+	(143, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:52.108898+00', NULL, 5, 5, 3),
+	(144, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:53.108898+00', NULL, 5, 5, 3),
+	(145, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:54.108898+00', NULL, 5, 5, 3),
+	(146, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:55.108898+00', NULL, 5, 5, 3),
+	(147, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:56.108898+00', NULL, 5, 5, 3),
+	(148, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:57.108898+00', NULL, 5, 5, 3),
+	(149, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:58.108898+00', NULL, 5, 5, 3),
+	(150, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'driver X', '01234567890', 'driver@test.com', '2024-05-13', 'AB123456C', false, '2024-05-15 16:03:59.108898+00', NULL, 5, 5, 3);
 
 
 --
@@ -292,8 +292,8 @@ INSERT INTO "public"."council_application_receipt" ("id", "auth_id", "taxi_id", 
 -- Data for Name: driver_application; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."driver_application" ("id", "company_id", "picture_path", "first_names", "last_name", "phone_number", "email", "date_of_birth", "national_insurance_number", "drivers_licence_path", "drivers_licence_number", "drivers_licence_start_date", "drivers_licence_end_date", "taxi_badge_path", "taxi_badge_number", "taxi_badge_start_date", "taxi_badge_end_date", "created_at", "auth_id") VALUES
-	('faf37e18-664d-4ed6-9ced-008912e3799c', 1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72/driver-pictures/driver-a.jpg', 'driverA', 'driverA', '5442543656', 'driverA@test.com', '2023-02-08', 'fsafsdfsdfsd', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/drivers-licences/drivers-licence-a.png', 'sfgsdfsdfsdfsd', '2024-05-01', '2024-10-15', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-badges/taxi-badge-a.png', 'safdsfsdf', NULL, '2024-10-15', '2024-05-15 19:42:49.282068+00', 'cf9c4157-af64-4477-9f70-6b2c37e8da72');
+INSERT INTO "public"."driver_application" ("id", "company_id", "picture_path", "name", "phone_number", "email", "date_of_birth", "national_insurance_number", "drivers_licence_path", "drivers_licence_number", "drivers_licence_start_date", "drivers_licence_end_date", "taxi_badge_path", "taxi_badge_number", "taxi_badge_start_date", "taxi_badge_end_date", "created_at", "auth_id") VALUES
+	('faf37e18-664d-4ed6-9ced-008912e3799c', 1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72/driver-pictures/driver-a.jpg', 'driver A', '5442543656', 'driverA@test.com', '2023-02-08', 'fsafsdfsdfsd', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/drivers-licences/drivers-licence-a.png', 'sfgsdfsdfsdfsd', '2024-05-01', '2024-10-15', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-badges/taxi-badge-a.png', 'safdsfsdf', NULL, '2024-10-15', '2024-05-15 19:42:49.282068+00', 'cf9c4157-af64-4477-9f70-6b2c37e8da72');
 
 
 --
@@ -335,11 +335,11 @@ INSERT INTO "public"."drivers_taxi_badge" ("id", "auth_id", "driver_id", "docume
 -- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."employee" ("id", "auth_id", "company_id", "picture_path", "first_names", "last_name", "phone_number", "email", "date_of_birth", "national_insurance_number", "signature_path", "created_at") VALUES
-	(2, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 1, NULL, 'employee2', 'employee2', '', 'employee2@test.com', '2024-05-04', 'fsdfsdfsdf', NULL, '2024-05-15 19:46:26.805332+00'),
-	(4, '34a3aed7-3db5-4cff-a0e5-761d85a8074b', 3, NULL, 'employee4', 'employee4', '54354356346', 'employee4@test.com', '2024-05-08', 'gsfgsdfsdfds', NULL, '2024-05-15 19:47:26.9791+00'),
-	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72/employees/employee1.jpg', 'employee1', 'employee1', '534534534', 'employee1@test.com', '2024-05-01', 'fafdsafsdfsdf', NULL, '2024-05-15 19:45:54.625931+00'),
-	(3, '2a8b0fb4-094c-47b0-b701-2282a6cd8993', 2, '2a8b0fb4-094c-47b0-b701-2282a6cd8993/employees/employee3.jpg', 'employee3', 'employee3', NULL, 'employee3@test.com', '2024-05-06', 'fsfsdfsdfsdf', NULL, '2024-05-15 19:46:52.272149+00');
+INSERT INTO "public"."employee" ("id", "auth_id", "company_id", "picture_path", "name", "phone_number", "email", "date_of_birth", "national_insurance_number", "signature_path", "created_at") VALUES
+	(2, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 1, NULL, 'employee2', '', 'employee2@test.com', '2024-05-04', 'fsdfsdfsdf', NULL, '2024-05-15 19:46:26.805332+00'),
+	(4, '34a3aed7-3db5-4cff-a0e5-761d85a8074b', 3, NULL, 'employee4', '54354356346', 'employee4@test.com', '2024-05-08', 'gsfgsdfsdfds', NULL, '2024-05-15 19:47:26.9791+00'),
+	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72/employees/employee1.jpg', 'employee1', '534534534', 'employee1@test.com', '2024-05-01', 'fafdsafsdfsdf', NULL, '2024-05-15 19:45:54.625931+00'),
+	(3, '2a8b0fb4-094c-47b0-b701-2282a6cd8993', 2, '2a8b0fb4-094c-47b0-b701-2282a6cd8993/employees/employee3.jpg', 'employee3', NULL, 'employee3@test.com', '2024-05-06', 'fsfsdfsdfsdf', NULL, '2024-05-15 19:46:52.272149+00');
 
 
 --

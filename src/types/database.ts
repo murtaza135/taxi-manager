@@ -208,10 +208,9 @@ export type Database = {
           created_at: string;
           date_of_birth: string | null;
           email: string | null;
-          first_names: string;
           id: number;
           is_retired: boolean;
-          last_name: string;
+          name: string;
           national_insurance_number: string | null;
           phone_number: string | null;
           picture_path: string | null;
@@ -225,10 +224,9 @@ export type Database = {
           created_at?: string;
           date_of_birth?: string | null;
           email?: string | null;
-          first_names: string;
           id?: number;
           is_retired?: boolean;
-          last_name: string;
+          name: string;
           national_insurance_number?: string | null;
           phone_number?: string | null;
           picture_path?: string | null;
@@ -242,10 +240,9 @@ export type Database = {
           created_at?: string;
           date_of_birth?: string | null;
           email?: string | null;
-          first_names?: string;
           id?: number;
           is_retired?: boolean;
-          last_name?: string;
+          name?: string;
           national_insurance_number?: string | null;
           phone_number?: string | null;
           picture_path?: string | null;
@@ -348,9 +345,8 @@ export type Database = {
           drivers_licence_path: string | null;
           drivers_licence_start_date: string | null;
           email: string | null;
-          first_names: string | null;
           id: string;
-          last_name: string | null;
+          name: string | null;
           national_insurance_number: string | null;
           phone_number: string | null;
           picture_path: string | null;
@@ -369,9 +365,8 @@ export type Database = {
           drivers_licence_path?: string | null;
           drivers_licence_start_date?: string | null;
           email?: string | null;
-          first_names?: string | null;
           id?: string;
-          last_name?: string | null;
+          name?: string | null;
           national_insurance_number?: string | null;
           phone_number?: string | null;
           picture_path?: string | null;
@@ -390,9 +385,8 @@ export type Database = {
           drivers_licence_path?: string | null;
           drivers_licence_start_date?: string | null;
           email?: string | null;
-          first_names?: string | null;
           id?: string;
-          last_name?: string | null;
+          name?: string | null;
           national_insurance_number?: string | null;
           phone_number?: string | null;
           picture_path?: string | null;
@@ -563,9 +557,8 @@ export type Database = {
           created_at: string;
           date_of_birth: string;
           email: string;
-          first_names: string;
           id: number;
-          last_name: string;
+          name: string;
           national_insurance_number: string;
           phone_number: string | null;
           picture_path: string | null;
@@ -577,9 +570,8 @@ export type Database = {
           created_at?: string;
           date_of_birth: string;
           email: string;
-          first_names: string;
           id?: number;
-          last_name: string;
+          name: string;
           national_insurance_number: string;
           phone_number?: string | null;
           picture_path?: string | null;
@@ -591,9 +583,8 @@ export type Database = {
           created_at?: string;
           date_of_birth?: string;
           email?: string;
-          first_names?: string;
           id?: number;
-          last_name?: string;
+          name?: string;
           national_insurance_number?: string;
           phone_number?: string | null;
           picture_path?: string | null;
@@ -1342,8 +1333,7 @@ export type Database = {
     Functions: {
       add_new_driver: {
         Args: {
-          first_names: string;
-          last_name: string;
+          name: string;
           licence_number?: string;
           licence_start_date?: string;
           licence_end_date?: string;

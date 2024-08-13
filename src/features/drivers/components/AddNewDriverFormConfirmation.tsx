@@ -62,17 +62,9 @@ export function AddNewDriverFormConfirmation() {
         <FormSection title="Driver" onEdit={() => setStep(1)}>
           <FormField
             control={form.control}
-            name="first_names"
+            name="name"
             render={({ field }) => (
-              <ReadOnlyInput title="First Name" {...field} />
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="last_name"
-            render={({ field }) => (
-              <ReadOnlyInput title="Last Name" {...field} />
+              <ReadOnlyInput title="Name" {...field} />
             )}
           />
 

@@ -9,6 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "generate-assets": "pwa-assets-generator --preset minimal public/images/icon.svg",
+    "reset-db": "supabase db reset",
     "generate-database-types": "npx supabase gen types typescript --local > src/types/database.ts"
   },
   "dependencies": {

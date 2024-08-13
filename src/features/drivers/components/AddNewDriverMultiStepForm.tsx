@@ -12,8 +12,7 @@ import { AddNewDriverFormConfirmation } from '@/features/drivers/components/AddN
 import { AddNewDriverSchema } from '@/features/drivers/schemas';
 
 const initialFormState: AddNewDriverSchema = {
-  first_names: '',
-  last_name: '',
+  name: '',
   email: '',
   phone_number: '',
   national_insurance_number: '',

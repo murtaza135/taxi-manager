@@ -3,7 +3,7 @@ create view driver_view as
     driver.id,
     driver.auth_id,
     driver.picture_path,
-    CONCAT(driver.first_names, ' ', driver.last_name) AS name,
+    driver.name,
     driver.phone_number,
     driver.email,
     driver.date_of_birth,

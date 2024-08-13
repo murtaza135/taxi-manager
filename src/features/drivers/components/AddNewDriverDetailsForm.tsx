@@ -42,20 +42,10 @@ export function AddNewDriverDetailsForm() {
 
         <FormField
           control={form.control}
-          name="first_names"
+          name="name"
           render={({ field }) => (
-            <FormGroup label="* First Name">
-              <Input placeholder="First Name" {...field} />
-            </FormGroup>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="last_name"
-          render={({ field }) => (
-            <FormGroup label="* Last Name">
-              <Input placeholder="Last Name" {...field} />
+            <FormGroup label="* Name">
+              <Input placeholder="Name" {...field} />
             </FormGroup>
           )}
         />

@@ -1,6 +1,5 @@
 CREATE FUNCTION add_new_driver (
-  first_names text,
-  last_name text,
+  name text,
   licence_number text default null,
   licence_start_date date default null,
   licence_end_date date default null,
@@ -21,8 +20,8 @@ DECLARE
     badge_id bigint;
 BEGIN
     -- Insert data into driver table
-    INSERT INTO driver (first_names, last_name, phone_number, email, date_of_birth, national_insurance_number, picture_path)
-    VALUES (first_names, last_name, phone_number, email, date_of_birth, national_insurance_number, picture_path)
+    INSERT INTO driver (name, phone_number, email, date_of_birth, national_insurance_number, picture_path)
+    VALUES (name, phone_number, email, date_of_birth, national_insurance_number, picture_path)
     RETURNING id INTO driver_id;
 
     -- Insert data into drivers_licence table

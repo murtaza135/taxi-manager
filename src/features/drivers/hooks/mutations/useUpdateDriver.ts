@@ -8,14 +8,12 @@ import { useToast } from '@/ui/toast';
 import { Tables } from '@/types/database';
 import { Prettify } from '@/types/utils';
 
-// | 'first_names' | 'last_name' | 'phone_number' | 'email'
-
 export type UpdateDriverVariables = Prettify<
   Partial<
     Pick<
       Tables<'driver'>,
-      | 'phone_number' | 'email'
-      | 'date_of_birth' | 'national_insurance_number' | 'is_retired'
+      | 'name' | 'phone_number' | 'email' | 'date_of_birth'
+      | 'national_insurance_number' | 'is_retired'
     >
   > & {
     id: number;

@@ -5,7 +5,7 @@ create view driver_view as
     driver.id,
     driver.auth_id,
     driver.picture_path,
-    CONCAT(driver.first_names, ' ', driver.last_name) AS name,
+    driver.name,
     driver.phone_number,
     driver.email,
     driver.date_of_birth,
@@ -54,7 +54,7 @@ create view taxi_view as
     taxi.created_at,
     hire_agreement.id as hire_agreement_id,
     driver.id as driver_id,
-    CONCAT(driver.first_names, ' ', driver.last_name) AS driver_name,
+    driver.name AS driver_name,
     vehicle.id as vehicle_id,
     vehicle.make,
     vehicle.model,
@@ -95,7 +95,7 @@ create view hire_agreement_view as
     hire_agreement.is_retired,
     hire_agreement.created_at,
     driver.id as driver_id,
-    CONCAT(driver.first_names, ' ', driver.last_name) AS driver_name,
+    driver.name AS driver_name,
     taxi.id as taxi_id,
     taxi.number_plate
   from
