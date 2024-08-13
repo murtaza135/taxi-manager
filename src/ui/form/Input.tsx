@@ -268,12 +268,13 @@ ReadOnlyInput.displayName = 'ReadOnlyInput';
 
 type EditableInputProps = {
   title?: string;
+  onSave?: (value: string) => void;
 };
 
 const EditableInput = React.forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement> & EditableInputProps
->(({ title, className, ...props }, ref) => {
+>(({ title, className, onSave, ...props }, ref) => {
   const [readOnly, setReadOnly] = React.useState<boolean>(true);
   const innerRef = React.useRef<HTMLInputElement>(null);
   React.useImperativeHandle(ref, () => innerRef.current!, []);
@@ -285,11 +286,7 @@ const EditableInput = React.forwardRef<
 
   const handleSave = () => {
     setReadOnly(true);
-    console.log(innerRef.current?.value);
-  };
-
-  const handleCancelEdit = () => {
-    setReadOnly(true);
+    onSave?.(innerRef.current?.value ?? '');
   };
 
   return (
@@ -304,7 +301,6 @@ const EditableInput = React.forwardRef<
           className={cn('w-full min-w-4 outline-none bg-transparent placeholder:text-achromatic-dark/65 dark:placeholder:text-achromatic-500 file:hidden', readOnly && 'cursor-default', !readOnly && 'cursor-auto', className)}
           placeholder={props.placeholder || 'N/A'}
           readOnly={readOnly}
-          onBlur={handleCancelEdit}
           onKeyUp={(event) => (event.key === 'Enter' && handleSave())}
         />
         {readOnly

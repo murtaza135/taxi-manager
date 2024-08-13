@@ -39,7 +39,7 @@ export function DriverDetailsSwiperItem() {
             <div className="space-y-4 flex-grow w-full xs:w-fit">
               <h2 className="text-2xl font-bold text-center xs:text-start">{capitalizeEachWord(data.name)}</h2>
               <div>
-                <EditableInput title="lol" defaultValue="hehehe" />
+                <EditableInput title="lol" defaultValue="hehehe" onSave={(value) => console.log(value)} />
               </div>
             </div>
           </div>
