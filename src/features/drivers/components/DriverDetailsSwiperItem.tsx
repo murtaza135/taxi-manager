@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import {
   Accordion,
   AccordionItem,
@@ -5,8 +6,13 @@ import {
   AccordionCollapsibleContent,
   AccordionNonCollapsibleContent,
 } from '@/ui/Accordion';
+import { useDriver } from '@/features/drivers/hooks/queries/useDriver';
 
 export function DriverDetailsSwiperItem() {
+  const { id } = useParams();
+  const { data } = useDriver(Number(id));
+  console.log(data);
+
   return (
     <Accordion type="multiple">
       <AccordionItem value="details">

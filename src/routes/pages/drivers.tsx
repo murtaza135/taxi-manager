@@ -1,7 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 import { useScrollLock } from 'usehooks-ts';
 import { DriversTable } from '@/features/drivers/components/DriversTable';
-import { GeneralErrorUI } from '@/errors/components/GeneralErrorUI';
 import {
   DataViewContainerSkeleton,
   DataViewTopBarSkeleton,
@@ -12,6 +11,7 @@ import { useDriversLayout } from '@/features/drivers/hooks/table/useDriversLayou
 import { driversInfiniteQueryOptions } from '@/features/drivers/hooks/queries/useInfiniteDrivers';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
+import { ErrorUI } from '@/errors/components/ErrorUI';
 
 const driversPageLoader = (queryClient: QueryClient) => () => {
   void queryClient.prefetchInfiniteQuery(driversInfiniteQueryOptions());
@@ -35,7 +35,7 @@ function DriversPageSuspenseBoundary() {
 
 function DriversPageErrorBoundary() {
   useDocumentTitle('Drivers');
-  return <GeneralErrorUI />;
+  return <ErrorUI />;
 }
 
 function DriversPageComponent() {

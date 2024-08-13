@@ -1,17 +1,20 @@
 import { useParams } from 'react-router-dom';
-import { QueryClient } from '@tanstack/react-query';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { DriverSwiper } from '@/features/drivers/components/DriverSwiper';
+import { driverQueryOptions } from '@/features/drivers/hooks/queries/useDriver';
+import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
+import { APIError } from '@/errors/classes/APIError';
+import { ErrorUI } from '@/errors/components/ErrorUI';
 
-const driverPageLoader = (queryClient: QueryClient) => () => {
-  // void queryClient.prefetchInfiniteQuery();
-  const temp = 0;
+const driverPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
+  const id = Number(params.id);
+  if (Number.isNaN(id)) throw new APIError({ title: 'Not Found', status: 404 });
+  void queryClient.ensureQueryData(driverQueryOptions(id));
   return null;
 };
 
 function DriverPageSuspenseBoundary() {
-  const { id } = useParams();
-  useDocumentTitle(`Driver ${id}`);
+  useDocumentTitle('');
 
   return (
     <div>DriverPageSuspenseBoundary</div>
@@ -19,12 +22,8 @@ function DriverPageSuspenseBoundary() {
 }
 
 function DriverPageErrorBoundary() {
-  const { id } = useParams();
-  useDocumentTitle(`Driver ${id}`);
-
-  return (
-    <div>DriverPageErrorBoundary</div>
-  );
+  useDocumentTitle('');
+  return <ErrorUI />;
 }
 
 function DriverPageComponent() {
