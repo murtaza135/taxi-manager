@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { IoMdCheckmark } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
-import { MdOutlineUploadFile } from 'react-icons/md';
+import { MdOutlineUploadFile, MdModeEdit } from 'react-icons/md';
 import { cn } from '@/utils/cn';
 import { Button } from '@/ui/Button';
 
@@ -265,8 +266,75 @@ const ReadOnlyInput = React.forwardRef<
 });
 ReadOnlyInput.displayName = 'ReadOnlyInput';
 
+type EditableInputProps = {
+  title?: string;
+};
+
+const EditableInput = React.forwardRef<
+  HTMLInputElement,
+  React.InputHTMLAttributes<HTMLInputElement> & EditableInputProps
+>(({ title, className, ...props }, ref) => {
+  const [readOnly, setReadOnly] = React.useState<boolean>(true);
+  const innerRef = React.useRef<HTMLInputElement>(null);
+  React.useImperativeHandle(ref, () => innerRef.current!, []);
+
+  const handleEdit = () => {
+    setReadOnly(false);
+    innerRef.current?.focus();
+  };
+
+  const handleSave = () => {
+    setReadOnly(true);
+    console.log(innerRef.current?.value);
+  };
+
+  const handleCancelEdit = () => {
+    setReadOnly(true);
+  };
+
+  return (
+    <div className="group">
+      {title && (
+        <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500">{title}</p>
+      )}
+      <div className={cn('flex justify-between items-center gap-2 border-achromatic-dark/65 dark:border-achromatic-500', !readOnly && 'border-b')}>
+        <input
+          {...props}
+          ref={innerRef}
+          className={cn('w-full min-w-4 outline-none bg-transparent placeholder:text-achromatic-dark/65 dark:placeholder:text-achromatic-500 file:hidden', readOnly && 'cursor-default', !readOnly && 'cursor-auto', className)}
+          placeholder={props.placeholder || 'N/A'}
+          readOnly={readOnly}
+          onBlur={handleCancelEdit}
+          onKeyUp={(event) => (event.key === 'Enter' && handleSave())}
+        />
+        {readOnly
+          ? (
+            <Button
+              variant="ghost"
+              className="p-0 transition-opacity opacity-0 group-hover:opacity-100"
+              onClick={handleEdit}
+            >
+              <MdModeEdit className="text-lg" />
+            </Button>
+          )
+          : (
+            <Button
+              variant="ghost"
+              className="p-0"
+              onClick={handleSave}
+            >
+              <IoMdCheckmark className="text-xl" />
+            </Button>
+          )}
+      </div>
+    </div>
+  );
+});
+EditableInput.displayName = 'EditableInput';
+
 export {
   Input,
   DebouncedInput,
   ReadOnlyInput,
+  EditableInput,
 };

@@ -10,8 +10,9 @@ import { Prettify } from '@/types/utils';
 import { supabaseStorageQueryOptions } from '@/lib/supabase/useSupabaseStorage';
 
 type DriverDataFromSupabase = Prettify<
-  Omit<Tables<'driver_view'>, 'id'> & {
+  Omit<Tables<'driver_view'>, 'id' | 'name'> & {
     id: number;
+    name: string;
   }
 >;
 
