@@ -54,3 +54,8 @@ export type Prettify<T> = {
   [K in keyof T]: T[K];
   // eslint-disable-next-line @typescript-eslint/ban-types
 } & {};
+
+/**
+ * Make all properties in an object non-nullable
+ */
+export type NonNullableObject<T> = { [P in keyof T]: NonNullable<T[P]> };

@@ -1,16 +1,18 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { useSuspenseQuery, queryOptions } from '@tanstack/react-query';
+import mapValues from 'lodash/mapValues';
 import { supabase } from '@/config/api/supabaseClient';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
-import { Prettify } from '@/types/utils';
-// import { driverPictureQueryOptions } from '@/features/drivers/hooks/queries/useDriverPicture';
+import { Prettify, NonNullableObject } from '@/types/utils';
 import { supabaseStorageQueryOptions } from '@/lib/supabase/useSupabaseStorage';
 
 type DriverDataFromSupabase = Prettify<
-  Omit<Tables<'driver_view'>, 'id' | 'name'> & {
+  Partial<NonNullableObject<
+    Omit<Tables<'driver_view'>, 'id' | 'name'>
+  >> & {
     id: number;
     name: string;
   }
@@ -46,7 +48,8 @@ async function getDriver(id: number): Promise<Driver> {
     : null;
 
   const { picture_path, ...rest } = data;
-  return { ...rest, picture_src };
+  const mappedData = mapValues(rest, (val) => val ?? undefined) as DriverDataFromSupabase;
+  return { ...mappedData, picture_src };
 }
 
 export function driverQueryOptions(id: number) {

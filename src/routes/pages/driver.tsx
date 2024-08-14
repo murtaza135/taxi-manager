@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { DriverSwiper } from '@/features/drivers/driverSwiper/DriverSwiper';
 import { driverQueryOptions } from '@/features/drivers/general/hooks/useDriver';
@@ -27,8 +26,7 @@ function DriverPageErrorBoundary() {
 }
 
 function DriverPageComponent() {
-  const { id } = useParams();
-  useDocumentTitle(`Driver ${id}`);
+  useDocumentTitle('Driver');
 
   return (
     <DriverSwiper />
