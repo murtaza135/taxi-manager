@@ -266,12 +266,6 @@ const ReadOnlyInput = React.forwardRef<
 });
 ReadOnlyInput.displayName = 'ReadOnlyInput';
 
-export type OnSaveArgs = {
-  name?: string,
-  value: string,
-  target: EventTarget;
-};
-
 type EditableInputProps = {
   title?: string;
 };
@@ -290,7 +284,6 @@ const EditableInput = React.forwardRef<
       ref={ref}
       className={cn('w-full min-w-4 outline-none bg-transparent file:hidden overflow-ellipsis overflow-hidden whitespace-nowrap cursor-auto placeholder:text-achromatic-dark/65 dark:placeholder:text-achromatic-500 read-only:cursor-default border-achromatic-dark/65 dark:border-achromatic-500 pb-1 border-b read-only:border-transparent read-only:dark:border-transparent read-only:placeholder:text-achromatic-darker read-only:dark:placeholder:text-achromatic-lighter', className)}
       placeholder={props.placeholder || 'N/A'}
-      readOnly
     />
   </div>
 ));

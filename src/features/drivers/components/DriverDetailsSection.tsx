@@ -1,14 +1,15 @@
 import { useParams } from 'react-router-dom';
 import { MdModeEdit } from 'react-icons/md';
 import { FaTrashAlt } from 'react-icons/fa';
+import { BiSave } from 'react-icons/bi';
 import { HiDotsHorizontal } from 'react-icons/hi';
 import { PiArrowUDownLeftBold } from 'react-icons/pi';
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import { useDriver } from '@/features/drivers/hooks/queries/useDriver';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
-import { EditableInput, OnSaveArgs } from '@/ui/form/Input';
+import { EditableInput } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { toDateInputString } from '@/utils/date/toDateInputString';
 import { Checkbox } from '@/ui/form/Checkbox';
@@ -18,6 +19,7 @@ export function DriverDetailsSection() {
   const { id } = useParams();
   const { data } = useDriver(Number(id));
   const inputId = useId();
+  const [isEditMode, setEditMode] = useState<boolean>(false);
   const { mutate } = useUpdateDriver();
   console.log(data);
 
@@ -56,10 +58,27 @@ export function DriverDetailsSection() {
         </label>
 
         <div className="flex gap-3 justify-center items-center w-full">
-          <Button size="sm" className="w-full flex justify-center items-center gap-1">
-            <MdModeEdit className="text-base" />
-            Edit
-          </Button>
+          {isEditMode
+            ? (
+              <Button
+                size="sm"
+                className="w-full flex justify-center items-center gap-1"
+                onClick={() => setEditMode(false)}
+              >
+                <BiSave className="text-base" />
+                <span>Save</span>
+              </Button>
+            )
+            : (
+              <Button
+                size="sm"
+                className="w-full flex justify-center items-center gap-1"
+                onClick={() => setEditMode(true)}
+              >
+                <MdModeEdit className="text-base" />
+                <span>Edit</span>
+              </Button>
+            )}
         </div>
       </div>
 
@@ -69,30 +88,35 @@ export function DriverDetailsSection() {
           type="text"
           defaultValue={capitalizeEachWord(data.name)}
           className="text-2xl font-bold flex-grow"
+          readOnly={!isEditMode}
         />
         <EditableInput
           name="phone_number"
           type="tel"
           title="Phone Number"
           defaultValue={data.phone_number ?? ''}
+          readOnly={!isEditMode}
         />
         <EditableInput
           name="email"
           type="email"
           title="Email"
           defaultValue={data.email ?? ''}
+          readOnly={!isEditMode}
         />
         <EditableInput
           name="date_of_birth"
           type="date"
           title="Date of Birth"
           defaultValue={data.date_of_birth ?? ''}
+          readOnly={!isEditMode}
         />
         <EditableInput
           name="national_insurance_number"
           type="text"
           title="National Insurance Number"
           defaultValue={data.national_insurance_number ?? ''}
+          readOnly={!isEditMode}
         />
         <div className="space-y-0.5">
           <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500">Retired</p>
@@ -106,6 +130,7 @@ export function DriverDetailsSection() {
           type="date"
           title="Creation Date"
           defaultValue={toDateInputString(new Date(data.created_at ?? ''))}
+          readOnly={!isEditMode}
         />
       </div>
     </div>
