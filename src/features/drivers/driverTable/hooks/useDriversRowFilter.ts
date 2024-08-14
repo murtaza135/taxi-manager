@@ -1,5 +1,5 @@
 import { useLocalStorage } from 'usehooks-ts';
-import { DriversRowFilterState } from '@/features/drivers/types';
+import { DriversRowFilterState } from '@/features/drivers/general/types';
 
 function rowFilterDeserializer(value: string): DriversRowFilterState {
   const val = JSON.parse(value) as unknown;

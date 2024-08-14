@@ -8,10 +8,10 @@ import {
   SwiperSelect,
   SwiperSelectItem,
 } from '@/ui/Swiper';
-import { DriverDetailsSwiperItem } from '@/features/drivers/components/DriverDetailsSwiperItem';
-import { DriverTaxisSwiperItem } from '@/features/drivers/components/DriverTaxisSwiperItem';
-import { DriverAgreementsSwiperItem } from '@/features/drivers/components/DriverAgreementsSwiperItem';
-import { DriverRentSwiperItem } from '@/features/drivers/components/DriverRentSwiperItem';
+import { DriverDetailsSwiperItem } from '@/features/drivers/driverSwiper/DriverDetailsSwiperItem';
+import { DriverTaxisSwiperItem } from '@/features/drivers/driverSwiper/DriverTaxisSwiperItem';
+import { DriverAgreementsSwiperItem } from '@/features/drivers/driverSwiper/DriverAgreementsSwiperItem';
+import { DriverRentSwiperItem } from '@/features/drivers/driverSwiper/DriverRentSwiperItem';
 
 export function DriverSwiper() {
   const breakpoint = useBreakpoint('sm');

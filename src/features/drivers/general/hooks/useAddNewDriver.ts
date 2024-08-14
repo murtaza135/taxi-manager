@@ -3,7 +3,7 @@ import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { useRevalidator } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useToast } from '@/ui/toast';
-import { AddNewDriverTransformedSchema } from '@/features/drivers/schemas';
+import { AddNewDriverTransformedSchema } from '@/features/drivers/addNewDriver/schemas';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { queryClient as globalQueryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';

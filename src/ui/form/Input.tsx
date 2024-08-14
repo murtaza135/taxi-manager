@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { IoMdCheckmark } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
-import { MdOutlineUploadFile, MdModeEdit } from 'react-icons/md';
+import { MdOutlineUploadFile } from 'react-icons/md';
 import { cn } from '@/utils/cn';
 import { Button } from '@/ui/Button';
 

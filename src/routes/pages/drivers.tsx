@@ -1,14 +1,14 @@
 import { QueryClient } from '@tanstack/react-query';
 import { useScrollLock } from 'usehooks-ts';
-import { DriversTable } from '@/features/drivers/components/DriversTable';
+import { DriversTable } from '@/features/drivers/driverTable/DriversTable';
 import {
   DataViewContainerSkeleton,
   DataViewTopBarSkeleton,
   DataViewTableSkeleton,
   DataViewGridSkeleton,
 } from '@/ui/dataview/DataView.skeleton';
-import { useDriversLayout } from '@/features/drivers/hooks/table/useDriversLayout';
-import { driversInfiniteQueryOptions } from '@/features/drivers/hooks/queries/useInfiniteDrivers';
+import { useDriversLayout } from '@/features/drivers/driverTable/hooks/useDriversLayout';
+import { driversInfiniteQueryOptions } from '@/features/drivers/general/hooks/useInfiniteDrivers';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { ErrorUI } from '@/errors/components/ErrorUI';

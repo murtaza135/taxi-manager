@@ -9,7 +9,7 @@ import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 // import { driverPictureQueryOptions } from '@/features/drivers/hooks/queries/useDriverPicture';
 import { supabaseStorageQueryOptions } from '@/lib/supabase/useSupabaseStorage';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
-import { DriversRowFilterState } from '@/features/drivers/types';
+import { DriversRowFilterState } from '@/features/drivers/general/types';
 
 const fetchSize = 50;
 

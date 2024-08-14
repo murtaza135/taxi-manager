@@ -5,7 +5,7 @@ import { BiSave } from 'react-icons/bi';
 import { HiDotsHorizontal } from 'react-icons/hi';
 import { PiArrowUDownLeftBold } from 'react-icons/pi';
 import { useId, useState } from 'react';
-import { useDriver } from '@/features/drivers/hooks/queries/useDriver';
+import { useDriver } from '@/features/drivers/general/hooks/useDriver';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
@@ -13,7 +13,7 @@ import { EditableInput } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { toDateInputString } from '@/utils/date/toDateInputString';
 import { Checkbox } from '@/ui/form/Checkbox';
-import { useUpdateDriver, UpdateDriverVariables } from '@/features/drivers/hooks/mutations/useUpdateDriver';
+import { useUpdateDriver, UpdateDriverVariables } from '@/features/drivers/general/hooks/useUpdateDriver';
 
 export function DriverDetailsSection() {
   const { id } = useParams();

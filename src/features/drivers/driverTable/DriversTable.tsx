@@ -15,16 +15,16 @@ import {
   DataViewRowFilterDropdown,
   DataViewColumnVisibilityDropdown,
 } from '@/ui/dataview/DataView';
-import { columns, mapper } from '@/features/drivers/columns';
-import { useInfiniteDrivers } from '@/features/drivers/hooks/queries/useInfiniteDrivers';
+import { columns, mapper } from '@/features/drivers/driverTable/columns';
+import { useInfiniteDrivers } from '@/features/drivers/general/hooks/useInfiniteDrivers';
 import { Button } from '@/ui/Button';
 import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 import { useSearchParam } from '@/hooks/useSearchParam';
-import { useDriversColumnVisibility } from '@/features/drivers/hooks/table/useDriversColumnVisibility';
-import { useDriversLayout } from '@/features/drivers/hooks/table/useDriversLayout';
-import { useSetDriversRetirements } from '@/features/drivers/hooks/mutations/useSetDriversRetirements';
-import { useDriversRowFilter } from '@/features/drivers/hooks/table/useDriversRowFilter';
-import { DriversRowFilterState } from '@/features/drivers/types';
+import { useDriversColumnVisibility } from '@/features/drivers/driverTable/hooks/useDriversColumnVisibility';
+import { useDriversLayout } from '@/features/drivers/driverTable/hooks/useDriversLayout';
+import { useSetDriversRetirements } from '@/features/drivers/general/hooks/useSetDriversRetirements';
+import { useDriversRowFilter } from '@/features/drivers/driverTable/hooks/useDriversRowFilter';
+import { DriversRowFilterState } from '@/features/drivers/general/types';
 
 const rowFilters: DriversRowFilterState[] = ['notRetired', 'retired'];
 

@@ -5,7 +5,7 @@ import {
   AccordionCollapsibleContent,
   AccordionNonCollapsibleContent,
 } from '@/ui/Accordion';
-import { DriverDetailsSection } from '@/features/drivers/components/DriverDetailsSection';
+import { DriverDetailsSection } from '@/features/drivers/driverDetails/DriverDetailsSection';
 
 export function DriverDetailsSwiperItem() {
   return (

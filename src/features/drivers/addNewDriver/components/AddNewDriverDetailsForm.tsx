@@ -9,7 +9,7 @@ import {
 import { Input } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
-import { addNewDriverDetailsSchema, AddNewDriverDetailsSchema } from '@/features/drivers/schemas';
+import { addNewDriverDetailsSchema, AddNewDriverDetailsSchema } from '@/features/drivers/addNewDriver/schemas';
 
 export function AddNewDriverDetailsForm() {
   const {

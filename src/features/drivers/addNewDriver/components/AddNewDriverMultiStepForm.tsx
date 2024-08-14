@@ -5,11 +5,11 @@ import {
   MultiStepFormStepper,
   MultiStepFormStepperItem,
 } from '@/ui/form/MultiStepForm';
-import { AddNewDriverDetailsForm } from '@/features/drivers/components/AddNewDriverDetailsForm';
-import { AddNewDriversLicenceForm } from '@/features/drivers/components/AddNewDriversLicenceForm';
-import { AddNewDriverTaxiBadgeForm } from '@/features/drivers/components/AddNewDriverTaxiBadgeForm';
-import { AddNewDriverFormConfirmation } from '@/features/drivers/components/AddNewDriverFormConfirmation';
-import { AddNewDriverSchema } from '@/features/drivers/schemas';
+import { AddNewDriverDetailsForm } from '@/features/drivers/addNewDriver/components/AddNewDriverDetailsForm';
+import { AddNewDriversLicenceForm } from '@/features/drivers/addNewDriver/components/AddNewDriversLicenceForm';
+import { AddNewDriverTaxiBadgeForm } from '@/features/drivers/addNewDriver/components/AddNewDriverTaxiBadgeForm';
+import { AddNewDriverFormConfirmation } from '@/features/drivers/addNewDriver/components/AddNewDriverFormConfirmation';
+import { AddNewDriverSchema } from '@/features/drivers/addNewDriver/schemas';
 
 const initialFormState: AddNewDriverSchema = {
   name: '',

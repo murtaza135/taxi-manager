@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
-import { DriverSwiper } from '@/features/drivers/components/DriverSwiper';
-import { driverQueryOptions } from '@/features/drivers/hooks/queries/useDriver';
+import { DriverSwiper } from '@/features/drivers/driverSwiper/DriverSwiper';
+import { driverQueryOptions } from '@/features/drivers/general/hooks/useDriver';
 import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
 import { APIError } from '@/errors/classes/APIError';
 import { ErrorUI } from '@/errors/components/ErrorUI';

@@ -2,11 +2,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { Button } from '@/ui/Button';
 import { Separator } from '@/ui/Separator';
-import { addNewDriverSchema, AddNewDriverSchema, addNewDriverTransformer } from '@/features/drivers/schemas';
+import { addNewDriverSchema, AddNewDriverSchema, addNewDriverTransformer } from '@/features/drivers/addNewDriver/schemas';
 import { useZodForm, FormProvider, Form, FormTitle, FormSection, FormField } from '@/ui/form/Form';
 import { ReadOnlyInput } from '@/ui/form/Input';
 import { useToast } from '@/ui/toast';
-import { useAddNewDriver } from '@/features/drivers/hooks/mutations/useAddNewDriver';
+import { useAddNewDriver } from '@/features/drivers/general/hooks/useAddNewDriver';
 
 export function AddNewDriverFormConfirmation() {
   const { toast } = useToast();
