@@ -1,8 +1,7 @@
 import { z } from 'zod';
 import isMobilePhone from 'validator/es/lib/isMobilePhone';
-import isDate from 'validator/es/lib/isDate';
 import mapValues from 'lodash/mapValues';
-import { isBefore } from 'date-fns';
+import { isBefore, isValid } from 'date-fns';
 import { MergeOverwrite } from '@/types/utils';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; // 5MB
@@ -30,7 +29,7 @@ export const addNewDriverDetailsSchema = z.object({
     .or(z.literal('')),
   date_of_birth: z
     .string()
-    .refine((val) => isDate(val), { message: 'Invalid date of birth' })
+    .refine((val) => isValid(new Date(val)), { message: 'Invalid date of birth' })
     .optional()
     .or(z.literal('')),
   picture: z
@@ -47,10 +46,10 @@ export const addNewDriversLicenceSchema = z.object({
     .min(1, 'Licence number required'),
   licence_start_date: z
     .string({ required_error: 'Start date required' })
-    .refine((val) => isDate(val), { message: 'Invalid start date' }),
+    .refine((val) => isValid(new Date(val)), { message: 'Invalid start date' }),
   licence_end_date: z
     .string({ required_error: 'End date required' })
-    .refine((val) => isDate(val), { message: 'Invalid end date' }),
+    .refine((val) => isValid(new Date(val)), { message: 'Invalid end date' }),
   licence_document: z
     .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
@@ -72,12 +71,12 @@ export const addNewDriverTaxiBadgeSchema = z.object({
     .min(1, 'Taxi badge number required'),
   badge_start_date: z
     .string()
-    .refine((val) => isDate(val), { message: 'Invalid start date' })
+    .refine((val) => isValid(new Date(val)), { message: 'Invalid start date' })
     .optional()
     .or(z.literal('')),
   badge_end_date: z
     .string({ required_error: 'End date required' })
-    .refine((val) => isDate(val), { message: 'Invalid end date' }),
+    .refine((val) => isValid(new Date(val)), { message: 'Invalid end date' }),
   badge_document: z
     .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
@@ -110,12 +109,12 @@ export const addNewDriverSchema = addNewDriverDetailsSchema
       .or(z.literal('')),
     licence_start_date: z
       .string()
-      .refine((val) => isDate(val), { message: 'Invalid start date' })
+      .refine((val) => isValid(new Date(val)), { message: 'Invalid start date' })
       .optional()
       .or(z.literal('')),
     licence_end_date: z
       .string()
-      .refine((val) => isDate(val), { message: 'Invalid end date' })
+      .refine((val) => isValid(new Date(val)), { message: 'Invalid end date' })
       .optional()
       .or(z.literal('')),
   })
@@ -127,7 +126,7 @@ export const addNewDriverSchema = addNewDriverDetailsSchema
       .or(z.literal('')),
     badge_end_date: z
       .string()
-      .refine((val) => isDate(val), { message: 'Invalid end date' })
+      .refine((val) => isValid(new Date(val)), { message: 'Invalid end date' })
       .optional()
       .or(z.literal('')),
   });
