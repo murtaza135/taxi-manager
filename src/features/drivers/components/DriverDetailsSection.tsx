@@ -69,35 +69,30 @@ export function DriverDetailsSection() {
           type="text"
           defaultValue={capitalizeEachWord(data.name)}
           className="text-2xl font-bold flex-grow"
-          onSave={handleSave}
         />
         <EditableInput
           name="phone_number"
           type="tel"
           title="Phone Number"
           defaultValue={data.phone_number ?? ''}
-          onSave={handleSave}
         />
         <EditableInput
           name="email"
           type="email"
           title="Email"
           defaultValue={data.email ?? ''}
-          onSave={handleSave}
         />
         <EditableInput
           name="date_of_birth"
           type="date"
           title="Date of Birth"
           defaultValue={data.date_of_birth ?? ''}
-          onSave={handleSave}
         />
         <EditableInput
           name="national_insurance_number"
           type="text"
           title="National Insurance Number"
           defaultValue={data.national_insurance_number ?? ''}
-          onSave={handleSave}
         />
         <div className="space-y-0.5">
           <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500">Retired</p>
@@ -111,7 +106,6 @@ export function DriverDetailsSection() {
           type="date"
           title="Creation Date"
           defaultValue={toDateInputString(new Date(data.created_at ?? ''))}
-          onSave={handleSave}
         />
       </div>
     </div>

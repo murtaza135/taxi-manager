@@ -274,65 +274,26 @@ export type OnSaveArgs = {
 
 type EditableInputProps = {
   title?: string;
-  onSave?: (value: string, name?: string) => void;
 };
 
+// TODO combine with ReadOnlyInput
 const EditableInput = React.forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement> & EditableInputProps
->(({ title, className, onSave, ...props }, ref) => {
-  const [readOnly, setReadOnly] = React.useState<boolean>(true);
-  const innerRef = React.useRef<HTMLInputElement>(null);
-  React.useImperativeHandle(ref, () => innerRef.current!, []);
-
-  const handleEdit = () => {
-    setReadOnly(false);
-    innerRef.current?.focus();
-  };
-
-  const handleSave = () => {
-    setReadOnly(true);
-    onSave?.(innerRef.current?.value ?? '', props.name);
-  };
-
-  return (
-    <div className={cn('group overflow-hidden', className)}>
-      {title && (
-        <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500">{title}</p>
-      )}
-      <div className={cn('flex justify-between items-center gap-2 overflow-hidden border-achromatic-dark/65 dark:border-achromatic-500 relative', !readOnly && 'border-b')}>
-        <input
-          {...props}
-          ref={innerRef}
-          className={cn('w-full min-w-4 pr-7 pl-0 xs:pl-0 outline-none bg-transparent file:hidden overflow-ellipsis overflow-hidden whitespace-nowrap', readOnly && 'cursor-default placeholder:text-achromatic-darker dark:placeholder:text-achromatic-lighter', !readOnly && 'cursor-auto placeholder:text-achromatic-dark/65 dark:placeholder:text-achromatic-500')}
-          placeholder={props.placeholder || 'N/A'}
-          readOnly={readOnly}
-          onKeyUp={(event) => (event.key === 'Enter' && handleSave())}
-        />
-
-        {readOnly
-          ? (
-            <Button
-              variant="ghost"
-              className="p-0 transition-opacity opacity-0 group-hover:opacity-100 absolute right-0"
-              onClick={handleEdit}
-            >
-              <MdModeEdit className="text-lg" />
-            </Button>
-          )
-          : (
-            <Button
-              variant="ghost"
-              className="p-0 hover:opacity-100 absolute right-0"
-              onClick={handleSave}
-            >
-              <IoMdCheckmark className="text-xl" />
-            </Button>
-          )}
-      </div>
-    </div>
-  );
-});
+>(({ title, className, ...props }, ref) => (
+  <div>
+    {title && (
+      <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500">{title}</p>
+    )}
+    <input
+      {...props}
+      ref={ref}
+      className={cn('w-full min-w-4 outline-none bg-transparent file:hidden overflow-ellipsis overflow-hidden whitespace-nowrap cursor-auto placeholder:text-achromatic-dark/65 dark:placeholder:text-achromatic-500 read-only:cursor-default border-achromatic-dark/65 dark:border-achromatic-500 pb-1 border-b read-only:border-transparent read-only:dark:border-transparent read-only:placeholder:text-achromatic-darker read-only:dark:placeholder:text-achromatic-lighter', className)}
+      placeholder={props.placeholder || 'N/A'}
+      readOnly
+    />
+  </div>
+));
 EditableInput.displayName = 'EditableInput';
 
 export {
