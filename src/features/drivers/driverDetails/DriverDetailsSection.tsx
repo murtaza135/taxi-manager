@@ -60,7 +60,7 @@ export function DriverDetailsSection() {
                   alt={`driver-${data.id}`}
                 />
               )}
-              <AvatarFallback className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40">
+              <AvatarFallback className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 text-2xl sm:text-3xl">
                 {extractInitials(data.name)}
               </AvatarFallback>
             </Avatar>

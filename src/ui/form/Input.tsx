@@ -279,7 +279,7 @@ const EditableInput = React.forwardRef<
     {title && (
       <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500 space-x-4 xs:space-x-6">
         <span>{title}</span>
-        {error && <span className="text-red-600 dark:text-red-500 italic text-xs">* {error}</span>}
+        {error && <span className="text-red-700 dark:text-red-500 italic text-xs">* {error}</span>}
       </p>
     )}
     <input
