@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import isMobilePhone from 'validator/es/lib/isMobilePhone';
 import { isValid } from 'date-fns';
+import mapValues from 'lodash/mapValues';
 
 export const updateDriverDetailsSchema = z.object({
   name: z
@@ -34,5 +35,12 @@ export const updateDriverDetailsSchema = z.object({
     .refine((val) => isValid(new Date(val)), { message: 'Invalid date' })
     .optional(),
 });
+
+export const updateDriverTransformer = (data: UpdateDriverDetailsSchema) => (
+  mapValues(data, (val) => {
+    if (!val) return undefined;
+    return val;
+  }) as UpdateDriverDetailsSchema
+);
 
 export type UpdateDriverDetailsSchema = z.infer<typeof updateDriverDetailsSchema>;

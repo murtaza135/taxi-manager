@@ -10,19 +10,15 @@ import { EditableInput } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { toDateInputString } from '@/utils/date/toDateInputString';
 import { Checkbox } from '@/ui/form/Checkbox';
-import { useUpdateDriver, UpdateDriverVariables } from '@/features/drivers/general/hooks/useUpdateDriver';
-import {
-  useZodForm,
-  FormProvider,
-  FormField,
-} from '@/ui/form/Form';
-
-import { updateDriverDetailsSchema } from '@/features/drivers/driverDetails/schemas';
+import { useUpdateDriver } from '@/features/drivers/general/hooks/useUpdateDriver';
+import { useZodForm, FormProvider, FormField } from '@/ui/form/Form';
+import { updateDriverTransformer, updateDriverDetailsSchema } from '@/features/drivers/driverDetails/schemas';
 import { cn } from '@/utils/cn';
 
 export function DriverDetailsSection() {
-  const { id } = useParams();
-  const { data } = useDriver(Number(id));
+  const params = useParams();
+  const id = Number(params.id);
+  const { data } = useDriver(id);
   const pictureInputId = useId();
   const isRetiredCheckboxId = useId();
   const [isEditMode, setEditMode] = useState<boolean>(false);
@@ -30,20 +26,18 @@ export function DriverDetailsSection() {
 
   const form = useZodForm({
     schema: updateDriverDetailsSchema,
-    defaultValues: data,
+    values: data,
   });
 
-  const handleSubmit = form.handleSubmit(
-    (formData) => {
-      setEditMode(false);
-      console.log('submit');
-      console.log(formData);
-      console.log(data);
-    },
-    (error) => {
-      console.log(error);
-    },
-  );
+  const handleSubmit = form.handleSubmit((formData) => {
+    setEditMode(false);
+    const transformedData = updateDriverTransformer(formData);
+    mutate({ id, ...transformedData }, {
+      onError: () => {
+        form.reset(data, { keepErrors: true });
+      },
+    });
+  });
 
   return (
     <FormProvider {...form}>
@@ -114,6 +108,7 @@ export function DriverDetailsSection() {
                 className="text-2xl font-bold flex-grow"
                 readOnly={!isEditMode}
                 {...field}
+                error={form.formState.errors[field.name]?.message}
                 value={capitalizeEachWord(field.value)}
               />
             )}
@@ -128,6 +123,7 @@ export function DriverDetailsSection() {
                 title="Phone Number"
                 readOnly={!isEditMode}
                 {...field}
+                error={form.formState.errors[field.name]?.message}
                 value={field.value ?? ''}
               />
             )}
@@ -142,6 +138,7 @@ export function DriverDetailsSection() {
                 title="Email"
                 readOnly={!isEditMode}
                 {...field}
+                error={form.formState.errors[field.name]?.message}
                 value={field.value ?? ''}
               />
             )}
@@ -157,6 +154,7 @@ export function DriverDetailsSection() {
                 onFocus={(event) => isEditMode && event.target.showPicker()}
                 readOnly={!isEditMode}
                 {...field}
+                error={form.formState.errors[field.name]?.message}
                 value={toDateInputString(new Date(field.value ?? ''))}
               />
             )}
@@ -171,6 +169,7 @@ export function DriverDetailsSection() {
                 title="National Insurance Number"
                 readOnly={!isEditMode}
                 {...field}
+                error={form.formState.errors[field.name]?.message}
                 value={field.value ?? ''}
               />
             )}
@@ -181,7 +180,12 @@ export function DriverDetailsSection() {
             name="is_retired"
             render={({ field: { value, onChange, ...rest } }) => (
               <div className={cn('space-y-0.5 pb-1 border-b border-transparent', isEditMode && 'border-achromatic-dark/65 dark:border-achromatic-500')}>
-                <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500">Retired</p>
+                <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500 space-x-4 xs:space-x-6">
+                  <span>Retired</span>
+                  {form.formState.errors[rest.name]?.message && (
+                    <span className="text-red-600 dark:text-red-500 italic text-xs">* {form.formState.errors[rest.name]?.message}</span>
+                  )}
+                </p>
                 <div className="flex items-center justify-start gap-2 translate-x-[1px]">
                   <Checkbox
                     {...rest}
@@ -208,6 +212,7 @@ export function DriverDetailsSection() {
                 title="Creation Date"
                 readOnly
                 {...field}
+                error={form.formState.errors[field.name]?.message}
                 value={toDateInputString(new Date(field.value ?? ''))}
               />
             )}

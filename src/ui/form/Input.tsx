@@ -267,16 +267,20 @@ ReadOnlyInput.displayName = 'ReadOnlyInput';
 
 type EditableInputProps = {
   title?: string;
+  error?: string;
 };
 
 // TODO combine with ReadOnlyInput
 const EditableInput = React.forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement> & EditableInputProps
->(({ title, className, ...props }, ref) => (
+>(({ title, error, className, ...props }, ref) => (
   <div>
     {title && (
-      <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500">{title}</p>
+      <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500 space-x-4 xs:space-x-6">
+        <span>{title}</span>
+        {error && <span className="text-red-600 dark:text-red-500 italic text-xs">* {error}</span>}
+      </p>
     )}
     <input
       {...props}
