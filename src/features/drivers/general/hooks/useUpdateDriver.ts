@@ -13,10 +13,11 @@ export type UpdateDriverVariables = Prettify<
     Pick<
       Tables<'driver'>,
       | 'name' | 'phone_number' | 'email' | 'date_of_birth'
-      | 'national_insurance_number' | 'is_retired'
+      | 'national_insurance_number'
     >
   > & {
     id: number;
+    is_retired: boolean;
   }
 >;
 
@@ -27,7 +28,8 @@ export async function updateDriver({ id, ...vars }: UpdateDriverVariables) {
     .from('driver')
     .update(vars)
     .eq('auth_id', session.user.id)
-    .eq('id', id);
+    .eq('id', id)
+    .select();
 
   if (error) {
     throw new SupabaseError(error, status, {

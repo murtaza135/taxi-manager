@@ -14,6 +14,7 @@ import { useUpdateDriver } from '@/features/drivers/general/hooks/useUpdateDrive
 import { useZodForm, FormProvider, FormField } from '@/ui/form/Form';
 import { updateDriverTransformer, updateDriverDetailsSchema } from '@/features/drivers/driverDetails/schemas';
 import { cn } from '@/utils/cn';
+import { PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
 
 export function DriverDetailsSection() {
   const params = useParams();
@@ -118,14 +119,29 @@ export function DriverDetailsSection() {
             control={form.control}
             name="phone_number"
             render={({ field }) => (
-              <EditableInput
-                type="text"
-                title="Phone Number"
-                readOnly={!isEditMode}
-                {...field}
-                error={form.formState.errors[field.name]?.message}
-                value={field.value ?? ''}
-              />
+              !isEditMode && field.value
+                ? (
+                  <PhoneNumberCell phone={field.value} className="w-full">
+                    <EditableInput
+                      type="text"
+                      title="Phone Number"
+                      readOnly={!isEditMode}
+                      {...field}
+                      error={form.formState.errors[field.name]?.message}
+                      value={field.value ?? ''}
+                      className="!cursor-pointer"
+                    />
+                  </PhoneNumberCell>
+                ) : (
+                  <EditableInput
+                    type="text"
+                    title="Phone Number"
+                    readOnly={!isEditMode}
+                    {...field}
+                    error={form.formState.errors[field.name]?.message}
+                    value={field.value ?? ''}
+                  />
+                )
             )}
           />
 
@@ -133,14 +149,29 @@ export function DriverDetailsSection() {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <EditableInput
-                type="email"
-                title="Email"
-                readOnly={!isEditMode}
-                {...field}
-                error={form.formState.errors[field.name]?.message}
-                value={field.value ?? ''}
-              />
+              !isEditMode && field.value
+                ? (
+                  <EmailCell email={field.value} className="w-full">
+                    <EditableInput
+                      type="email"
+                      title="Email"
+                      readOnly={!isEditMode}
+                      {...field}
+                      error={form.formState.errors[field.name]?.message}
+                      value={field.value ?? ''}
+                      className="!cursor-pointer"
+                    />
+                  </EmailCell>
+                ) : (
+                  <EditableInput
+                    type="email"
+                    title="Email"
+                    readOnly={!isEditMode}
+                    {...field}
+                    error={form.formState.errors[field.name]?.message}
+                    value={field.value ?? ''}
+                  />
+                )
             )}
           />
 

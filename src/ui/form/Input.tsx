@@ -275,7 +275,7 @@ const EditableInput = React.forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement> & EditableInputProps
 >(({ title, error, className, ...props }, ref) => (
-  <div>
+  <div className="w-full">
     {title && (
       <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500 space-x-4 xs:space-x-6">
         <span>{title}</span>

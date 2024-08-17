@@ -2,6 +2,7 @@ import { z } from 'zod';
 import isMobilePhone from 'validator/es/lib/isMobilePhone';
 import { isValid } from 'date-fns';
 import mapValues from 'lodash/mapValues';
+import { ReplaceUndefinedWithNull } from '@/types/utils';
 
 export const updateDriverDetailsSchema = z.object({
   name: z
@@ -28,8 +29,7 @@ export const updateDriverDetailsSchema = z.object({
     .optional()
     .or(z.literal('')),
   is_retired: z
-    .boolean()
-    .optional(),
+    .boolean(),
   created_at: z
     .string()
     .refine((val) => isValid(new Date(val)), { message: 'Invalid date' })
@@ -38,9 +38,9 @@ export const updateDriverDetailsSchema = z.object({
 
 export const updateDriverTransformer = (data: UpdateDriverDetailsSchema) => (
   mapValues(data, (val) => {
-    if (!val) return undefined;
+    if (val === undefined || val === null || val === '') return null;
     return val;
-  }) as UpdateDriverDetailsSchema
+  }) as ReplaceUndefinedWithNull<UpdateDriverDetailsSchema>
 );
 
 export type UpdateDriverDetailsSchema = z.infer<typeof updateDriverDetailsSchema>;

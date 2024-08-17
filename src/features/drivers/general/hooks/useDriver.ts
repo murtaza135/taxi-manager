@@ -11,10 +11,11 @@ import { supabaseStorageQueryOptions } from '@/lib/supabase/useSupabaseStorage';
 
 type DriverDataFromSupabase = Prettify<
   Partial<NonNullableObject<
-    Omit<Tables<'driver_view'>, 'id' | 'name'>
+    Omit<Tables<'driver_view'>, 'id' | 'name' | 'is_retired'>
   >> & {
     id: number;
     name: string;
+    is_retired: boolean;
   }
 >;
 
