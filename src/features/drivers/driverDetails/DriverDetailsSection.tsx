@@ -1,7 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { MdModeEdit } from 'react-icons/md';
 import { BiSave } from 'react-icons/bi';
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
+import { FaTrashAlt } from 'react-icons/fa';
 import { useDriver } from '@/features/drivers/general/hooks/useDriver';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { extractInitials } from '@/utils/string/extractInitials';
@@ -15,6 +16,8 @@ import { useZodForm, FormProvider, FormField } from '@/ui/form/Form';
 import { updateDriverTransformer, updateDriverDetailsSchema } from '@/features/drivers/driverDetails/schemas';
 import { cn } from '@/utils/cn';
 import { PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuPortal } from '@/ui/DropdownMenu';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 export function DriverDetailsSection() {
   const params = useParams();
@@ -33,6 +36,8 @@ export function DriverDetailsSection() {
   const handleSubmit = form.handleSubmit((formData) => {
     setEditMode(false);
     const transformedData = updateDriverTransformer(formData);
+
+    // TODO check if data has actually been changed (not just isDirty?) and only then mutate
     mutate({ id, ...transformedData }, {
       onError: () => {
         form.reset(data, { keepErrors: true });
@@ -47,6 +52,46 @@ export function DriverDetailsSection() {
         onSubmit={handleSubmit}
       >
         <div className="flex flex-row xs:flex-col justify-start items-start gap-4 flex-shrink-0">
+          <DropdownMenu modal={false}>
+            <DropdownMenuTrigger className="group relative outline-none">
+              <Avatar className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 relative cursor-pointer select-none after:content-[''] after:absolute after:w-full after:h-full group-hover:after:bg-achromatic-dark/50">
+                {data.picture_src && (
+                  <AvatarImage
+                    src={data.picture_src}
+                    alt={`driver-${data.id}`}
+                  />
+                )}
+                <AvatarFallback className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 text-2xl sm:text-3xl">
+                  {extractInitials(data.name)}
+                </AvatarFallback>
+              </Avatar>
+              <p className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-60 text-xl xs:text-2xl cursor-pointer">
+                <MdModeEdit />
+              </p>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent className="min-w-[125px]">
+              <DropdownMenuItem>
+                <label htmlFor={pictureInputId} className="flex justify-start items-center gap-2 cursor-pointer">
+                  <input
+                    id={pictureInputId}
+                    aria-label="picture"
+                    className="hidden"
+                    type="file"
+                  />
+                  <span className="text-lg"><MdModeEdit /></span>
+                  <span>Edit</span>
+                </label>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button variant="ghost" className="p-0 gap-2 font-normal">
+                  <span className="text-base"><FaTrashAlt /></span>
+                  <span>Delete</span>
+                </Button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <label htmlFor={pictureInputId} className="relative group">
             <input
               id={pictureInputId}
@@ -54,7 +99,7 @@ export function DriverDetailsSection() {
               className="hidden"
               type="file"
             />
-            <Avatar className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 relative cursor-pointer select-none after:content-[''] after:absolute after:w-full after:h-full group-hover:after:bg-achromatic-dark/50">
+            {/* <Avatar className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 relative cursor-pointer select-none after:content-[''] after:absolute after:w-full after:h-full group-hover:after:bg-achromatic-dark/50">
               {data.picture_src && (
                 <AvatarImage
                   src={data.picture_src}
@@ -67,7 +112,7 @@ export function DriverDetailsSection() {
             </Avatar>
             <p className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-60 text-xl xs:text-2xl cursor-pointer">
               <MdModeEdit />
-            </p>
+            </p> */}
           </label>
 
           <div className="flex gap-3 justify-center items-center w-full">
@@ -121,7 +166,7 @@ export function DriverDetailsSection() {
             render={({ field }) => (
               !isEditMode && field.value
                 ? (
-                  <PhoneNumberCell phone={field.value} className="w-full">
+                  <PhoneNumberCell phone={field.value} className="w-full [&>.icon]:pr-6">
                     <EditableInput
                       type="text"
                       title="Phone Number"
@@ -151,7 +196,7 @@ export function DriverDetailsSection() {
             render={({ field }) => (
               !isEditMode && field.value
                 ? (
-                  <EmailCell email={field.value} className="w-full">
+                  <EmailCell email={field.value} className="w-full [&>.icon]:pr-6">
                     <EditableInput
                       type="email"
                       title="Email"

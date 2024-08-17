@@ -50,7 +50,7 @@ function PhoneNumberCell({ phone, children, className }: PhoneNumberCellProps) {
       className={cn('inline-flex items-center gap-2 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
     >
       {children ?? phone}
-      <span className="absolute -right-6 pl-6 -translate-y-[1px]">
+      <span className="icon absolute -right-6 pl-6 -translate-y-[1px]">
         <FaPhone className="transition-opacity opacity-0 group-hover:opacity-100" />
       </span>
     </a>
@@ -70,7 +70,7 @@ function EmailCell({ email, children, className }: EmailCellProps) {
       className={cn('inline-flex items-center gap-2 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
     >
       {children ?? email}
-      <span className="absolute -right-6 pl-6">
+      <span className="icon absolute -right-6 pl-6">
         <MdEmail className="text-lg transition-opacity opacity-0 group-hover:opacity-100" />
       </span>
     </a>

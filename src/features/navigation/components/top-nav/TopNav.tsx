@@ -34,7 +34,7 @@ export function TopNav() {
         <IoSearchOutline className="text-xl cursor-pointer hover:opacity-75 transition-opacity" />
         <SimpleDarkmodeSwitch />
 
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger className="outline-none">
             <Avatar className="hover:opacity-65 transition-opacity">
               {src && <AvatarImage src={src} alt="user" />}
