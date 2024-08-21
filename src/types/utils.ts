@@ -64,7 +64,7 @@ export type NonNullableObject<T> = { [K in keyof T]: NonNullable<T[K]> };
  * Replace any nullables properties with undefined
  */
 export type ReplaceNullWithUndefined<T> = {
-  [K in keyof T]:
+  [K in keyof T]?:
   null extends T[K]
   ? Exclude<T[K], null> | undefined
   : T[K]

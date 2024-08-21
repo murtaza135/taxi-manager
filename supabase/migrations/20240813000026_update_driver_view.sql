@@ -17,17 +17,17 @@ create view driver_view as
     taxi.number_plate,
     drivers_licence.id as drivers_licence_id,
     drivers_licence.document_path as drivers_licence_document_path,
-    drivers_licence.licence_number,
+    drivers_licence.licence_number as drivers_licence_number,
     drivers_licence.start_date as drivers_licence_start_date,
     drivers_licence.end_date as drivers_licence_end_date,
     drivers_taxi_badge.id as drivers_taxi_badge_id,
     drivers_taxi_badge.document_path as drivers_taxi_badge_document_path,
-    drivers_taxi_badge.badge_number,
+    drivers_taxi_badge.badge_number as drivers_taxi_badge_number,
     drivers_taxi_badge.start_date as drivers_taxi_badge_start_date,
     drivers_taxi_badge.end_date as drivers_taxi_badge_end_date,
     insurance.id as insurance_id,
     insurance.document_path as insurance_document_path,
-    insurance.policy_number,
+    insurance.policy_number as insurance_policy_number,
     insurance.start_date as insurance_start_date,
     insurance.end_date as insurance_end_date
   from
@@ -69,8 +69,8 @@ create view taxi_view as
     taxi_licence.end_date as taxi_licence_end_date,
     insurance.id as insurance_id,
     insurance.document_path as insurance_document_path,
-    insurance.policy_number,
-    insurance.is_any_driver,
+    insurance.policy_number as insurance_policy_number,
+    insurance.is_any_driver as insurance_is_any_driver,
     insurance.start_date as insurance_start_date,
     insurance.end_date as insurance_end_date
   from
@@ -97,7 +97,7 @@ create view hire_agreement_view as
     driver.id as driver_id,
     driver.name AS driver_name,
     taxi.id as taxi_id,
-    taxi.number_plate
+    taxi.number_plate as taxi_number_plate
   from
     hire_agreement
     left join driver on hire_agreement.driver_id = driver.id

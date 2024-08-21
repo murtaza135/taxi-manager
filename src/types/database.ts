@@ -1217,16 +1217,17 @@ export type Database = {
       driver_view: {
         Row: {
           auth_id: string | null;
-          badge_number: string | null;
           created_at: string | null;
           date_of_birth: string | null;
           drivers_licence_document_path: string | null;
           drivers_licence_end_date: string | null;
           drivers_licence_id: number | null;
+          drivers_licence_number: string | null;
           drivers_licence_start_date: string | null;
           drivers_taxi_badge_document_path: string | null;
           drivers_taxi_badge_end_date: string | null;
           drivers_taxi_badge_id: number | null;
+          drivers_taxi_badge_number: string | null;
           drivers_taxi_badge_start_date: string | null;
           email: string | null;
           hire_agreement_id: number | null;
@@ -1234,15 +1235,14 @@ export type Database = {
           insurance_document_path: string | null;
           insurance_end_date: string | null;
           insurance_id: number | null;
+          insurance_policy_number: string | null;
           insurance_start_date: string | null;
           is_retired: boolean | null;
-          licence_number: string | null;
           name: string | null;
           national_insurance_number: string | null;
           number_plate: string | null;
           phone_number: string | null;
           picture_path: string | null;
-          policy_number: string | null;
           taxi_id: number | null;
         };
         Relationships: [
@@ -1267,11 +1267,11 @@ export type Database = {
           end_date: string | null;
           id: number | null;
           is_retired: boolean | null;
-          number_plate: string | null;
           permission_letter_document_path: string | null;
           rent_amount: number | null;
           start_date: string | null;
           taxi_id: number | null;
+          taxi_number_plate: string | null;
         };
         Relationships: [
           {
@@ -1301,8 +1301,9 @@ export type Database = {
           insurance_document_path: string | null;
           insurance_end_date: string | null;
           insurance_id: number | null;
+          insurance_is_any_driver: boolean | null;
+          insurance_policy_number: string | null;
           insurance_start_date: string | null;
-          is_any_driver: boolean | null;
           is_retired: boolean | null;
           logbook_document_path: string | null;
           make: string | null;
@@ -1311,7 +1312,6 @@ export type Database = {
           phc_licence_document_path: string | null;
           phc_number: string | null;
           picture_path: string | null;
-          policy_number: string | null;
           registration_date: string | null;
           road_tax_expiry_date: string | null;
           taxi_licence_end_date: string | null;
