@@ -58,7 +58,7 @@ export function DriversLicenceDetailsSection() {
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger className="group relative outline-none">
               {/* TODO change avatar to img */}
-              <Avatar className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 relative cursor-pointer select-none after:content-[''] after:absolute after:w-full after:h-full group-hover:after:bg-achromatic-dark/50">
+              <Avatar className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 rounded-none relative cursor-pointer select-none after:content-[''] after:absolute after:w-full after:h-full group-hover:after:bg-achromatic-dark/50">
                 {driversLicence.document_src && (
                   <AvatarImage
                     src={driversLicence.document_src}
