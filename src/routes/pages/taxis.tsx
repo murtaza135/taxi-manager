@@ -1,23 +1,50 @@
 import { QueryClient } from '@tanstack/react-query';
+import { useScrollLock } from 'usehooks-ts';
+import {
+  DataViewContainerSkeleton,
+  DataViewTopBarSkeleton,
+  DataViewTableSkeleton,
+  DataViewGridSkeleton,
+} from '@/ui/dataview/DataView.skeleton';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
+import { TaxisTable } from '@/features/taxis/taxiTable/TaxisTable';
+import { ErrorUI } from '@/errors/components/ErrorUI';
+import { useTaxisLayout } from '@/features/taxis/taxiTable/hooks/useTaxisLayout';
+import { taxisQueryOptions } from '@/features/taxis/general/hooks/useTaxis';
 
-const taxisPageLoader = (_queryClient: QueryClient) => () => null;
+const taxisPageLoader = (queryClient: QueryClient) => () => {
+  void queryClient.prefetchInfiniteQuery(taxisQueryOptions());
+  return null;
+};
 
 function TaxisPageSuspenseBoundary() {
   useDocumentTitle('Taxis');
-  return <div>TaxisPageSuspenseBoundary</div>;
+  useScrollToTop();
+  useScrollLock();
+  const [layout] = useTaxisLayout();
+
+  return (
+    <DataViewContainerSkeleton>
+      <DataViewTopBarSkeleton />
+      {layout === 'table' && <DataViewTableSkeleton />}
+      {layout === 'grid' && <DataViewGridSkeleton />}
+    </DataViewContainerSkeleton>
+  );
 }
 
 function TaxisPageErrorBoundary() {
   useDocumentTitle('Taxis');
-  return <div>TaxisPageErrorBoundary</div>;
+  return <ErrorUI />;
 }
 
 function TaxisPageComponent() {
   useDocumentTitle('Taxis');
+  useScrollToTop();
+  useScrollLock();
 
   return (
-    <div>TaxisPageComponent</div>
+    <TaxisTable />
   );
 }
 

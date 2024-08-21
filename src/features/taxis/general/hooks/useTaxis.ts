@@ -14,7 +14,7 @@ type SupabaseTaxi = Prettify<
   Partial<NonNullableObject<
     Pick<
       Tables<'taxi_view'>,
-      | 'picture_path' | 'driver_id' | 'hire_agreement_id' | 'phc_number'
+      | 'picture_path' | 'driver_id' | 'hire_agreement_id' | 'phc_number' | 'driver_name'
     >
   >> & NonNullableObject<
     Pick<
@@ -54,7 +54,7 @@ async function getTaxis(
   const { data, error, status, count } = await supabase
     .from('taxi_view')
     .select(
-      'id, number_plate, colour, is_retired, make, model, picture_path, driver_id, hire_agreement_id, phc_number',
+      'id, number_plate, colour, is_retired, make, model, picture_path, driver_id, driver_name, hire_agreement_id, phc_number',
       { count: 'estimated' },
     )
     .eq('auth_id', session.user.id)
@@ -80,10 +80,11 @@ async function getTaxis(
       const make = capitalizeEachWord(taxi.make);
       const model = capitalizeEachWord(taxi.model);
       const phc_number = taxi.phc_number?.toUpperCase();
+      const driver_name = taxi.driver_name ? capitalizeEachWord(taxi.driver_name) : undefined;
       const picture_src = await queryClient.ensureQueryData(
         taxiPictureQueryOptions({ id: taxi.id, path: taxi.picture_path }),
       );
-      return { ...taxi, number_plate, colour, make, model, phc_number, picture_src };
+      return { ...taxi, number_plate, colour, make, model, driver_name, phc_number, picture_src };
     }),
   );
 
