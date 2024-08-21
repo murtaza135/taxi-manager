@@ -6,7 +6,7 @@ import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Prettify, NonNullableObject } from '@/types/utils';
-import { driverPictureQueryOptions } from '@/features/drivers/general/hooks2/useDriverPicture';
+import { getFileFromStorage } from '@/lib/supabase/getFileFromStorage';
 
 type SupabaseDriverDetails = Prettify<
   Partial<NonNullableObject<
@@ -25,9 +25,22 @@ type SupabaseDriverDetails = Prettify<
 type DriverDetails = Prettify<
   SupabaseDriverDetails & {
     id: number;
-    picture_src?: string;
+    picture_src: string | null;
   }
 >;
+
+type PictureVariables = {
+  id: number;
+  path?: string;
+};
+
+export function driverPictureQueryOptions({ id, path }: PictureVariables) {
+  return queryOptions<string | null, void>({
+    queryKey: ['drivers', id, 'details', 'picture', path],
+    queryFn: () => getFileFromStorage(path),
+    staleTime: 1000 * 60 * 10, // 10 minutes
+  });
+}
 
 async function getDriverDetails(id: number): Promise<DriverDetails> {
   const session = await queryClient.ensureQueryData(sessionOptions());

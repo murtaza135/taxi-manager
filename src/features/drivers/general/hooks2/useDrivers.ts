@@ -6,7 +6,7 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { supabase } from '@/config/api/supabaseClient';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
-import { driverPictureQueryOptions } from '@/features/drivers/general/hooks2/useDriverPicture';
+import { driverPictureQueryOptions } from '@/features/drivers/general/hooks2/useDriverDetails';
 
 const fetchSize = 50;
 
@@ -27,7 +27,7 @@ type SupabaseDriver = Prettify<
 export type Driver = Prettify<
   SupabaseDriver & {
     id: number;
-    picture_src?: string;
+    picture_src: string | null;
   }
 >;
 
@@ -75,7 +75,7 @@ async function getDrivers(
 
   const drivers = await Promise.all(
     data.map(async (driver) => {
-      const name = capitalizeEachWord(driver.name ?? 'Unknown');
+      const name = capitalizeEachWord(driver.name);
       const number_plate = driver.number_plate?.toUpperCase();
       const picture_src = await queryClient.ensureQueryData(
         driverPictureQueryOptions({ id: driver.id, path: driver.picture_path }),
@@ -95,7 +95,11 @@ export function driversQueryOptions(options?: Variables) {
   const isRetired = options?.isRetired;
 
   return infiniteQueryOptions<
-    DriversResult, SupabaseError, InfiniteData<DriversResult, number>, QueryKey, number
+    DriversResult,
+    SupabaseError,
+    InfiniteData<DriversResult, number>,
+    QueryKey,
+    number
   >({
     queryKey: ['drivers', 'list', { search, isRetired }],
     queryFn: (context) => getDrivers({ search, isRetired }, context),
