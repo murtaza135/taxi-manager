@@ -8,7 +8,7 @@ type Options = {
   expiresIn?: number;
 };
 
-export async function getFileFromStorage(
+export async function getFile(
   path?: string,
   options?: Options,
 ): Promise<string | null> {

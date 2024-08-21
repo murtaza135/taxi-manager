@@ -6,7 +6,7 @@ import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Prettify, NonNullableObject } from '@/types/utils';
-import { getFileFromStorage } from '@/lib/supabase/getFileFromStorage';
+import { getFile } from '@/lib/supabase/getFile';
 
 type SupabaseDriverDetails = Prettify<
   Partial<NonNullableObject<
@@ -37,7 +37,7 @@ type PictureVariables = {
 export function driverPictureQueryOptions({ id, path }: PictureVariables) {
   return queryOptions<string | null, void>({
     queryKey: ['drivers', id, 'details', 'picture', path],
-    queryFn: () => getFileFromStorage(path),
+    queryFn: () => getFile(path),
     staleTime: 1000 * 60 * 10, // 10 minutes
   });
 }
