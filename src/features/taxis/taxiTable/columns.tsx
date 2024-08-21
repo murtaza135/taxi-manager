@@ -100,7 +100,7 @@ export const tableColumns: ColumnDef<Taxi>[] = [
       }
 
       return (
-        <LinkCell to={`/taxi/${row.original.driver_id}`}>
+        <LinkCell to={`/driver/${row.original.driver_id}`}>
           {row.original.driver_name}
         </LinkCell>
       );
@@ -223,7 +223,7 @@ export const gridColumns: ColumnDef<Taxi>[] = [
       }
 
       return (
-        <LinkCell to={`/taxi/${row.original.driver_id}`}>
+        <LinkCell to={`/driver/${row.original.driver_id}`}>
           {row.original.driver_name}
         </LinkCell>
       );
