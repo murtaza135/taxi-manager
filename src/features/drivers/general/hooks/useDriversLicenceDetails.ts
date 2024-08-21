@@ -33,12 +33,12 @@ type DriversLicenceDetails = Prettify<
   }
 >;
 
-type PictureVariables = {
+type DocumentVariables = {
   driver_id: number;
   path?: string;
 };
 
-export function driversLicencePictureQueryOptions({ driver_id, path }: PictureVariables) {
+export function driversLicenceDocumentQueryOptions({ driver_id, path }: DocumentVariables) {
   return queryOptions<string | null, void>({
     queryKey: ['drivers', driver_id, 'licence', 'document', path],
     queryFn: () => getFile(path),
@@ -66,7 +66,7 @@ async function getDriversLicenceDetails(driver_id: number): Promise<DriversLicen
   }
 
   const drivers_licence_document_src = await queryClient.ensureQueryData(
-    driversLicencePictureQueryOptions({ driver_id, path: data.drivers_licence_document_path }),
+    driversLicenceDocumentQueryOptions({ driver_id, path: data.drivers_licence_document_path }),
   );
 
   const mappedData = mapValues(data, (val) => val ?? undefined) as SupabaseDriversLicenceDetails;

@@ -16,8 +16,8 @@ import { compressImage } from '@/utils/compression/compressImage';
 export type Variables = Prettify<
   Partial<
     Pick<
-      Tables<'drivers_licence'>,
-      'licence_number' | 'start_date' | 'end_date'
+      Tables<'drivers_taxi_badge'>,
+      'badge_number' | 'start_date' | 'end_date'
     >
   > & {
     id: number;
@@ -26,19 +26,24 @@ export type Variables = Prettify<
   }
 >;
 
-export async function updateDriversLicenceDetails({ id, document, driver_id, ...vars }: Variables) {
+export async function updateDriversTaxiBadgeDetails({
+  id,
+  document,
+  driver_id,
+  ...vars
+}: Variables) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
 
   if (!isEmpty(vars)) {
     const { error, status } = await supabase
-      .from('drivers_licence')
+      .from('drivers_taxi_badge')
       .update(vars)
       .eq('auth_id', session.user.id)
       .eq('id', id);
 
     if (error) {
       throw new SupabaseError(error, status, {
-        globalTitle: 'Could not update drivers licence',
+        globalTitle: 'Could not update drivers taxi badge',
       });
     }
   }
@@ -48,7 +53,7 @@ export async function updateDriversLicenceDetails({ id, document, driver_id, ...
     error: documentSelectError,
     status: documentSelectStatus,
   } = await supabase
-    .from('drivers_licence')
+    .from('drivers_taxi_badge')
     .select('document_path')
     .eq('auth_id', session.user.id)
     .eq('id', id)
@@ -57,13 +62,13 @@ export async function updateDriversLicenceDetails({ id, document, driver_id, ...
 
   if (documentSelectError) {
     throw new SupabaseError(documentSelectError, documentSelectStatus, {
-      globalTitle: 'Could not update drivers licence',
+      globalTitle: 'Could not update drivers taxi badge',
     });
   }
 
   if (document && !documentSelectData.document_path) {
     /* add document */
-    const document_path = `${session.user.id}/drivers-licences/${uuidv4()}`;
+    const document_path = `${session.user.id}/taxi-badges/${uuidv4()}`;
     const compressedDocument = await compressImage(
       document,
       { maxWidth: 150, maxHeight: 150 },
@@ -76,19 +81,19 @@ export async function updateDriversLicenceDetails({ id, document, driver_id, ...
 
     if (documentError) {
       throw new SupabaseError(documentError, null, {
-        globalTitle: 'Could not update drivers licence',
+        globalTitle: 'Could not update drivers taxi badge',
       });
     }
 
     const { error: documentPathError, status: documentPathStatus } = await supabase
-      .from('drivers_licence')
+      .from('drivers_taxi_badge')
       .update({ document_path })
       .eq('auth_id', session.user.id)
       .eq('id', id);
 
     if (documentPathError) {
       throw new SupabaseError(documentPathError, documentPathStatus, {
-        globalTitle: 'Could not update drivers licence',
+        globalTitle: 'Could not update drivers taxi badge',
       });
     }
   } else if (document && documentSelectData.document_path) {
@@ -105,7 +110,7 @@ export async function updateDriversLicenceDetails({ id, document, driver_id, ...
 
     if (documentError) {
       throw new SupabaseError(documentError, null, {
-        globalTitle: 'Could not update drivers licence',
+        globalTitle: 'Could not update drivers taxi badge',
       });
     }
   } else if (document === null && documentSelectData.document_path) {
@@ -117,36 +122,36 @@ export async function updateDriversLicenceDetails({ id, document, driver_id, ...
 
     if (documentError) {
       throw new SupabaseError(documentError, null, {
-        globalTitle: 'Could not update drivers licence',
+        globalTitle: 'Could not update drivers taxi badge',
       });
     }
 
     const { error: documentPathError, status: documentPathStatus } = await supabase
-      .from('drivers_licence')
+      .from('drivers_taxi_badge')
       .update({ document_path: null })
       .eq('auth_id', session.user.id)
       .eq('id', id);
 
     if (documentPathError) {
       throw new SupabaseError(documentPathError, documentPathStatus, {
-        globalTitle: 'Could not update drivers licence',
+        globalTitle: 'Could not update drivers taxi badge',
       });
     }
   }
 }
 
-export function useUpdateDriversLicenceDetails() {
+export function useUpdateDriversTaxiBadgeDetails() {
   const queryClient = useQueryClient();
   const { revalidate } = useRevalidator();
   const { toast } = useToast();
 
   const mutation = useMutation<void, SupabaseError, Variables>({
-    mutationFn: updateDriversLicenceDetails,
+    mutationFn: updateDriversTaxiBadgeDetails,
     onSuccess: async (_data, { driver_id, document }) => {
       if (document !== undefined) {
-        queryClient.removeQueries({ queryKey: ['drivers', driver_id, 'licence', 'document'] });
+        queryClient.removeQueries({ queryKey: ['drivers', driver_id, 'taxiBadge', 'document'] });
       }
-      await queryClient.invalidateQueries({ queryKey: ['drivers', driver_id, 'licence'], exact: true });
+      await queryClient.invalidateQueries({ queryKey: ['drivers', driver_id, 'taxiBadge'], exact: true });
       revalidate();
     },
     onError: (error) => {
