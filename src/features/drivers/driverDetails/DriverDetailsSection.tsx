@@ -3,46 +3,36 @@ import { MdModeEdit } from 'react-icons/md';
 import { BiSave } from 'react-icons/bi';
 import { useId, useState } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
-import { useQueryClient } from '@tanstack/react-query';
 import { useDriverDetails } from '@/features/drivers/general/hooks2/useDriverDetails';
-import { useDriverPicture } from '@/features/drivers/general/hooks/useDriverPicture';
-import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
+import { Avatar, AvatarPersistentFallback, AvatarImage } from '@/ui/Avatar';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { EditableInput } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { toDateInputString } from '@/utils/date/toDateInputString';
 import { Checkbox } from '@/ui/form/Checkbox';
-import { useUpdateDriver } from '@/features/drivers/general/hooks/useUpdateDriver';
+import { useUpdateDriverDetails } from '@/features/drivers/general/hooks2/useUpdateDriverDetails';
 import { useZodForm, FormProvider, FormField } from '@/ui/form/Form';
 import { updateDriverTransformer, updateDriverDetailsSchema } from '@/features/drivers/driverDetails/schemas';
 import { cn } from '@/utils/cn';
 import { PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuPortal } from '@/ui/DropdownMenu';
-import { useReplaceSupabaseStorage } from '@/lib/supabase/useReplaceSupabaseStorage';
-// import { useSupabaseStorage } from '@/lib/supabase/useSupabaseStorage';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/ui/DropdownMenu';
 
 export function DriverDetailsSection() {
-  const queryClient = useQueryClient();
   const params = useParams();
   const id = Number(params.id);
   const { data } = useDriverDetails(id);
-  // const { data: picture } = useDriverPicture(id);
   const pictureInputId = useId();
   const isRetiredCheckboxId = useId();
   const [isEditMode, setEditMode] = useState<boolean>(false);
-  const { mutate: updateDriver } = useUpdateDriver();
-  const { mutate: replaceSupabaseStorage } = useReplaceSupabaseStorage();
-  // console.log(data.picture_path);
-  // const { data: datapic } = useSupabaseStorage(data.picture_path);
-  // console.log(datapic);
+  const { mutate: updateDriver } = useUpdateDriverDetails();
 
   const form = useZodForm({
     schema: updateDriverDetailsSchema,
     values: data,
   });
 
-  const handleSubmit = form.handleSubmit((formData) => {
+  const handleSubmitUpdate = form.handleSubmit((formData) => {
     setEditMode(false);
     const transformedData = updateDriverTransformer(formData);
 
@@ -57,38 +47,20 @@ export function DriverDetailsSection() {
   const handleEditPicture: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     const picture = event.target.files?.[0];
     updateDriver({ id, picture });
-    // if (picture) {
-    //   if (!data.picture_path) {
-    //     // create
-    //   } else {
-    //     replaceSupabaseStorage({ path: data.picture_path, file: picture }, {
-    //       // onSuccess: async () => {
-    //       //   await Promise.all([
-    //       //     queryClient.invalidateQueries({ queryKey: ['drivers', 'list'] }),
-    //       //     queryClient.invalidateQueries({ queryKey: ['drivers', id] }),
-    //       //   ]);
-    //       // },
-    //     });
-    //   }
-    // }
+  };
+
+  const handleDeletePicture: React.MouseEventHandler<HTMLButtonElement> = () => {
+    updateDriver({ id, picture: null });
   };
 
   return (
     <FormProvider {...form}>
       <form
         className="flex justify-start items-start gap-8 xs:gap-10 sm:gap-14 flex-col xs:flex-row py-3 px-2"
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmitUpdate}
       >
         <div className="flex flex-row xs:flex-col justify-start items-start gap-4 flex-shrink-0">
           <DropdownMenu modal={false}>
-            <input
-              id={pictureInputId}
-              aria-label="picture"
-              className="hidden"
-              type="file"
-              onChange={handleEditPicture}
-            />
-
             <DropdownMenuTrigger className="group relative outline-none">
               <Avatar className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 relative cursor-pointer select-none after:content-[''] after:absolute after:w-full after:h-full group-hover:after:bg-achromatic-dark/50">
                 {data.picture_src && (
@@ -97,14 +69,22 @@ export function DriverDetailsSection() {
                     alt={`driver-${data.id}`}
                   />
                 )}
-                <AvatarFallback className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 text-2xl sm:text-3xl">
+                <AvatarPersistentFallback className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 text-2xl sm:text-3xl">
                   {extractInitials(data.name)}
-                </AvatarFallback>
+                </AvatarPersistentFallback>
               </Avatar>
               <p className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-60 text-xl xs:text-2xl cursor-pointer">
                 <MdModeEdit />
               </p>
             </DropdownMenuTrigger>
+
+            <input
+              id={pictureInputId}
+              aria-label="picture"
+              className="hidden"
+              type="file"
+              onChange={handleEditPicture}
+            />
 
             <DropdownMenuContent className="min-w-[125px]">
               <DropdownMenuItem>
@@ -114,7 +94,11 @@ export function DriverDetailsSection() {
                 </label>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Button variant="ghost" className="p-0 gap-2 font-normal">
+                <Button
+                  variant="ghost"
+                  className="p-0 gap-2 font-normal"
+                  onClick={handleDeletePicture}
+                >
                   <span className="text-base"><FaTrashAlt /></span>
                   <span>Delete</span>
                 </Button>
@@ -129,20 +113,6 @@ export function DriverDetailsSection() {
               className="hidden"
               type="file"
             />
-            {/* <Avatar className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 relative cursor-pointer select-none after:content-[''] after:absolute after:w-full after:h-full group-hover:after:bg-achromatic-dark/50">
-              {data.picture_src && (
-                <AvatarImage
-                  src={data.picture_src}
-                  alt={`driver-${data.id}`}
-                />
-              )}
-              <AvatarFallback className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 text-2xl sm:text-3xl">
-                {extractInitials(data.name)}
-              </AvatarFallback>
-            </Avatar>
-            <p className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-60 text-xl xs:text-2xl cursor-pointer">
-              <MdModeEdit />
-            </p> */}
           </label>
 
           <div className="flex gap-3 justify-center items-center w-full">
