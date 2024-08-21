@@ -1,6 +1,6 @@
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { DriverSwiper } from '@/features/drivers/driverSwiper/DriverSwiper';
-import { driverQueryOptions } from '@/features/drivers/general/hooks/useDriver';
+import { driverDetailsQueryOptions } from '@/features/drivers/general/hooks2/useDriverDetails';
 import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
 import { APIError } from '@/errors/classes/APIError';
 import { ErrorUI } from '@/errors/components/ErrorUI';
@@ -8,7 +8,7 @@ import { ErrorUI } from '@/errors/components/ErrorUI';
 const driverPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
   const id = Number(params.id);
   if (Number.isNaN(id)) throw new APIError({ title: 'Not Found', status: 404 });
-  void queryClient.ensureQueryData(driverQueryOptions(id));
+  void queryClient.ensureQueryData(driverDetailsQueryOptions(id));
   return null;
 };
 

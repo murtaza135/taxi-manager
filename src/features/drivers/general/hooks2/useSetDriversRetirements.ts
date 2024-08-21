@@ -6,6 +6,8 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
 
+// TODO combine with useUpdateDriverDetails
+
 export type SetDriversRetirementsVariables = {
   ids: number[];
   isRetired: boolean;

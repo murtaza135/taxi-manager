@@ -22,7 +22,7 @@ import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 import { useSearchParam } from '@/hooks/useSearchParam';
 import { useDriversColumnVisibility } from '@/features/drivers/driverTable/hooks/useDriversColumnVisibility';
 import { useDriversLayout } from '@/features/drivers/driverTable/hooks/useDriversLayout';
-import { useSetDriversRetirements } from '@/features/drivers/general/hooks/useSetDriversRetirements';
+import { useSetDriversRetirements } from '@/features/drivers/general/hooks2/useSetDriversRetirements';
 import { useDriversRowFilter } from '@/features/drivers/driverTable/hooks/useDriversRowFilter';
 import { DriversRowFilterState } from '@/features/drivers/general/types';
 
