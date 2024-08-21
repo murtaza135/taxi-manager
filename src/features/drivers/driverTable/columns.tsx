@@ -15,13 +15,13 @@ import {
 import { DataViewCheckbox, DataViewCardMainDataMapper } from '@/ui/dataview/DataView';
 import { Avatar, AvatarImage, AvatarPersistentFallback } from '@/ui/Avatar';
 import { Button } from '@/ui/Button';
-import { Driver } from '@/features/drivers/general/hooks2/useDrivers';
+import { Driver } from '@/features/drivers/general/hooks/useDrivers';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { cn } from '@/utils/cn';
 import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
 import { useReactTableContext } from '@/lib/tanstack-table/ReactTable';
 import { DriversRowFilterState } from '@/features/drivers/general/types';
-import { useUpdateDriverDetails } from '@/features/drivers/general/hooks2/useUpdateDriverDetails';
+import { useUpdateDriverDetails } from '@/features/drivers/general/hooks/useUpdateDriverDetails';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<Driver>[] = [

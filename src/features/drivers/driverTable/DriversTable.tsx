@@ -16,13 +16,13 @@ import {
   DataViewColumnVisibilityDropdown,
 } from '@/ui/dataview/DataView';
 import { columns, mapper } from '@/features/drivers/driverTable/columns';
-import { useDrivers } from '@/features/drivers/general/hooks2/useDrivers';
+import { useDrivers } from '@/features/drivers/general/hooks/useDrivers';
 import { Button } from '@/ui/Button';
 import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 import { useSearchParam } from '@/hooks/useSearchParam';
 import { useDriversColumnVisibility } from '@/features/drivers/driverTable/hooks/useDriversColumnVisibility';
 import { useDriversLayout } from '@/features/drivers/driverTable/hooks/useDriversLayout';
-import { useSetDriversRetirements } from '@/features/drivers/general/hooks2/useSetDriversRetirements';
+import { useSetDriversRetirements } from '@/features/drivers/general/hooks/useSetDriversRetirements';
 import { useDriversRowFilter } from '@/features/drivers/driverTable/hooks/useDriversRowFilter';
 import { DriversRowFilterState } from '@/features/drivers/general/types';
 

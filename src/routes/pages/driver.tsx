@@ -1,6 +1,6 @@
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { DriverSwiper } from '@/features/drivers/driverSwiper/DriverSwiper';
-import { driverDetailsQueryOptions } from '@/features/drivers/general/hooks2/useDriverDetails';
+import { driverDetailsQueryOptions } from '@/features/drivers/general/hooks/useDriverDetails';
 import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
 import { APIError } from '@/errors/classes/APIError';
 import { ErrorUI } from '@/errors/components/ErrorUI';

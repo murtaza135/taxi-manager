@@ -6,7 +6,7 @@ import { addNewDriverSchema, AddNewDriverSchema, addNewDriverTransformer } from 
 import { useZodForm, FormProvider, Form, FormTitle, FormSection, FormField } from '@/ui/form/Form';
 import { ReadOnlyInput } from '@/ui/form/Input';
 import { useToast } from '@/ui/toast';
-import { useAddNewDriver } from '@/features/drivers/general/hooks2/useAddNewDriver';
+import { useAddNewDriver } from '@/features/drivers/general/hooks/useAddNewDriver';
 
 export function AddNewDriverFormConfirmation() {
   const { toast } = useToast();

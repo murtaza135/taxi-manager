@@ -8,7 +8,7 @@ import {
   DataViewGridSkeleton,
 } from '@/ui/dataview/DataView.skeleton';
 import { useDriversLayout } from '@/features/drivers/driverTable/hooks/useDriversLayout';
-import { driversQueryOptions } from '@/features/drivers/general/hooks2/useDrivers';
+import { driversQueryOptions } from '@/features/drivers/general/hooks/useDrivers';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { ErrorUI } from '@/errors/components/ErrorUI';
