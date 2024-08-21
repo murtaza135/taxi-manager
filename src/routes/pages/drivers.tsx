@@ -8,13 +8,13 @@ import {
   DataViewGridSkeleton,
 } from '@/ui/dataview/DataView.skeleton';
 import { useDriversLayout } from '@/features/drivers/driverTable/hooks/useDriversLayout';
-import { driversInfiniteQueryOptions } from '@/features/drivers/general/hooks/useInfiniteDrivers';
+import { driversQueryOptions } from '@/features/drivers/general/hooks/useDrivers';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { ErrorUI } from '@/errors/components/ErrorUI';
 
 const driversPageLoader = (queryClient: QueryClient) => () => {
-  void queryClient.prefetchInfiniteQuery(driversInfiniteQueryOptions());
+  void queryClient.prefetchInfiniteQuery(driversQueryOptions());
   return null;
 };
 

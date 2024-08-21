@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { useSuspenseQuery, queryOptions } from '@tanstack/react-query';
 import mapValues from 'lodash/mapValues';
 import { supabase } from '@/config/api/supabaseClient';
@@ -7,20 +6,15 @@ import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Prettify, NonNullableObject } from '@/types/utils';
-import { supabaseStorageQueryOptions } from '@/lib/supabase/useSupabaseStorage';
+import { driverPictureQueryOptions } from '@/features/drivers/general/hooks/useDriverPicture';
 
-type DriverDataFromSupabase = Prettify<
+type Driver = Prettify<
   Partial<NonNullableObject<
     Omit<Tables<'driver_view'>, 'id' | 'name' | 'is_retired'>
   >> & {
     id: number;
     name: string;
     is_retired: boolean;
-  }
->;
-
-export type Driver = Prettify<
-  Omit<DriverDataFromSupabase, 'picture_path'> & {
     picture_src: string | null;
   }
 >;
@@ -33,7 +27,7 @@ async function getDriver(id: number): Promise<Driver> {
     .select('*')
     .eq('id', id)
     .eq('auth_id', session.user.id)
-    .returns<DriverDataFromSupabase[]>()
+    .returns<Driver[]>()
     .limit(1)
     .single();
 
@@ -44,12 +38,11 @@ async function getDriver(id: number): Promise<Driver> {
     });
   }
 
-  const picture_src = data.picture_path
-    ? await queryClient.ensureQueryData(supabaseStorageQueryOptions(data.picture_path))
-    : null;
+  const picture_src = await queryClient.ensureQueryData(
+    driverPictureQueryOptions({ id, path: data.picture_path }),
+  );
 
-  const { picture_path, ...rest } = data;
-  const mappedData = mapValues(rest, (val) => val ?? undefined) as DriverDataFromSupabase;
+  const mappedData = mapValues(data, (val) => val ?? undefined) as Driver;
   return { ...mappedData, picture_src };
 }
 

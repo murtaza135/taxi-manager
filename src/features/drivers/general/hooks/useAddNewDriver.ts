@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { useRevalidator } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';

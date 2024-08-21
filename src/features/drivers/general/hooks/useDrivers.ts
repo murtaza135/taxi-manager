@@ -1,37 +1,29 @@
 import { keepPreviousData, infiniteQueryOptions, QueryKey, useSuspenseInfiniteQuery, InfiniteData } from '@tanstack/react-query';
-import { Prettify } from '@/types/utils';
+import { Prettify, NonNullableObject } from '@/types/utils';
 import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { supabase } from '@/config/api/supabaseClient';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
-import { supabaseStorageQueryOptions } from '@/lib/supabase/useSupabaseStorage';
+// import { supabaseStorageQueryOptions } from '@/lib/supabase/useSupabaseStorage';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { DriversRowFilterState } from '@/features/drivers/general/types';
+import { driverPictureQueryOptions } from '@/features/drivers/general/hooks/useDriverPicture';
 
 const fetchSize = 50;
 
-type DriverDataFromSupabase = {
-  id: number;
-  name: string | null;
-  phone_number: string | null;
-  email: string | null;
-  picture_path: string | null;
-  taxi_id: number | null;
-  number_plate: string | null;
-  hire_agreement_id: number | null;
-  created_at: string | null;
-};
-
 export type Driver = Prettify<
-  Pick<
-    Tables<'driver_view'>,
-    | 'phone_number' | 'email'
-    | 'taxi_id' | 'number_plate'
-    | 'hire_agreement_id' | 'created_at'
-  > & {
+  Partial<NonNullableObject<
+    Pick<
+      Tables<'driver_view'>,
+      | 'phone_number' | 'email' | 'picture_path'
+      | 'taxi_id' | 'number_plate'
+      | 'hire_agreement_id' | 'created_at'
+    >
+  >> & {
     id: number;
     name: string;
+    is_retired: boolean;
     picture_src: string | null;
   }
 >;
@@ -50,6 +42,7 @@ type DriversQueryFnOptions = DriversInfiniteQueryOptions & {
   pageParam: number;
 };
 
+// TODO create 2 arguments: options and context (QueryFunctionContext)
 async function getDrivers({
   search = '',
   rowFilter = 'notRetired',
@@ -64,7 +57,7 @@ async function getDrivers({
   const { data, error, status, count } = await supabase
     .from('driver_view')
     .select(
-      'id, name, phone_number, email, picture_path, taxi_id, number_plate, hire_agreement_id, created_at',
+      'id, name, phone_number, email, picture_path, taxi_id, number_plate, is_retired, hire_agreement_id, created_at',
       { count: 'estimated' },
     )
     .eq('auth_id', session.user.id)
@@ -72,7 +65,7 @@ async function getDrivers({
     .order('created_at', { ascending: false })
     .or(`name.ilike.%${search}%, email.ilike.%${search}%, number_plate.ilike.%${search}%`)
     .range(from, to)
-    .returns<DriverDataFromSupabase[]>();
+    .returns<Driver[]>();
 
   if (status === 404) return { data: [], count: 0 };
 
@@ -83,14 +76,14 @@ async function getDrivers({
   }
 
   const drivers = await Promise.all(
-    data.map(async ({ name, number_plate, picture_path, ...rest }) => ({
-      ...rest,
-      name: capitalizeEachWord(name ?? 'Unknown'),
-      number_plate: number_plate?.toUpperCase() ?? null,
-      picture_src: picture_path
-        ? await queryClient.ensureQueryData(supabaseStorageQueryOptions(picture_path))
-        : null,
-    })),
+    data.map(async (driver) => {
+      const name = capitalizeEachWord(driver.name ?? 'Unknown');
+      const number_plate = driver.number_plate?.toUpperCase();
+      const picture_src = await queryClient.ensureQueryData(
+        driverPictureQueryOptions({ id: driver.id, path: driver.picture_path }),
+      );
+      return { ...driver, name, number_plate, picture_src };
+    }),
   );
 
   return {
@@ -99,7 +92,7 @@ async function getDrivers({
   };
 }
 
-export function driversInfiniteQueryOptions(options?: DriversInfiniteQueryOptions) {
+export function driversQueryOptions(options?: DriversInfiniteQueryOptions) {
   const { search, rowFilter } = options ?? { search: '', rowFilter: 'notRetired' };
 
   return infiniteQueryOptions<
@@ -115,7 +108,7 @@ export function driversInfiniteQueryOptions(options?: DriversInfiniteQueryOption
   });
 }
 
-export function useInfiniteDrivers(options?: DriversInfiniteQueryOptions) {
-  const query = useSuspenseInfiniteQuery(driversInfiniteQueryOptions(options));
+export function useDrivers(options?: DriversInfiniteQueryOptions) {
+  const query = useSuspenseInfiniteQuery(driversQueryOptions(options));
   return query;
 }

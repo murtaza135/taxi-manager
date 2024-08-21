@@ -4,14 +4,14 @@ import { companyOptions } from '@/features/auth/hooks/useCompany';
 import { queryClient } from '@/config/api/queryClient';
 
 async function getCompanyLogo(): Promise<string | null> {
-  const { logo_path: logoPath } = await queryClient.ensureQueryData(companyOptions());
-  if (!logoPath) return null;
+  const { logo_path } = await queryClient.ensureQueryData(companyOptions());
+  if (!logo_path) return null;
 
   const { data } = await supabase
     .storage
     .from('main')
     .createSignedUrl(
-      logoPath,
+      logo_path,
       10 * 60, // 10 minutes
       { download: true },
     );

@@ -38,6 +38,9 @@ module.exports = {
       'ImportDeclaration': { 'multiline': true, 'minProperties': 8 },
       'ExportDeclaration': { 'multiline': true, 'minProperties': 8 }
     }],
+    "jsx-a11y/label-has-associated-control": [2, {
+      "assert": "either",
+    }],
     'react/jsx-props-no-spreading': "off",
     'react/require-default-props': "off",
     "react/prop-types": "off",
@@ -48,6 +51,36 @@ module.exports = {
     "@typescript-eslint/indent": "off",
     "indent": "off",
     "no-void": ["error", { "allowAsStatement": true }],
+    // TODO configure properly
+    "@typescript-eslint/naming-convention": [
+      "off",
+      {
+        selector: 'default',
+        format: ['camelCase', 'PascalCase', 'UPPER_CASE', 'snake_case'],
+        leadingUnderscore: 'allow',
+        trailingUnderscore: 'allow',
+      },
+      {
+        selector: 'import',
+        format: ['camelCase', 'PascalCase'],
+      },
+      {
+        selector: 'variable',
+        format: ['camelCase', 'PascalCase', 'UPPER_CASE', 'snake_case'],
+        leadingUnderscore: 'allow',
+        trailingUnderscore: 'allow',
+      },
+      {
+        selector: 'typeProperty',
+        format: null,
+        leadingUnderscore: 'allow',
+        trailingUnderscore: 'allow',
+      },
+      {
+        selector: 'typeLike',
+        format: ['PascalCase'],
+      },
+    ]
   },
   settings: {
     "import/resolver": {
