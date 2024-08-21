@@ -147,7 +147,7 @@ export function useUpdateDriverDetails() {
         queryClient.removeQueries({ queryKey: ['drivers', id, 'details', 'picture'] });
       }
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['drivers', 'list'], exact: true }),
+        queryClient.invalidateQueries({ queryKey: ['drivers', 'list'] }),
         queryClient.invalidateQueries({ queryKey: ['drivers', id, 'details'], exact: true }),
       ]);
       revalidate();

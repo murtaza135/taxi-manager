@@ -19,9 +19,9 @@ import { Driver } from '@/features/drivers/general/hooks2/useDrivers';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { cn } from '@/utils/cn';
 import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
-import { useSetDriverRetirement } from '@/features/drivers/general/hooks/useSetDriverRetirement';
 import { useReactTableContext } from '@/lib/tanstack-table/ReactTable';
 import { DriversRowFilterState } from '@/features/drivers/general/types';
+import { useUpdateDriverDetails } from '@/features/drivers/general/hooks2/useUpdateDriverDetails';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<Driver>[] = [
@@ -117,10 +117,10 @@ export const tableColumns: ColumnDef<Driver>[] = [
     cell: function ActionsCell({ row }) {
       const table = useReactTableContext();
       const rowFilter = table.options.meta?.rowFilter as DriversRowFilterState | undefined;
-      const { mutateAsync: setDriverRetirement } = useSetDriverRetirement();
+      const { mutateAsync: update } = useUpdateDriverDetails();
 
-      const handleSetDriverRetirement = async (isRetired: boolean) => {
-        await setDriverRetirement({ id: row.original.id, isRetired });
+      const handleSetDriverRetirement = async (is_retired: boolean) => {
+        await update({ id: row.original.id, is_retired });
         table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
       };
 
@@ -230,10 +230,10 @@ export const gridColumns: ColumnDef<Driver>[] = [
     cell: function ActionsCell({ row }) {
       const table = useReactTableContext();
       const rowFilter = table.options.meta?.rowFilter as DriversRowFilterState | undefined;
-      const { mutateAsync: setDriverRetirement } = useSetDriverRetirement();
+      const { mutateAsync: update } = useUpdateDriverDetails();
 
-      const handleSetDriverRetirement = async (isRetired: boolean) => {
-        await setDriverRetirement({ id: row.original.id, isRetired });
+      const handleSetDriverRetirement = async (is_retired: boolean) => {
+        await update({ id: row.original.id, is_retired });
         table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
       };
 
