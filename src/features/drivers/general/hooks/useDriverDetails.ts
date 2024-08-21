@@ -57,7 +57,7 @@ async function getDriverDetails(id: number): Promise<DriverDetails> {
   if (error) {
     throw new SupabaseError(error, status, {
       globalTitle: 'Could not fetch driver',
-      titles: { notFound: `Driver ${id} does not exist` },
+      titles: { notFound: 'Driver does not exist' },
     });
   }
 

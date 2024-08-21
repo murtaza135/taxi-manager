@@ -63,7 +63,7 @@ async function getDriversTaxiBadgeDetails(driver_id: number): Promise<DriversTax
   if (error) {
     throw new SupabaseError(error, status, {
       globalTitle: 'Could not fetch driver',
-      titles: { notFound: `Driver ${driver_id} does not exist` },
+      titles: { notFound: 'Driver does not exist' },
     });
   }
 

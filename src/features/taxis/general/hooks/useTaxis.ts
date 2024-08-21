@@ -6,34 +6,32 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { supabase } from '@/config/api/supabaseClient';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
-import { driverPictureQueryOptions } from '@/features/drivers/general/hooks/useDriverDetails';
+import { taxiPictureQueryOptions } from '@/features/taxis/general/hooks/useTaxiDetails';
 
 const fetchSize = 50;
 
-// TODO cleanup types merge SupabaseDriver and Driver types together
-type SupabaseDriver = Prettify<
+type SupabaseTaxi = Prettify<
   Partial<NonNullableObject<
     Pick<
-      Tables<'driver_view'>,
-      | 'phone_number' | 'email' | 'picture_path'
-      | 'taxi_id' | 'number_plate'
-      | 'hire_agreement_id' | 'created_at'
+      Tables<'taxi_view'>,
+      | 'picture_path' | 'driver_id' | 'hire_agreement_id' | 'phc_number'
     >
-  >> & {
-    name: string;
-    is_retired: boolean;
-  }
+  >> & NonNullableObject<
+    Pick<
+      Tables<'taxi_view'>,
+      | 'id' | 'number_plate' | 'colour' | 'is_retired' | 'make' | 'model'
+    >
+  >
 >;
 
-export type Driver = Prettify<
-  SupabaseDriver & {
-    id: number;
+export type Taxi = Prettify<
+  SupabaseTaxi & {
     picture_src: string | null;
   }
 >;
 
-type DriversResult = {
-  data: Driver[];
+type TaxiResult = {
+  data: Taxi[];
   count: number;
 };
 
@@ -44,66 +42,70 @@ type Variables = {
 
 type Context = QueryFunctionContext<QueryKey, number>;
 
-async function getDrivers(
+async function getTaxis(
   { search = '', isRetired = false }: Variables,
   { pageParam }: Context,
-): Promise<DriversResult> {
+): Promise<TaxiResult> {
   const session = await queryClient.ensureQueryData(sessionOptions());
 
   const from = fetchSize * pageParam;
   const to = from + fetchSize - 1;
 
   const { data, error, status, count } = await supabase
-    .from('driver_view')
+    .from('taxi_view')
     .select(
-      'id, name, phone_number, email, picture_path, taxi_id, number_plate, is_retired, hire_agreement_id, created_at',
+      'id, number_plate, colour, is_retired, make, model, picture_path, driver_id, hire_agreement_id, phc_number',
       { count: 'estimated' },
     )
     .eq('auth_id', session.user.id)
     .eq('is_retired', isRetired)
     .order('created_at', { ascending: false })
-    .or(`name.ilike.%${search}%, email.ilike.%${search}%, number_plate.ilike.%${search}%`)
+    // eslint-disable-next-line max-len
+    .or(`number_plate.ilike.%${search}%, make.ilike.%${search}%, model.ilike.%${search}%,  phc_number.ilike.%${search}%`)
     .range(from, to)
-    .returns<Driver[]>();
+    .returns<SupabaseTaxi[]>();
 
   if (status === 404) return { data: [], count: 0 };
 
   if (error) {
     throw new SupabaseError(error, status, {
-      globalTitle: 'Could not fetch drivers',
+      globalTitle: 'Could not fetch taxis',
     });
   }
 
-  const drivers = await Promise.all(
-    data.map(async (driver) => {
-      const name = capitalizeEachWord(driver.name);
-      const number_plate = driver.number_plate?.toUpperCase();
+  const taxis = await Promise.all(
+    data.map(async (taxi) => {
+      const number_plate = taxi.number_plate.toUpperCase();
+      const colour = capitalizeEachWord(taxi.colour);
+      const make = capitalizeEachWord(taxi.make);
+      const model = capitalizeEachWord(taxi.model);
+      const phc_number = taxi.phc_number?.toUpperCase();
       const picture_src = await queryClient.ensureQueryData(
-        driverPictureQueryOptions({ id: driver.id, path: driver.picture_path }),
+        taxiPictureQueryOptions({ id: taxi.id, path: taxi.picture_path }),
       );
-      return { ...driver, name, number_plate, picture_src };
+      return { ...taxi, number_plate, colour, make, model, phc_number, picture_src };
     }),
   );
 
   return {
-    data: drivers,
+    data: taxis,
     count: count ?? 0,
   };
 }
 
-export function driversQueryOptions(options?: Variables) {
+export function taxisQueryOptions(options?: Variables) {
   const search = options?.search;
   const isRetired = options?.isRetired;
 
   return infiniteQueryOptions<
-    DriversResult,
+    TaxiResult,
     SupabaseError,
-    InfiniteData<DriversResult, number>,
+    InfiniteData<TaxiResult, number>,
     QueryKey,
     number
   >({
-    queryKey: ['drivers', 'list', { search, isRetired }],
-    queryFn: (context) => getDrivers({ search, isRetired }, context),
+    queryKey: ['taxis', 'list', { search, isRetired }],
+    queryFn: (context) => getTaxis({ search, isRetired }, context),
     staleTime: 1000 * 60, // 60 seconds,
     initialPageParam: 0,
     getNextPageParam: (_lastGroup, groups) => groups.length,
@@ -112,7 +114,7 @@ export function driversQueryOptions(options?: Variables) {
   });
 }
 
-export function useDrivers(options?: Variables) {
-  const query = useSuspenseInfiniteQuery(driversQueryOptions(options));
+export function useTaxis(options?: Variables) {
+  const query = useSuspenseInfiniteQuery(taxisQueryOptions(options));
   return query;
 }

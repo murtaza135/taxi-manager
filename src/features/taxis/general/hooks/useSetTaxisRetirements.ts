@@ -6,24 +6,24 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
 
-// TODO combine with useUpdateDriverDetails
+// TODO combine with useUpdateTaxiDetails
 
-export type SetDriversRetirementsVariables = {
+export type SetTaxisRetirementsVariables = {
   ids: number[];
   isRetired: boolean;
 };
 
-export async function setDriversRetirements({
+export async function setTaxisRetirements({
   ids,
   isRetired,
-}: SetDriversRetirementsVariables) {
+}: SetTaxisRetirementsVariables) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
 
   // TODO replace with sql function for bulk update? https://github.com/supabase/postgrest-js/issues/174#issuecomment-819919742
   const responses = await Promise.all(
     ids.map((id) => (
       supabase
-        .from('driver')
+        .from('taxi')
         .update({ is_retired: isRetired })
         .eq('auth_id', session.user.id)
         .eq('id', id)
@@ -36,26 +36,26 @@ export async function setDriversRetirements({
     const { error, status } = responseWithError;
     throw new SupabaseError(error, status, {
       globalTitle: isRetired
-        ? 'Could not retire some drivers'
-        : 'Could not recover some drivers',
+        ? 'Could not retire some taxis'
+        : 'Could not recover some taxis',
     });
   }
 }
 
-export function useSetDriversRetirements() {
+export function useSetTaxisRetirements() {
   const queryClient = useQueryClient();
   const { revalidate } = useRevalidator();
   const { toast } = useToast();
 
-  const mutation = useMutation<void, SupabaseError, SetDriversRetirementsVariables>({
-    mutationFn: setDriversRetirements,
+  const mutation = useMutation<void, SupabaseError, SetTaxisRetirementsVariables>({
+    mutationFn: setTaxisRetirements,
     onSuccess: async (_data, { ids }) => {
       const queryInvalidations = ids.map((id) => (
-        queryClient.invalidateQueries({ queryKey: ['drivers', id, 'details'], exact: true })
+        queryClient.invalidateQueries({ queryKey: ['taxis', id, 'details'], exact: true })
       ));
 
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['drivers', 'list'] }),
+        queryClient.invalidateQueries({ queryKey: ['taxis', 'list'] }),
         ...queryInvalidations,
       ]);
 
