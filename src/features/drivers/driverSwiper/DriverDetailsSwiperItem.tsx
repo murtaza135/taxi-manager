@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import {
   Accordion,
   AccordionItem,
@@ -6,6 +7,8 @@ import {
 } from '@/ui/Accordion';
 import { Separator } from '@/ui/Separator';
 import { DriverDetailsSection } from '@/features/drivers/driverDetails/DriverDetailsSection';
+import { DriversLicenceDetailsSection } from '@/features/drivers/driverDetails/DriversLicenceDetailsSection';
+import { Spinner } from '@/ui/Spinner';
 
 export function DriverDetailsSwiperItem() {
   return (
@@ -20,16 +23,18 @@ export function DriverDetailsSwiperItem() {
 
       <AccordionItem value="driversLicence">
         <AccordionTrigger>Drivers Licence</AccordionTrigger>
-        <AccordionCollapsibleContent>
-          <Separator className="bg-achromatic-light dark:bg-achromatic-darker" />
-          Drivers Licence
+        <AccordionCollapsibleContent className="min-h-48 flex flex-col">
+          <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
+          <Suspense fallback={<Spinner />}>
+            <DriversLicenceDetailsSection />
+          </Suspense>
         </AccordionCollapsibleContent>
       </AccordionItem>
 
       <AccordionItem value="taxiBadge">
         <AccordionTrigger>Taxi Badge</AccordionTrigger>
         <AccordionCollapsibleContent>
-          <Separator className="bg-achromatic-light dark:bg-achromatic-darker" />
+          <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
           Taxi Badge
         </AccordionCollapsibleContent>
       </AccordionItem>

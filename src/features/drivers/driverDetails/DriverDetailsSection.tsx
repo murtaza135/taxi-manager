@@ -106,15 +106,6 @@ export function DriverDetailsSection() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <label htmlFor={pictureInputId} className="relative group">
-            <input
-              id={pictureInputId}
-              aria-label="picture"
-              className="hidden"
-              type="file"
-            />
-          </label>
-
           <div className="flex gap-3 justify-center items-center w-full">
             {isEditMode
               ? (

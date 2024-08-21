@@ -17,16 +17,16 @@ export type Variables = Prettify<
   Partial<
     Pick<
       Tables<'drivers_licence'>,
-      | 'licence_number' | 'start_date'
-      | 'end_date' | 'document_path'
+      'licence_number' | 'start_date' | 'end_date'
     >
   > & {
     id: number;
+    driver_id: number;
     document?: File | null | undefined;
   }
 >;
 
-export async function updateDriverDetails({ id, document, ...vars }: Variables) {
+export async function updateDriverDetails({ id, document, driver_id, ...vars }: Variables) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
 
   if (!isEmpty(vars)) {
@@ -142,11 +142,11 @@ export function useUpdateDriversLicenceDetails() {
 
   const mutation = useMutation<void, SupabaseError, Variables>({
     mutationFn: updateDriverDetails,
-    onSuccess: async (_data, { id, document }) => {
+    onSuccess: async (_data, { driver_id, document }) => {
       if (document !== undefined) {
-        queryClient.removeQueries({ queryKey: ['drivers', id, 'licence', 'document'] });
+        queryClient.removeQueries({ queryKey: ['drivers', driver_id, 'licence', 'document'] });
       }
-      await queryClient.invalidateQueries({ queryKey: ['drivers', id, 'licence'], exact: true });
+      await queryClient.invalidateQueries({ queryKey: ['drivers', driver_id, 'licence'], exact: true });
       revalidate();
     },
     onError: (error) => {

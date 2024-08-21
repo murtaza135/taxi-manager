@@ -15,9 +15,9 @@ type SupabaseDriversLicenceDetails = Prettify<
       | 'drivers_licence_id' | 'drivers_licence_number'
       | 'drivers_licence_start_date' | 'drivers_licence_end_date'
     >
-  > & ReplaceNullWithUndefined<
+  > & Partial<NonNullableObject<
     Pick<Tables<'driver_view'>, 'drivers_licence_document_path'>
-  >
+  >>
 >;
 
 type DriversLicenceDetails = Prettify<
@@ -28,30 +28,31 @@ type DriversLicenceDetails = Prettify<
       | 'end_date' | 'document_path'
     >
   > & {
+    driver_id: number;
     document_src: string | null;
   }
 >;
 
 type PictureVariables = {
-  id: number;
+  driver_id: number;
   path?: string;
 };
 
-export function driversLicencePictureQueryOptions({ id, path }: PictureVariables) {
+export function driversLicencePictureQueryOptions({ driver_id, path }: PictureVariables) {
   return queryOptions<string | null, void>({
-    queryKey: ['drivers', id, 'licence', 'document', path],
+    queryKey: ['drivers', driver_id, 'licence', 'document', path],
     queryFn: () => getFile(path),
     staleTime: 1000 * 60 * 10, // 10 minutes
   });
 }
 
-async function getDriversLicenceDetails(id: number): Promise<DriversLicenceDetails> {
+async function getDriversLicenceDetails(driver_id: number): Promise<DriversLicenceDetails> {
   const session = await queryClient.ensureQueryData(sessionOptions());
 
   const { data, error, status } = await supabase
     .from('driver_view')
     .select('drivers_licence_id, drivers_licence_number, drivers_licence_start_date, drivers_licence_end_date, drivers_licence_document_path')
-    .eq('id', id)
+    .eq('id', driver_id)
     .eq('auth_id', session.user.id)
     .returns<SupabaseDriversLicenceDetails[]>()
     .limit(1)
@@ -60,12 +61,12 @@ async function getDriversLicenceDetails(id: number): Promise<DriversLicenceDetai
   if (error) {
     throw new SupabaseError(error, status, {
       globalTitle: 'Could not fetch driver',
-      titles: { notFound: `Driver ${id} does not exist` },
+      titles: { notFound: `Driver ${driver_id} does not exist` },
     });
   }
 
   const drivers_licence_document_src = await queryClient.ensureQueryData(
-    driversLicencePictureQueryOptions({ id, path: data.drivers_licence_document_path }),
+    driversLicencePictureQueryOptions({ driver_id, path: data.drivers_licence_document_path }),
   );
 
   const mappedData = mapValues(data, (val) => val ?? undefined) as SupabaseDriversLicenceDetails;
@@ -77,17 +78,18 @@ async function getDriversLicenceDetails(id: number): Promise<DriversLicenceDetai
     end_date: mappedData.drivers_licence_end_date,
     document_path: mappedData.drivers_licence_document_path,
     document_src: drivers_licence_document_src,
+    driver_id,
   };
 }
 
-export function driversLicenceDetailsQueryOptions(id: number) {
+export function driversLicenceDetailsQueryOptions(driver_id: number) {
   return queryOptions<DriversLicenceDetails, SupabaseError>({
-    queryKey: ['drivers', id, 'licence'],
-    queryFn: () => getDriversLicenceDetails(id),
+    queryKey: ['drivers', driver_id, 'licence'],
+    queryFn: () => getDriversLicenceDetails(driver_id),
   });
 }
 
-export function useDriversLicenceDetails(id: number) {
-  const query = useSuspenseQuery(driversLicenceDetailsQueryOptions(id));
+export function useDriversLicenceDetails(driver_id: number) {
+  const query = useSuspenseQuery(driversLicenceDetailsQueryOptions(driver_id));
   return query;
 }

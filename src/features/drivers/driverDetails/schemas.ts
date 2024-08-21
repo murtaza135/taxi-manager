@@ -43,4 +43,24 @@ export const updateDriverTransformer = (data: UpdateDriverDetailsSchema) => (
   }) as ReplaceUndefinedWithNull<UpdateDriverDetailsSchema>
 );
 
+export const updateDriversLicenceDetailsSchema = z.object({
+  licence_number: z
+    .string({ required_error: 'Licence number required' })
+    .min(1, 'Licence number required'),
+  start_date: z
+    .string({ required_error: 'Start date required' })
+    .refine((val) => isValid(new Date(val)), { message: 'Invalid start date' }),
+  end_date: z
+    .string({ required_error: 'End date required' })
+    .refine((val) => isValid(new Date(val)), { message: 'Invalid end date' }),
+});
+
+export const updateDriversLicenceTransformer = (data: UpdateDriversLicenceDetailsSchema) => (
+  mapValues(data, (val) => {
+    if (val === undefined || val === null || val === '') return null;
+    return val;
+  }) as ReplaceUndefinedWithNull<UpdateDriversLicenceDetailsSchema>
+);
+
 export type UpdateDriverDetailsSchema = z.infer<typeof updateDriverDetailsSchema>;
+export type UpdateDriversLicenceDetailsSchema = z.infer<typeof updateDriversLicenceDetailsSchema>;
