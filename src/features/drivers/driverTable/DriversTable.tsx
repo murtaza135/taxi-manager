@@ -16,7 +16,7 @@ import {
   DataViewColumnVisibilityDropdown,
 } from '@/ui/dataview/DataView';
 import { columns, mapper } from '@/features/drivers/driverTable/columns';
-import { useDrivers } from '@/features/drivers/general/hooks/useDrivers';
+import { useDrivers } from '@/features/drivers/general/hooks2/useDrivers';
 import { Button } from '@/ui/Button';
 import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 import { useSearchParam } from '@/hooks/useSearchParam';
@@ -48,7 +48,7 @@ export function DriversTable() {
     fetchNextPage,
     isFetchingNextPage,
     refetch,
-  } = useDrivers({ search: globalFilter, rowFilter });
+  } = useDrivers({ search: globalFilter, isRetired: rowFilter !== 'notRetired' });
 
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.data) ?? [],

@@ -4,7 +4,7 @@ import { BiSave } from 'react-icons/bi';
 import { useId, useState } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
 import { useQueryClient } from '@tanstack/react-query';
-import { useDriver } from '@/features/drivers/general/hooks/useDriver';
+import { useDriverDetails } from '@/features/drivers/general/hooks2/useDriverDetails';
 import { useDriverPicture } from '@/features/drivers/general/hooks/useDriverPicture';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { extractInitials } from '@/utils/string/extractInitials';
@@ -26,7 +26,7 @@ export function DriverDetailsSection() {
   const queryClient = useQueryClient();
   const params = useParams();
   const id = Number(params.id);
-  const { data } = useDriver(id);
+  const { data } = useDriverDetails(id);
   // const { data: picture } = useDriverPicture(id);
   const pictureInputId = useId();
   const isRetiredCheckboxId = useId();
