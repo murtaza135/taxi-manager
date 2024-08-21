@@ -963,54 +963,63 @@ export type Database = {
           active_insurance_id: number | null;
           active_taxi_licence_id: number | null;
           auth_id: string;
+          cc: number | null;
           chassis_number: string;
           colour: string;
           created_at: string;
           expected_expiry_date: string | null;
+          fuel_type: string | null;
           id: number;
           is_retired: boolean;
           logbook_document_path: string | null;
+          make: string;
+          model: string;
           number_plate: string;
           picture_path: string | null;
           registration_date: string | null;
           road_tax_expiry_date: string | null;
-          vehicle_id: number;
         };
         Insert: {
           active_hire_agreement_id?: number | null;
           active_insurance_id?: number | null;
           active_taxi_licence_id?: number | null;
           auth_id?: string;
+          cc?: number | null;
           chassis_number: string;
           colour: string;
           created_at?: string;
           expected_expiry_date?: string | null;
+          fuel_type?: string | null;
           id?: number;
           is_retired?: boolean;
           logbook_document_path?: string | null;
+          make: string;
+          model: string;
           number_plate: string;
           picture_path?: string | null;
           registration_date?: string | null;
           road_tax_expiry_date?: string | null;
-          vehicle_id: number;
         };
         Update: {
           active_hire_agreement_id?: number | null;
           active_insurance_id?: number | null;
           active_taxi_licence_id?: number | null;
           auth_id?: string;
+          cc?: number | null;
           chassis_number?: string;
           colour?: string;
           created_at?: string;
           expected_expiry_date?: string | null;
+          fuel_type?: string | null;
           id?: number;
           is_retired?: boolean;
           logbook_document_path?: string | null;
+          make?: string;
+          model?: string;
           number_plate?: string;
           picture_path?: string | null;
           registration_date?: string | null;
           road_tax_expiry_date?: string | null;
-          vehicle_id?: number;
         };
         Relationships: [
           {
@@ -1081,20 +1090,6 @@ export type Database = {
             columns: ["auth_id"];
             isOneToOne: false;
             referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "taxi_vehicle_id_fkey";
-            columns: ["vehicle_id"];
-            isOneToOne: false;
-            referencedRelation: "taxi_view";
-            referencedColumns: ["vehicle_id"];
-          },
-          {
-            foreignKeyName: "taxi_vehicle_id_fkey";
-            columns: ["vehicle_id"];
-            isOneToOne: false;
-            referencedRelation: "vehicle";
             referencedColumns: ["id"];
           },
         ];
@@ -1170,44 +1165,6 @@ export type Database = {
             columns: ["taxi_id"];
             isOneToOne: false;
             referencedRelation: "taxi_view";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      vehicle: {
-        Row: {
-          auth_id: string;
-          cc: number | null;
-          created_at: string;
-          fuel_type: string | null;
-          id: number;
-          make: string;
-          model: string;
-        };
-        Insert: {
-          auth_id?: string;
-          cc?: number | null;
-          created_at?: string;
-          fuel_type?: string | null;
-          id?: number;
-          make: string;
-          model: string;
-        };
-        Update: {
-          auth_id?: string;
-          cc?: number | null;
-          created_at?: string;
-          fuel_type?: string | null;
-          id?: number;
-          make?: string;
-          model?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "vehiclee_auth_id_fkey";
-            columns: ["auth_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
             referencedColumns: ["id"];
           },
         ];
@@ -1317,7 +1274,6 @@ export type Database = {
           taxi_licence_end_date: string | null;
           taxi_licence_id: number | null;
           taxi_licence_start_date: string | null;
-          vehicle_id: number | null;
         };
         Relationships: [
           {

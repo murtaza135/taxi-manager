@@ -231,25 +231,17 @@ INSERT INTO "public"."insurance" ("id", "auth_id", "taxi_id", "driver_id", "docu
 
 
 --
--- Data for Name: vehicle; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO "public"."vehicle" ("id", "auth_id", "make", "model", "cc", "fuel_type", "created_at") VALUES
-	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'hyundai', 'ioniq', 1580, 'petrol', '2024-05-15 17:08:41.639389+00');
-
-
---
 -- Data for Name: taxi; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."taxi" ("id", "auth_id", "picture_path", "logbook_document_path", "number_plate", "colour", "chassis_number", "registration_date", "expected_expiry_date", "road_tax_expiry_date", "is_retired", "created_at", "vehicle_id", "active_hire_agreement_id", "active_insurance_id", "active_taxi_licence_id") VALUES
-	(2, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, NULL, 'ab20abc', 'asdasd', 'dasdas', NULL, NULL, NULL, false, '2024-05-15 17:10:38.413034+00', 1, 2, 2, 3),
-	(5, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, NULL, 'ab50abc', 'dasdas', 'dasdas', '2024-05-01', '2024-11-15', '2024-05-31', false, '2024-05-15 17:13:37.13274+00', 1, 5, 6, 7),
-	(7, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-7.png', NULL, 'ab70abc', 'dasd', 'adsasd', NULL, NULL, '2024-06-06', false, '2024-05-15 17:14:27.956617+00', 1, NULL, 8, 9),
-	(6, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-6.png', 'ab60abc', 'dasd', 'dasdas', NULL, '2024-05-30', '2024-06-01', false, '2024-05-15 17:14:01.451865+00', 1, 7, 7, 8),
-	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-1.png', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-1.png', 'ab10abc', 'adasd', 'sadasdasd', '2024-03-06', '2025-03-13', NULL, false, '2024-05-15 17:10:21.095292+00', 1, 1, 1, 1),
-	(3, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-3.png', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-3.png', 'ab30abc', 'dasdasd', 'dasdasd', '2024-02-14', '2024-09-05', '2024-11-14', false, '2024-05-15 17:11:33.226274+00', 1, 3, 4, 4),
-	(4, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-4.png', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-4.png', 'ab40abc', 'adsasd', 'asdasd', NULL, '2024-05-08', '2024-05-09', false, '2024-05-15 17:13:14.795828+00', 1, 4, 5, 5);
+INSERT INTO "public"."taxi" ("id", "auth_id", "picture_path", "logbook_document_path", "number_plate", "colour", "chassis_number", "registration_date", "expected_expiry_date", "road_tax_expiry_date", "is_retired", "created_at", "active_hire_agreement_id", "active_insurance_id", "active_taxi_licence_id", "make", "model", "cc", "fuel_type") VALUES
+	(2, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, NULL, 'ab20abc', 'asdasd', 'dasdas', NULL, NULL, NULL, false, '2024-05-15 17:10:38.413034+00', 2, 2, 3, 'hyundai', 'ioniq', 1580, 'petrol'),
+	(5, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, NULL, 'ab50abc', 'dasdas', 'dasdas', '2024-05-01', '2024-11-15', '2024-05-31', false, '2024-05-15 17:13:37.13274+00', 5, 6, 7, 'hyundai', 'ioniq', 1580, 'petrol'),
+	(7, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-7.png', NULL, 'ab70abc', 'dasd', 'adsasd', NULL, NULL, '2024-06-06', false, '2024-05-15 17:14:27.956617+00', NULL, 8, 9, 'hyundai', 'ioniq', 1580, 'petrol'),
+	(6, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', NULL, 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-6.png', 'ab60abc', 'dasd', 'dasdas', NULL, '2024-05-30', '2024-06-01', false, '2024-05-15 17:14:01.451865+00', 7, 7, 8, 'hyundai', 'ioniq', 1580, 'petrol'),
+	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-1.png', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-1.png', 'ab10abc', 'adasd', 'sadasdasd', '2024-03-06', '2025-03-13', NULL, false, '2024-05-15 17:10:21.095292+00', 1, 1, 1, 'hyundai', 'ioniq', 1580, 'petrol'),
+	(3, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-3.png', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-3.png', 'ab30abc', 'dasdasd', 'dasdasd', '2024-02-14', '2024-09-05', '2024-11-14', false, '2024-05-15 17:11:33.226274+00', 3, 4, 4, 'hyundai', 'ioniq', 1580, 'petrol'),
+	(4, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-pictures/taxi-4.png', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logbooks/logbook-4.png', 'ab40abc', 'adsasd', 'asdasd', NULL, '2024-05-08', '2024-05-09', false, '2024-05-15 17:13:14.795828+00', 4, 5, 5, 'hyundai', 'ioniq', 1580, 'petrol');
 
 
 --
@@ -654,13 +646,6 @@ SELECT pg_catalog.setval('"public"."taxi_id_seq"', 7, true);
 --
 
 SELECT pg_catalog.setval('"public"."taxi_licence_id_seq"', 9, true);
-
-
---
--- Name: vehicle_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."vehicle_id_seq"', 1, true);
 
 
 --
