@@ -17,6 +17,7 @@ const loginPageOptions = () => import('@/routes/pages/login');
 const rentPageOptions = () => import('@/routes/pages/rent');
 const settingsPageOptions = () => import('@/routes/pages/settings');
 const taxiPageOptions = () => import('@/routes/pages/taxi');
+const addNewTaxiPageOptions = () => import('@/routes/pages/addNewTaxi');
 const taxisPageOptions = () => import('@/routes/pages/taxis');
 
 const rootProps = createRouteOptions(rootOptions, queryClient);
@@ -33,6 +34,7 @@ const loginPageProps = createRouteOptions(loginPageOptions, queryClient);
 const rentPageProps = createRouteOptions(rentPageOptions, queryClient);
 const settingsPageProps = createRouteOptions(settingsPageOptions, queryClient);
 const taxiPageProps = createRouteOptions(taxiPageOptions, queryClient);
+const addNewTaxiPageProps = createRouteOptions(addNewTaxiPageOptions, queryClient);
 const taxisPageProps = createRouteOptions(taxisPageOptions, queryClient);
 
 const routes = createRoutesFromElements(
@@ -52,6 +54,7 @@ const routes = createRoutesFromElements(
       <Route path="/settings" lazy={settingsPageProps} />
       <Route path="/taxi/:id" lazy={taxiPageProps} />
       <Route path="/taxis" lazy={taxisPageProps} />
+      <Route path="/taxis/add" lazy={addNewTaxiPageProps} />
     </Route>
   </Route>,
 );
