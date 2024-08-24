@@ -1316,7 +1316,7 @@ export type Database = {
           registration_date?: string;
           expected_expiry_date?: string;
           road_tax_expiry_date?: string;
-          cc?: string;
+          cc?: number;
           fuel_type?: string;
           picture_path?: string;
           logbook_document_path?: string;

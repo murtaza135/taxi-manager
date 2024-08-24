@@ -43,7 +43,7 @@ export const addNewTaxiDetailsSchema = z.object({
     .coerce
     .number()
     .optional()
-    .or(z.literal(0)),
+    .or(z.literal(Number.NaN)),
   fuel_type: z
     .string()
     .min(1, 'Invalid fuel type')
@@ -182,6 +182,7 @@ export const addNewTaxiSchema = addNewTaxiDetailsSchema
 export const addNewTaxiTransformer = (data: AddNewTaxiSchema) => (
   mapValues(data, (val) => {
     if (!val) return undefined;
+    if (Number.isNaN(val)) return undefined;
     if (val instanceof FileList) return val[0] as File | undefined;
     return val;
   }) as AddNewTaxiTransformedSchema

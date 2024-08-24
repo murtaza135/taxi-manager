@@ -7,7 +7,7 @@ CREATE FUNCTION add_new_taxi (
   registration_date date default null,
   expected_expiry_date date default null,
   road_tax_expiry_date date default null,
-  cc text default null,
+  cc smallint default null,
   fuel_type text default null,
   picture_path text default null,
   logbook_document_path text default null,

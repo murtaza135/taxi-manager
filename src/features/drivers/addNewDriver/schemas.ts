@@ -32,6 +32,7 @@ export const addNewDriverDetailsSchema = z.object({
     .refine((val) => isValid(new Date(val)), { message: 'Invalid date of birth' })
     .optional()
     .or(z.literal('')),
+  // TODO convert to picture_path (i.e. make consistent with other schemas)
   picture: z
     .instanceof(FileList, { message: 'Allowed file types: images' })
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images' })
