@@ -76,7 +76,7 @@ export function AddNewTaxiLicenceDetailsForm() {
           control={form.control}
           name="taxi_licence_start_date"
           render={({ field }) => (
-            <FormGroup label="* Start Date">
+            <FormGroup label="Start Date">
               <Input
                 placeholder="Start Date"
                 type="date"
