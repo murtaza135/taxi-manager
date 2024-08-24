@@ -131,6 +131,7 @@ export const addNewDriverSchema = addNewDriverDetailsSchema
       .or(z.literal('')),
   });
 
+// convert nullish values to undefined and FileList objects to File objects
 export const addNewDriverTransformer = (data: AddNewDriverSchema) => (
   mapValues(data, (val) => {
     if (!val) return undefined;
@@ -144,6 +145,7 @@ export type AddNewDriversLicenceSchema = z.infer<typeof addNewDriversLicenceSche
 export type AddNewDriverTaxiBadgeSchema = z.infer<typeof addNewDriverTaxiBadgeSchema>;
 export type AddNewDriverSchema = z.infer<typeof addNewDriverSchema>;
 
+// convert FileList objects to File Objects
 export type AddNewDriverTransformedSchema = MergeOverwrite<AddNewDriverSchema, {
   picture?: File | undefined;
   licence_document?: File | undefined;
