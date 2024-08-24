@@ -46,7 +46,7 @@ export function AddNewTaxiDetailsForm() {
           name="number_plate"
           render={({ field }) => (
             <FormGroup label="* Number Plate">
-              <Input placeholder="Number Plate" className="[&>input]:uppercase" {...field} />
+              <Input placeholder="Number Plate" className="[&>input]:uppercase [&>input]:placeholder:normal-case" {...field} />
             </FormGroup>
           )}
         />
