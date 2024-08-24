@@ -1306,6 +1306,34 @@ export type Database = {
         };
         Returns: number;
       };
+      add_new_taxi: {
+        Args: {
+          number_plate: string;
+          make: string;
+          model: string;
+          colour: string;
+          chassis_number: string;
+          registration_date?: string;
+          expected_expiry_date?: string;
+          road_tax_expiry_date?: string;
+          cc?: string;
+          fuel_type?: string;
+          picture_path?: string;
+          logbook_document_path?: string;
+          compliance_certificate_licence_number?: string;
+          phc_number?: string;
+          taxi_licence_start_date?: string;
+          taxi_licence_end_date?: string;
+          compliance_certificate_document_path?: string;
+          phc_licence_document_path?: string;
+          policy_number?: string;
+          is_any_driver?: boolean;
+          insurance_start_date?: string;
+          insurance_end_date?: string;
+          insurance_document_path?: string;
+        };
+        Returns: number;
+      };
     };
     Enums: {
       [_ in never]: never

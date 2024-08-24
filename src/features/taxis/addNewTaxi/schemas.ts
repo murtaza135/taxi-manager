@@ -49,13 +49,13 @@ export const addNewTaxiDetailsSchema = z.object({
     .min(1, 'Invalid fuel type')
     .optional()
     .or(z.literal('')),
-  picture: z
+  picture_path: z
     .instanceof(FileList, { message: 'Allowed file types: images' })
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images' })
     .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
     .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_IMAGE_MIME_TYPE), 'Allowed file types: images')
     .optional(),
-  logbook: z
+  logbook_document_path: z
     .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
     .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
@@ -66,8 +66,7 @@ export const addNewTaxiDetailsSchema = z.object({
 export const addNewTaxiLicenceDetailsSchema = z.object({
   compliance_certificate_licence_number: z
     .string({ required_error: 'Licence number required' })
-    .min(1, 'Licence number required')
-    .transform((val) => val.replace(/\s/g, '')),
+    .min(1, 'Licence number required'),
   phc_number: z
     .string({ required_error: 'PHC number required' })
     .min(1, 'PHC number required'),
@@ -195,8 +194,8 @@ export type AddNewTaxiSchema = z.infer<typeof addNewTaxiSchema>;
 
 // convert FileList objects to File Objects
 export type AddNewTaxiTransformedSchema = MergeOverwrite<AddNewTaxiSchema, {
-  picture?: File | undefined;
-  logbook?: File | undefined;
+  picture_path?: File | undefined;
+  logbook_document_path?: File | undefined;
   compliance_certificate_document_path?: File | undefined;
   phc_licence_document_path?: File | undefined;
   insurance_document_path?: File | undefined;
