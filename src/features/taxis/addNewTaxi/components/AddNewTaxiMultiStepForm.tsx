@@ -20,7 +20,7 @@ const initialFormState: AddNewTaxiSchema = {
   registration_date: '',
   expected_expiry_date: '',
   road_tax_expiry_date: '',
-  cc: Number.NaN,
+  cc: 0,
   fuel_type: '',
   picture_path: undefined,
   logbook_document_path: undefined,

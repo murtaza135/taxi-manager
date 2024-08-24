@@ -11,6 +11,7 @@ export const addNewTaxiDetailsSchema = z.object({
   number_plate: z
     .string({ required_error: 'Number plate required' })
     .min(1, 'Number plate required')
+    .toUpperCase()
     .transform((val) => val.replace(/\s/g, '')),
   make: z
     .string({ required_error: 'Make required' })
@@ -41,9 +42,9 @@ export const addNewTaxiDetailsSchema = z.object({
     .or(z.literal('')),
   cc: z
     .coerce
-    .number()
+    .number({ invalid_type_error: 'Invalid CC' })
     .optional()
-    .or(z.literal(Number.NaN)),
+    .or(z.literal(0)),
   fuel_type: z
     .string()
     .min(1, 'Invalid fuel type')
