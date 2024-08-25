@@ -58,7 +58,7 @@ async function getTaxiDetails(id: number): Promise<TaxiDetails> {
 
   const { data, error, status } = await supabase
     .from('taxi_view')
-    .select('number_plate, color, chassis_number, is_retired, make, model, created_at, registration_date, expected_expiry_date, road_tax_expiry_date, picture_path, logbook_document_path, cc, fuel_type')
+    .select('number_plate, colour, chassis_number, is_retired, make, model, created_at, registration_date, expected_expiry_date, road_tax_expiry_date, picture_path, logbook_document_path, cc, fuel_type')
     .eq('id', id)
     .eq('auth_id', session.user.id)
     .returns<SupabaseTaxiDetails[]>()

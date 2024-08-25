@@ -1,27 +1,35 @@
-import { useParams } from 'react-router-dom';
-import { QueryClient } from '@tanstack/react-query';
+import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
+import { APIError } from '@/errors/classes/APIError';
+import { taxiDetailsQueryOptions } from '@/features/taxis/general/hooks/useTaxiDetails';
+import { ErrorUI } from '@/errors/components/ErrorUI';
+import { TaxiSwiper } from '@/features/taxis/taxiSwiper/TaxiSwiper';
 
-const taxiPageLoader = (_queryClient: QueryClient) => () => null;
+const taxiPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
+  const id = Number(params.id);
+  if (Number.isNaN(id)) throw new APIError({ title: 'Not Found', status: 404 });
+  void queryClient.ensureQueryData(taxiDetailsQueryOptions(id));
+  return null;
+};
 
 function TaxiPageSuspenseBoundary() {
-  const { id } = useParams();
-  useDocumentTitle(`Taxi ${id}`);
-  return <div>TaxiPageSuspenseBoundary</div>;
+  useDocumentTitle('');
+
+  return (
+    <div>TaxiPageSuspenseBoundary</div>
+  );
 }
 
 function TaxiPageErrorBoundary() {
-  const { id } = useParams();
-  useDocumentTitle(`Taxi ${id}`);
-  return <div>TaxiPageErrorBoundary</div>;
+  useDocumentTitle('');
+  return <ErrorUI />;
 }
 
 function TaxiPageComponent() {
-  const { id } = useParams();
-  useDocumentTitle(`Taxi ${id}`);
+  useDocumentTitle('Taxi');
 
   return (
-    <div>TaxiPageComponent</div>
+    <TaxiSwiper />
   );
 }
 
