@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { MdModeEdit } from 'react-icons/md';
 import { BiSave } from 'react-icons/bi';
-import { useId, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
 import { useTaxiDetails } from '@/features/taxis/general/hooks/useTaxiDetails';
 import { Avatar, AvatarPersistentFallback, AvatarImage } from '@/ui/Avatar';
@@ -13,6 +13,7 @@ import { useUpdateTaxiDetails } from '@/features/taxis/general/hooks/useUpdateTa
 import { useZodForm, FormProvider, FormField } from '@/ui/form/Form';
 import { updateTaxiDetailsTransformer, updateTaxiDetailsSchema } from '@/features/taxis/taxiDetails/schemas';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/ui/DropdownMenu';
+import { FileListViewer, FileConfig } from '@/ui/FileListViewer';
 
 // TODO PictureViewer for picture and logbook document
 
@@ -50,14 +51,27 @@ export function TaxiDetailsSection() {
     updateTaxi({ id, picture: null });
   };
 
+  const files: FileConfig[] = useMemo(() => [
+    {
+      file: data.picture_src ?? undefined,
+      fileType: 'image',
+    },
+    {
+      file: data.logbook_document_src ?? undefined,
+      fileType: 'pdf',
+    },
+  ], [data.picture_src, data.logbook_document_src]);
+
   return (
     <FormProvider {...form}>
       <form
-        className="flex justify-start items-start gap-8 xs:gap-10 sm:gap-14 flex-col xs:flex-row py-3 px-2"
+        className="flex justify-start items-start gap-8 sm:gap-14 flex-col sm:flex-row py-3 px-2"
         onSubmit={handleSubmitUpdate}
       >
-        <div className="flex flex-row xs:flex-col justify-start items-start gap-4 flex-shrink-0">
-          <DropdownMenu modal={false}>
+        <div className="flex flex-col justify-start items-start gap-4 flex-shrink-0">
+          <FileListViewer files={files} />
+
+          {/* <DropdownMenu modal={false}>
             <DropdownMenuTrigger className="group relative outline-none">
               <Avatar className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 relative cursor-pointer select-none after:content-[''] after:absolute after:w-full after:h-full group-hover:after:bg-achromatic-dark/50">
                 {data.picture_src && (
@@ -101,7 +115,7 @@ export function TaxiDetailsSection() {
                 </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
 
           <div className="flex gap-3 justify-center items-center w-full">
             {isEditMode

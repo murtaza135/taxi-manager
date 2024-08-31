@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { ReactNode, useId, useState } from 'react';
 import { Document, Page, Thumbnail, pdfjs } from 'react-pdf';
 import { FaFilePdf } from 'react-icons/fa6';
 import { MdError, MdModeEdit } from 'react-icons/md';
@@ -6,6 +6,8 @@ import { FaTrashAlt } from 'react-icons/fa';
 import { Button } from '@/ui/Button';
 import { cn } from '@/utils/cn';
 import { Skeleton } from '@/ui/Skeleton';
+import 'react-pdf/dist/Page/TextLayer.css';
+import 'react-pdf/dist/Page/AnnotationLayer.css';
 
 function PDFLogo() {
   return (
@@ -17,7 +19,7 @@ function PDFLogo() {
 
 function FileViewerSkeleton() {
   return (
-    <Skeleton className="rounded-lg w-[32.25rem] h-[32.25rem] dark:bg-achromatic-lighter" />
+    <Skeleton className="rounded-lg w-[12.75rem] h-[12.75rem] dark:bg-achromatic-lighter" />
   );
 }
 
@@ -40,17 +42,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 type FileType = 'image' | 'pdf' | 'other';
 
 export type FileConfig = {
+  file?: string;
   fileType: FileType;
-} & ({
-  file: string;
-  placeholder?: undefined;
-} | {
-  file?: undefined;
-  placeholder?: string;
-} | {
-  file: string;
-  placeholder: string;
-});
+  placeholder?: ReactNode;
+};
 
 type Props = {
   files: FileConfig[];
@@ -74,15 +69,15 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
   };
 
   return (
-    <div className={cn('w-[32.25rem] space-y-2', className)}>
-      <div className="relative rounded-lg w-[32.25rem] h-[32.25rem] overflow-hidden group">
+    <div className={cn('w-[12.75rem] space-y-2', className)}>
+      <div className="relative rounded-lg w-[12.75rem] h-[12.75rem] overflow-hidden group">
         {currentConfig.fileType === 'image' && (
-          <img src={currentConfig.file} alt="pic1" className="rounded-lg w-[32.25rem] h-[32.25rem] object-cover" />
+          <img src={currentConfig.file} alt="pic1" className="rounded-lg w-[12.75rem] h-[12.75rem] object-cover" />
         )}
 
         {currentConfig.fileType === 'pdf' && (
-          <Document file={currentConfig.file} className="rounded-lg w-[32.25rem] h-[32.25rem] overflow-hidden [&>div]:h-full" loading={FileViewerSkeleton} error={<ErrorDisplay />}>
-            <Page pageIndex={0} height={516} className="center" loading={FileViewerSkeleton} error={<ErrorDisplay />} />
+          <Document file={currentConfig.file} className="rounded-lg w-[12.75rem] h-[12.75rem] overflow-hidden [&>div]:h-full" loading={FileViewerSkeleton} error={<ErrorDisplay />}>
+            <Page pageIndex={0} height={16 * 12.75} className="center" loading={FileViewerSkeleton} error={<ErrorDisplay />} />
           </Document>
         )}
 
