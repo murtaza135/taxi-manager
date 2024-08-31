@@ -66,18 +66,18 @@ export const updateTaxiLicenceDetailsSchema = z.object({
   phc_number: z
     .string({ required_error: 'PHC number required' })
     .min(1, 'PHC number required'),
-  taxi_licence_start_date: z
+  start_date: z
     .string()
     .refine((val) => isValid(new Date(val)), { message: 'Invalid start date' })
     .optional()
     .or(z.literal('')),
-  taxi_licence_end_date: z
+  end_date: z
     .string({ required_error: 'End date required' })
     .refine((val) => isValid(new Date(val)), { message: 'Invalid end date' }),
 }).refine(
-  ({ taxi_licence_start_date, taxi_licence_end_date }) => {
-    if (taxi_licence_start_date) {
-      return isBefore(taxi_licence_start_date, taxi_licence_end_date);
+  ({ start_date, end_date }) => {
+    if (start_date) {
+      return isBefore(start_date, end_date);
     }
     return true;
   },
@@ -101,17 +101,17 @@ export const updateTaxiInsuranceSchema = z.object({
   is_any_driver: z
     .boolean()
     .default(true),
-  insurance_start_date: z
+  start_date: z
     .string({ required_error: 'Start date required' })
     .refine((val) => isValid(new Date(val)), { message: 'Invalid start date' }),
-  insurance_end_date: z
+  end_date: z
     .string({ required_error: 'End date required' })
     .refine((val) => isValid(new Date(val)), { message: 'Invalid end date' }),
 })
   .refine(
-    ({ insurance_start_date, insurance_end_date }) => {
-      if (insurance_start_date) {
-        return isBefore(insurance_start_date, insurance_end_date);
+    ({ start_date, end_date }) => {
+      if (start_date) {
+        return isBefore(start_date, end_date);
       }
       return true;
     },
