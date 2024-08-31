@@ -9,31 +9,34 @@ import { EditableInput } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { toDateInputString } from '@/utils/date/toDateInputString';
 import { useZodForm, FormProvider, FormField } from '@/ui/form/Form';
-import { updateTaxiLicenceDetailsSchema, updateTaxiLicenceDetailsTransformer } from '@/features/taxis/taxiDetails/schemas';
+import { updateTaxiInsuranceSchema, updateTaxiInsuranceTransformer } from '@/features/taxis/taxiDetails/schemas';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/ui/DropdownMenu';
-import { useTaxiLicenceDetails } from '@/features/taxis/general/hooks/useTaxiLicenceDetails';
-import { useUpdateTaxiLicenceDetails } from '@/features/taxis/general/hooks/useUpdateTaxiLicenceDetails';
+import { useTaxiInsuranceDetails } from '@/features/taxis/general/hooks/useTaxiInsuranceDetails';
+import { useUpdateTaxiInsuranceDetails } from '@/features/taxis/general/hooks/useUpdateTaxiInsuranceDetails';
+import { Checkbox } from '@/ui/form/Checkbox';
+import { cn } from '@/utils/cn';
 
 // TODO PictureViewer for documents
 
-export function TaxiLicenceDetailsSection() {
+export function TaxiInsuranceDetailsSection() {
   const params = useParams();
   const id = Number(params.id);
-  const { data } = useTaxiLicenceDetails(id);
+  const { data } = useTaxiInsuranceDetails(id);
   const pictureInputId = useId();
+  const isRetiredCheckboxId = useId();
   const [isEditMode, setEditMode] = useState<boolean>(false);
-  const { mutate: updateTaxiLicence } = useUpdateTaxiLicenceDetails();
+  const { mutate: updateTaxiInsurance } = useUpdateTaxiInsuranceDetails();
 
   const form = useZodForm({
-    schema: updateTaxiLicenceDetailsSchema,
+    schema: updateTaxiInsuranceSchema,
     values: data,
   });
 
   const handleSubmitUpdate = form.handleSubmit((formData) => {
     setEditMode(false);
-    const transformedData = updateTaxiLicenceDetailsTransformer(formData);
+    const transformedData = updateTaxiInsuranceTransformer(formData);
 
-    updateTaxiLicence({ id: data.id, ...transformedData }, {
+    updateTaxiInsurance({ id: data.id, ...transformedData }, {
       onError: () => {
         form.reset(data, { keepErrors: true });
       },
@@ -41,14 +44,12 @@ export function TaxiLicenceDetailsSection() {
   });
 
   const handleEditPicture: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    const document = event.target.files?.[0];
-    updateTaxiLicence({ id: data.id, compliance_certificate_document: document });
-    // updateTaxiLicence({ id: data.id, phc_licence_document: document });
+    const insurance = event.target.files?.[0];
+    updateTaxiInsurance({ id: data.id, insurance });
   };
 
   const handleDeletePicture: React.MouseEventHandler<HTMLButtonElement> = () => {
-    updateTaxiLicence({ id: data.id, compliance_certificate_document: null });
-    // updateTaxiLicence({ id: data.id, phc_licence_document: null });
+    updateTaxiInsurance({ id: data.id, insurance: null });
   };
 
   return (
@@ -61,14 +62,14 @@ export function TaxiLicenceDetailsSection() {
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger className="group relative outline-none">
               <Avatar className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 relative cursor-pointer select-none after:content-[''] after:absolute after:w-full after:h-full group-hover:after:bg-achromatic-dark/50">
-                {data.compliance_certificate_document_src && (
+                {data.document_src && (
                   <AvatarImage
-                    src={data.compliance_certificate_document_src}
+                    src={data.document_src}
                     alt={`taxi-${data.id}`}
                   />
                 )}
                 <AvatarPersistentFallback className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 text-2xl sm:text-3xl">
-                  {extractInitials(data.phc_number)}
+                  {extractInitials(data.policy_number)}
                 </AvatarPersistentFallback>
               </Avatar>
               <p className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-60 text-xl xs:text-2xl cursor-pointer">
@@ -136,32 +137,45 @@ export function TaxiLicenceDetailsSection() {
         <div className="space-y-3 flex-grow max-w-96">
           <FormField
             control={form.control}
-            name="phc_number"
+            name="policy_number"
             render={({ field }) => (
               <EditableInput
                 type="text"
-                title="PHC Number"
+                title="Policy Number"
                 className="text-2xl font-bold flex-grow uppercase placeholder:normal-case"
                 readOnly={!isEditMode}
                 {...field}
                 error={form.formState.errors[field.name]?.message}
-                value={field.value.toUpperCase()}
+                value={field.value}
               />
             )}
           />
 
           <FormField
             control={form.control}
-            name="compliance_certificate_licence_number"
-            render={({ field }) => (
-              <EditableInput
-                type="text"
-                title="Compliance Certificate Licence Number"
-                readOnly={!isEditMode}
-                {...field}
-                error={form.formState.errors[field.name]?.message}
-                value={field.value}
-              />
+            name="is_any_driver"
+            render={({ field: { value, onChange, ...rest } }) => (
+              <div className={cn('space-y-0.5 pb-1 border-b border-transparent', isEditMode && 'border-achromatic-dark/65 dark:border-achromatic-500')}>
+                <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500 space-x-4 xs:space-x-6">
+                  <span>Any Driver?</span>
+                  {form.formState.errors[rest.name]?.message && (
+                    <span className="text-red-600 dark:text-red-500 italic text-xs">* {form.formState.errors[rest.name]?.message}</span>
+                  )}
+                </p>
+                <div className="flex items-center justify-start gap-2 translate-x-[1px]">
+                  <Checkbox
+                    {...rest}
+                    id={isRetiredCheckboxId}
+                    checked={value}
+                    onCheckedChange={onChange}
+                    disabled={!isEditMode}
+                    className="disabled:hidden"
+                  />
+                  <label htmlFor={isRetiredCheckboxId} className="translate-y-[1px]">
+                    {value ? 'Yes' : 'No'}
+                  </label>
+                </div>
+              </div>
             )}
           />
 
@@ -175,7 +189,7 @@ export function TaxiLicenceDetailsSection() {
                 readOnly={!isEditMode}
                 {...field}
                 error={form.formState.errors[field.name]?.message}
-                value={toDateInputString(new Date(field.value ?? ''))}
+                value={toDateInputString(new Date(field.value))}
               />
             )}
           />

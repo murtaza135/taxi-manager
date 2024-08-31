@@ -17,7 +17,7 @@ type SupabaseTaxiInsuranceDetails = Prettify<
   >> & NonNullableObject<
     Pick<
       Tables<'taxi_view'>,
-      | 'taxi_licence_id' | 'insurance_policy_number' | 'insurance_is_any_driver'
+      | 'insurance_id' | 'insurance_policy_number' | 'insurance_is_any_driver'
       | 'insurance_start_date' | 'insurance_end_date'
     >
   >
@@ -54,7 +54,7 @@ async function getTaxiInsuranceDetails(taxi_id: number): Promise<TaxiInsuranceDe
 
   const { data, error, status } = await supabase
     .from('taxi_view')
-    .select('taxi_licence_id, insurance_policy_number, insurance_is_any_driver, insurance_start_date, insurance_end_date, insurance_document_path')
+    .select('insurance_id, insurance_policy_number, insurance_is_any_driver, insurance_start_date, insurance_end_date, insurance_document_path')
     .eq('id', taxi_id)
     .eq('auth_id', session.user.id)
     .returns<SupabaseTaxiInsuranceDetails[]>()
@@ -79,7 +79,7 @@ async function getTaxiInsuranceDetails(taxi_id: number): Promise<TaxiInsuranceDe
 
   return {
     taxi_id,
-    id: mappedData.taxi_licence_id,
+    id: mappedData.insurance_id,
     policy_number: mappedData.insurance_policy_number,
     is_any_driver: mappedData.insurance_is_any_driver,
     start_date: mappedData.insurance_start_date,
