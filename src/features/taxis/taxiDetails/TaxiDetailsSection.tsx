@@ -234,7 +234,7 @@ export function TaxiDetailsSection() {
                 readOnly={!isEditMode}
                 {...field}
                 error={form.formState.errors[field.name]?.message}
-                value={field.value ?? ''}
+                value={toDateInputString(new Date(field.value ?? ''))}
               />
             )}
           />
@@ -249,7 +249,7 @@ export function TaxiDetailsSection() {
                 readOnly={!isEditMode}
                 {...field}
                 error={form.formState.errors[field.name]?.message}
-                value={field.value ?? ''}
+                value={toDateInputString(new Date(field.value ?? ''))}
               />
             )}
           />
