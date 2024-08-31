@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
   AccordionCollapsibleContent,
 } from '@/ui/Accordion';
+import { TaxiDetailsSection } from '@/features/taxis/taxiDetails/TaxiDetailsSection';
 import { Separator } from '@/ui/Separator';
 import { Spinner } from '@/ui/Spinner';
 
@@ -15,7 +16,7 @@ export function TaxiDetailsSwiperItem() {
         <AccordionTrigger>Taxi Details</AccordionTrigger>
         <AccordionCollapsibleContent>
           <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
-          <div>Taxi Details</div>
+          <TaxiDetailsSection />
         </AccordionCollapsibleContent>
       </AccordionItem>
 
