@@ -12,8 +12,7 @@ import { toDateInputString } from '@/utils/date/toDateInputString';
 import { useUpdateTaxiDetails } from '@/features/taxis/general/hooks/useUpdateTaxiDetails';
 import { useZodForm, FormProvider, FormField } from '@/ui/form/Form';
 import { updateTaxiDetailsTransformer, updateTaxiDetailsSchema } from '@/features/taxis/taxiDetails/schemas';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/ui/DropdownMenu';
-import { FileListViewer, FileConfig } from '@/ui/files/FileListViewer';
+import { FileListViewer, FileConfig, FileListViewerOnChangeHandler, FileListViewerOnDeleteHandler } from '@/ui/files/FileListViewer';
 
 // TODO PictureViewer for picture and logbook document
 
@@ -21,7 +20,6 @@ export function TaxiDetailsSection() {
   const params = useParams();
   const id = Number(params.id);
   const { data } = useTaxiDetails(id);
-  const pictureInputId = useId();
   const [isEditMode, setEditMode] = useState<boolean>(false);
   const { mutate: updateTaxi } = useUpdateTaxiDetails();
 
@@ -29,6 +27,21 @@ export function TaxiDetailsSection() {
     schema: updateTaxiDetailsSchema,
     values: data,
   });
+
+  const files: FileConfig[] = useMemo(() => [
+    {
+      name: 'picture',
+      file: data.picture_src ?? undefined,
+      fileType: 'image',
+      errorMessage: 'lol1',
+    },
+    {
+      name: 'logbook',
+      file: data.logbook_document_src ?? undefined,
+      fileType: 'pdf',
+      errorMessage: 'lol2',
+    },
+  ], [data.picture_src, data.logbook_document_src]);
 
   const handleSubmitUpdate = form.handleSubmit((formData) => {
     setEditMode(false);
@@ -42,29 +55,15 @@ export function TaxiDetailsSection() {
     });
   });
 
-  const handleEditPicture: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    const picture = event.target.files?.[0];
-    updateTaxi({ id, picture });
+  const handleChangeFile: FileListViewerOnChangeHandler = (file, index) => {
+    const key = files[index].name;
+    updateTaxi({ id, [key]: file });
   };
 
-  const handleDeletePicture: React.MouseEventHandler<HTMLButtonElement> = () => {
-    updateTaxi({ id, picture: null });
+  const handleDeleteFile: FileListViewerOnDeleteHandler = (index) => {
+    const key = files[index].name;
+    updateTaxi({ id, [key]: null });
   };
-
-  const files: FileConfig[] = useMemo(() => [
-    {
-      file: data.picture_src ?? undefined,
-      // file: 'sdsd',
-      fileType: 'image',
-      errorMessage: 'lol1',
-    },
-    {
-      file: data.logbook_document_src ?? undefined,
-      // file: 'dasd',
-      fileType: 'pdf',
-      errorMessage: 'lol2',
-    },
-  ], [data.picture_src, data.logbook_document_src]);
 
   return (
     <FormProvider {...form}>
@@ -73,53 +72,7 @@ export function TaxiDetailsSection() {
         onSubmit={handleSubmitUpdate}
       >
         <div className="flex flex-col justify-start items-start gap-4 flex-shrink-0">
-          <FileListViewer files={files} />
-
-          {/* <DropdownMenu modal={false}>
-            <DropdownMenuTrigger className="group relative outline-none">
-              <Avatar className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 relative cursor-pointer select-none after:content-[''] after:absolute after:w-full after:h-full group-hover:after:bg-achromatic-dark/50">
-                {data.picture_src && (
-                  <AvatarImage
-                    src={data.picture_src}
-                    alt={`taxi-${data.id}`}
-                  />
-                )}
-                <AvatarPersistentFallback className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 text-2xl sm:text-3xl">
-                  {extractInitials(data.number_plate)}
-                </AvatarPersistentFallback>
-              </Avatar>
-              <p className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-60 text-xl xs:text-2xl cursor-pointer">
-                <MdModeEdit />
-              </p>
-            </DropdownMenuTrigger>
-
-            <input
-              id={pictureInputId}
-              aria-label="picture"
-              className="hidden"
-              type="file"
-              onChange={handleEditPicture}
-            />
-
-            <DropdownMenuContent className="min-w-[125px]">
-              <DropdownMenuItem>
-                <label htmlFor={pictureInputId} className="flex justify-start items-center gap-2 cursor-pointer">
-                  <span className="text-lg"><MdModeEdit /></span>
-                  <span>Edit</span>
-                </label>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Button
-                  variant="ghost"
-                  className="p-0 gap-2 font-normal"
-                  onClick={handleDeletePicture}
-                >
-                  <span className="text-base"><FaTrashAlt /></span>
-                  <span>Delete</span>
-                </Button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu> */}
+          <FileListViewer files={files} onChange={handleChangeFile} onDelete={handleDeleteFile} />
 
           <div className="flex gap-3 justify-center items-center w-full">
             {isEditMode

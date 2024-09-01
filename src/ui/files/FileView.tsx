@@ -8,15 +8,17 @@ export function FileLoadingDisplay() {
 }
 
 type FileErrorDisplayProps = {
+  name?: string;
   message?: string;
 };
 
-export function FileErrorDisplay({ message }: FileErrorDisplayProps) {
+export function FileErrorDisplay({ name, message }: FileErrorDisplayProps) {
   return (
     <div className="w-full h-full center border border-achromatic-dark dark:border-achromatic-lighter rounded-lg">
       <div className="flex flex-col justify-center items-center gap-2">
         <MdError className="text-5xl" />
         <p className="font-semibold">{message ?? 'Could not load file'}</p>
+        {name && <p className="font-semibold text-xs opacity-70 capitalize">{name}</p>}
       </div>
     </div>
   );

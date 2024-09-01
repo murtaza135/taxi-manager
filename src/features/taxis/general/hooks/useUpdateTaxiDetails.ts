@@ -217,14 +217,20 @@ export function useUpdateTaxiDetails() {
 
   const mutation = useMutation<void, SupabaseError, Variables>({
     mutationFn: updateTaxiDetails,
-    onSuccess: async (_data, { id, picture }) => {
+    onSuccess: async (_data, { id, picture, logbook }) => {
       if (picture !== undefined) {
         queryClient.removeQueries({ queryKey: ['taxis', id, 'details', 'picture'] });
       }
+
+      if (logbook !== undefined) {
+        queryClient.removeQueries({ queryKey: ['taxis', id, 'details', 'logbook'] });
+      }
+
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['taxis', 'list'] }),
         queryClient.invalidateQueries({ queryKey: ['taxis', id, 'details'], exact: true }),
       ]);
+
       revalidate();
     },
     onError: (error) => {
