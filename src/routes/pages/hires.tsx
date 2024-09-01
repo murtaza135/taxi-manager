@@ -1,7 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
-import { FileListViewer, FileConfig } from '@/ui/FileListViewer';
+import { FileListViewer, FileConfig } from '@/ui/files/FileListViewer';
 import { useTaxiDetails } from '@/features/taxis/general/hooks/useTaxiDetails';
 
 const hiresPageLoader = (_queryClient: QueryClient) => () => null;

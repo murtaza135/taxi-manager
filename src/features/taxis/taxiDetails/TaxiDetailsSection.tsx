@@ -13,7 +13,7 @@ import { useUpdateTaxiDetails } from '@/features/taxis/general/hooks/useUpdateTa
 import { useZodForm, FormProvider, FormField } from '@/ui/form/Form';
 import { updateTaxiDetailsTransformer, updateTaxiDetailsSchema } from '@/features/taxis/taxiDetails/schemas';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/ui/DropdownMenu';
-import { FileListViewer, FileConfig } from '@/ui/FileListViewer';
+import { FileListViewer, FileConfig } from '@/ui/files/FileListViewer';
 
 // TODO PictureViewer for picture and logbook document
 
@@ -54,11 +54,15 @@ export function TaxiDetailsSection() {
   const files: FileConfig[] = useMemo(() => [
     {
       file: data.picture_src ?? undefined,
+      // file: 'sdsd',
       fileType: 'image',
+      errorMessage: 'lol1',
     },
     {
       file: data.logbook_document_src ?? undefined,
+      // file: 'dasd',
       fileType: 'pdf',
+      errorMessage: 'lol2',
     },
   ], [data.picture_src, data.logbook_document_src]);
 
