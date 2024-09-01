@@ -30,16 +30,16 @@ export function TaxiDetailsSection() {
 
   const files: FileConfig[] = useMemo(() => [
     {
-      name: 'picture',
+      type: 'picture',
       file: data.picture_src ?? undefined,
-      fileType: 'image',
-      errorMessage: 'lol1',
+      fileType: 'none',
+      accept: 'image/*',
     },
     {
-      name: 'logbook',
+      type: 'logbook',
       file: data.logbook_document_src ?? undefined,
       fileType: 'pdf',
-      errorMessage: 'lol2',
+      accept: 'image/*,.pdf',
     },
   ], [data.picture_src, data.logbook_document_src]);
 
@@ -56,12 +56,12 @@ export function TaxiDetailsSection() {
   });
 
   const handleChangeFile: FileListViewerOnChangeHandler = (file, index) => {
-    const key = files[index].name;
+    const key = files[index].type;
     updateTaxi({ id, [key]: file });
   };
 
   const handleDeleteFile: FileListViewerOnDeleteHandler = (index) => {
-    const key = files[index].name;
+    const key = files[index].type;
     updateTaxi({ id, [key]: null });
   };
 

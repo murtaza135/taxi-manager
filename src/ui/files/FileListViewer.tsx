@@ -7,7 +7,7 @@ import { cn } from '@/utils/cn';
 import 'react-pdf/dist/Page/TextLayer.css';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import { Image, ImageView, ImageLoading, ImageError, ImageFallback } from '@/ui/Image';
-import { FileLoadingDisplay, FileErrorDisplay, ImageLogo, PDFLogo } from '@/ui/files/FileView';
+import { FileLoadingDisplay, FileErrorDisplay, ImageLogo, PDFLogo, FileLogo } from '@/ui/files/FileView';
 
 // TODO add check for files.length === 0
 
@@ -16,7 +16,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url,
 ).toString();
 
-type FileType = 'image' | 'pdf' | 'other';
+type FileType = 'image' | 'pdf' | 'other' | 'none';
 
 export type FileListViewerOnChangeHandler = (
   file: File | undefined,
@@ -30,7 +30,7 @@ export type FileListViewerOnDeleteHandler = (
 ) => void;
 
 export type FileConfig = {
-  name: string;
+  type: string;
   file?: string;
   fileType: FileType;
   accept?: string;
@@ -66,10 +66,10 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
             />
             <ImageLoading><FileLoadingDisplay /></ImageLoading>
             <ImageError>
-              <FileErrorDisplay name={currentConfig.name} message="Could not load image" />
+              <FileErrorDisplay type={currentConfig.type} message="Could not load image" />
             </ImageError>
             <ImageFallback>
-              <FileErrorDisplay name={currentConfig.name} message="No image available" />
+              <FileErrorDisplay type={currentConfig.type} message="No image available" />
             </ImageFallback>
           </Image>
         )}
@@ -80,8 +80,8 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
             file={currentConfig.file}
             className="rounded-lg w-[12.75rem] h-[12.75rem] overflow-hidden [&>div]:h-full"
             loading={<FileLoadingDisplay />}
-            error={<FileErrorDisplay name={currentConfig.name} message="Could not load PDF" />}
-            noData={<FileErrorDisplay name={currentConfig.name} message="No PDF available" />}
+            error={<FileErrorDisplay type={currentConfig.type} message="Could not load PDF" />}
+            noData={<FileErrorDisplay type={currentConfig.type} message="No PDF available" />}
           >
             <Page
               pageIndex={0}
@@ -89,10 +89,15 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
               scale={0.8}
               className="center h-full"
               loading={<FileLoadingDisplay />}
-              error={<FileErrorDisplay name={currentConfig.name} message="Could not load PDF" />}
-              noData={<FileErrorDisplay name={currentConfig.name} message="No PDF available" />}
+              error={<FileErrorDisplay type={currentConfig.type} message="Could not load PDF" />}
+              noData={<FileErrorDisplay type={currentConfig.type} message="No PDF available" />}
             />
           </Document>
+        )}
+
+        {/* view for no image or pdf */}
+        {currentConfig.fileType === 'none' && (
+          <FileErrorDisplay type={currentConfig.type} message="No file available" />
         )}
 
         {/* change and delete buttons for view */}
@@ -130,10 +135,10 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
         <div className="flex gap-1 flex-wrap">
           {files.map((config, index) => (
             <Button
-              key={config.name}
+              key={config.type}
               type="submit"
               variant="ghost"
-              className={cn('rounded-lg p-0 overflow-hidden flex-shrink-0 bg-achromatic-lighter border border-solid border-achromatic-darker', currentFileIndex === index && 'opacity-50')}
+              className={cn('rounded-lg p-0 overflow-hidden flex-shrink-0 bg-achromatic-lighter border border-solid border-achromatic-darker hover:opacity-100', currentFileIndex !== index && 'opacity-50')}
               onMouseEnter={() => handleChange(index)}
               onClick={() => handleChange(index)}
             >
@@ -169,6 +174,13 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
                     noData={<PDFLogo />}
                   />
                 </Document>
+              )}
+
+              {/* no image or PDF */}
+              {config.fileType === 'none' && (
+                <div className="rounded-lg w-12 h-12 overflow-hidden">
+                  <FileLogo />
+                </div>
               )}
             </Button>
           ))}
