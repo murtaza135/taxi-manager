@@ -5,10 +5,10 @@ import { FaTrashAlt } from 'react-icons/fa';
 import { FaFilePdf, FaFileImage, FaFileLines, FaFileCircleExclamation } from 'react-icons/fa6';
 import { Button } from '@/ui/Button';
 import { cn } from '@/utils/cn';
-import 'react-pdf/dist/Page/TextLayer.css';
-import 'react-pdf/dist/Page/AnnotationLayer.css';
 import { Image, ImageView, ImageLoading, ImageError, ImageFallback } from '@/ui/Image';
 import { FileType } from '@/utils/path/extractFileType';
+import 'react-pdf/dist/Page/TextLayer.css';
+import 'react-pdf/dist/Page/AnnotationLayer.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',

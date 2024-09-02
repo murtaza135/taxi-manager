@@ -69,10 +69,10 @@ export function TaxiLicenceDetailsSection() {
   return (
     <FormProvider {...form}>
       <form
-        className="flex justify-start items-start gap-8 xs:gap-10 sm:gap-14 flex-col xs:flex-row py-3 px-2"
+        className="flex justify-start items-start gap-8 sm:gap-14 flex-col sm:flex-row py-3 px-2"
         onSubmit={handleSubmitUpdate}
       >
-        <div className="flex flex-row xs:flex-col justify-start items-start gap-4 flex-shrink-0">
+        <div className="flex flex-col justify-start items-start gap-4 flex-shrink-0">
           <FileListViewer
             files={files}
             onChange={handleChangeFile}
