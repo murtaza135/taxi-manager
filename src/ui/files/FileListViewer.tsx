@@ -27,8 +27,8 @@ export type FileListViewerOnDeleteHandler = (
 ) => void;
 
 export type FileConfig = {
-  title: string;
-  displayTitle?: boolean;
+  key: string;
+  title?: string;
   file?: string;
   fileType: FileType;
   accept?: string;
@@ -53,7 +53,7 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
 
   return (
     <div className={cn('w-[12.75rem] space-y-2', className)}>
-      <div className="relative rounded-lg w-[12.75rem] h-[12.75rem] overflow-hidden group">
+      <div className="display relative rounded-lg w-[12.75rem] h-[12.75rem] overflow-hidden group">
         {/* no current file provided */}
         {!currentConfig && (
           <OtherFileDisplay />
@@ -109,8 +109,8 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
         )}
 
         {/* title display */}
-        {currentConfig?.displayTitle && (
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-4 rounded-lg px-3 py-1.5 capitalize text-sm font-bold bg-primary-dark dark:bg-achromatic-dark dark:border dark:border-achromatic-darker text-achromatic-lighter opacity-0 group-hover:opacity-100 transition-opacity">
+        {currentConfig?.title && (
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 rounded-lg px-3 py-1.5 text-sm font-bold text-nowrap whitespace-nowrap overflow-hidden text-ellipsis max-w-[11.75rem] bg-primary-dark dark:bg-achromatic-dark dark:border dark:border-achromatic-darker text-achromatic-lighter opacity-0 group-hover:opacity-100 transition-opacity">
             {currentConfig.title}
           </div>
         )}
@@ -147,10 +147,10 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
 
       {/* small gallery */}
       {files.length > 1 && (
-        <div className="flex gap-1 flex-wrap">
+        <div className="gallery flex gap-1 flex-wrap">
           {files.map((config, index) => (
             <Button
-              key={config.title}
+              key={config.key}
               type="submit"
               variant="ghost"
               className={cn('rounded-lg p-0 overflow-hidden flex-shrink-0 bg-achromatic-lighter border border-solid border-achromatic-darker hover:opacity-100', currentFileIndex !== index && 'opacity-50')}

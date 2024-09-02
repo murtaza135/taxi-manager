@@ -1,26 +1,20 @@
 import { useParams } from 'react-router-dom';
 import { MdModeEdit } from 'react-icons/md';
 import { BiSave } from 'react-icons/bi';
-import { useId, useState } from 'react';
-import { FaTrashAlt } from 'react-icons/fa';
-import { Avatar, AvatarPersistentFallback, AvatarImage } from '@/ui/Avatar';
-import { extractInitials } from '@/utils/string/extractInitials';
+import { useState, useMemo } from 'react';
 import { EditableInput } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { toDateInputString } from '@/utils/date/toDateInputString';
 import { useZodForm, FormProvider, FormField } from '@/ui/form/Form';
 import { updateTaxiLicenceDetailsSchema, updateTaxiLicenceDetailsTransformer } from '@/features/taxis/taxiDetails/schemas';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/ui/DropdownMenu';
 import { useTaxiLicenceDetails } from '@/features/taxis/general/hooks/useTaxiLicenceDetails';
 import { useUpdateTaxiLicenceDetails } from '@/features/taxis/general/hooks/useUpdateTaxiLicenceDetails';
-
-// TODO PictureViewer for documents
+import { FileListViewer, FileConfig, FileListViewerOnChangeHandler, FileListViewerOnDeleteHandler } from '@/ui/files/FileListViewer';
 
 export function TaxiLicenceDetailsSection() {
   const params = useParams();
   const id = Number(params.id);
   const { data } = useTaxiLicenceDetails(id);
-  const pictureInputId = useId();
   const [isEditMode, setEditMode] = useState<boolean>(false);
   const { mutate: updateTaxiLicence } = useUpdateTaxiLicenceDetails();
 
@@ -28,6 +22,28 @@ export function TaxiLicenceDetailsSection() {
     schema: updateTaxiLicenceDetailsSchema,
     values: data,
   });
+
+  const files: FileConfig[] = useMemo(() => [
+    {
+      key: 'compliance_certificate_document',
+      title: 'Compliance Certificate',
+      file: data.compliance_certificate_document_src ?? undefined,
+      fileType: data.compliance_certificate_document_file_type,
+      accept: 'image/*,.pdf',
+    },
+    {
+      key: 'phc_licence_document',
+      title: 'PHC Licence',
+      file: data.phc_licence_document_src ?? undefined,
+      fileType: data.phc_licence_document_file_type,
+      accept: 'image/*,.pdf',
+    },
+  ], [
+    data.compliance_certificate_document_src,
+    data.compliance_certificate_document_file_type,
+    data.phc_licence_document_src,
+    data.phc_licence_document_file_type,
+  ]);
 
   const handleSubmitUpdate = form.handleSubmit((formData) => {
     setEditMode(false);
@@ -40,15 +56,14 @@ export function TaxiLicenceDetailsSection() {
     });
   });
 
-  const handleEditPicture: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    const document = event.target.files?.[0];
-    updateTaxiLicence({ id: data.id, compliance_certificate_document: document });
-    // updateTaxiLicence({ id: data.id, phc_licence_document: document });
+  const handleChangeFile: FileListViewerOnChangeHandler = (file, index) => {
+    const { key } = files[index];
+    updateTaxiLicence({ id, [key]: file });
   };
 
-  const handleDeletePicture: React.MouseEventHandler<HTMLButtonElement> = () => {
-    updateTaxiLicence({ id: data.id, compliance_certificate_document: null });
-    // updateTaxiLicence({ id: data.id, phc_licence_document: null });
+  const handleDeleteFile: FileListViewerOnDeleteHandler = (index) => {
+    const { key } = files[index];
+    updateTaxiLicence({ id, [key]: null });
   };
 
   return (
@@ -58,51 +73,11 @@ export function TaxiLicenceDetailsSection() {
         onSubmit={handleSubmitUpdate}
       >
         <div className="flex flex-row xs:flex-col justify-start items-start gap-4 flex-shrink-0">
-          <DropdownMenu modal={false}>
-            <DropdownMenuTrigger className="group relative outline-none">
-              <Avatar className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 relative cursor-pointer select-none after:content-[''] after:absolute after:w-full after:h-full group-hover:after:bg-achromatic-dark/50">
-                {data.compliance_certificate_document_src && (
-                  <AvatarImage
-                    src={data.compliance_certificate_document_src}
-                    alt={`taxi-${data.id}`}
-                  />
-                )}
-                <AvatarPersistentFallback className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 text-2xl sm:text-3xl">
-                  {extractInitials(data.phc_number)}
-                </AvatarPersistentFallback>
-              </Avatar>
-              <p className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-60 text-xl xs:text-2xl cursor-pointer">
-                <MdModeEdit />
-              </p>
-            </DropdownMenuTrigger>
-
-            <input
-              id={pictureInputId}
-              aria-label="picture"
-              className="hidden"
-              type="file"
-              onChange={handleEditPicture}
-            />
-
-            <DropdownMenuContent className="min-w-[125px]">
-              <DropdownMenuItem>
-                <label htmlFor={pictureInputId} className="flex justify-start items-center gap-2 cursor-pointer">
-                  <span className="text-lg"><MdModeEdit /></span>
-                  <span>Edit</span>
-                </label>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Button
-                  variant="ghost"
-                  className="p-0 gap-2 font-normal"
-                  onClick={handleDeletePicture}
-                >
-                  <span className="text-base"><FaTrashAlt /></span>
-                  <span>Delete</span>
-                </Button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <FileListViewer
+            files={files}
+            onChange={handleChangeFile}
+            onDelete={handleDeleteFile}
+          />
 
           <div className="flex gap-3 justify-center items-center w-full">
             {isEditMode

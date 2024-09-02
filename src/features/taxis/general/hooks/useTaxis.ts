@@ -60,7 +60,6 @@ async function getTaxis(
     .eq('auth_id', session.user.id)
     .eq('is_retired', isRetired)
     .order('created_at', { ascending: false })
-    // eslint-disable-next-line max-len
     .or(`number_plate.ilike.%${search}%, make.ilike.%${search}%, model.ilike.%${search}%,  phc_number.ilike.%${search}%`)
     .range(from, to)
     .returns<SupabaseTaxi[]>();

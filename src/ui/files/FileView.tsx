@@ -33,7 +33,9 @@ export function FileErrorDisplay({ title, message }: FileErrorDisplayProps) {
       <div className="flex flex-col justify-center items-center gap-2">
         <MdError className="text-5xl" />
         <p className="font-semibold">{message ?? 'Could not load file'}</p>
-        {title && <p className="font-semibold text-xs opacity-70 capitalize">{title}</p>}
+        {title && (
+          <p className="font-semibold text-xs opacity-70">{title}</p>
+        )}
       </div>
     </div>
   );

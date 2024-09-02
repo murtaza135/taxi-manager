@@ -11,8 +11,6 @@ import { useZodForm, FormProvider, FormField } from '@/ui/form/Form';
 import { updateTaxiDetailsTransformer, updateTaxiDetailsSchema } from '@/features/taxis/taxiDetails/schemas';
 import { FileListViewer, FileConfig, FileListViewerOnChangeHandler, FileListViewerOnDeleteHandler } from '@/ui/files/FileListViewer';
 
-// TODO PictureViewer for picture and logbook document
-
 export function TaxiDetailsSection() {
   const params = useParams();
   const id = Number(params.id);
@@ -27,15 +25,14 @@ export function TaxiDetailsSection() {
 
   const files: FileConfig[] = useMemo(() => [
     {
-      title: 'picture',
-      displayTitle: false,
+      key: 'picture',
       file: data.picture_src ?? undefined,
       fileType: data.picture_file_type,
       accept: 'image/*',
     },
     {
-      title: 'logbook',
-      displayTitle: true,
+      key: 'logbook',
+      title: 'Logbook',
       file: data.logbook_document_src ?? undefined,
       fileType: data.logbook_document_file_type,
       accept: 'image/*,.pdf',
@@ -60,12 +57,12 @@ export function TaxiDetailsSection() {
   });
 
   const handleChangeFile: FileListViewerOnChangeHandler = (file, index) => {
-    const key = files[index].title;
+    const { key } = files[index];
     updateTaxi({ id, [key]: file });
   };
 
   const handleDeleteFile: FileListViewerOnDeleteHandler = (index) => {
-    const key = files[index].title;
+    const { key } = files[index];
     updateTaxi({ id, [key]: null });
   };
 
@@ -76,7 +73,11 @@ export function TaxiDetailsSection() {
         onSubmit={handleSubmitUpdate}
       >
         <div className="flex flex-col justify-start items-start gap-4 flex-shrink-0">
-          <FileListViewer files={files} onChange={handleChangeFile} onDelete={handleDeleteFile} />
+          <FileListViewer
+            files={files}
+            onChange={handleChangeFile}
+            onDelete={handleDeleteFile}
+          />
 
           <div className="flex gap-3 justify-center items-center w-full">
             {isEditMode

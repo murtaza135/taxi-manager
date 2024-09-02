@@ -1,28 +1,22 @@
 import { useParams } from 'react-router-dom';
 import { MdModeEdit } from 'react-icons/md';
 import { BiSave } from 'react-icons/bi';
-import { useId, useState } from 'react';
-import { FaTrashAlt } from 'react-icons/fa';
-import { Avatar, AvatarPersistentFallback, AvatarImage } from '@/ui/Avatar';
-import { extractInitials } from '@/utils/string/extractInitials';
+import { useId, useState, useMemo } from 'react';
 import { EditableInput } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { toDateInputString } from '@/utils/date/toDateInputString';
 import { useZodForm, FormProvider, FormField } from '@/ui/form/Form';
 import { updateTaxiInsuranceSchema, updateTaxiInsuranceTransformer } from '@/features/taxis/taxiDetails/schemas';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/ui/DropdownMenu';
 import { useTaxiInsuranceDetails } from '@/features/taxis/general/hooks/useTaxiInsuranceDetails';
 import { useUpdateTaxiInsuranceDetails } from '@/features/taxis/general/hooks/useUpdateTaxiInsuranceDetails';
 import { Checkbox } from '@/ui/form/Checkbox';
 import { cn } from '@/utils/cn';
-
-// TODO PictureViewer for documents
+import { FileListViewer, FileConfig, FileListViewerOnChangeHandler, FileListViewerOnDeleteHandler } from '@/ui/files/FileListViewer';
 
 export function TaxiInsuranceDetailsSection() {
   const params = useParams();
   const id = Number(params.id);
   const { data } = useTaxiInsuranceDetails(id);
-  const pictureInputId = useId();
   const isRetiredCheckboxId = useId();
   const [isEditMode, setEditMode] = useState<boolean>(false);
   const { mutate: updateTaxiInsurance } = useUpdateTaxiInsuranceDetails();
@@ -31,6 +25,15 @@ export function TaxiInsuranceDetailsSection() {
     schema: updateTaxiInsuranceSchema,
     values: data,
   });
+
+  const files: FileConfig[] = useMemo(() => [
+    {
+      key: 'insurance',
+      file: data.document_src ?? undefined,
+      fileType: data.document_file_type,
+      accept: 'image/*,.pdf',
+    },
+  ], [data.document_src, data.document_file_type]);
 
   const handleSubmitUpdate = form.handleSubmit((formData) => {
     setEditMode(false);
@@ -43,13 +46,14 @@ export function TaxiInsuranceDetailsSection() {
     });
   });
 
-  const handleEditPicture: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    const insurance = event.target.files?.[0];
-    updateTaxiInsurance({ id: data.id, insurance });
+  const handleChangeFile: FileListViewerOnChangeHandler = (file, index) => {
+    const { key } = files[index];
+    updateTaxiInsurance({ id, [key]: file });
   };
 
-  const handleDeletePicture: React.MouseEventHandler<HTMLButtonElement> = () => {
-    updateTaxiInsurance({ id: data.id, insurance: null });
+  const handleDeleteFile: FileListViewerOnDeleteHandler = (index) => {
+    const { key } = files[index];
+    updateTaxiInsurance({ id, [key]: null });
   };
 
   return (
@@ -59,51 +63,11 @@ export function TaxiInsuranceDetailsSection() {
         onSubmit={handleSubmitUpdate}
       >
         <div className="flex flex-row xs:flex-col justify-start items-start gap-4 flex-shrink-0">
-          <DropdownMenu modal={false}>
-            <DropdownMenuTrigger className="group relative outline-none">
-              <Avatar className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 relative cursor-pointer select-none after:content-[''] after:absolute after:w-full after:h-full group-hover:after:bg-achromatic-dark/50">
-                {data.document_src && (
-                  <AvatarImage
-                    src={data.document_src}
-                    alt={`taxi-${data.id}`}
-                  />
-                )}
-                <AvatarPersistentFallback className="w-24 h-24 xs:w-28 xs:h-28 sm:!w-40 sm:!h-40 text-2xl sm:text-3xl">
-                  {extractInitials(data.policy_number)}
-                </AvatarPersistentFallback>
-              </Avatar>
-              <p className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-60 text-xl xs:text-2xl cursor-pointer">
-                <MdModeEdit />
-              </p>
-            </DropdownMenuTrigger>
-
-            <input
-              id={pictureInputId}
-              aria-label="picture"
-              className="hidden"
-              type="file"
-              onChange={handleEditPicture}
-            />
-
-            <DropdownMenuContent className="min-w-[125px]">
-              <DropdownMenuItem>
-                <label htmlFor={pictureInputId} className="flex justify-start items-center gap-2 cursor-pointer">
-                  <span className="text-lg"><MdModeEdit /></span>
-                  <span>Edit</span>
-                </label>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Button
-                  variant="ghost"
-                  className="p-0 gap-2 font-normal"
-                  onClick={handleDeletePicture}
-                >
-                  <span className="text-base"><FaTrashAlt /></span>
-                  <span>Delete</span>
-                </Button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <FileListViewer
+            files={files}
+            onChange={handleChangeFile}
+            onDelete={handleDeleteFile}
+          />
 
           <div className="flex gap-3 justify-center items-center w-full">
             {isEditMode
