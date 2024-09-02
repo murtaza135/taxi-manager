@@ -1,19 +1,91 @@
 import { useId, useState } from 'react';
 import { Document, Page, Thumbnail, pdfjs } from 'react-pdf';
-import { MdModeEdit } from 'react-icons/md';
+import { MdModeEdit, MdError } from 'react-icons/md';
 import { FaTrashAlt } from 'react-icons/fa';
+import { FaFilePdf, FaFileImage, FaFileLines, FaFileCircleExclamation } from 'react-icons/fa6';
 import { Button } from '@/ui/Button';
 import { cn } from '@/utils/cn';
 import 'react-pdf/dist/Page/TextLayer.css';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import { Image, ImageView, ImageLoading, ImageError, ImageFallback } from '@/ui/Image';
-import { FileLoadingDisplay, FileErrorDisplay, ImageLogo, PDFLogo, FileLogo, NoFileLogo, OtherFileDisplay } from '@/ui/files/FileView';
 import { FileType } from '@/utils/path/extractFileType';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
   import.meta.url,
 ).toString();
+
+function FileLoadingDisplay() {
+  return (
+    <div className="rounded-lg w-[12.75rem] h-[12.75rem] dark:bg-achromatic-lighter" />
+  );
+}
+
+type OtherFileDisplayProps = {
+  filename?: string;
+};
+
+function OtherFileDisplay({ filename }: OtherFileDisplayProps) {
+  return (
+    <div className="w-full h-full center border border-achromatic-dark dark:border-achromatic-lighter rounded-lg">
+      <div className="flex flex-col justify-center items-center gap-2">
+        <FaFileLines className="text-3xl" />
+        {filename && <p className="font-semibold text-sm opacity-70 px-3 w-40 text-center whitespace-nowrap text-ellipsis overflow-hidden">{filename}</p>}
+      </div>
+    </div>
+  );
+}
+
+type FileErrorDisplayProps = {
+  title?: string;
+  message?: string;
+};
+
+function FileErrorDisplay({ title, message }: FileErrorDisplayProps) {
+  return (
+    <div className="w-full h-full center border border-achromatic-dark dark:border-achromatic-lighter rounded-lg">
+      <div className="flex flex-col justify-center items-center gap-2">
+        <MdError className="text-5xl" />
+        <p className="font-semibold">{message ?? 'Could not load file'}</p>
+        {title && (
+          <p className="font-semibold text-xs opacity-70">{title}</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ImageLogo() {
+  return (
+    <div className="w-full h-full center text-primary-dark">
+      <FaFileImage className="text-xl" />
+    </div>
+  );
+}
+
+function PDFLogo() {
+  return (
+    <div className="w-full h-full center text-primary-dark">
+      <FaFilePdf className="text-xl" />
+    </div>
+  );
+}
+
+function FileLogo() {
+  return (
+    <div className="w-full h-full center text-primary-dark">
+      <FaFileLines className="text-xl" />
+    </div>
+  );
+}
+
+function NoFileLogo() {
+  return (
+    <div className="w-full h-full center text-primary-dark">
+      <FaFileCircleExclamation className="text-xl" />
+    </div>
+  );
+}
 
 export type FileListViewerOnChangeHandler = (
   file: File | undefined,
@@ -42,7 +114,7 @@ type Props = {
   className?: string;
 };
 
-export function FileListViewer({ files, initial, onChange, onDelete, className }: Props) {
+function FileListViewer({ files, initial, onChange, onDelete, className }: Props) {
   const inputId = useId();
   const [currentFileIndex, setCurrent] = useState<number>(initial ?? 0);
   const currentConfig = files[currentFileIndex] as FileConfig | undefined;
@@ -211,3 +283,5 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
     </div>
   );
 }
+
+export { FileListViewer };
