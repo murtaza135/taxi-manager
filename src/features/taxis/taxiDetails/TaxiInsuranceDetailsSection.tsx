@@ -15,8 +15,8 @@ import { FileListViewer, FileConfig, FileListViewerOnChangeHandler, FileListView
 
 export function TaxiInsuranceDetailsSection() {
   const params = useParams();
-  const id = Number(params.id);
-  const { data } = useTaxiInsuranceDetails(id);
+  const taxi_id = Number(params.id);
+  const { data } = useTaxiInsuranceDetails(taxi_id);
   const isRetiredCheckboxId = useId();
   const [isEditMode, setEditMode] = useState<boolean>(false);
   const { mutate: updateTaxiInsurance } = useUpdateTaxiInsuranceDetails();
@@ -39,7 +39,7 @@ export function TaxiInsuranceDetailsSection() {
     setEditMode(false);
     const transformedData = updateTaxiInsuranceTransformer(formData);
 
-    updateTaxiInsurance({ id: data.id, ...transformedData }, {
+    updateTaxiInsurance({ id: data.id, taxi_id, ...transformedData }, {
       onError: () => {
         form.reset(data, { keepErrors: true });
       },
@@ -48,12 +48,12 @@ export function TaxiInsuranceDetailsSection() {
 
   const handleChangeFile: FileListViewerOnChangeHandler = (file, index) => {
     const { key } = files[index];
-    updateTaxiInsurance({ id, [key]: file });
+    updateTaxiInsurance({ id: data.id, taxi_id, [key]: file });
   };
 
   const handleDeleteFile: FileListViewerOnDeleteHandler = (index) => {
     const { key } = files[index];
-    updateTaxiInsurance({ id, [key]: null });
+    updateTaxiInsurance({ id: data.id, taxi_id, [key]: null });
   };
 
   return (

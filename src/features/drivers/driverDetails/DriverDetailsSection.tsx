@@ -17,8 +17,8 @@ import { FileListViewer, FileConfig, FileListViewerOnChangeHandler, FileListView
 
 export function DriverDetailsSection() {
   const params = useParams();
-  const id = Number(params.id);
-  const { data } = useDriverDetails(id);
+  const driver_id = Number(params.id);
+  const { data } = useDriverDetails(driver_id);
   const isRetiredCheckboxId = useId();
   const [isEditMode, setEditMode] = useState<boolean>(false);
   const { mutate: updateDriver } = useUpdateDriverDetails();
@@ -42,7 +42,7 @@ export function DriverDetailsSection() {
     const transformedData = updateDriverTransformer(formData);
 
     // TODO check if data has actually been changed (not just isDirty?) and only then mutate
-    updateDriver({ id, ...transformedData }, {
+    updateDriver({ id: driver_id, ...transformedData }, {
       onError: () => {
         form.reset(data, { keepErrors: true });
       },
@@ -51,12 +51,12 @@ export function DriverDetailsSection() {
 
   const handleChangeFile: FileListViewerOnChangeHandler = (file, index) => {
     const { key } = files[index];
-    updateDriver({ id, [key]: file });
+    updateDriver({ id: driver_id, [key]: file });
   };
 
   const handleDeleteFile: FileListViewerOnDeleteHandler = (index) => {
     const { key } = files[index];
-    updateDriver({ id, [key]: null });
+    updateDriver({ id: driver_id, [key]: null });
   };
 
   return (

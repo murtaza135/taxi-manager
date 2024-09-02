@@ -26,7 +26,7 @@ export type Variables = Prettify<
   }
 >;
 
-export async function updateDriversLicenceDetails({ id, document, driver_id, ...vars }: Variables) {
+export async function updateDriversLicenceDetails({ id, document, ...vars }: Variables) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
 
   if (!isEmpty(vars)) {

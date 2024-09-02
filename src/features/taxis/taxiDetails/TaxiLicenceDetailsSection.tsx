@@ -13,8 +13,8 @@ import { FileListViewer, FileConfig, FileListViewerOnChangeHandler, FileListView
 
 export function TaxiLicenceDetailsSection() {
   const params = useParams();
-  const id = Number(params.id);
-  const { data } = useTaxiLicenceDetails(id);
+  const taxi_id = Number(params.id);
+  const { data } = useTaxiLicenceDetails(taxi_id);
   const [isEditMode, setEditMode] = useState<boolean>(false);
   const { mutate: updateTaxiLicence } = useUpdateTaxiLicenceDetails();
 
@@ -49,7 +49,7 @@ export function TaxiLicenceDetailsSection() {
     setEditMode(false);
     const transformedData = updateTaxiLicenceDetailsTransformer(formData);
 
-    updateTaxiLicence({ id: data.id, ...transformedData }, {
+    updateTaxiLicence({ id: data.id, taxi_id, ...transformedData }, {
       onError: () => {
         form.reset(data, { keepErrors: true });
       },
@@ -58,12 +58,12 @@ export function TaxiLicenceDetailsSection() {
 
   const handleChangeFile: FileListViewerOnChangeHandler = (file, index) => {
     const { key } = files[index];
-    updateTaxiLicence({ id, [key]: file });
+    updateTaxiLicence({ id: data.id, taxi_id, [key]: file });
   };
 
   const handleDeleteFile: FileListViewerOnDeleteHandler = (index) => {
     const { key } = files[index];
-    updateTaxiLicence({ id, [key]: null });
+    updateTaxiLicence({ id: data.id, taxi_id, [key]: null });
   };
 
   return (

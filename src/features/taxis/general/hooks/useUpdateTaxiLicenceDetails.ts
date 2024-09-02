@@ -22,6 +22,7 @@ export type Variables = Prettify<
     >
   > & {
     id: number;
+    taxi_id: number;
     compliance_certificate_document?: File | null | undefined;
     phc_licence_document?: File | null | undefined;
   }
@@ -197,18 +198,22 @@ export function useUpdateTaxiLicenceDetails() {
 
   const mutation = useMutation<void, SupabaseError, Variables>({
     mutationFn: updateTaxiLicenceDetails,
-    onSuccess: async (_data, { id, compliance_certificate_document, phc_licence_document }) => {
+    onSuccess: async (_data, {
+      taxi_id,
+      compliance_certificate_document,
+      phc_licence_document,
+    }) => {
       if (compliance_certificate_document !== undefined) {
-        queryClient.removeQueries({ queryKey: ['taxis', id, 'licence', 'complianceCertificate'] });
+        queryClient.removeQueries({ queryKey: ['taxis', taxi_id, 'licence', 'complianceCertificate'] });
       }
 
       if (phc_licence_document !== undefined) {
-        queryClient.removeQueries({ queryKey: ['taxis', id, 'licence', 'phcLicence'] });
+        queryClient.removeQueries({ queryKey: ['taxis', taxi_id, 'licence', 'phcLicence'] });
       }
 
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['taxis', 'list'] }),
-        queryClient.invalidateQueries({ queryKey: ['taxis', id, 'licence'], exact: true }),
+        queryClient.invalidateQueries({ queryKey: ['taxis', taxi_id, 'licence'], exact: true }),
       ]);
       revalidate();
     },

@@ -13,8 +13,8 @@ import { FileListViewer, FileConfig, FileListViewerOnChangeHandler, FileListView
 
 export function TaxiDetailsSection() {
   const params = useParams();
-  const id = Number(params.id);
-  const { data } = useTaxiDetails(id);
+  const taxi_id = Number(params.id);
+  const { data } = useTaxiDetails(taxi_id);
   const [isEditMode, setEditMode] = useState<boolean>(false);
   const { mutate: updateTaxi } = useUpdateTaxiDetails();
 
@@ -49,7 +49,7 @@ export function TaxiDetailsSection() {
     const transformedData = updateTaxiDetailsTransformer(formData);
 
     // TODO check if data has actually been changed (not just isDirty?) and only then mutate
-    updateTaxi({ id, ...transformedData }, {
+    updateTaxi({ id: taxi_id, ...transformedData }, {
       onError: () => {
         form.reset(data, { keepErrors: true });
       },
@@ -58,12 +58,12 @@ export function TaxiDetailsSection() {
 
   const handleChangeFile: FileListViewerOnChangeHandler = (file, index) => {
     const { key } = files[index];
-    updateTaxi({ id, [key]: file });
+    updateTaxi({ id: taxi_id, [key]: file });
   };
 
   const handleDeleteFile: FileListViewerOnDeleteHandler = (index) => {
     const { key } = files[index];
-    updateTaxi({ id, [key]: null });
+    updateTaxi({ id: taxi_id, [key]: null });
   };
 
   return (

@@ -21,6 +21,7 @@ export type Variables = Prettify<
     >
   > & {
     id: number;
+    taxi_id: number;
     insurance?: File | null | undefined;
   }
 >;
@@ -128,14 +129,14 @@ export function useUpdateTaxiInsuranceDetails() {
 
   const mutation = useMutation<void, SupabaseError, Variables>({
     mutationFn: updateTaxiInsuranceDetails,
-    onSuccess: async (_data, { id, insurance }) => {
+    onSuccess: async (_data, { taxi_id, insurance }) => {
       if (insurance !== undefined) {
-        queryClient.removeQueries({ queryKey: ['taxis', id, 'insurance', 'document'] });
+        queryClient.removeQueries({ queryKey: ['taxis', taxi_id, 'insurance', 'document'] });
       }
 
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['taxis', 'list'] }),
-        queryClient.invalidateQueries({ queryKey: ['taxis', id, 'insurance'], exact: true }),
+        queryClient.invalidateQueries({ queryKey: ['taxis', taxi_id, 'insurance'], exact: true }),
       ]);
       revalidate();
     },
