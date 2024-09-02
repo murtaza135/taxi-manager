@@ -9,7 +9,7 @@ import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
 import { Tables } from '@/types/database';
 import { Prettify } from '@/types/utils';
-import { compressImage } from '@/utils/compression/compressImage';
+import { extname } from '@/utils/path/extname';
 
 // TODO make simpler
 
@@ -66,18 +66,14 @@ export async function updateDriversTaxiBadgeDetails({
     });
   }
 
-  if (document && !documentSelectData.document_path) {
+  if (document) {
     /* add document */
-    const document_path = `${session.user.id}/taxi-badges/${uuidv4()}`;
-    const compressedDocument = await compressImage(
-      document,
-      { maxWidth: 150, maxHeight: 150 },
-    );
+    const document_path = `${session.user.id}/taxi-badges/${uuidv4()}${extname(document.name)}`;
 
     const { error: documentError } = await supabase
       .storage
       .from('main')
-      .upload(document_path, compressedDocument, { upsert: true });
+      .upload(document_path, document, { upsert: true });
 
     if (documentError) {
       throw new SupabaseError(documentError, null, {
@@ -96,22 +92,13 @@ export async function updateDriversTaxiBadgeDetails({
         globalTitle: 'Could not update drivers taxi badge',
       });
     }
-  } else if (document && documentSelectData.document_path) {
-    /* replace document */
-    const compressedDocument = await compressImage(
-      document,
-      { maxWidth: 150, maxHeight: 150 },
-    );
 
-    const { error: documentError } = await supabase
-      .storage
-      .from('main')
-      .update(documentSelectData.document_path, compressedDocument, { upsert: true });
-
-    if (documentError) {
-      throw new SupabaseError(documentError, null, {
-        globalTitle: 'Could not update drivers taxi badge',
-      });
+    // delete old file if it exists
+    if (documentSelectData.document_path) {
+      await supabase
+        .storage
+        .from('main')
+        .remove([documentSelectData.document_path]);
     }
   } else if (document === null && documentSelectData.document_path) {
     /* delete document */

@@ -7,6 +7,7 @@ import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Prettify, NonNullableObject } from '@/types/utils';
 import { getFile } from '@/lib/supabase/getFile';
+import { extractFileType, FileType } from '@/utils/path/extractFileType';
 
 type SupabaseDriverDetails = Prettify<
   Partial<NonNullableObject<
@@ -26,6 +27,7 @@ type DriverDetails = Prettify<
   SupabaseDriverDetails & {
     id: number;
     picture_src: string | null;
+    picture_file_type: FileType;
   }
 >;
 
@@ -65,8 +67,10 @@ async function getDriverDetails(id: number): Promise<DriverDetails> {
     driverPictureQueryOptions({ id, path: data.picture_path }),
   );
 
+  const picture_file_type = extractFileType(data.picture_path);
+
   const mappedData = mapValues(data, (val) => val ?? undefined) as SupabaseDriverDetails;
-  return { ...mappedData, picture_src, id };
+  return { ...mappedData, picture_src, picture_file_type, id };
 }
 
 export function driverDetailsQueryOptions(id: number) {

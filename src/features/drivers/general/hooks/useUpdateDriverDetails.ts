@@ -9,7 +9,7 @@ import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
 import { Tables } from '@/types/database';
 import { Prettify } from '@/types/utils';
-import { compressImage } from '@/utils/compression/compressImage';
+import { extname } from '@/utils/path/extname';
 
 // TODO make simpler
 
@@ -61,18 +61,14 @@ export async function updateDriverDetails({ id, picture, ...vars }: Variables) {
     });
   }
 
-  if (picture && !pictureSelectData.picture_path) {
+  if (picture) {
     /* add picture */
-    const picture_path = `${session.user.id}/driver-pictures/${uuidv4()}`;
-    const compressedPicture = await compressImage(
-      picture,
-      { maxWidth: 150, maxHeight: 150 },
-    );
+    const picture_path = `${session.user.id}/driver-pictures/${uuidv4()}${extname(picture.name)}`;
 
     const { error: pictureError } = await supabase
       .storage
       .from('main')
-      .upload(picture_path, compressedPicture, { upsert: true });
+      .upload(picture_path, picture, { upsert: true });
 
     if (pictureError) {
       throw new SupabaseError(pictureError, null, {
@@ -91,22 +87,13 @@ export async function updateDriverDetails({ id, picture, ...vars }: Variables) {
         globalTitle: 'Could not update driver',
       });
     }
-  } else if (picture && pictureSelectData.picture_path) {
-    /* replace picture */
-    const compressedPicture = await compressImage(
-      picture,
-      { maxWidth: 150, maxHeight: 150 },
-    );
 
-    const { error: pictureError } = await supabase
-      .storage
-      .from('main')
-      .update(pictureSelectData.picture_path, compressedPicture, { upsert: true });
-
-    if (pictureError) {
-      throw new SupabaseError(pictureError, null, {
-        globalTitle: 'Could not update driver',
-      });
+    // delete old file if it exists
+    if (pictureSelectData.picture_path) {
+      await supabase
+        .storage
+        .from('main')
+        .remove([pictureSelectData.picture_path]);
     }
   } else if (picture === null && pictureSelectData.picture_path) {
     /* delete picture */

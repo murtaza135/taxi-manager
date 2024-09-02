@@ -7,6 +7,7 @@ import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Prettify, NonNullableObject, ReplaceNullWithUndefined } from '@/types/utils';
 import { getFile } from '@/lib/supabase/getFile';
+import { extractFileType, FileType } from '@/utils/path/extractFileType';
 
 type SupabaseDriversTaxiBadgeDetails = Prettify<
   NonNullableObject<
@@ -32,6 +33,7 @@ type DriversTaxiBadgeDetails = Prettify<
   > & {
     driver_id: number;
     document_src: string | null;
+    document_file_type: FileType;
   }
 >;
 
@@ -74,6 +76,8 @@ async function getDriversTaxiBadgeDetails(driver_id: number): Promise<DriversTax
     }),
   );
 
+  const document_file_type = extractFileType(data.drivers_taxi_badge_document_path);
+
   const mappedData = mapValues(data, (val) => val ?? undefined) as SupabaseDriversTaxiBadgeDetails;
 
   return {
@@ -83,6 +87,7 @@ async function getDriversTaxiBadgeDetails(driver_id: number): Promise<DriversTax
     end_date: mappedData.drivers_taxi_badge_end_date,
     document_path: mappedData.drivers_taxi_badge_document_path,
     document_src: drivers_taxi_badge_document_src,
+    document_file_type,
     driver_id,
   };
 }

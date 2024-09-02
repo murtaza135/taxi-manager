@@ -7,6 +7,7 @@ import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Prettify, NonNullableObject, ReplaceNullWithUndefined } from '@/types/utils';
 import { getFile } from '@/lib/supabase/getFile';
+import { extractFileType, FileType } from '@/utils/path/extractFileType';
 
 type SupabaseDriversLicenceDetails = Prettify<
   NonNullableObject<
@@ -30,6 +31,7 @@ type DriversLicenceDetails = Prettify<
   > & {
     driver_id: number;
     document_src: string | null;
+    document_file_type: FileType;
   }
 >;
 
@@ -69,6 +71,8 @@ async function getDriversLicenceDetails(driver_id: number): Promise<DriversLicen
     driversLicenceDocumentQueryOptions({ driver_id, path: data.drivers_licence_document_path }),
   );
 
+  const document_file_type = extractFileType(data.drivers_licence_document_path);
+
   const mappedData = mapValues(data, (val) => val ?? undefined) as SupabaseDriversLicenceDetails;
 
   return {
@@ -78,6 +82,7 @@ async function getDriversLicenceDetails(driver_id: number): Promise<DriversLicen
     end_date: mappedData.drivers_licence_end_date,
     document_path: mappedData.drivers_licence_document_path,
     document_src: drivers_licence_document_src,
+    document_file_type,
     driver_id,
   };
 }

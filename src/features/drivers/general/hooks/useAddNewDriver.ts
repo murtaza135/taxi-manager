@@ -7,7 +7,7 @@ import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { queryClient as globalQueryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { supabase } from '@/config/api/supabaseClient';
-import { compressImage } from '@/utils/compression/compressImage';
+import { extname } from '@/utils/path/extname';
 
 type DriverDocumentPathsObject = {
   picture_path?: string,
@@ -22,17 +22,12 @@ export async function addNewDriver(formData: AddNewDriverTransformedSchema) {
 
   // TODO add storage rollback on error
   if (picture) {
-    const compressedPicture = await compressImage(
-      picture,
-      { maxWidth: 150, maxHeight: 150 },
-    );
-
     const { data: storageData } = await supabase
       .storage
       .from('main')
       .upload(
-        `${session.user.id}/driver-pictures/${uuidv4()}`,
-        compressedPicture,
+        `${session.user.id}/driver-pictures/${uuidv4()}${extname(picture.name)}`,
+        picture,
         { upsert: true },
       );
 
@@ -42,17 +37,12 @@ export async function addNewDriver(formData: AddNewDriverTransformedSchema) {
   }
 
   if (licence_document) {
-    const compressedLicenceDocument = await compressImage(
-      licence_document,
-      { maxWidth: 500, maxHeight: 500 },
-    );
-
     const { data: storageData } = await supabase
       .storage
       .from('main')
       .upload(
-        `${session.user.id}/drivers-licences/${uuidv4()}`,
-        compressedLicenceDocument,
+        `${session.user.id}/drivers-licences/${uuidv4()}${extname(licence_document.name)}`,
+        licence_document,
         { upsert: true },
       );
 
@@ -62,17 +52,12 @@ export async function addNewDriver(formData: AddNewDriverTransformedSchema) {
   }
 
   if (badge_document) {
-    const compressedBadgeDocument = await compressImage(
-      badge_document,
-      { maxWidth: 500, maxHeight: 500 },
-    );
-
     const { data: storageData } = await supabase
       .storage
       .from('main')
       .upload(
-        `${session.user.id}/taxi-badges/${uuidv4()}`,
-        compressedBadgeDocument,
+        `${session.user.id}/taxi-badges/${uuidv4()}${extname(badge_document.name)}`,
+        badge_document,
         { upsert: true },
       );
 
