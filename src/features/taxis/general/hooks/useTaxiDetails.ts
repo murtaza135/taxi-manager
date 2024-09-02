@@ -44,7 +44,7 @@ export function taxiPictureQueryOptions({ id, path }: PictureVariables) {
   return queryOptions<string | null, void>({
     queryKey: ['taxis', id, 'details', 'picture', path],
     queryFn: () => getFile(path),
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
 
@@ -52,7 +52,7 @@ export function taxiLogbookQueryOptions({ id, path }: PictureVariables) {
   return queryOptions<string | null, void>({
     queryKey: ['taxis', id, 'details', 'logbook', path],
     queryFn: () => getFile(path),
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
 

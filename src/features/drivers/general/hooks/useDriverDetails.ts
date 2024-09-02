@@ -40,7 +40,7 @@ export function driverPictureQueryOptions({ id, path }: PictureVariables) {
   return queryOptions<string | null, void>({
     queryKey: ['drivers', id, 'details', 'picture', path],
     queryFn: () => getFile(path),
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
 

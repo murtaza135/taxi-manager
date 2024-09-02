@@ -44,7 +44,7 @@ export function driversLicenceDocumentQueryOptions({ driver_id, path }: Document
   return queryOptions<string | null, void>({
     queryKey: ['drivers', driver_id, 'licence', 'document', path],
     queryFn: () => getFile(path),
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
 

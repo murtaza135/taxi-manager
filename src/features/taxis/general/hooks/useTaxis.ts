@@ -106,7 +106,6 @@ export function taxisQueryOptions(options?: Variables) {
   >({
     queryKey: ['taxis', 'list', { search, isRetired }],
     queryFn: (context) => getTaxis({ search, isRetired }, context),
-    staleTime: 1000 * 60, // 60 seconds,
     initialPageParam: 0,
     getNextPageParam: (_lastGroup, groups) => groups.length,
     refetchOnWindowFocus: false,

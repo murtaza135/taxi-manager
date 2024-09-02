@@ -46,7 +46,7 @@ export function driversTaxiBadgeDocumentQueryOptions({ driver_id, path }: Docume
   return queryOptions<string | null, void>({
     queryKey: ['drivers', driver_id, 'taxiBadge', 'document', path],
     queryFn: () => getFile(path),
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
 

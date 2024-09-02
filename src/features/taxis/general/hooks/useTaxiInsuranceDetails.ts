@@ -47,7 +47,7 @@ export function taxiInsuranceCertificateQueryOptions({ id, path }: PictureVariab
   return queryOptions<string | null, void>({
     queryKey: ['taxis', id, 'insurance', 'document', path],
     queryFn: () => getFile(path),
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
 
