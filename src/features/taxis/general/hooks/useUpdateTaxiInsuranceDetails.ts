@@ -60,7 +60,7 @@ export async function updateTaxiInsuranceDetails({ id, insurance, ...vars }: Var
     });
   }
 
-  if (insurance && !documentsSelectData.document_path) {
+  if (insurance) {
     /* add insurance */
     const document_path = `${session.user.id}/insurance-documents/${uuidv4()}${extname(insurance.name)}`;
 
@@ -86,21 +86,13 @@ export async function updateTaxiInsuranceDetails({ id, insurance, ...vars }: Var
         globalTitle: 'Could not update taxi insurance',
       });
     }
-  } else if (insurance && documentsSelectData.document_path) {
-    /* replace insurance */
-    const { error: documentError } = await supabase
-      .storage
-      .from('main')
-      .update(
-        documentsSelectData.document_path,
-        insurance,
-        { upsert: true },
-      );
 
-    if (documentError) {
-      throw new SupabaseError(documentError, null, {
-        globalTitle: 'Could not update taxi insurance',
-      });
+    // delete old file if it exists
+    if (documentsSelectData.document_path) {
+      await supabase
+        .storage
+        .from('main')
+        .remove([documentsSelectData.document_path]);
     }
   } else if (insurance === null && documentsSelectData.document_path) {
     /* delete insurance */

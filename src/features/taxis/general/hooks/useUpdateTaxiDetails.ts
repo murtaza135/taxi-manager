@@ -63,7 +63,7 @@ export async function updateTaxiDetails({ id, picture, logbook, ...vars }: Varia
     });
   }
 
-  if (picture && !documentsSelectData.picture_path) {
+  if (picture) {
     /* add picture */
     const picture_path = `${session.user.id}/taxi-pictures/${uuidv4()}${extname(picture.name)}`;
 
@@ -89,17 +89,13 @@ export async function updateTaxiDetails({ id, picture, logbook, ...vars }: Varia
         globalTitle: 'Could not update taxi',
       });
     }
-  } else if (picture && documentsSelectData.picture_path) {
-    /* replace picture */
-    const { error: pictureError } = await supabase
-      .storage
-      .from('main')
-      .update(documentsSelectData.picture_path, picture, { upsert: true });
 
-    if (pictureError) {
-      throw new SupabaseError(pictureError, null, {
-        globalTitle: 'Could not update taxi',
-      });
+    // delete old file if it exists
+    if (documentsSelectData.picture_path) {
+      await supabase
+        .storage
+        .from('main')
+        .remove([documentsSelectData.picture_path]);
     }
   } else if (picture === null && documentsSelectData.picture_path) {
     /* delete picture */
@@ -127,7 +123,7 @@ export async function updateTaxiDetails({ id, picture, logbook, ...vars }: Varia
     }
   }
 
-  if (logbook && !documentsSelectData.logbook_document_path) {
+  if (logbook) {
     /* add logbook */
     const logbook_document_path = `${session.user.id}/taxi-pictures/${uuidv4()}${extname(logbook.name)}`;
 
@@ -153,17 +149,13 @@ export async function updateTaxiDetails({ id, picture, logbook, ...vars }: Varia
         globalTitle: 'Could not update taxi',
       });
     }
-  } else if (logbook && documentsSelectData.logbook_document_path) {
-    /* replace logbook */
-    const { error: logbookError } = await supabase
-      .storage
-      .from('main')
-      .update(documentsSelectData.logbook_document_path, logbook, { upsert: true });
 
-    if (logbookError) {
-      throw new SupabaseError(logbookError, null, {
-        globalTitle: 'Could not update taxi',
-      });
+    // delete old file if it exists
+    if (documentsSelectData.logbook_document_path) {
+      await supabase
+        .storage
+        .from('main')
+        .remove([documentsSelectData.logbook_document_path]);
     }
   } else if (logbook === null && documentsSelectData.logbook_document_path) {
     /* delete logbook */

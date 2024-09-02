@@ -67,8 +67,7 @@ export async function updateTaxiLicenceDetails({
     });
   }
 
-  if (compliance_certificate_document
-    && !documentsSelectData.compliance_certificate_document_path) {
+  if (compliance_certificate_document) {
     /* add compliance_certificate_document */
     const document_path = `${session.user.id}/compliance-certificates/${uuidv4()}${extname(compliance_certificate_document.name)}`;
 
@@ -94,22 +93,13 @@ export async function updateTaxiLicenceDetails({
         globalTitle: 'Could not update taxi licence',
       });
     }
-  } else if (compliance_certificate_document
-    && documentsSelectData.compliance_certificate_document_path) {
-    /* replace compliance_certificate_document */
-    const { error: documentError } = await supabase
-      .storage
-      .from('main')
-      .update(
-        documentsSelectData.compliance_certificate_document_path,
-        compliance_certificate_document,
-        { upsert: true },
-      );
 
-    if (documentError) {
-      throw new SupabaseError(documentError, null, {
-        globalTitle: 'Could not update taxi licence',
-      });
+    // delete old file if it exists
+    if (documentsSelectData.compliance_certificate_document_path) {
+      await supabase
+        .storage
+        .from('main')
+        .remove([documentsSelectData.compliance_certificate_document_path]);
     }
   } else if (compliance_certificate_document === null
     && documentsSelectData.compliance_certificate_document_path) {
@@ -138,8 +128,7 @@ export async function updateTaxiLicenceDetails({
     }
   }
 
-  if (phc_licence_document
-    && !documentsSelectData.phc_licence_document_path) {
+  if (phc_licence_document) {
     /* add phc_licence_document */
     const document_path = `${session.user.id}/phc-licences/${uuidv4()}${extname(phc_licence_document.name)}`;
 
@@ -165,22 +154,13 @@ export async function updateTaxiLicenceDetails({
         globalTitle: 'Could not update taxi licence',
       });
     }
-  } else if (phc_licence_document
-    && documentsSelectData.phc_licence_document_path) {
-    /* replace phc_licence_document */
-    const { error: documentError } = await supabase
-      .storage
-      .from('main')
-      .update(
-        documentsSelectData.phc_licence_document_path,
-        phc_licence_document,
-        { upsert: true },
-      );
 
-    if (documentError) {
-      throw new SupabaseError(documentError, null, {
-        globalTitle: 'Could not update taxi licence',
-      });
+    // delete old file if it exists
+    if (documentsSelectData.phc_licence_document_path) {
+      await supabase
+        .storage
+        .from('main')
+        .remove([documentsSelectData.phc_licence_document_path]);
     }
   } else if (phc_licence_document === null
     && documentsSelectData.phc_licence_document_path) {
