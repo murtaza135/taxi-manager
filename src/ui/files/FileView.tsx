@@ -23,17 +23,17 @@ export function OtherFileDisplay({ filename }: OtherFileDisplayProps) {
 }
 
 type FileErrorDisplayProps = {
-  type?: string;
+  title?: string;
   message?: string;
 };
 
-export function FileErrorDisplay({ type, message }: FileErrorDisplayProps) {
+export function FileErrorDisplay({ title, message }: FileErrorDisplayProps) {
   return (
     <div className="w-full h-full center border border-achromatic-dark dark:border-achromatic-lighter rounded-lg">
       <div className="flex flex-col justify-center items-center gap-2">
         <MdError className="text-5xl" />
         <p className="font-semibold">{message ?? 'Could not load file'}</p>
-        {type && <p className="font-semibold text-xs opacity-70 capitalize">{type}</p>}
+        {title && <p className="font-semibold text-xs opacity-70 capitalize">{title}</p>}
       </div>
     </div>
   );

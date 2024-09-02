@@ -10,8 +10,6 @@ import { Image, ImageView, ImageLoading, ImageError, ImageFallback } from '@/ui/
 import { FileLoadingDisplay, FileErrorDisplay, ImageLogo, PDFLogo, FileLogo, NoFileLogo, OtherFileDisplay } from '@/ui/files/FileView';
 import { FileType } from '@/utils/path/extractFileType';
 
-// TODO add check for files.length === 0
-
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
   import.meta.url,
@@ -29,7 +27,8 @@ export type FileListViewerOnDeleteHandler = (
 ) => void;
 
 export type FileConfig = {
-  type: string;
+  title: string;
+  displayTitle?: boolean;
   file?: string;
   fileType: FileType;
   accept?: string;
@@ -70,10 +69,10 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
             />
             <ImageLoading><FileLoadingDisplay /></ImageLoading>
             <ImageError>
-              <FileErrorDisplay type={currentConfig.type} message="Could not load image" />
+              <FileErrorDisplay title={currentConfig.title} message="Could not load image" />
             </ImageError>
             <ImageFallback>
-              <FileErrorDisplay type={currentConfig.type} message="No image available" />
+              <FileErrorDisplay title={currentConfig.title} message="No image available" />
             </ImageFallback>
           </Image>
         )}
@@ -84,8 +83,8 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
             file={currentConfig.file}
             className="rounded-lg w-[12.75rem] h-[12.75rem] overflow-hidden [&>div]:h-full"
             loading={<FileLoadingDisplay />}
-            error={<FileErrorDisplay type={currentConfig.type} message="Could not load PDF" />}
-            noData={<FileErrorDisplay type={currentConfig.type} message="No PDF available" />}
+            error={<FileErrorDisplay title={currentConfig.title} message="Could not load PDF" />}
+            noData={<FileErrorDisplay title={currentConfig.title} message="No PDF available" />}
           >
             <Page
               pageIndex={0}
@@ -93,25 +92,32 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
               scale={0.8}
               className="center h-full"
               loading={<FileLoadingDisplay />}
-              error={<FileErrorDisplay type={currentConfig.type} message="Could not load PDF" />}
-              noData={<FileErrorDisplay type={currentConfig.type} message="No PDF available" />}
+              error={<FileErrorDisplay title={currentConfig.title} message="Could not load PDF" />}
+              noData={<FileErrorDisplay title={currentConfig.title} message="No PDF available" />}
             />
           </Document>
         )}
 
         {/* view for other file */}
         {currentConfig?.fileType === 'other' && (
-          <OtherFileDisplay filename={currentConfig.type} />
+          <OtherFileDisplay filename={currentConfig.title} />
         )}
 
         {/* view for no image or pdf */}
         {currentConfig?.fileType === 'none' && (
-          <FileErrorDisplay type={currentConfig.type} message="No file available" />
+          <FileErrorDisplay title={currentConfig.title} message="No file available" />
+        )}
+
+        {/* title display */}
+        {currentConfig?.displayTitle && (
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-4 rounded-lg px-3 py-1.5 capitalize text-sm font-bold bg-primary-dark dark:bg-achromatic-dark dark:border dark:border-achromatic-darker text-achromatic-lighter opacity-0 group-hover:opacity-100 transition-opacity">
+            {currentConfig.title}
+          </div>
         )}
 
         {/* change and delete buttons for view */}
         {(onChange || onDelete) && (
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-4 rounded-lg px-4 py-3 bg-primary-dark dark:bg-achromatic-dark text-achromatic-lighter opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-4 rounded-lg px-4 py-2 bg-primary-dark dark:bg-achromatic-dark dark:border dark:border-achromatic-darker text-achromatic-lighter opacity-0 group-hover:opacity-100 transition-opacity">
             {onChange && (
               <label htmlFor={inputId} className="flex justify-start items-center gap-2 cursor-pointer hover:opacity-50">
                 <input
@@ -144,7 +150,7 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
         <div className="flex gap-1 flex-wrap">
           {files.map((config, index) => (
             <Button
-              key={config.type}
+              key={config.title}
               type="submit"
               variant="ghost"
               className={cn('rounded-lg p-0 overflow-hidden flex-shrink-0 bg-achromatic-lighter border border-solid border-achromatic-darker hover:opacity-100', currentFileIndex !== index && 'opacity-50')}
