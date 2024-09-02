@@ -8,6 +8,7 @@ import { queryClient as globalQueryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { supabase } from '@/config/api/supabaseClient';
 import { compressImage } from '@/utils/compression/compressImage';
+import { extname } from '@/utils/path/extname';
 
 type TaxiDocumentPathsObject = {
   picture_path?: string;
@@ -36,14 +37,12 @@ export async function addNewTaxi(formData: AddNewTaxiTransformedSchema) {
       { maxWidth: 150, maxHeight: 150 },
     );
 
+    const fileName = `${session.user.id}/taxi-pictures/${uuidv4()}${extname(compressedPicture.name)}`;
+
     const { data: storageData } = await supabase
       .storage
       .from('main')
-      .upload(
-        `${session.user.id}/taxi-pictures/${uuidv4()}`,
-        compressedPicture,
-        { upsert: true },
-      );
+      .upload(fileName, compressedPicture, { upsert: true });
 
     if (storageData) {
       documentPaths.picture_path = storageData.path;
@@ -56,14 +55,12 @@ export async function addNewTaxi(formData: AddNewTaxiTransformedSchema) {
       { maxWidth: 500, maxHeight: 500 },
     );
 
+    const fileName = `${session.user.id}/logbooks/${uuidv4()}${extname(compressedLogbookDocument.name)}`;
+
     const { data: storageData } = await supabase
       .storage
       .from('main')
-      .upload(
-        `${session.user.id}/logbooks/${uuidv4()}`,
-        compressedLogbookDocument,
-        { upsert: true },
-      );
+      .upload(fileName, compressedLogbookDocument, { upsert: true });
 
     if (storageData) {
       documentPaths.logbook_document_path = storageData.path;
@@ -76,14 +73,12 @@ export async function addNewTaxi(formData: AddNewTaxiTransformedSchema) {
       { maxWidth: 500, maxHeight: 500 },
     );
 
+    const fileName = `${session.user.id}/taxi-badges/${uuidv4()}${extname(compressedComplianceCertificateDocument.name)}`;
+
     const { data: storageData } = await supabase
       .storage
       .from('main')
-      .upload(
-        `${session.user.id}/taxi-badges/${uuidv4()}`,
-        compressedComplianceCertificateDocument,
-        { upsert: true },
-      );
+      .upload(fileName, compressedComplianceCertificateDocument, { upsert: true });
 
     if (storageData) {
       documentPaths.compliance_certificate_document_path = storageData.path;
@@ -96,14 +91,12 @@ export async function addNewTaxi(formData: AddNewTaxiTransformedSchema) {
       { maxWidth: 500, maxHeight: 500 },
     );
 
+    const fileName = `${session.user.id}/phc-licences/${uuidv4()}${extname(compressedPHCLicenceDocument.name)}`;
+
     const { data: storageData } = await supabase
       .storage
       .from('main')
-      .upload(
-        `${session.user.id}/phc-licences/${uuidv4()}`,
-        compressedPHCLicenceDocument,
-        { upsert: true },
-      );
+      .upload(fileName, compressedPHCLicenceDocument, { upsert: true });
 
     if (storageData) {
       documentPaths.phc_licence_document_path = storageData.path;
@@ -116,14 +109,12 @@ export async function addNewTaxi(formData: AddNewTaxiTransformedSchema) {
       { maxWidth: 500, maxHeight: 500 },
     );
 
+    const fileName = `${session.user.id}/insurance-documents/${uuidv4()}${extname(compressedInsuranceDocument.name)}`;
+
     const { data: storageData } = await supabase
       .storage
       .from('main')
-      .upload(
-        `${session.user.id}/insurance-documents/${uuidv4()}`,
-        compressedInsuranceDocument,
-        { upsert: true },
-      );
+      .upload(fileName, compressedInsuranceDocument, { upsert: true });
 
     if (storageData) {
       documentPaths.insurance_document_path = storageData.path;

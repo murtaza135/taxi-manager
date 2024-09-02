@@ -1,9 +1,24 @@
-import { FaFilePdf, FaFileImage, FaFileLines } from 'react-icons/fa6';
+import { FaFilePdf, FaFileImage, FaFileLines, FaFileCircleExclamation } from 'react-icons/fa6';
 import { MdError } from 'react-icons/md';
 
 export function FileLoadingDisplay() {
   return (
     <div className="rounded-lg w-[12.75rem] h-[12.75rem] dark:bg-achromatic-lighter" />
+  );
+}
+
+type OtherFileDisplayProps = {
+  filename?: string;
+};
+
+export function OtherFileDisplay({ filename }: OtherFileDisplayProps) {
+  return (
+    <div className="w-full h-full center border border-achromatic-dark dark:border-achromatic-lighter rounded-lg">
+      <div className="flex flex-col justify-center items-center gap-2">
+        <FaFileLines className="text-3xl" />
+        {filename && <p className="font-semibold text-sm opacity-70 px-3 w-40 text-center whitespace-nowrap text-ellipsis overflow-hidden">{filename}</p>}
+      </div>
+    </div>
   );
 }
 
@@ -44,6 +59,14 @@ export function FileLogo() {
   return (
     <div className="w-full h-full center text-primary-dark">
       <FaFileLines className="text-xl" />
+    </div>
+  );
+}
+
+export function NoFileLogo() {
+  return (
+    <div className="w-full h-full center text-primary-dark">
+      <FaFileCircleExclamation className="text-xl" />
     </div>
   );
 }

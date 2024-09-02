@@ -7,6 +7,7 @@ import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Prettify, NonNullableObject } from '@/types/utils';
 import { getFile } from '@/lib/supabase/getFile';
+import { extractFileType, FileType } from '@/utils/path/extractFileType';
 
 type SupabaseTaxiDetails = Prettify<
   Partial<NonNullableObject<
@@ -28,7 +29,9 @@ type TaxiDetails = Prettify<
   SupabaseTaxiDetails & {
     id: number;
     picture_src: string | null;
+    picture_file_type: FileType;
     logbook_document_src: string | null;
+    logbook_document_file_type: FileType;
   }
 >;
 
@@ -80,8 +83,18 @@ async function getTaxiDetails(id: number): Promise<TaxiDetails> {
     taxiLogbookQueryOptions({ id, path: data.logbook_document_path }),
   );
 
+  const picture_file_type = extractFileType(data.picture_path);
+  const logbook_document_file_type = extractFileType(data.logbook_document_path);
+
   const mappedData = mapValues(data, (val) => val ?? undefined) as SupabaseTaxiDetails;
-  return { ...mappedData, picture_src, logbook_document_src, id };
+  return {
+    ...mappedData,
+    picture_src,
+    logbook_document_src,
+    id,
+    picture_file_type,
+    logbook_document_file_type,
+  };
 }
 
 export function taxiDetailsQueryOptions(id: number) {

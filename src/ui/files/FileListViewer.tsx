@@ -7,7 +7,8 @@ import { cn } from '@/utils/cn';
 import 'react-pdf/dist/Page/TextLayer.css';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import { Image, ImageView, ImageLoading, ImageError, ImageFallback } from '@/ui/Image';
-import { FileLoadingDisplay, FileErrorDisplay, ImageLogo, PDFLogo, FileLogo } from '@/ui/files/FileView';
+import { FileLoadingDisplay, FileErrorDisplay, ImageLogo, PDFLogo, FileLogo, NoFileLogo, OtherFileDisplay } from '@/ui/files/FileView';
+import { FileType } from '@/utils/path/extractFileType';
 
 // TODO add check for files.length === 0
 
@@ -15,8 +16,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
   import.meta.url,
 ).toString();
-
-type FileType = 'image' | 'pdf' | 'other' | 'none';
 
 export type FileListViewerOnChangeHandler = (
   file: File | undefined,
@@ -47,7 +46,7 @@ type Props = {
 export function FileListViewer({ files, initial, onChange, onDelete, className }: Props) {
   const inputId = useId();
   const [currentFileIndex, setCurrent] = useState<number>(initial ?? 0);
-  const currentConfig = files[currentFileIndex];
+  const currentConfig = files[currentFileIndex] as FileConfig | undefined;
 
   const handleChange = (index: number) => {
     setCurrent(index);
@@ -56,8 +55,13 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
   return (
     <div className={cn('w-[12.75rem] space-y-2', className)}>
       <div className="relative rounded-lg w-[12.75rem] h-[12.75rem] overflow-hidden group">
+        {/* no current file provided */}
+        {!currentConfig && (
+          <OtherFileDisplay />
+        )}
+
         {/* image view */}
-        {currentConfig.fileType === 'image' && (
+        {currentConfig?.fileType === 'image' && (
           <Image className="rounded-lg w-[12.75rem] h-[12.75rem] overflow-hidden">
             <ImageView
               src={currentConfig.file}
@@ -75,7 +79,7 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
         )}
 
         {/* PDF view */}
-        {currentConfig.fileType === 'pdf' && (
+        {currentConfig?.fileType === 'pdf' && (
           <Document
             file={currentConfig.file}
             className="rounded-lg w-[12.75rem] h-[12.75rem] overflow-hidden [&>div]:h-full"
@@ -95,8 +99,13 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
           </Document>
         )}
 
+        {/* view for other file */}
+        {currentConfig?.fileType === 'other' && (
+          <OtherFileDisplay filename={currentConfig.type} />
+        )}
+
         {/* view for no image or pdf */}
-        {currentConfig.fileType === 'none' && (
+        {currentConfig?.fileType === 'none' && (
           <FileErrorDisplay type={currentConfig.type} message="No file available" />
         )}
 
@@ -110,7 +119,7 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
                   aria-label="picture"
                   className="hidden"
                   type="file"
-                  accept={currentConfig.accept ?? 'image/*,.pdf'}
+                  accept={currentConfig?.accept ?? 'image/*,.pdf'}
                   onChange={(event) => onChange(event.target.files?.[0], currentFileIndex, event)}
                 />
                 <span className="text-lg"><MdModeEdit /></span>
@@ -176,10 +185,17 @@ export function FileListViewer({ files, initial, onChange, onDelete, className }
                 </Document>
               )}
 
-              {/* no image or PDF */}
-              {config.fileType === 'none' && (
+              {/* other file */}
+              {config.fileType === 'other' && (
                 <div className="rounded-lg w-12 h-12 overflow-hidden">
                   <FileLogo />
+                </div>
+              )}
+
+              {/* no file */}
+              {config.fileType === 'none' && (
+                <div className="rounded-lg w-12 h-12 overflow-hidden">
+                  <NoFileLogo />
                 </div>
               )}
             </Button>

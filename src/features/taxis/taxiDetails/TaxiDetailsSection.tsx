@@ -1,11 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { MdModeEdit } from 'react-icons/md';
 import { BiSave } from 'react-icons/bi';
-import { useId, useMemo, useState } from 'react';
-import { FaTrashAlt } from 'react-icons/fa';
+import { useMemo, useState } from 'react';
 import { useTaxiDetails } from '@/features/taxis/general/hooks/useTaxiDetails';
-import { Avatar, AvatarPersistentFallback, AvatarImage } from '@/ui/Avatar';
-import { extractInitials } from '@/utils/string/extractInitials';
 import { EditableInput } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { toDateInputString } from '@/utils/date/toDateInputString';
@@ -32,16 +29,21 @@ export function TaxiDetailsSection() {
     {
       type: 'picture',
       file: data.picture_src ?? undefined,
-      fileType: 'none',
+      fileType: data.picture_file_type,
       accept: 'image/*',
     },
     {
       type: 'logbook',
       file: data.logbook_document_src ?? undefined,
-      fileType: 'pdf',
+      fileType: data.logbook_document_file_type,
       accept: 'image/*,.pdf',
     },
-  ], [data.picture_src, data.logbook_document_src]);
+  ], [
+    data.picture_src,
+    data.picture_file_type,
+    data.logbook_document_src,
+    data.logbook_document_file_type,
+  ]);
 
   const handleSubmitUpdate = form.handleSubmit((formData) => {
     setEditMode(false);

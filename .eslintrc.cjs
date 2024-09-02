@@ -46,7 +46,7 @@ module.exports = {
     "react/prop-types": "off",
     "react/jsx-one-expression-per-line": "off",
     "@stylistic/jsx-one-expression-per-line": ["off", { "allow": "non-jsx" }], // todo allow?
-    "max-len": ["error", { "code": 100, "ignoreStrings": true, "ignoreComments": true }],
+    "max-len": ["error", { "code": 100, "ignoreStrings": true, "ignoreComments": true, "ignoreTemplateLiterals": true }],
     "@typescript-eslint/no-misused-promises": ["error", { "checksVoidReturn": false }],
     "@typescript-eslint/indent": "off",
     "indent": "off",
