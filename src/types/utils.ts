@@ -6,9 +6,16 @@
 export type OptionalObjectGroup<T> = { [K in keyof T]?: undefined } | Required<T>;
 
 /**
- * Replace a key K mapping to a value of type T with a value of type R
+ * Replace a key K mapping to a value of type T with a value of type A
  */
-export type Replace<T, K extends keyof T, R> = Omit<T, K> & { [P in K]: R };
+export type Replace<T, K extends keyof T, A> = Omit<T, K> & { [P in K]: A };
+
+/**
+ * Replace all keys with type `OldType` with type `NewType`
+ */
+export type ReplaceType<T, OldType, NewType> = {
+  [K in keyof T]: OldType extends T[K] ? NewType : T[K]
+};
 
 /**
  * @source https://stackoverflow.com/questions/49682569/typescript-merge-object-types

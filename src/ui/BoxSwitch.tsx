@@ -30,44 +30,54 @@ const RadioGroupItem = React.forwardRef<
 ));
 RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
 
+type BoxSwitchProps = Omit<
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>,
+  'value' | 'defaultValue' | 'onValueChange'
+> & {
+  value?: boolean;
+  defaultValue?: boolean;
+  onValueChange?: ((value: boolean) => void);
+};
+
 const BoxSwitch = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
+  BoxSwitchProps
 >(({ className, value, defaultValue, onValueChange, ...props }, ref) => {
   const yesId = React.useId();
   const noId = React.useId();
-  const [innerValue, setInnerValue] = React.useState<string>(value ?? defaultValue ?? 'no');
+  const [innerValue, setInnerValue] = React.useState<boolean>(value ?? defaultValue ?? false);
   const actualValue = value ?? innerValue;
 
   const handleValueChange = (val: string) => {
-    setInnerValue(val);
-    onValueChange?.(val);
+    const newVal = val === 'yes';
+    setInnerValue(newVal);
+    onValueChange?.(newVal);
   };
 
   return (
     <RadioGroup
-      value={actualValue}
+      value={actualValue ? 'yes' : 'no'}
       {...props}
       ref={ref}
-      className={cn('flex rounded-lg w-fit border border-primary-dark dark:border-achromatic-dark overflow-hidden', className)}
+      className={cn('flex rounded-lg w-fit border border-primary-dark dark:border-primary-light overflow-hidden', className)}
       onValueChange={handleValueChange}
     >
       <div>
         <RadioGroupItem value="no" id={noId} className="hidden" />
         <Label
-          className={cn('inline-block px-6 py-4 w-full h-full cursor-pointer text-primary-dark dark:text-achromatic-lighter', actualValue === 'no' && 'bg-primary-dark text-achromatic-lighter dark:bg-achromatic-dark', actualValue === 'yes' && 'hover:opacity-75')}
+          className={cn('inline-block px-6 py-4 w-full h-full cursor-pointer text-primary-dark dark:text-achromatic-lighter', !actualValue && 'bg-primary-dark text-achromatic-lighter dark:bg-primary-light dark:text-achromatic-dark', actualValue && 'hover:opacity-75')}
           htmlFor={noId}
         >
           No
         </Label>
       </div>
 
-      <div className="w-[1px] bg-primary-dark dark:bg-achromatic-dark" />
+      <div className="w-[1px] bg-primary-dark dark:bg-primary-light" />
 
       <div>
         <RadioGroupItem value="yes" id={yesId} className="hidden" />
         <Label
-          className={cn('inline-block px-6 py-4 w-full h-full cursor-pointer text-primary-dark dark:text-achromatic-lighter', actualValue === 'yes' && 'bg-primary-dark text-achromatic-lighter dark:bg-achromatic-dark', actualValue === 'no' && 'hover:opacity-75')}
+          className={cn('inline-block px-6 py-4 w-full h-full cursor-pointer text-primary-dark dark:text-achromatic-lighter', actualValue && 'bg-primary-dark text-achromatic-lighter dark:bg-primary-light dark:text-achromatic-dark', !actualValue && 'hover:opacity-75')}
           htmlFor={yesId}
         >
           Yes
