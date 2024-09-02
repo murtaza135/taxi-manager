@@ -7,6 +7,7 @@ import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Prettify, NonNullableObject, ReplaceNullWithUndefined } from '@/types/utils';
 import { getFile } from '@/lib/supabase/getFile';
+import { extractFileType, FileType } from '@/utils/path/extractFileType';
 
 type SupabaseTaxiInsuranceDetails = Prettify<
   Partial<NonNullableObject<
@@ -33,6 +34,7 @@ type TaxiInsuranceDetails = Prettify<
   > & {
     taxi_id: number;
     document_src: string | null;
+    document_file_type: FileType;
   }
 >;
 
@@ -75,6 +77,8 @@ async function getTaxiInsuranceDetails(taxi_id: number): Promise<TaxiInsuranceDe
     }),
   );
 
+  const document_file_type = extractFileType(data.insurance_document_path);
+
   const mappedData = mapValues(data, (val) => val ?? undefined) as SupabaseTaxiInsuranceDetails;
 
   return {
@@ -86,6 +90,7 @@ async function getTaxiInsuranceDetails(taxi_id: number): Promise<TaxiInsuranceDe
     end_date: mappedData.insurance_end_date,
     document_path: mappedData.insurance_document_path,
     document_src,
+    document_file_type,
   };
 }
 

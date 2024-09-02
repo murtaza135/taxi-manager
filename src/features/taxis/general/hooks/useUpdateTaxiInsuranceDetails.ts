@@ -9,7 +9,7 @@ import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
 import { Tables } from '@/types/database';
 import { Prettify } from '@/types/utils';
-import { compressImage } from '@/utils/compression/compressImage';
+import { extname } from '@/utils/path/extname';
 
 // TODO make simpler
 
@@ -62,16 +62,12 @@ export async function updateTaxiInsuranceDetails({ id, insurance, ...vars }: Var
 
   if (insurance && !documentsSelectData.document_path) {
     /* add insurance */
-    const document_path = `${session.user.id}/insurance-documents/${uuidv4()}`;
-    const compressedDocument = await compressImage(
-      insurance,
-      { maxWidth: 150, maxHeight: 150 },
-    );
+    const document_path = `${session.user.id}/insurance-documents/${uuidv4()}${extname(insurance.name)}`;
 
     const { error: documentError } = await supabase
       .storage
       .from('main')
-      .upload(document_path, compressedDocument, { upsert: true });
+      .upload(document_path, insurance, { upsert: true });
 
     if (documentError) {
       throw new SupabaseError(documentError, null, {
@@ -92,17 +88,12 @@ export async function updateTaxiInsuranceDetails({ id, insurance, ...vars }: Var
     }
   } else if (insurance && documentsSelectData.document_path) {
     /* replace insurance */
-    const compressedDocument = await compressImage(
-      insurance,
-      { maxWidth: 150, maxHeight: 150 },
-    );
-
     const { error: documentError } = await supabase
       .storage
       .from('main')
       .update(
         documentsSelectData.document_path,
-        compressedDocument,
+        insurance,
         { upsert: true },
       );
 

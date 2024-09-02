@@ -9,7 +9,7 @@ import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
 import { Tables } from '@/types/database';
 import { Prettify } from '@/types/utils';
-import { compressImage } from '@/utils/compression/compressImage';
+import { extname } from '@/utils/path/extname';
 
 // TODO make simpler
 
@@ -70,16 +70,12 @@ export async function updateTaxiLicenceDetails({
   if (compliance_certificate_document
     && !documentsSelectData.compliance_certificate_document_path) {
     /* add compliance_certificate_document */
-    const document_path = `${session.user.id}/compliance-certificates/${uuidv4()}`;
-    const compressedDocument = await compressImage(
-      compliance_certificate_document,
-      { maxWidth: 150, maxHeight: 150 },
-    );
+    const document_path = `${session.user.id}/compliance-certificates/${uuidv4()}${extname(compliance_certificate_document.name)}`;
 
     const { error: documentError } = await supabase
       .storage
       .from('main')
-      .upload(document_path, compressedDocument, { upsert: true });
+      .upload(document_path, compliance_certificate_document, { upsert: true });
 
     if (documentError) {
       throw new SupabaseError(documentError, null, {
@@ -101,17 +97,12 @@ export async function updateTaxiLicenceDetails({
   } else if (compliance_certificate_document
     && documentsSelectData.compliance_certificate_document_path) {
     /* replace compliance_certificate_document */
-    const compressedDocument = await compressImage(
-      compliance_certificate_document,
-      { maxWidth: 150, maxHeight: 150 },
-    );
-
     const { error: documentError } = await supabase
       .storage
       .from('main')
       .update(
         documentsSelectData.compliance_certificate_document_path,
-        compressedDocument,
+        compliance_certificate_document,
         { upsert: true },
       );
 
@@ -150,16 +141,12 @@ export async function updateTaxiLicenceDetails({
   if (phc_licence_document
     && !documentsSelectData.phc_licence_document_path) {
     /* add phc_licence_document */
-    const document_path = `${session.user.id}/phc-licences/${uuidv4()}`;
-    const compressedDocument = await compressImage(
-      phc_licence_document,
-      { maxWidth: 150, maxHeight: 150 },
-    );
+    const document_path = `${session.user.id}/phc-licences/${uuidv4()}${extname(phc_licence_document.name)}`;
 
     const { error: documentError } = await supabase
       .storage
       .from('main')
-      .upload(document_path, compressedDocument, { upsert: true });
+      .upload(document_path, phc_licence_document, { upsert: true });
 
     if (documentError) {
       throw new SupabaseError(documentError, null, {
@@ -181,17 +168,12 @@ export async function updateTaxiLicenceDetails({
   } else if (phc_licence_document
     && documentsSelectData.phc_licence_document_path) {
     /* replace phc_licence_document */
-    const compressedDocument = await compressImage(
-      phc_licence_document,
-      { maxWidth: 150, maxHeight: 150 },
-    );
-
     const { error: documentError } = await supabase
       .storage
       .from('main')
       .update(
         documentsSelectData.phc_licence_document_path,
-        compressedDocument,
+        phc_licence_document,
         { upsert: true },
       );
 

@@ -87,6 +87,7 @@ async function getTaxiDetails(id: number): Promise<TaxiDetails> {
   const logbook_document_file_type = extractFileType(data.logbook_document_path);
 
   const mappedData = mapValues(data, (val) => val ?? undefined) as SupabaseTaxiDetails;
+
   return {
     ...mappedData,
     picture_src,

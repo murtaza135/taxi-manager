@@ -7,6 +7,7 @@ import { queryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Prettify, NonNullableObject, ReplaceNullWithUndefined } from '@/types/utils';
 import { getFile } from '@/lib/supabase/getFile';
+import { extractFileType, FileType } from '@/utils/path/extractFileType';
 
 type SupabaseTaxiLicenceDetails = Prettify<
   Partial<NonNullableObject<
@@ -34,7 +35,9 @@ type TaxiLicenceDetails = Prettify<
   > & {
     taxi_id: number;
     compliance_certificate_document_src: string | null;
+    compliance_certificate_document_file_type: FileType;
     phc_licence_document_src: string | null;
+    phc_licence_document_file_type: FileType;
   }
 >;
 
@@ -89,6 +92,12 @@ async function getTaxiLicenceDetails(taxi_id: number): Promise<TaxiLicenceDetail
     taxiPhcLicenceQueryOptions({ id: taxi_id, path: data.phc_licence_document_path }),
   );
 
+  const compliance_certificate_document_file_type = extractFileType(
+    data.compliance_certificate_document_path,
+  );
+
+  const phc_licence_document_file_type = extractFileType(data.phc_licence_document_path);
+
   const mappedData = mapValues(data, (val) => val ?? undefined) as SupabaseTaxiLicenceDetails;
 
   return {
@@ -100,7 +109,9 @@ async function getTaxiLicenceDetails(taxi_id: number): Promise<TaxiLicenceDetail
     compliance_certificate_document_path: mappedData.compliance_certificate_document_path,
     phc_licence_document_path: mappedData.phc_licence_document_path,
     compliance_certificate_document_src,
+    compliance_certificate_document_file_type,
     phc_licence_document_src,
+    phc_licence_document_file_type,
   };
 }
 

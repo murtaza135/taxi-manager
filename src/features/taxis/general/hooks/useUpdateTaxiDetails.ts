@@ -9,7 +9,7 @@ import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
 import { Tables } from '@/types/database';
 import { Prettify } from '@/types/utils';
-import { compressImage } from '@/utils/compression/compressImage';
+import { extname } from '@/utils/path/extname';
 
 // TODO make simpler
 
@@ -65,16 +65,12 @@ export async function updateTaxiDetails({ id, picture, logbook, ...vars }: Varia
 
   if (picture && !documentsSelectData.picture_path) {
     /* add picture */
-    const picture_path = `${session.user.id}/taxi-pictures/${uuidv4()}`;
-    const compressedPicture = await compressImage(
-      picture,
-      { maxWidth: 150, maxHeight: 150 },
-    );
+    const picture_path = `${session.user.id}/taxi-pictures/${uuidv4()}${extname(picture.name)}`;
 
     const { error: pictureError } = await supabase
       .storage
       .from('main')
-      .upload(picture_path, compressedPicture, { upsert: true });
+      .upload(picture_path, picture, { upsert: true });
 
     if (pictureError) {
       throw new SupabaseError(pictureError, null, {
@@ -95,15 +91,10 @@ export async function updateTaxiDetails({ id, picture, logbook, ...vars }: Varia
     }
   } else if (picture && documentsSelectData.picture_path) {
     /* replace picture */
-    const compressedPicture = await compressImage(
-      picture,
-      { maxWidth: 150, maxHeight: 150 },
-    );
-
     const { error: pictureError } = await supabase
       .storage
       .from('main')
-      .update(documentsSelectData.picture_path, compressedPicture, { upsert: true });
+      .update(documentsSelectData.picture_path, picture, { upsert: true });
 
     if (pictureError) {
       throw new SupabaseError(pictureError, null, {
@@ -138,16 +129,12 @@ export async function updateTaxiDetails({ id, picture, logbook, ...vars }: Varia
 
   if (logbook && !documentsSelectData.logbook_document_path) {
     /* add logbook */
-    const logbook_document_path = `${session.user.id}/taxi-pictures/${uuidv4()}`;
-    const compressedLogbook = await compressImage(
-      logbook,
-      { maxWidth: 150, maxHeight: 150 },
-    );
+    const logbook_document_path = `${session.user.id}/taxi-pictures/${uuidv4()}${extname(logbook.name)}`;
 
     const { error: logbookError } = await supabase
       .storage
       .from('main')
-      .upload(logbook_document_path, compressedLogbook, { upsert: true });
+      .upload(logbook_document_path, logbook, { upsert: true });
 
     if (logbookError) {
       throw new SupabaseError(logbookError, null, {
@@ -168,15 +155,10 @@ export async function updateTaxiDetails({ id, picture, logbook, ...vars }: Varia
     }
   } else if (logbook && documentsSelectData.logbook_document_path) {
     /* replace logbook */
-    const compressedLogbook = await compressImage(
-      logbook,
-      { maxWidth: 150, maxHeight: 150 },
-    );
-
     const { error: logbookError } = await supabase
       .storage
       .from('main')
-      .update(documentsSelectData.logbook_document_path, compressedLogbook, { upsert: true });
+      .update(documentsSelectData.logbook_document_path, logbook, { upsert: true });
 
     if (logbookError) {
       throw new SupabaseError(logbookError, null, {
