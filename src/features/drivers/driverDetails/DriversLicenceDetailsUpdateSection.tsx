@@ -26,6 +26,7 @@ export function DriversLicenceDetailsUpdateSection() {
   const files: FileConfig[] = useMemo(() => [
     {
       key: 'document',
+      title: 'Drivers Licence',
       file: data.document_src ?? undefined,
       fileType: data.document_file_type,
       accept: 'image/*,.pdf',

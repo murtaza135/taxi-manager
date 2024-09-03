@@ -26,6 +26,7 @@ export function TaxiInsuranceDetailsUpdateSection() {
   const files: FileConfig[] = useMemo(() => [
     {
       key: 'insurance',
+      title: 'Insurance',
       file: data.document_src ?? undefined,
       fileType: data.document_file_type,
       accept: 'image/*,.pdf',

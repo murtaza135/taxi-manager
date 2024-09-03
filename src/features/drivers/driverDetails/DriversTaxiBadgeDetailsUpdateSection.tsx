@@ -26,6 +26,7 @@ export function DriversTaxiBadgeDetailsUpdateSection() {
   const files: FileConfig[] = useMemo(() => [
     {
       key: 'document',
+      title: 'Taxi Badge',
       file: data.document_src ?? undefined,
       fileType: data.document_file_type,
       accept: 'image/*,.pdf',

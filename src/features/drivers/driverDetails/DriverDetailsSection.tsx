@@ -31,6 +31,7 @@ export function DriverDetailsSection() {
   const files: FileConfig[] = useMemo(() => [
     {
       key: 'picture',
+      title: 'Driver Picture',
       file: data.picture_src ?? undefined,
       fileType: data.picture_file_type,
       accept: 'image/*',
