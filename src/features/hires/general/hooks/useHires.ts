@@ -7,16 +7,13 @@ import { supabase } from '@/config/api/supabaseClient';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 
-// TODO add document fetches
-
 const fetchSize = 50;
 
-type SupabaseHire = Prettify<
+export type Hire = Prettify<
   Partial<NonNullableObject<
     Pick<
       Tables<'hire_agreement_view'>,
-      | 'permission_letter_document_path' | 'contract_document_path'
-      | 'deposit_receipt_document_path' | 'end_date' | 'taxi_licence_phc_number'
+      'end_date' | 'taxi_licence_phc_number'
       | 'taxi_licence_compliance_certificate_licence_number'
     >
   >> & NonNullableObject<
@@ -28,14 +25,6 @@ type SupabaseHire = Prettify<
       | 'taxi_chassis_number' | 'created_at'
     >
   >
->;
-
-export type Hire = Prettify<
-  SupabaseHire & {
-    permission_letter_document_src: string | null;
-    contract_document_src: string | null;
-    deposit_receipt_document_src: string | null;
-  }
 >;
 
 type HireResult = {
@@ -62,7 +51,7 @@ async function getHires(
   const { data, error, status, count } = await supabase
     .from('hire_agreement_view')
     .select(
-      'id, taxi_id, taxi_number_plate, driver_id, driver_name, start_date, rent_amount, deposit_amount, is_retired, taxi_chassis_number, created_at, permission_letter_document_path, contract_document_path, deposit_receipt_document_path, end_date, taxi_licence_phc_number, taxi_licence_compliance_certificate_licence_number',
+      'id, taxi_id, taxi_number_plate, driver_id, driver_name, start_date, rent_amount, deposit_amount, is_retired, taxi_chassis_number, created_at, end_date, taxi_licence_phc_number, taxi_licence_compliance_certificate_licence_number',
       { count: 'estimated' },
     )
     .eq('auth_id', session.user.id)
@@ -70,7 +59,7 @@ async function getHires(
     .order('created_at', { ascending: false })
     .or(`taxi_number_plate.ilike.%${search}%, driver_name.ilike.%${search}%, model.ilike.%${search}%,  taxi_chassis_number.ilike.%${search}%, taxi_licence_phc_number.ilike.%${search}%, taxi_licence_compliance_certificate_licence_number.ilike.%${search}%`)
     .range(from, to)
-    .returns<SupabaseHire[]>();
+    .returns<Hire[]>();
 
   if (status === 404) return { data: [], count: 0 };
 
@@ -86,9 +75,6 @@ async function getHires(
       const taxi_chassis_number = hire.taxi_chassis_number.toUpperCase();
       const taxi_licence_phc_number = hire.taxi_licence_phc_number?.toUpperCase();
       const taxi_number_plate = hire.taxi_number_plate.toUpperCase();
-      const permission_letter_document_src = null;
-      const contract_document_src = null;
-      const deposit_receipt_document_src = null;
 
       return {
         ...hire,
@@ -96,9 +82,6 @@ async function getHires(
         taxi_chassis_number,
         taxi_licence_phc_number,
         taxi_number_plate,
-        permission_letter_document_src,
-        contract_document_src,
-        deposit_receipt_document_src,
       };
     }),
   );
