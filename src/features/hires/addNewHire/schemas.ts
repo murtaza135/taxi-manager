@@ -16,7 +16,7 @@ export const addTaxiToHireAgreementSchema = z.object({
 });
 
 export const addDriverToHireAgreementSchema = z.object({
-  taxi_id: z
+  driver_id: z
     .string({ required_error: 'Driver required' })
     .trim()
     .min(1, 'Driver required')
