@@ -49,6 +49,7 @@ export const addNewTaxiDetailsSchema = z.object({
   cc: z
     .coerce
     .number({ invalid_type_error: 'Invalid CC' })
+    .max(32767, { message: 'CC is too big, please choose a smaller number' })
     .optional()
     .or(z.literal(0)),
   fuel_type: z
