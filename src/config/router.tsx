@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import { createRouteOptions } from '@/lib/react-router-dom/createRouteOptions';
 import { queryClient } from '@/config/api/queryClient';
@@ -11,6 +12,7 @@ const driverPageOptions = () => import('@/routes/pages/driver');
 const driversPageOptions = () => import('@/routes/pages/drivers');
 const addNewDriverPageOptions = () => import('@/routes/pages/addNewDriver');
 const hirePageOptions = () => import('@/routes/pages/hire');
+const addNewHireAgreementPageOptions = () => import('@/routes/pages/addNewHireAgreement');
 const hiresPageOptions = () => import('@/routes/pages/hires');
 const homePageOptions = () => import('@/routes/pages/home');
 const loginPageOptions = () => import('@/routes/pages/login');
@@ -28,6 +30,7 @@ const driverPageProps = createRouteOptions(driverPageOptions, queryClient);
 const driversPageProps = createRouteOptions(driversPageOptions, queryClient);
 const addNewDriverPageProps = createRouteOptions(addNewDriverPageOptions, queryClient);
 const hirePageProps = createRouteOptions(hirePageOptions, queryClient);
+const addNewHireAgreementPageProps = createRouteOptions(addNewHireAgreementPageOptions, queryClient);
 const hiresPageProps = createRouteOptions(hiresPageOptions, queryClient);
 const homePageProps = createRouteOptions(homePageOptions, queryClient);
 const loginPageProps = createRouteOptions(loginPageOptions, queryClient);
@@ -49,6 +52,7 @@ const routes = createRoutesFromElements(
       <Route path="/drivers/add" lazy={addNewDriverPageProps} />
       <Route path="/hire/:id" lazy={hirePageProps} />
       <Route path="/hires" lazy={hiresPageProps} />
+      <Route path="/hires/add" lazy={addNewHireAgreementPageProps} />
       <Route path="/home" lazy={homePageProps} />
       <Route path="/rent" lazy={rentPageProps} />
       <Route path="/settings" lazy={settingsPageProps} />

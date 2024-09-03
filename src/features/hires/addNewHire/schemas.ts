@@ -40,9 +40,10 @@ export const addNewHireAgreementDetailsSchema = z.object({
   deposit_amount: z
     .string()
     .trim()
-    .refine((val) => isCurrency(val))
+    .refine((val) => isCurrency(val) || val === '')
+    .transform((val) => (val === '' ? '0' : val))
     .optional()
-    .default('0.00'),
+    .default('0'),
   permission_letter_document_path: z
     .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
     .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })

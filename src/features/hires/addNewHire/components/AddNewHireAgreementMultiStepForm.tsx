@@ -25,7 +25,7 @@ const initialFormState: AddNewHireAgreementSchema = {
 
 export function AddNewHireMultiStepForm() {
   return (
-    <MultiStepForm min={1} max={4} initialFormState={initialFormState}>
+    <MultiStepForm min={1} max={4} initialFormState={initialFormState} initialStep={3}>
       <MultiStepFormStepper>
         <MultiStepFormStepperItem step={1} title="Taxi" />
         <MultiStepFormStepperItem step={2} title="Driver" />
