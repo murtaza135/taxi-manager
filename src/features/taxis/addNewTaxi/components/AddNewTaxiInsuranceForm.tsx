@@ -1,4 +1,3 @@
-import { useId } from 'react';
 import {
   FormProvider,
   Form,
@@ -11,11 +10,8 @@ import { Input } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { addNewTaxiInsuranceSchema, AddNewTaxiInsuranceSchema } from '@/features/taxis/addNewTaxi/schemas';
-import { Checkbox } from '@/ui/form/Checkbox';
 
 export function AddNewTaxiInsuranceForm() {
-  const isAnyDriverCheckbox = useId();
-
   const {
     formState,
     nextStep,
@@ -61,28 +57,6 @@ export function AddNewTaxiInsuranceForm() {
           render={({ field }) => (
             <FormGroup label="* Policy Number">
               <Input placeholder="Policy Number" {...field} />
-            </FormGroup>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="is_any_driver"
-          render={({ field: { value, onChange, ...rest } }) => (
-            <FormGroup label="* Any Driver?">
-              <div className="flex items-center justify-start gap-2 translate-x-[1px] border border-primary-dark dark:border-primary-light px-3 py-1.5 rounded-lg">
-                <Checkbox
-                  {...rest}
-                  id={isAnyDriverCheckbox}
-                  color="primary"
-                  checked={value}
-                  onCheckedChange={onChange}
-                  className="disabled:hidden"
-                />
-                <label htmlFor={isAnyDriverCheckbox} className="translate-y-[1px]">
-                  {value ? 'Yes' : 'No'}
-                </label>
-              </div>
             </FormGroup>
           )}
         />

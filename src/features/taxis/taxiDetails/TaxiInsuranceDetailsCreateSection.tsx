@@ -1,4 +1,4 @@
-import { useState, useId } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { BoxSwitch } from '@/ui/BoxSwitch';
 import {
@@ -11,7 +11,6 @@ import {
 import { Input } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { addNewTaxiInsuranceSchema, AddNewTaxiInsuranceSchema } from '@/features/taxis/addNewTaxi/schemas';
-import { Checkbox } from '@/ui/form/Checkbox';
 import { createObjectTransformer } from '@/utils/transformer';
 import { useAttachInsuranceToTaxi } from '@/features/taxis/general/hooks/useAttachInsuranceToTaxi';
 
@@ -26,7 +25,6 @@ const defaultValues: AddNewTaxiInsuranceSchema = {
 export function TaxiInsuranceDetailsCreateSection() {
   const params = useParams();
   const taxi_id = Number(params.id);
-  const isAnyDriverCheckbox = useId();
   const [showForm, setShowForm] = useState<boolean>(false);
   const { mutate: update } = useAttachInsuranceToTaxi();
 
@@ -62,28 +60,6 @@ export function TaxiInsuranceDetailsCreateSection() {
               render={({ field }) => (
                 <FormGroup label="* Policy Number">
                   <Input placeholder="Policy Number" {...field} />
-                </FormGroup>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="is_any_driver"
-              render={({ field: { value, onChange, ...rest } }) => (
-                <FormGroup label="* Any Driver?">
-                  <div className="flex items-center justify-start gap-2 translate-x-[1px] border border-primary-dark dark:border-primary-light px-3 py-1.5 rounded-lg">
-                    <Checkbox
-                      {...rest}
-                      id={isAnyDriverCheckbox}
-                      color="primary"
-                      checked={value}
-                      onCheckedChange={onChange}
-                      className="disabled:hidden"
-                    />
-                    <label htmlFor={isAnyDriverCheckbox} className="translate-y-[1px]">
-                      {value ? 'Yes' : 'No'}
-                    </label>
-                  </div>
                 </FormGroup>
               )}
             />

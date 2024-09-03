@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { MdModeEdit, MdCancel } from 'react-icons/md';
 import { BiSave } from 'react-icons/bi';
-import { useId, useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { EditableInput } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { toDateInputString } from '@/utils/date/toDateInputString';
@@ -9,15 +9,12 @@ import { useZodForm, FormProvider, FormField } from '@/ui/form/Form';
 import { updateTaxiInsuranceSchema, updateTaxiInsuranceTransformer } from '@/features/taxis/taxiDetails/schemas';
 import { useTaxiInsuranceDetails } from '@/features/taxis/general/hooks/useTaxiInsuranceDetails';
 import { useUpdateTaxiInsuranceDetails } from '@/features/taxis/general/hooks/useUpdateTaxiInsuranceDetails';
-import { Checkbox } from '@/ui/form/Checkbox';
-import { cn } from '@/utils/cn';
 import { FileListViewer, FileConfig, FileListViewerOnChangeHandler, FileListViewerOnDeleteHandler } from '@/ui/files/FileListViewer';
 
 export function TaxiInsuranceDetailsUpdateSection() {
   const params = useParams();
   const taxi_id = Number(params.id);
   const { data } = useTaxiInsuranceDetails(taxi_id);
-  const isRetiredCheckboxId = useId();
   const [isEditMode, setEditMode] = useState<boolean>(false);
   const { mutate: updateTaxiInsurance } = useUpdateTaxiInsuranceDetails();
 
@@ -128,34 +125,6 @@ export function TaxiInsuranceDetailsUpdateSection() {
                 error={form.formState.errors[field.name]?.message}
                 value={field.value}
               />
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="is_any_driver"
-            render={({ field: { value, onChange, ...rest } }) => (
-              <div className={cn('space-y-0.5 pb-1 border-b border-transparent', isEditMode && 'border-achromatic-dark/65 dark:border-achromatic-500')}>
-                <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500 space-x-4 xs:space-x-6">
-                  <span>Any Driver?</span>
-                  {form.formState.errors[rest.name]?.message && (
-                    <span className="text-red-600 dark:text-red-500 italic text-xs">* {form.formState.errors[rest.name]?.message}</span>
-                  )}
-                </p>
-                <div className="flex items-center justify-start gap-2 translate-x-[1px]">
-                  <Checkbox
-                    {...rest}
-                    id={isRetiredCheckboxId}
-                    checked={value}
-                    onCheckedChange={onChange}
-                    disabled={!isEditMode}
-                    className="disabled:hidden"
-                  />
-                  <label htmlFor={isRetiredCheckboxId} className="translate-y-[1px]">
-                    {value ? 'Yes' : 'No'}
-                  </label>
-                </div>
-              </div>
             )}
           />
 
