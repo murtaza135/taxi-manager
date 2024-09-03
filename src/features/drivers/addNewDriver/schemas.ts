@@ -11,6 +11,7 @@ const ACCEPTED_DOCUMENT_MIME_TYPE = /image\/.+|application\/pdf/;
 export const addNewDriverDetailsSchema = z.object({
   name: z
     .string({ required_error: 'First name required' })
+    .trim()
     .min(1, 'Name required'),
   email: z
     .string()
@@ -24,6 +25,8 @@ export const addNewDriverDetailsSchema = z.object({
     .or(z.literal('')),
   national_insurance_number: z
     .string()
+    .trim()
+    .toUpperCase()
     .min(1, 'Invalid national insurance number')
     .optional()
     .or(z.literal('')),
@@ -44,6 +47,8 @@ export const addNewDriverDetailsSchema = z.object({
 export const addNewDriversLicenceSchema = z.object({
   licence_number: z
     .string({ required_error: 'Licence number required' })
+    .trim()
+    .toUpperCase()
     .min(1, 'Licence number required'),
   licence_start_date: z
     .string({ required_error: 'Start date required' })
@@ -69,6 +74,7 @@ export const addNewDriversLicenceSchema = z.object({
 export const addNewDriverTaxiBadgeSchema = z.object({
   badge_number: z
     .string({ required_error: 'Taxi badge number required' })
+    .trim()
     .min(1, 'Taxi badge number required'),
   badge_start_date: z
     .string()
@@ -105,6 +111,8 @@ export const addNewDriverSchema = addNewDriverDetailsSchema
   .extend({
     licence_number: z
       .string()
+      .trim()
+      .toUpperCase()
       .min(1, 'Licence number required')
       .optional()
       .or(z.literal('')),
@@ -122,6 +130,7 @@ export const addNewDriverSchema = addNewDriverDetailsSchema
   .extend({
     badge_number: z
       .string()
+      .trim()
       .min(1, 'Taxi badge number required')
       .optional()
       .or(z.literal('')),

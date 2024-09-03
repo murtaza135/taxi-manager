@@ -75,7 +75,7 @@ export function AddNewDriverDetailsForm() {
           name="national_insurance_number"
           render={({ field }) => (
             <FormGroup label="National Insurance Number">
-              <Input placeholder="National Insurance Number" {...field} />
+              <Input placeholder="National Insurance Number" className="[&>input]:uppercase [&>input]:placeholder:normal-case" {...field} />
             </FormGroup>
           )}
         />

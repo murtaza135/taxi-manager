@@ -58,7 +58,7 @@ export function DriversLicenceDetailsCreateSection() {
               name="licence_number"
               render={({ field }) => (
                 <FormGroup label="* Licence Number">
-                  <Input placeholder="Licence Number" {...field} />
+                  <Input placeholder="Licence Number" className="[&>input]:uppercase [&>input]:placeholder:normal-case" {...field} />
                 </FormGroup>
               )}
             />

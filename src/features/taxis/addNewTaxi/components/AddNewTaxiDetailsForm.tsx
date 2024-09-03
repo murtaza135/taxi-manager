@@ -86,7 +86,7 @@ export function AddNewTaxiDetailsForm() {
           name="chassis_number"
           render={({ field }) => (
             <FormGroup label="* Chassis Number">
-              <Input placeholder="Chassis Number" {...field} />
+              <Input placeholder="Chassis Number" className="[&>input]:uppercase [&>input]:placeholder:normal-case" {...field} />
             </FormGroup>
           )}
         />

@@ -6,20 +6,26 @@ import { ReplaceUndefinedWithNull } from '@/types/utils';
 export const updateTaxiDetailsSchema = z.object({
   number_plate: z
     .string({ required_error: 'Number plate required' })
-    .min(1, 'Number plate required')
+    .trim()
     .toUpperCase()
+    .min(1, 'Number plate required')
     .transform((val) => val.replace(/\s/g, '')),
   make: z
     .string({ required_error: 'Make required' })
+    .trim()
     .min(1, 'Make required'),
   model: z
     .string({ required_error: 'Model required' })
+    .trim()
     .min(1, 'Model required'),
   colour: z
     .string({ required_error: 'Colour required' })
+    .trim()
     .min(1, 'Colour required'),
   chassis_number: z
     .string({ required_error: 'Chassis number required' })
+    .trim()
+    .toUpperCase()
     .min(1, 'Chassis number required'),
   registration_date: z
     .string()
@@ -43,6 +49,7 @@ export const updateTaxiDetailsSchema = z.object({
     .or(z.literal(0)),
   fuel_type: z
     .string()
+    .trim()
     .min(1, 'Invalid fuel type')
     .optional()
     .or(z.literal('')),
@@ -62,9 +69,12 @@ export const updateTaxiDetailsTransformer = (data: UpdateTaxiDetailsSchema) => (
 export const updateTaxiLicenceDetailsSchema = z.object({
   compliance_certificate_licence_number: z
     .string({ required_error: 'Licence number required' })
+    .trim()
     .min(1, 'Licence number required'),
   phc_number: z
     .string({ required_error: 'PHC number required' })
+    .trim()
+    .toUpperCase()
     .min(1, 'PHC number required'),
   start_date: z
     .string()
@@ -97,6 +107,7 @@ export const updateTaxiLicenceDetailsTransformer = (data: UpdateTaxiLicenceDetai
 export const updateTaxiInsuranceSchema = z.object({
   policy_number: z
     .string({ required_error: 'Policy number required' })
+    .trim()
     .min(1, 'Policy number required'),
   is_any_driver: z
     .boolean()

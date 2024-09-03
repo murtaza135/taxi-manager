@@ -7,6 +7,7 @@ import { ReplaceUndefinedWithNull } from '@/types/utils';
 export const updateDriverDetailsSchema = z.object({
   name: z
     .string({ required_error: 'First name required' })
+    .trim()
     .min(1, 'Name required'),
   email: z
     .string()
@@ -20,6 +21,8 @@ export const updateDriverDetailsSchema = z.object({
     .or(z.literal('')),
   national_insurance_number: z
     .string()
+    .trim()
+    .toUpperCase()
     .min(1, 'Invalid national insurance number')
     .optional()
     .or(z.literal('')),
@@ -46,6 +49,8 @@ export const updateDriverTransformer = (data: UpdateDriverDetailsSchema) => (
 export const updateDriversLicenceDetailsSchema = z.object({
   licence_number: z
     .string({ required_error: 'Licence number required' })
+    .trim()
+    .toUpperCase()
     .min(1, 'Licence number required'),
   start_date: z
     .string({ required_error: 'Start date required' })
@@ -65,6 +70,7 @@ export const updateDriversLicenceTransformer = (data: UpdateDriversLicenceDetail
 export const updateDriversTaxiBadgeDetailsSchema = z.object({
   badge_number: z
     .string({ required_error: 'Badge number required' })
+    .trim()
     .min(1, 'Badge number required'),
   start_date: z
     .string()
