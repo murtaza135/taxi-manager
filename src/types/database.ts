@@ -1227,7 +1227,10 @@ export type Database = {
           permission_letter_document_path: string | null;
           rent_amount: number | null;
           start_date: string | null;
+          taxi_chassis_number: string | null;
           taxi_id: number | null;
+          taxi_licence_compliance_certificate_licence_number: string | null;
+          taxi_licence_phc_number: string | null;
           taxi_number_plate: string | null;
         };
         Relationships: [
