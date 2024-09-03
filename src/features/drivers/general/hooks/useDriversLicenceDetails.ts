@@ -21,7 +21,7 @@ type SupabaseDriversLicenceDetails = Prettify<
   >>
 >;
 
-type DriversLicenceDetails = Prettify<
+export type DriversLicenceDetails = Prettify<
   ReplaceNullWithUndefined<
     Pick<
       Tables<'drivers_licence'>,
