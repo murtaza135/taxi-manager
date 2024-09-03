@@ -25,7 +25,7 @@ type SupabaseTaxiLicenceDetails = Prettify<
   >
 >;
 
-type TaxiLicenceDetails = Prettify<
+export type TaxiLicenceDetails = Prettify<
   ReplaceNullWithUndefined<
     Pick<
       Tables<'taxi_licence'>,
