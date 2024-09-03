@@ -1,9 +1,10 @@
 import { useId, useState } from 'react';
 import { Document, Page, Thumbnail, pdfjs } from 'react-pdf';
 import { MdModeEdit, MdError } from 'react-icons/md';
+import { FiDownload } from 'react-icons/fi';
 import { FaTrashAlt } from 'react-icons/fa';
 import { FaFilePdf, FaFileImage, FaFileLines, FaFileCircleExclamation } from 'react-icons/fa6';
-import { Button } from '@/ui/Button';
+import { Button, buttonVariants } from '@/ui/Button';
 import { cn } from '@/utils/cn';
 import { Image, ImageView, ImageLoading, ImageError, ImageFallback } from '@/ui/Image';
 import { FileType } from '@/utils/path/extractFileType';
@@ -187,7 +188,7 @@ function FileListViewer({ files, initial, onChange, onDelete, className }: Props
           </div>
         )}
 
-        {/* change and delete buttons for view */}
+        {/* buttons for change, delete and download */}
         {(onChange || onDelete) && (
           <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-4 rounded-lg px-4 py-2 bg-primary-dark dark:bg-achromatic-dark dark:border dark:border-achromatic-darker text-achromatic-lighter opacity-0 group-hover:opacity-100 transition-opacity">
             {onChange && (
@@ -214,6 +215,14 @@ function FileListViewer({ files, initial, onChange, onDelete, className }: Props
                 <FaTrashAlt />
               </Button>
             )}
+
+            <a
+              href={currentConfig?.file}
+              className={buttonVariants({ variant: 'ghost', className: '!p-0 !text-base cursor-pointer' })}
+              aria-label="download file"
+            >
+              <FiDownload className="text-[1.2rem]" />
+            </a>
           </div>
         )}
       </div>
