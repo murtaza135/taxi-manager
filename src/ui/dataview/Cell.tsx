@@ -96,7 +96,7 @@ function CopyCell({ text, children, className }: CopyCellProps) {
   return (
     <Button
       variant="ghost"
-      className={cn('inline-flex items-center gap-2 p-0 transition-opacity hover:opacity-60 text-nowrap group relative', className)}
+      className={cn('inline-flex items-center gap-2 p-0 transition-opacity hover:opacity-60 text-nowrap group relative font-normal', className)}
       onClick={handleCopy}
     >
       {children ?? text}
