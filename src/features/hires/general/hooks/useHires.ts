@@ -1,125 +1,135 @@
-// import { keepPreviousData, infiniteQueryOptions, QueryKey, useSuspenseInfiniteQuery, InfiniteData, QueryFunctionContext } from '@tanstack/react-query';
-// import { Prettify, NonNullableObject } from '@/types/utils';
-// import { Tables } from '@/types/database';
-// import { queryClient } from '@/config/api/queryClient';
-// import { sessionOptions } from '@/features/auth/hooks/useSession';
-// import { supabase } from '@/config/api/supabaseClient';
-// import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
-// import { SupabaseError } from '@/errors/classes/SupabaseError';
-// // import { hirePictureQueryOptions } from '@/features/hires/general/hooks/useHireDetails';
+import { keepPreviousData, infiniteQueryOptions, QueryKey, useSuspenseInfiniteQuery, InfiniteData, QueryFunctionContext } from '@tanstack/react-query';
+import { Prettify, NonNullableObject } from '@/types/utils';
+import { Tables } from '@/types/database';
+import { queryClient } from '@/config/api/queryClient';
+import { sessionOptions } from '@/features/auth/hooks/useSession';
+import { supabase } from '@/config/api/supabaseClient';
+import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
+import { SupabaseError } from '@/errors/classes/SupabaseError';
 
-// const fetchSize = 50;
+// TODO add document fetches
 
-// type SupabaseHire = Prettify<
-//   Partial<NonNullableObject<
-//     Pick<
-//       Tables<'hire_agreement_view'>,
-//       | 'permission_letter_document_path' | 'contract_document_path'
-//       | 'deposit_receipt_document_path' | 'end_date'
-//     >
-//   >> & NonNullableObject<
-//     Pick<
-//       Tables<'hire_agreement_view'>,
-//       | 'id' | 'taxi_id' | 'taxi_number_plate'
-//       | 'driver_id' | 'driver_name' | 'start_date'
-//       | 'rent_amount' | 'deposit_amount' | 'is_retired'
-//       | 'created_at'
-//     >
-//   >
-// >;
+const fetchSize = 50;
 
-// export type Hire = Prettify<
-//   SupabaseHire & {
-//     permission_letter_document_src: string | null;
-//     contract_document_src: string | null;
-//     deposit_receipt_document_src: string | null;
-//   }
-// >;
+type SupabaseHire = Prettify<
+  Partial<NonNullableObject<
+    Pick<
+      Tables<'hire_agreement_view'>,
+      | 'permission_letter_document_path' | 'contract_document_path'
+      | 'deposit_receipt_document_path' | 'end_date' | 'taxi_licence_phc_number'
+      | 'taxi_licence_compliance_certificate_licence_number'
+    >
+  >> & NonNullableObject<
+    Pick<
+      Tables<'hire_agreement_view'>,
+      | 'id' | 'taxi_id' | 'taxi_number_plate'
+      | 'driver_id' | 'driver_name' | 'start_date'
+      | 'rent_amount' | 'deposit_amount' | 'is_retired'
+      | 'taxi_chassis_number' | 'created_at'
+    >
+  >
+>;
 
-// type HireResult = {
-//   data: Hire[];
-//   count: number;
-// };
+export type Hire = Prettify<
+  SupabaseHire & {
+    permission_letter_document_src: string | null;
+    contract_document_src: string | null;
+    deposit_receipt_document_src: string | null;
+  }
+>;
 
-// type Variables = {
-//   search?: string;
-//   isRetired?: boolean;
-// };
+type HireResult = {
+  data: Hire[];
+  count: number;
+};
 
-// type Context = QueryFunctionContext<QueryKey, number>;
+type Variables = {
+  search?: string;
+  isRetired?: boolean;
+};
 
-// async function getHires(
-//   { search = '', isRetired = false }: Variables,
-//   { pageParam }: Context,
-// ): Promise<HireResult> {
-//   const session = await queryClient.ensureQueryData(sessionOptions());
+type Context = QueryFunctionContext<QueryKey, number>;
 
-//   const from = fetchSize * pageParam;
-//   const to = from + fetchSize - 1;
+async function getHires(
+  { search = '', isRetired = false }: Variables,
+  { pageParam }: Context,
+): Promise<HireResult> {
+  const session = await queryClient.ensureQueryData(sessionOptions());
 
-//   const { data, error, status, count } = await supabase
-//     .from('hire_agreement_view')
-//     .select(
-//       'id, taxi_id, taxi_number_plate, driver_id, driver_name, start_date, rent_amount, deposit_amount, is_retired, created_at, permission_letter_document_path, contract_document_path, deposit_receipt_document_path, end_date',
-//       { count: 'estimated' },
-//     )
-//     .eq('auth_id', session.user.id)
-//     .eq('is_retired', isRetired)
-//     .order('created_at', { ascending: false })
-//     .or(`taxi_number_plate.ilike.%${search}%, driver_name.ilike.%${search}%, model.ilike.%${search}%,  phc_number.ilike.%${search}%`)
-//     .range(from, to)
-//     .returns<SupabaseHire[]>();
+  const from = fetchSize * pageParam;
+  const to = from + fetchSize - 1;
 
-//   if (status === 404) return { data: [], count: 0 };
+  const { data, error, status, count } = await supabase
+    .from('hire_agreement_view')
+    .select(
+      'id, taxi_id, taxi_number_plate, driver_id, driver_name, start_date, rent_amount, deposit_amount, is_retired, taxi_chassis_number, created_at, permission_letter_document_path, contract_document_path, deposit_receipt_document_path, end_date, taxi_licence_phc_number, taxi_licence_compliance_certificate_licence_number',
+      { count: 'estimated' },
+    )
+    .eq('auth_id', session.user.id)
+    .eq('is_retired', isRetired)
+    .order('created_at', { ascending: false })
+    .or(`taxi_number_plate.ilike.%${search}%, driver_name.ilike.%${search}%, model.ilike.%${search}%,  taxi_chassis_number.ilike.%${search}%, taxi_licence_phc_number.ilike.%${search}%, taxi_licence_compliance_certificate_licence_number.ilike.%${search}%`)
+    .range(from, to)
+    .returns<SupabaseHire[]>();
 
-//   if (error) {
-//     throw new SupabaseError(error, status, {
-//       globalTitle: 'Could not fetch hires',
-//     });
-//   }
+  if (status === 404) return { data: [], count: 0 };
 
-//   const hires = await Promise.all(
-//     data.map(async (hire) => {
-//       const number_plate = hire.number_plate.toUpperCase();
-//       const colour = capitalizeEachWord(hire.colour);
-//       const make = capitalizeEachWord(hire.make);
-//       const model = capitalizeEachWord(hire.model);
-//       const phc_number = hire.phc_number?.toUpperCase();
-//       const driver_name = hire.driver_name ? capitalizeEachWord(hire.driver_name) : undefined;
-//       const picture_src = await queryClient.ensureQueryData(
-//         hirePictureQueryOptions({ id: hire.id, path: hire.picture_path }),
-//       );
-//       return { ...hire, number_plate, colour, make, model, driver_name, phc_number, picture_src };
-//     }),
-//   );
+  if (error) {
+    throw new SupabaseError(error, status, {
+      globalTitle: 'Could not fetch hires',
+    });
+  }
 
-//   return {
-//     data: hires,
-//     count: count ?? 0,
-//   };
-// }
+  const hires = await Promise.all(
+    data.map((hire) => {
+      const driver_name = capitalizeEachWord(hire.driver_name);
+      const taxi_chassis_number = hire.taxi_chassis_number.toUpperCase();
+      const taxi_licence_phc_number = hire.taxi_licence_phc_number?.toUpperCase();
+      const taxi_number_plate = hire.taxi_number_plate.toUpperCase();
+      const permission_letter_document_src = null;
+      const contract_document_src = null;
+      const deposit_receipt_document_src = null;
 
-// export function hiresQueryOptions(options?: Variables) {
-//   const search = options?.search;
-//   const isRetired = options?.isRetired;
+      return {
+        ...hire,
+        driver_name,
+        taxi_chassis_number,
+        taxi_licence_phc_number,
+        taxi_number_plate,
+        permission_letter_document_src,
+        contract_document_src,
+        deposit_receipt_document_src,
+      };
+    }),
+  );
 
-//   return infiniteQueryOptions<
-//     HireResult,
-//     SupabaseError,
-//     InfiniteData<HireResult, number>,
-//     QueryKey,
-//     number
-//   >({
-//     queryKey: ['hires', 'list', { search, isRetired }],
-//     queryFn: (context) => getHires({ search, isRetired }, context),
-//     initialPageParam: 0,
-//     getNextPageParam: (_lastGroup, groups) => groups.length,
-//     refetchOnWindowFocus: false,
-//     placeholderData: keepPreviousData,
-//   });
-// }
+  return {
+    data: hires,
+    count: count ?? 0,
+  };
+}
 
-// export function useHires(options?: Variables) {
-//   const query = useSuspenseInfiniteQuery(hiresQueryOptions(options));
-//   return query;
-// }
+export function hiresQueryOptions(options?: Variables) {
+  const search = options?.search;
+  const isRetired = options?.isRetired;
+
+  return infiniteQueryOptions<
+    HireResult,
+    SupabaseError,
+    InfiniteData<HireResult, number>,
+    QueryKey,
+    number
+  >({
+    queryKey: ['hires', 'list', { search, isRetired }],
+    queryFn: (context) => getHires({ search, isRetired }, context),
+    initialPageParam: 0,
+    getNextPageParam: (_lastGroup, groups) => groups.length,
+    refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData,
+  });
+}
+
+export function useHires(options?: Variables) {
+  const query = useSuspenseInfiniteQuery(hiresQueryOptions(options));
+  return query;
+}
