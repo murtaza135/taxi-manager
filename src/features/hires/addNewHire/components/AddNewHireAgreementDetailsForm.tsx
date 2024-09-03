@@ -15,6 +15,7 @@ import { addNewHireAgreementDetailsSchema, AddNewHireAgreementDetailsSchema } fr
 export function AddNewHireAgreementDetailsForm() {
   const {
     formState,
+    prevStep,
     nextStep,
     updateFormState,
   } = useMultiStepFormContext<AddNewHireAgreementDetailsSchema>();
@@ -34,6 +35,11 @@ export function AddNewHireAgreementDetailsForm() {
     nextStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   });
+
+  const goPrevStep = () => {
+    prevStep();
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  };
 
   return (
     <FormProvider {...form}>
@@ -123,7 +129,8 @@ export function AddNewHireAgreementDetailsForm() {
           )}
         />
 
-        <div className="pt-3 flex justify-end gap-3">
+        <div className="pt-3 flex justify-between gap-3 flex-wrap-reverse">
+          <Button type="button" variant="outline" onClick={goPrevStep}>Back</Button>
           <Button type="submit" variant="primary">Next</Button>
         </div>
       </Form>
