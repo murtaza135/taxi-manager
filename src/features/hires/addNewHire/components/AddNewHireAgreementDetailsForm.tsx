@@ -1,3 +1,4 @@
+import { FaPoundSign } from 'react-icons/fa';
 import {
   FormProvider,
   Form,
@@ -47,7 +48,7 @@ export function AddNewHireAgreementDetailsForm() {
           name="rent_amount"
           render={({ field }) => (
             <FormGroup label="* Rent Amount">
-              <Input placeholder="Rent Amount" {...field} />
+              <Input placeholder="Rent Amount" leftIcon={<FaPoundSign className="text-sm" />} {...field} />
             </FormGroup>
           )}
         />
@@ -57,7 +58,7 @@ export function AddNewHireAgreementDetailsForm() {
           name="deposit_amount"
           render={({ field }) => (
             <FormGroup label="* Deposit Amount">
-              <Input placeholder="Deposit Amount" {...field} />
+              <Input placeholder="Deposit Amount" leftIcon={<FaPoundSign className="text-sm" />} {...field} />
             </FormGroup>
           )}
         />
