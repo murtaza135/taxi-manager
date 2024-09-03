@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { MdModeEdit } from 'react-icons/md';
+import { MdModeEdit, MdCancel } from 'react-icons/md';
 import { BiSave } from 'react-icons/bi';
 import { useState, useMemo } from 'react';
 import { EditableInput } from '@/ui/form/Input';
@@ -70,14 +70,30 @@ export function DriversLicenceDetailsUpdateSection() {
           <div className="flex gap-3 justify-center items-center w-full">
             {isEditMode
               ? (
-                <Button
-                  type="submit"
-                  size="sm"
-                  className="w-full flex justify-center items-center gap-1"
-                >
-                  <BiSave className="text-base" />
-                  <span>Save</span>
-                </Button>
+                <>
+                  <Button
+                    type="submit"
+                    size="sm"
+                    className="w-full flex justify-center items-center gap-1"
+                  >
+                    <BiSave className="text-base" />
+                    <span>Save</span>
+                  </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    className="w-full flex justify-center items-center gap-1"
+                    variant="danger"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setEditMode(false);
+                      form.reset(data);
+                    }}
+                  >
+                    <MdCancel className="text-base" />
+                    <span>Cancel</span>
+                  </Button>
+                </>
               )
               : (
                 <Button
