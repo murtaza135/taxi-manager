@@ -4,6 +4,7 @@ import { IoEllipsisVertical } from 'react-icons/io5';
 import { FiEye } from 'react-icons/fi';
 import { FaTrashAlt } from 'react-icons/fa';
 import { PiArrowUDownLeftBold } from 'react-icons/pi';
+import { format } from 'date-fns';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -83,7 +84,11 @@ export const tableColumns: ColumnDef<Hire>[] = [
     id: 'Start Date',
     accessorKey: 'start_date',
     header: 'Start Date',
-    cell: ({ row }) => <CopyCell text={row.original.start_date} />,
+    cell: ({ row }) => (
+      <CopyCell
+        text={format(new Date(row.original.start_date), 'dd/MM/yyyy')}
+      />
+    ),
   },
   {
     id: 'End Date',
@@ -91,7 +96,11 @@ export const tableColumns: ColumnDef<Hire>[] = [
     header: 'End Date',
     cell: ({ row }) => {
       if (!row.original.end_date) return <NoDataCell />;
-      return <CopyCell text={row.original.end_date} />;
+      return (
+        <CopyCell
+          text={format(new Date(row.original.end_date), 'dd/MM/yyyy')}
+        />
+      );
     },
   },
   {
@@ -114,12 +123,12 @@ export const tableColumns: ColumnDef<Hire>[] = [
               <FiEye className="text-xl" />
             </Button>
           </Link>
-          {rowFilter === 'notRetired' && (
+          {rowFilter === 'inProgress' && (
             <Button variant="ghost" className="p-0" onClick={() => handleSetHireRetirement(true)}>
               <FaTrashAlt className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
             </Button>
           )}
-          {rowFilter === 'retired' && (
+          {rowFilter === 'terminated' && (
             <Button variant="ghost" className="p-0" onClick={() => handleSetHireRetirement(false)}>
               <PiArrowUDownLeftBold className="text-xl text-primary-dark dark:text-achromatic-lighter" />
             </Button>
@@ -183,7 +192,11 @@ export const gridColumns: ColumnDef<Hire>[] = [
     id: 'Start Date',
     accessorKey: 'start_date',
     header: 'Start Date',
-    cell: ({ row }) => <CopyCell text={row.original.start_date} />,
+    cell: ({ row }) => (
+      <CopyCell
+        text={format(new Date(row.original.start_date), 'dd/MM/yyyy')}
+      />
+    ),
   },
   {
     id: 'End Date',
@@ -191,7 +204,11 @@ export const gridColumns: ColumnDef<Hire>[] = [
     header: 'End Date',
     cell: ({ row }) => {
       if (!row.original.end_date) return <NoDataCell />;
-      return <CopyCell text={row.original.end_date} />;
+      return (
+        <CopyCell
+          text={format(new Date(row.original.end_date), 'dd/MM/yyyy')}
+        />
+      );
     },
   },
   {
@@ -218,13 +235,13 @@ export const gridColumns: ColumnDef<Hire>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="hover:!opacity-100">
-              {rowFilter === 'notRetired' && (
+              {rowFilter === 'inProgress' && (
                 <Button variant="ghost" className="p-0 gap-2" onClick={() => handleSetHireRetirement(true)}>
                   <FaTrashAlt className="text-red-600 dark:text-red-500/70" />
                   <p className="translate-y-[1px]">Retire</p>
                 </Button>
               )}
-              {rowFilter === 'retired' && (
+              {rowFilter === 'terminated' && (
                 <Button variant="ghost" className="p-0 gap-2" onClick={() => handleSetHireRetirement(false)}>
                   <PiArrowUDownLeftBold className="text-primary-dark dark:text-achromatic-lighter" />
                   <p>Recover</p>

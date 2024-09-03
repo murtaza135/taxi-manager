@@ -1,1 +1,1 @@
-export type HiresRowFilterState = 'notRetired' | 'retired';
+export type HiresRowFilterState = 'inProgress' | 'terminated';

@@ -3,14 +3,14 @@ import { HiresRowFilterState } from '@/features/hires/general/types';
 
 function rowFilterDeserializer(value: string): HiresRowFilterState {
   const val = JSON.parse(value) as unknown;
-  if (val === 'retired' || val === 'notRetired') return val;
-  return 'notRetired';
+  if (val === 'terminated' || val === 'inProgress') return val;
+  return 'inProgress';
 }
 
 export function useHiresRowFilter() {
   return useLocalStorage<HiresRowFilterState>(
     'hires.dataview.rowFilter',
-    'notRetired',
+    'inProgress',
     { deserializer: rowFilterDeserializer },
   );
 }

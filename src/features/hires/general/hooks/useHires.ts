@@ -57,7 +57,7 @@ async function getHires(
     .eq('auth_id', session.user.id)
     .eq('is_retired', isRetired)
     .order('created_at', { ascending: false })
-    .or(`taxi_number_plate.ilike.%${search}%, driver_name.ilike.%${search}%, model.ilike.%${search}%,  taxi_chassis_number.ilike.%${search}%, taxi_licence_phc_number.ilike.%${search}%, taxi_licence_compliance_certificate_licence_number.ilike.%${search}%`)
+    .or(`taxi_number_plate.ilike.%${search}%, driver_name.ilike.%${search}%,  taxi_chassis_number.ilike.%${search}%, taxi_licence_phc_number.ilike.%${search}%, taxi_licence_compliance_certificate_licence_number.ilike.%${search}%`)
     .range(from, to)
     .returns<Hire[]>();
 
