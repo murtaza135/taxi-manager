@@ -206,6 +206,7 @@ function FileListViewer({ files, initial, onChange, onDelete, className }: Props
 
             {onDelete && (
               <Button
+                type="button"
                 variant="ghost"
                 className="p-0 gap-2 font-normal text-base"
                 onClick={(event) => onDelete(currentFileIndex, event)}
