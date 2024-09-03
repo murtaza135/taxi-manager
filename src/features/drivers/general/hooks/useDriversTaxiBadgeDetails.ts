@@ -23,7 +23,7 @@ type SupabaseDriversTaxiBadgeDetails = Prettify<
   >>
 >;
 
-type DriversTaxiBadgeDetails = Prettify<
+export type DriversTaxiBadgeDetails = Prettify<
   ReplaceNullWithUndefined<
     Pick<
       Tables<'drivers_taxi_badge'>,

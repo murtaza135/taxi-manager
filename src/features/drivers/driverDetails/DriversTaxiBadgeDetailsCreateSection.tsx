@@ -10,30 +10,30 @@ import {
 } from '@/ui/form/Form';
 import { Input } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
-import { addNewDriversLicenceSchema, AddNewDriversLicenceSchema } from '@/features/drivers/addNewDriver/schemas';
+import { addNewDriverTaxiBadgeSchema, AddNewDriverTaxiBadgeSchema } from '@/features/drivers/addNewDriver/schemas';
 import { createObjectTransformer } from '@/utils/transformer';
-import { useAttachLicenceToDriver } from '@/features/drivers/general/hooks/useAttachLicenceToDriver';
+import { useAttachTaxiBadgeToDriver } from '@/features/drivers/general/hooks/useAttachTaxiBadgeToDriver';
 
-const defaultValues: AddNewDriversLicenceSchema = {
-  licence_number: '',
-  licence_start_date: '',
-  licence_end_date: '',
-  licence_document: undefined,
+const defaultValues: AddNewDriverTaxiBadgeSchema = {
+  badge_number: '',
+  badge_start_date: '',
+  badge_end_date: '',
+  badge_document: undefined,
 };
 
-export function DriversLicenceDetailsCreateSection() {
+export function DriversTaxiBadgeDetailsCreateSection() {
   const params = useParams();
   const driver_id = Number(params.id);
   const [showForm, setShowForm] = useState<boolean>(false);
-  const { mutate: update } = useAttachLicenceToDriver();
+  const { mutate: update } = useAttachTaxiBadgeToDriver();
 
   const form = useZodForm({
-    schema: addNewDriversLicenceSchema,
+    schema: addNewDriverTaxiBadgeSchema,
     defaultValues,
   });
 
   // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const licenceDocumentField = form.registerFileList('licence_document');
+  const badgeDocumentField = form.registerFileList('badge_document');
 
   const handleSubmit = form.handleSubmit((data) => {
     const transformedData = createObjectTransformer(data);
@@ -43,7 +43,7 @@ export function DriversLicenceDetailsCreateSection() {
   return (
     <div className="flex flex-row flex-wrap gap-x-14 gap-y-6">
       <div className="flex flex-col gap-2 items-start py-2">
-        <p className="">Add new drivers licence?</p>
+        <p className="">Add new taxi badge?</p>
         <BoxSwitch value={showForm} onValueChange={setShowForm} />
       </div>
 
@@ -55,19 +55,19 @@ export function DriversLicenceDetailsCreateSection() {
           >
             <FormField
               control={form.control}
-              name="licence_number"
+              name="badge_number"
               render={({ field }) => (
-                <FormGroup label="* Licence Number">
-                  <Input placeholder="Licence Number" {...field} />
+                <FormGroup label="* Badge Number">
+                  <Input placeholder="Badge Number" {...field} />
                 </FormGroup>
               )}
             />
 
             <FormField
               control={form.control}
-              name="licence_start_date"
+              name="badge_start_date"
               render={({ field }) => (
-                <FormGroup label="* Start Date">
+                <FormGroup label="Start Date">
                   <Input
                     placeholder="Start Date"
                     type="date"
@@ -80,7 +80,7 @@ export function DriversLicenceDetailsCreateSection() {
 
             <FormField
               control={form.control}
-              name="licence_end_date"
+              name="badge_end_date"
               render={({ field }) => (
                 <FormGroup label="* End Date">
                   <Input
@@ -95,10 +95,10 @@ export function DriversLicenceDetailsCreateSection() {
 
             <FormField
               control={form.control}
-              name="licence_document"
+              name="badge_document"
               render={() => (
-                <FormGroup label="Drivers Licence">
-                  <Input placeholder="Drivers Licence" type="file" accept="image/*,.pdf" {...licenceDocumentField} />
+                <FormGroup label="Taxi Badge">
+                  <Input placeholder="Taxi Badge" type="file" accept="image/*,.pdf" {...badgeDocumentField} />
                 </FormGroup>
               )}
             />

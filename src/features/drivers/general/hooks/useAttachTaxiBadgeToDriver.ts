@@ -2,7 +2,7 @@ import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { useRevalidator } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useToast } from '@/ui/toast';
-import { AddNewDriversLicenceSchema } from '@/features/drivers/addNewDriver/schemas';
+import { AddNewDriverTaxiBadgeSchema } from '@/features/drivers/addNewDriver/schemas';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { queryClient as globalQueryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
@@ -11,58 +11,58 @@ import { extname } from '@/utils/path/extname';
 import { CreateObjectTransformer } from '@/utils/transformer';
 
 type DriverDocumentPathsObject = {
-  licence_document?: string;
+  badge_document?: string;
 };
 
-type Variables = CreateObjectTransformer<AddNewDriversLicenceSchema> & {
+type Variables = CreateObjectTransformer<AddNewDriverTaxiBadgeSchema> & {
   driver_id: number;
 };
 
-export async function attachLicenceToDriver(variables: Variables) {
+export async function attachTaxiBadgeToDriver(variables: Variables) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
 
   const documentPaths: DriverDocumentPathsObject = {};
   const {
-    licence_document,
+    badge_document,
     driver_id,
     ...nonFileFormData
   } = variables;
 
   // TODO add storage rollback on error
-  if (licence_document) {
-    const fileName = `${session.user.id}/drivers-licences/${uuidv4()}${extname(licence_document.name)}`;
+  if (badge_document) {
+    const fileName = `${session.user.id}/taxi-badges/${uuidv4()}${extname(badge_document.name)}`;
 
     const { data: storageData } = await supabase
       .storage
       .from('main')
-      .upload(fileName, licence_document, { upsert: true });
+      .upload(fileName, badge_document, { upsert: true });
 
     if (storageData) {
-      documentPaths.licence_document = storageData.path;
+      documentPaths.badge_document = storageData.path;
     }
   }
 
-  const { data: licenceData, error: licenceError, status: licenceStatus } = await supabase
-    .from('drivers_licence')
+  const { data: badgeData, error: badgeError, status: badgeStatus } = await supabase
+    .from('drivers_taxi_badge')
     .insert({
       driver_id,
-      licence_number: nonFileFormData.licence_number,
-      start_date: nonFileFormData.licence_start_date,
-      end_date: nonFileFormData.licence_end_date,
-      document_path: documentPaths.licence_document,
+      badge_number: nonFileFormData.badge_number,
+      start_date: nonFileFormData.badge_start_date,
+      end_date: nonFileFormData.badge_end_date,
+      document_path: documentPaths.badge_document,
     })
     .eq('auth_id', session.user.id)
     .select('id')
     .limit(1)
     .single();
 
-  if (licenceError) {
-    throw new SupabaseError(licenceError, licenceStatus);
+  if (badgeError) {
+    throw new SupabaseError(badgeError, badgeStatus);
   }
 
   const { error: driverLinkError, status: driverLinkStatus } = await supabase
     .from('driver')
-    .update({ active_drivers_licence_id: licenceData.id })
+    .update({ active_drivers_taxi_badge_id: badgeData.id })
     .eq('auth_id', session.user.id)
     .eq('id', driver_id);
 
@@ -73,17 +73,17 @@ export async function attachLicenceToDriver(variables: Variables) {
   return driver_id;
 }
 
-export function useAttachLicenceToDriver() {
+export function useAttachTaxiBadgeToDriver() {
   const queryClient = useQueryClient();
   const { revalidate } = useRevalidator();
   const { toast } = useToast();
 
   const mutation = useMutation<number, SupabaseError, Variables>({
-    mutationFn: attachLicenceToDriver,
+    mutationFn: attachTaxiBadgeToDriver,
     onSuccess: async (_data, { driver_id }) => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['drivers', 'list'] }),
-        queryClient.invalidateQueries({ queryKey: ['drivers', driver_id, 'licence'], exact: true }),
+        queryClient.invalidateQueries({ queryKey: ['drivers', driver_id, 'taxiBadge'], exact: true }),
       ]);
       revalidate();
     },
