@@ -51,6 +51,7 @@ module.exports = {
     "@typescript-eslint/indent": "off",
     "indent": "off",
     "no-void": ["error", { "allowAsStatement": true }],
+    "react/no-unknown-property": ['error', { ignore: ['cmdk-input-wrapper'] }],
     // TODO configure properly
     "@typescript-eslint/naming-convention": [
       "off",
