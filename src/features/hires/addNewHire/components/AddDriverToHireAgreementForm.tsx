@@ -1,7 +1,7 @@
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { capitalCase } from 'change-case';
-import { useWatch } from 'react-hook-form';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { useDebounceValue } from '@/hooks/useDebounceValue';
 import { cn } from '@/utils/cn';
 import {
   FormProvider,
@@ -38,16 +38,19 @@ import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { addDriverToHireAgreementSchema, AddDriverToHireAgreementSchema } from '@/features/hires/addNewHire/schemas';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { FileListViewer } from '@/ui/files/FileListViewer';
-
-const data = [
-  { id: 1, name: 'Driver 1', email: 'driver1@test.com', phone_number: 'Driver A', picture_src: null },
-  { id: 2, name: 'Driver 2', email: 'driver2@test.com', phone_number: 'Driver B', picture_src: null },
-  { id: 3, name: 'Driver 3', email: 'driver3@test.com', phone_number: 'Driver C', picture_src: null },
-  { id: 4, name: 'Driver 4', email: 'driver4@test.com', phone_number: 'Driver D', picture_src: null },
-  { id: 5, name: 'Driver 5', email: 'driver5@test.com', phone_number: 'Driver E', picture_src: null },
-];
+import { useNonSuspenseDrivers, Driver } from '@/features/drivers/general/hooks/useDrivers';
+import { Spinner } from '@/ui/Spinner';
 
 export function AddDriverToHireAgreementForm() {
+  const [search, setSearch, originalSearch] = useDebounceValue<string>('', 500);
+  const [selectedDriver, setSelectedDriver] = useState<Driver | null>(null);
+  const { data, isLoading, isFetching } = useNonSuspenseDrivers({ search });
+
+  const flatData = useMemo(
+    () => data?.pages?.flatMap((page) => page.data) ?? [],
+    [data],
+  );
+
   const sm = useBreakpoint('sm');
 
   const {
@@ -62,13 +65,7 @@ export function AddDriverToHireAgreementForm() {
     defaultValues: formState,
   });
 
-  const selectedDriverId = useWatch({ control: form.control, name: 'driver_id' });
-  const selectedDriver = useMemo(() => (
-    data.find((driver) => driver.id === selectedDriverId)
-  ), [selectedDriverId]);
-
   const handleSubmit = form.handleSubmit((formData) => {
-    console.log(formData);
     updateFormState(formData);
     nextStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -77,6 +74,12 @@ export function AddDriverToHireAgreementForm() {
   const goPrevStep = () => {
     prevStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  };
+
+  const handleSelectDriver = (id: number) => {
+    form.setValue('driver_id', id);
+    const selected = flatData.find((driver) => driver.id === id) ?? null;
+    setSelectedDriver(selected);
   };
 
   return (
@@ -104,25 +107,32 @@ export function AddDriverToHireAgreementForm() {
                           !field.value && 'text-muted-foreground',
                         )}
                       >
-                        {field.value > 0
-                          ? capitalCase(data.find((driver) => driver.id === field.value)?.name ?? '')
+                        {selectedDriver
+                          ? capitalCase(selectedDriver.name ?? '')
                           : 'Select driver'}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[24.75rem] min-w-0 p-0">
-                      <Command>
-                        <CommandInput placeholder="Search driver..." />
+                      <Command shouldFilter={false}>
+                        <CommandInput placeholder="Search driver..." value={originalSearch} onValueChange={setSearch} />
                         <CommandList>
-                          <CommandEmpty>No drivers found.</CommandEmpty>
+                          {!isLoading && <CommandEmpty>No drivers found.</CommandEmpty>}
+
+                          {isLoading && (
+                            <span className="pt-2.5 center">
+                              <Spinner size="sm" />
+                            </span>
+                          )}
+
                           <CommandGroup>
-                            {data.map((driver) => (
+                            {!isLoading && flatData.map((driver) => (
                               <CommandItem
-                                value={`${driver.id} ${driver.name} ${driver.email} ${driver.phone_number}`}
+                                value={`${driver.id}`}
                                 key={driver.id}
-                                onSelect={() => {
-                                  form.setValue(field.name, driver.id);
-                                }}
+                                onSelect={() => handleSelectDriver(driver.id)}
+                                disabled={isFetching}
+                                className={cn(isFetching && 'data-[disabled=true]:opacity-100 animate-pulse-opaque')}
                               >
                                 <Check
                                   className={cn(
@@ -156,10 +166,8 @@ export function AddDriverToHireAgreementForm() {
                         !field.value && 'text-muted-foreground',
                       )}
                     >
-                      {field.value > 0
-                        ? capitalCase(data.find(
-                          (driver) => driver.id === field.value,
-                        )?.name ?? '')
+                      {selectedDriver
+                        ? capitalCase(selectedDriver.name ?? '')
                         : 'Select driver'}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -170,18 +178,25 @@ export function AddDriverToHireAgreementForm() {
                       Select driver that you would like to attach to this hire agreement
                     </DrawerDescription>
 
-                    <Command className="border-0 border-t rounded-t-none">
-                      <CommandInput placeholder="Search driver..." />
+                    <Command shouldFilter={false} className="border-0 border-t rounded-t-none">
+                      <CommandInput placeholder="Search driver..." value={originalSearch} onValueChange={setSearch} />
                       <CommandList>
-                        <CommandEmpty>No drivers found.</CommandEmpty>
+                        {!isLoading && <CommandEmpty>No drivers found.</CommandEmpty>}
+
+                        {isLoading && (
+                          <span className="pt-2.5 center">
+                            <Spinner size="sm" />
+                          </span>
+                        )}
+
                         <CommandGroup>
-                          {data.map((driver) => (
+                          {!isLoading && flatData.map((driver) => (
                             <CommandItem
-                              value={`${driver.id} ${driver.name} ${driver.email} ${driver.phone_number}`}
+                              value={`${driver.id}`}
                               key={driver.id}
-                              onSelect={() => {
-                                form.setValue(field.name, driver.id);
-                              }}
+                              onSelect={() => handleSelectDriver(driver.id)}
+                              disabled={isFetching}
+                              className={cn(isFetching && 'data-[disabled=true]:opacity-100 animate-pulse-opaque')}
                             >
                               <Check
                                 className={cn(
@@ -191,7 +206,7 @@ export function AddDriverToHireAgreementForm() {
                                     : 'opacity-0',
                                 )}
                               />
-                              {capitalCase(driver.name ?? '')}
+                              {capitalCase(driver.name)}
                             </CommandItem>
                           ))}
                         </CommandGroup>

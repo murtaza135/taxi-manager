@@ -34,6 +34,11 @@ export default {
         ...screens,
         pwa: { raw: '(max-width: 640px) and (display-mode: standalone)' },
       },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-opaque": "pulse-opaque 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;"
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -43,10 +48,10 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-opaque": {
+          '0%, 100%': { opacity: '0.6' },
+          '50%': { opacity: '0.3' },
+        }
       },
     },
   },

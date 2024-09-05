@@ -1,4 +1,4 @@
-import { keepPreviousData, infiniteQueryOptions, QueryKey, useSuspenseInfiniteQuery, InfiniteData, QueryFunctionContext } from '@tanstack/react-query';
+import { keepPreviousData, infiniteQueryOptions, QueryKey, useSuspenseInfiniteQuery, InfiniteData, QueryFunctionContext, useInfiniteQuery } from '@tanstack/react-query';
 import { Prettify, NonNullableObject } from '@/types/utils';
 import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
@@ -7,6 +7,7 @@ import { supabase } from '@/config/api/supabaseClient';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { driverPictureQueryOptions } from '@/features/drivers/general/hooks/useDriverDetails';
+import { sleep } from '@/utils/sleep';
 
 const fetchSize = 50;
 
@@ -48,6 +49,8 @@ async function getDrivers(
   { search = '', isRetired = false }: Variables,
   { pageParam }: Context,
 ): Promise<DriversResult> {
+  console.log(search);
+  // await sleep(5000);
   const session = await queryClient.ensureQueryData(sessionOptions());
 
   const from = fetchSize * pageParam;
@@ -113,5 +116,10 @@ export function driversQueryOptions(options?: Variables) {
 
 export function useDrivers(options?: Variables) {
   const query = useSuspenseInfiniteQuery(driversQueryOptions(options));
+  return query;
+}
+
+export function useNonSuspenseDrivers(options?: Variables) {
+  const query = useInfiniteQuery(driversQueryOptions(options));
   return query;
 }
