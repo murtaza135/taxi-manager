@@ -1,4 +1,5 @@
 import { Check, ChevronsUpDown } from 'lucide-react';
+import { capitalCase } from 'change-case';
 import { cn } from '@/utils/cn';
 import {
   FormProvider,
@@ -33,17 +34,13 @@ import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { addDriverToHireAgreementSchema, AddDriverToHireAgreementSchema } from '@/features/hires/addNewHire/schemas';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 
-const languages = [
-  { label: 'English', value: 'en' },
-  { label: 'French', value: 'fr' },
-  { label: 'German', value: 'de' },
-  { label: 'Spanish', value: 'es' },
-  { label: 'Portuguese', value: 'pt' },
-  { label: 'Russian', value: 'ru' },
-  { label: 'Japanese', value: 'ja' },
-  { label: 'Korean', value: 'ko' },
-  { label: 'Chinese', value: 'zh' },
-] as const;
+const data = [
+  { id: 1, name: 'Driver 1', email: 'driver1@test.com', phone_number: 'Driver A', picture_src: null },
+  { id: 2, name: 'Driver 2', email: 'driver2@test.com', phone_number: 'Driver B', picture_src: null },
+  { id: 3, name: 'Driver 3', email: 'driver3@test.com', phone_number: 'Driver C', picture_src: null },
+  { id: 4, name: 'Driver 4', email: 'driver4@test.com', phone_number: 'Driver D', picture_src: null },
+  { id: 5, name: 'Driver 5', email: 'driver5@test.com', phone_number: 'Driver E', picture_src: null },
+];
 
 export function AddDriverToHireAgreementForm() {
   const sm = useBreakpoint('sm');
@@ -60,9 +57,9 @@ export function AddDriverToHireAgreementForm() {
     defaultValues: formState,
   });
 
-  const handleSubmit = form.handleSubmit((data) => {
-    console.log(data);
-    updateFormState(data);
+  const handleSubmit = form.handleSubmit((formData) => {
+    console.log(formData);
+    updateFormState(formData);
     nextStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   });
@@ -97,37 +94,35 @@ export function AddDriverToHireAgreementForm() {
                           !field.value && 'text-muted-foreground',
                         )}
                       >
-                        {field.value
-                          ? languages.find(
-                            (language) => language.value === field.value,
-                          )?.label
-                          : 'Select language'}
+                        {field.value > 0
+                          ? capitalCase(data.find((driver) => driver.id === field.value)?.name ?? '')
+                          : 'Select driver'}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[24.75rem] min-w-0 p-0">
                       <Command>
-                        <CommandInput placeholder="Search language..." />
+                        <CommandInput placeholder="Search driver..." />
                         <CommandList>
-                          <CommandEmpty>No language found.</CommandEmpty>
+                          <CommandEmpty>No drivers found.</CommandEmpty>
                           <CommandGroup>
-                            {languages.map((language) => (
+                            {data.map((driver) => (
                               <CommandItem
-                                value={language.label}
-                                key={language.value}
+                                value={`${driver.id} ${driver.name} ${driver.email} ${driver.phone_number}`}
+                                key={driver.id}
                                 onSelect={() => {
-                                  form.setValue(field.name, language.value);
+                                  form.setValue(field.name, driver.id);
                                 }}
                               >
                                 <Check
                                   className={cn(
                                     'mr-2 h-4 w-4',
-                                    language.value === field.value
+                                    driver.id === field.value
                                       ? 'opacity-100'
                                       : 'opacity-0',
                                   )}
                                 />
-                                {language.label}
+                                {capitalCase(driver.name)}
                               </CommandItem>
                             ))}
                           </CommandGroup>
@@ -151,11 +146,11 @@ export function AddDriverToHireAgreementForm() {
                         !field.value && 'text-muted-foreground',
                       )}
                     >
-                      {field.value
-                        ? languages.find(
-                          (language) => language.value === field.value,
-                        )?.label
-                        : 'Select language'}
+                      {field.value > 0
+                        ? capitalCase(data.find(
+                          (driver) => driver.id === field.value,
+                        )?.name ?? '')
+                        : 'Select driver'}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </DrawerTrigger>
@@ -166,27 +161,27 @@ export function AddDriverToHireAgreementForm() {
                     </DrawerDescription>
 
                     <Command className="border-0 border-t rounded-t-none">
-                      <CommandInput placeholder="Search language..." />
+                      <CommandInput placeholder="Search driver..." />
                       <CommandList>
-                        <CommandEmpty>No language found.</CommandEmpty>
+                        <CommandEmpty>No drivers found.</CommandEmpty>
                         <CommandGroup>
-                          {languages.map((language) => (
+                          {data.map((driver) => (
                             <CommandItem
-                              value={language.label}
-                              key={language.value}
+                              value={`${driver.id} ${driver.name} ${driver.email} ${driver.phone_number}`}
+                              key={driver.id}
                               onSelect={() => {
-                                form.setValue(field.name, language.value);
+                                form.setValue(field.name, driver.id);
                               }}
                             >
                               <Check
                                 className={cn(
                                   'mr-2 h-4 w-4',
-                                  language.value === field.value
+                                  driver.id === field.value
                                     ? 'opacity-100'
                                     : 'opacity-0',
                                 )}
                               />
-                              {language.label}
+                              {capitalCase(driver.name ?? '')}
                             </CommandItem>
                           ))}
                         </CommandGroup>

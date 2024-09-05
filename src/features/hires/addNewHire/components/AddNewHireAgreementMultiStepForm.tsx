@@ -12,8 +12,8 @@ import { AddNewHireAgreementDetailsForm } from '@/features/hires/addNewHire/comp
 import { AddNewHireAgreementFormConfirmation } from '@/features/hires/addNewHire/components/AddNewHireAgreementFormConfirmation';
 
 const initialFormState: AddNewHireAgreementSchema = {
-  taxi_id: '',
-  driver_id: '',
+  taxi_id: -1,
+  driver_id: -1,
   rent_amount: '',
   deposit_amount: '',
   start_date: '',

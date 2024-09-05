@@ -9,18 +9,14 @@ const ACCEPTED_DOCUMENT_MIME_TYPE = /image\/.+|application\/pdf/;
 
 export const addTaxiToHireAgreementSchema = z.object({
   taxi_id: z
-    .string({ required_error: 'Taxi required' })
-    .trim()
-    .min(1, 'Taxi required')
-    .refine((val) => !Number.isNaN(Number(val)), { message: 'Invalid taxi' }),
+    .number({ required_error: 'Taxi required' })
+    .positive('Taxi required'),
 });
 
 export const addDriverToHireAgreementSchema = z.object({
   driver_id: z
-    .string({ required_error: 'Driver required' })
-    .trim()
-    .min(1, 'Driver required')
-    .refine((val) => !Number.isNaN(Number(val)), { message: 'Invalid driver' }),
+    .number({ required_error: 'Driver required' })
+    .positive('Driver required'),
 });
 
 export const addNewHireAgreementDetailsSchema = z.object({
