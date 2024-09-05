@@ -1,5 +1,7 @@
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { capitalCase } from 'change-case';
+import { useWatch } from 'react-hook-form';
+import { useMemo } from 'react';
 import { cn } from '@/utils/cn';
 import {
   FormProvider,
@@ -8,7 +10,9 @@ import {
   FormField,
   FormGroup,
   useZodForm,
+  FormSection,
 } from '@/ui/form/Form';
+import { ReadOnlyInput } from '@/ui/form/Input';
 import {
   Command,
   CommandEmpty,
@@ -33,6 +37,7 @@ import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { addDriverToHireAgreementSchema, AddDriverToHireAgreementSchema } from '@/features/hires/addNewHire/schemas';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
+import { FileListViewer } from '@/ui/files/FileListViewer';
 
 const data = [
   { id: 1, name: 'Driver 1', email: 'driver1@test.com', phone_number: 'Driver A', picture_src: null },
@@ -56,6 +61,11 @@ export function AddDriverToHireAgreementForm() {
     schema: addDriverToHireAgreementSchema,
     defaultValues: formState,
   });
+
+  const selectedDriverId = useWatch({ control: form.control, name: 'driver_id' });
+  const selectedDriver = useMemo(() => (
+    data.find((driver) => driver.id === selectedDriverId)
+  ), [selectedDriverId]);
 
   const handleSubmit = form.handleSubmit((formData) => {
     console.log(formData);
@@ -193,6 +203,22 @@ export function AddDriverToHireAgreementForm() {
             );
           }}
         />
+
+        {selectedDriver && (
+          <FormSection title="Driver Details" className="space-y-3">
+            <FileListViewer
+              files={[{
+                key: `${selectedDriver.id}`,
+                fileType: 'image',
+                file: selectedDriver.picture_src ?? undefined,
+              }]}
+              className="py-2 [&_.other-file-display]:border-primary-dark [&_.other-file-display]:dark:border-primary-light [&_.file-error-display]:border-primary-dark [&_.file-error-display]:dark:border-primary-light"
+            />
+            <ReadOnlyInput title="Name" value={selectedDriver.name} className="capitalize " />
+            <ReadOnlyInput title="Email" value={selectedDriver.email} />
+            <ReadOnlyInput title="Phone Number" value={selectedDriver.phone_number} />
+          </FormSection>
+        )}
 
         <div className="pt-3 flex justify-between gap-3 flex-wrap-reverse">
           <Button type="button" variant="outline" onClick={goPrevStep}>Back</Button>

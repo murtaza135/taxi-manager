@@ -28,7 +28,7 @@ type OtherFileDisplayProps = {
 
 function OtherFileDisplay({ filename }: OtherFileDisplayProps) {
   return (
-    <div className="w-full h-full center border border-achromatic-dark dark:border-achromatic-lighter rounded-lg">
+    <div className="other-file-display w-full h-full center border border-achromatic-dark dark:border-achromatic-lighter rounded-lg">
       <div className="flex flex-col justify-center items-center gap-2">
         <FaFileLines className="text-3xl" />
         {filename && <p className="font-semibold text-sm opacity-70 px-3 w-40 text-center whitespace-nowrap text-ellipsis overflow-hidden">{filename}</p>}
@@ -44,7 +44,7 @@ type FileErrorDisplayProps = {
 
 function FileErrorDisplay({ title, message }: FileErrorDisplayProps) {
   return (
-    <div className="w-full h-full center border border-achromatic-dark dark:border-achromatic-lighter rounded-lg">
+    <div className="file-error-display w-full h-full center border border-achromatic-dark dark:border-achromatic-lighter rounded-lg">
       <div className="flex flex-col justify-center items-center gap-2">
         <MdError className="text-5xl" />
         <p className="font-semibold">{message ?? 'Could not load file'}</p>
