@@ -1,4 +1,4 @@
-import { keepPreviousData, infiniteQueryOptions, QueryKey, useSuspenseInfiniteQuery, InfiniteData, QueryFunctionContext } from '@tanstack/react-query';
+import { keepPreviousData, infiniteQueryOptions, QueryKey, useSuspenseInfiniteQuery, InfiniteData, QueryFunctionContext, useInfiniteQuery } from '@tanstack/react-query';
 import { Prettify, NonNullableObject } from '@/types/utils';
 import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
@@ -115,5 +115,10 @@ export function taxisQueryOptions(options?: Variables) {
 
 export function useTaxis(options?: Variables) {
   const query = useSuspenseInfiniteQuery(taxisQueryOptions(options));
+  return query;
+}
+
+export function useNonSuspenseTaxis(options?: Variables) {
+  const query = useInfiniteQuery(taxisQueryOptions(options));
   return query;
 }

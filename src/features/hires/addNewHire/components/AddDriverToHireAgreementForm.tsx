@@ -45,6 +45,7 @@ import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 export function AddDriverToHireAgreementForm() {
   const sm = useBreakpoint('sm');
   const [search, setSearch, originalSearch] = useDebounceValue<string>('', 500);
+  const [open, setOpen] = useState<boolean>(false);
 
   const {
     data,
@@ -101,6 +102,7 @@ export function AddDriverToHireAgreementForm() {
   };
 
   const handleSelectDriver = (id: number) => {
+    setOpen(false);
     form.setValue('driver_id', id);
     setSelectedDriver(flatData.find((driver) => driver.id === id) ?? null);
   };
@@ -120,7 +122,7 @@ export function AddDriverToHireAgreementForm() {
             if (sm) {
               return (
                 <FormGroup label="* Driver" className="flex flex-col">
-                  <Popover>
+                  <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
@@ -185,7 +187,7 @@ export function AddDriverToHireAgreementForm() {
 
             return (
               <FormGroup label="* Driver" className="flex flex-col">
-                <Drawer>
+                <Drawer open={open} onOpenChange={setOpen}>
                   <DrawerTrigger asChild>
                     <Button
                       variant="outline"
