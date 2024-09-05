@@ -299,14 +299,15 @@ FormMessage.displayName = 'FormMessage';
 type FormGroupProps = {
   label?: string;
   description?: string;
+  className?: string;
   children: React.ReactNode;
 };
 
-function FormGroup({ label, description, children }: FormGroupProps) {
+function FormGroup({ label, description, className, children }: FormGroupProps) {
   const { error } = useFormField();
 
   return (
-    <FormItem>
+    <FormItem className={cn('', className)}>
       {!!label && <FormLabel>{label}</FormLabel>}
       <FormControl className={cn(error && 'border-2')}>{children}</FormControl>
       {!!description && <FormDescription>{description}</FormDescription>}

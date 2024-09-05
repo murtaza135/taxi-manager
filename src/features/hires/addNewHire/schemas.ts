@@ -12,7 +12,7 @@ export const addTaxiToHireAgreementSchema = z.object({
     .string({ required_error: 'Taxi required' })
     .trim()
     .min(1, 'Taxi required')
-    .refine((val) => !Number.isNaN(Number(val))),
+    .refine((val) => !Number.isNaN(Number(val)), { message: 'Invalid taxi' }),
 });
 
 export const addDriverToHireAgreementSchema = z.object({
@@ -20,7 +20,7 @@ export const addDriverToHireAgreementSchema = z.object({
     .string({ required_error: 'Driver required' })
     .trim()
     .min(1, 'Driver required')
-    .refine((val) => !Number.isNaN(Number(val))),
+    .refine((val) => !Number.isNaN(Number(val)), { message: 'Invalid driver' }),
 });
 
 export const addNewHireAgreementDetailsSchema = z.object({
