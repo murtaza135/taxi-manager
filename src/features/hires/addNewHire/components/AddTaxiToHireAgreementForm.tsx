@@ -2,6 +2,7 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 import { useMemo, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
+import { IoIosWarning } from 'react-icons/io';
 import { useDebounceValue } from '@/hooks/useDebounceValue';
 import { cn } from '@/utils/cn';
 import {
@@ -280,8 +281,9 @@ export function AddTaxiToHireAgreementForm() {
             <ReadOnlyInput title="Colour" value={selectedTaxi.colour} className="capitalize" />
 
             {!!selectedTaxi.hire_agreement_id && (
-              <div className="bg-orange-400 text-achromatic-lighter dark:bg-orange-500 dark:text-achromatic-lighter rounded-lg px-3 py-2 text-sm">
-                Warning: This taxi is already a part of an in-progress <Link to={`/hire/${selectedTaxi.hire_agreement_id}`} className="font-bold hover:opacity-50">Hire Agreement <FiEye className="inline text-xs -translate-y-[1px] -translate-x-[1px] mr-[3px]" /></Link> with <Link to={`/driver/${selectedTaxi.driver_id}`} className="font-bold hover:opacity-50">{selectedTaxi.driver_name ?? 'this driver'} <FiEye className="inline text-xs -translate-y-[1px] -translate-x-[1px] mr-[3px]" /></Link>.
+              <div className="flex gap-2 border bg-yellow-300/50 border-yellow-500 text-achromatic-dark dark:bg-yellow-700/30 dark:text-achromatic-lighter dark:border-yellow-500 rounded-lg px-3 py-2 text-sm">
+                <IoIosWarning className="shrink-0 translate-y-[0.19rem] text-yellow-500 dark:text-yellow-500" />
+                <p>This taxi is already a part of an in-progress <Link to={`/hire/${selectedTaxi.hire_agreement_id}`} className="font-bold hover:opacity-50">Hire Agreement <FiEye className="inline text-xs -translate-y-[1px] -translate-x-[1px] mr-[3px]" /></Link> with <Link to={`/driver/${selectedTaxi.driver_id}`} className="font-bold hover:opacity-50">{selectedTaxi.driver_name ?? 'this driver'} <FiEye className="inline text-xs -translate-y-[1px] -translate-x-[1px] mr-[3px]" /></Link>.</p>
               </div>
             )}
           </FormSection>
