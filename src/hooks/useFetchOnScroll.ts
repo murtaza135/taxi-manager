@@ -25,9 +25,9 @@ export function useFetchOnScroll<
   scrollThreshold = 0,
 }: UseFetchOnScrollOptions<TData>): UseFetchOnScrollResult<TElement, TData> {
   const ref = useRef<TElement>(null);
-  const element = ref.current;
 
   const fetchOnScroll = useCallback(async () => {
+    const element = ref.current;
     if (element) {
       const { scrollHeight, scrollTop, clientHeight } = element;
       const currentDeltaFromBottom = scrollHeight - scrollTop - clientHeight;
@@ -42,7 +42,7 @@ export function useFetchOnScroll<
       }
     }
     return null;
-  }, [element, fetchNext, hasMore, fetchCondition, scrollThreshold]);
+  }, [ref, fetchNext, hasMore, fetchCondition, scrollThreshold]);
 
   return { ref, fetchOnScroll } as const;
 }

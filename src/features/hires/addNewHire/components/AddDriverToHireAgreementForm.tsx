@@ -1,6 +1,6 @@
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { capitalCase } from 'change-case';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useDebounceValue } from '@/hooks/useDebounceValue';
 import { cn } from '@/utils/cn';
 import {
@@ -40,18 +40,27 @@ import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { FileListViewer } from '@/ui/files/FileListViewer';
 import { useNonSuspenseDrivers, Driver } from '@/features/drivers/general/hooks/useDrivers';
 import { Spinner } from '@/ui/Spinner';
+import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 
 export function AddDriverToHireAgreementForm() {
+  const sm = useBreakpoint('sm');
   const [search, setSearch, originalSearch] = useDebounceValue<string>('', 500);
-  const [selectedDriver, setSelectedDriver] = useState<Driver | null>(null);
-  const { data, isLoading, isFetching } = useNonSuspenseDrivers({ search });
+
+  const {
+    data,
+    isLoading,
+    isFetching,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useNonSuspenseDrivers({ search });
 
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.data) ?? [],
     [data],
   );
 
-  const sm = useBreakpoint('sm');
+  const fetchedCount = flatData.length;
+  const fetchableCount = data?.pages[0].count ?? 0;
 
   const {
     formState,
@@ -60,10 +69,25 @@ export function AddDriverToHireAgreementForm() {
     updateFormState,
   } = useMultiStepFormContext<AddDriverToHireAgreementSchema>();
 
+  const [selectedDriver, setSelectedDriver] = useState<Driver | null>(
+    () => flatData.find((driver) => driver.id === formState.driver_id) ?? null,
+  );
+
   const form = useZodForm({
     schema: addDriverToHireAgreementSchema,
     defaultValues: formState,
   });
+
+  const { ref, fetchOnScroll } = useFetchOnScroll<React.ElementRef<typeof CommandList>>({
+    fetchNext: fetchNextPage,
+    hasMore: fetchedCount < fetchableCount,
+    fetchCondition: !isFetchingNextPage,
+    scrollThreshold: 500,
+  });
+
+  useEffect(() => {
+    void fetchOnScroll();
+  }, [fetchOnScroll]);
 
   const handleSubmit = form.handleSubmit((formData) => {
     updateFormState(formData);
@@ -78,8 +102,7 @@ export function AddDriverToHireAgreementForm() {
 
   const handleSelectDriver = (id: number) => {
     form.setValue('driver_id', id);
-    const selected = flatData.find((driver) => driver.id === id) ?? null;
-    setSelectedDriver(selected);
+    setSelectedDriver(flatData.find((driver) => driver.id === id) ?? null);
   };
 
   return (
@@ -116,7 +139,7 @@ export function AddDriverToHireAgreementForm() {
                     <PopoverContent className="w-[24.75rem] min-w-0 p-0">
                       <Command shouldFilter={false} loop>
                         <CommandInput placeholder="Search driver..." value={originalSearch} onValueChange={setSearch} />
-                        <CommandList>
+                        <CommandList ref={ref} onScroll={() => fetchOnScroll()}>
                           {!isLoading && <CommandEmpty>No drivers found.</CommandEmpty>}
 
                           {isLoading && (
@@ -178,9 +201,9 @@ export function AddDriverToHireAgreementForm() {
                       Select driver that you would like to attach to this hire agreement
                     </DrawerDescription>
 
-                    <Command shouldFilter={false} loop className="border-0 border-t rounded-t-none">
+                    <Command shouldFilter={false} loop className="border-0 border-t rounded-none">
                       <CommandInput placeholder="Search driver..." value={originalSearch} onValueChange={setSearch} />
-                      <CommandList>
+                      <CommandList ref={ref} onScroll={() => fetchOnScroll()}>
                         {!isLoading && <CommandEmpty>No drivers found.</CommandEmpty>}
 
                         {isLoading && (
