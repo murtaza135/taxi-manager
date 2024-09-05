@@ -2,8 +2,10 @@ import * as React from 'react';
 import { type DialogProps } from '@radix-ui/react-dialog';
 import { Command as CommandPrimitive } from 'cmdk';
 import { Search } from 'lucide-react';
+import { IoClose } from 'react-icons/io5';
 import { cn } from '@/utils/cn';
 import { Dialog, DialogContent } from '@/ui/Dialog';
+import { Button } from '@/ui/Button';
 
 const Command = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
@@ -34,10 +36,14 @@ function CommandDialog({ children, ...props }: CommandDialogProps) {
   );
 }
 
+type CommandInputProps = {
+  onClickClear?: () => void;
+};
+
 const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
-  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input> & CommandInputProps
+>(({ className, onClickClear, ...props }, ref) => (
   <div className="flex items-center px-3 border-b border-primary-dark dark:border-primary-light" cmdk-input-wrapper="">
     <Search className="mr-2 h-4 w-4 shrink-0 text-primary-dark dark:text-primary-light" />
     <CommandPrimitive.Input
@@ -48,6 +54,9 @@ const CommandInput = React.forwardRef<
       )}
       {...props}
     />
+    <Button variant="ghost" className="p-0" onClick={onClickClear}>
+      <IoClose className="ml-2 text-xl shrink-0 text-primary-dark dark:text-primary-light" />
+    </Button>
   </div>
 ));
 

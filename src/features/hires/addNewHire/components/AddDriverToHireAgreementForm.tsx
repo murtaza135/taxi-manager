@@ -138,7 +138,13 @@ export function AddDriverToHireAgreementForm() {
                     </PopoverTrigger>
                     <PopoverContent className="w-[24.75rem] min-w-0 p-0">
                       <Command shouldFilter={false} loop>
-                        <CommandInput placeholder="Search driver..." value={originalSearch} onValueChange={setSearch} />
+                        <CommandInput
+                          placeholder="Search driver..."
+                          value={originalSearch}
+                          onValueChange={setSearch}
+                          onClickClear={() => setSearch('')}
+                        />
+
                         <CommandList ref={ref} onScroll={() => fetchOnScroll()}>
                           {!isLoading && <CommandEmpty>No drivers found.</CommandEmpty>}
 
@@ -202,7 +208,13 @@ export function AddDriverToHireAgreementForm() {
                     </DrawerDescription>
 
                     <Command shouldFilter={false} loop className="border-0 border-t rounded-none">
-                      <CommandInput placeholder="Search driver..." value={originalSearch} onValueChange={setSearch} />
+                      <CommandInput
+                        placeholder="Search driver..."
+                        value={originalSearch}
+                        onValueChange={setSearch}
+                        onClickClear={() => setSearch('')}
+                      />
+
                       <CommandList ref={ref} onScroll={() => fetchOnScroll()}>
                         {!isLoading && <CommandEmpty>No drivers found.</CommandEmpty>}
 
