@@ -13,7 +13,15 @@ import { AddNewHireAgreementFormConfirmation } from '@/features/hires/addNewHire
 
 const initialFormState: AddNewHireAgreementSchema = {
   taxi_id: -1,
+  number_plate: '',
+  make: '',
+  model: '',
+  colour: '',
+  phc_number: '',
   driver_id: -1,
+  name: '',
+  email: '',
+  phone_number: '',
   rent_amount: '',
   deposit_amount: '',
   start_date: '',

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import mapValues from 'lodash/mapValues';
 import { isBefore, isValid } from 'date-fns';
 import isCurrency from 'validator/es/lib/isCurrency';
+import isMobilePhone from 'validator/es/lib/isMobilePhone';
 import { MergeOverwrite } from '@/types/utils';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; // 5MB
@@ -11,12 +12,50 @@ export const addTaxiToHireAgreementSchema = z.object({
   taxi_id: z
     .number({ required_error: 'Taxi required' })
     .positive('Taxi required'),
+  number_plate: z
+    .string({ required_error: 'Number plate required' })
+    .trim()
+    .toUpperCase()
+    .min(1, 'Number plate required')
+    .transform((val) => val.replace(/\s/g, '')),
+  make: z
+    .string({ required_error: 'Make required' })
+    .trim()
+    .min(1, 'Make required'),
+  model: z
+    .string({ required_error: 'Model required' })
+    .trim()
+    .min(1, 'Model required'),
+  colour: z
+    .string({ required_error: 'Colour required' })
+    .trim()
+    .min(1, 'Colour required'),
+  phc_number: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .optional()
+    .or(z.literal('')),
 });
 
 export const addDriverToHireAgreementSchema = z.object({
   driver_id: z
     .number({ required_error: 'Driver required' })
     .positive('Driver required'),
+  name: z
+    .string({ required_error: 'Driver required' })
+    .trim()
+    .min(1, 'Driver required'),
+  email: z
+    .string()
+    .email({ message: 'Invalid email address' })
+    .optional()
+    .or(z.literal('')),
+  phone_number: z
+    .string()
+    .refine((val) => isMobilePhone(val), 'Invalid phone number')
+    .optional()
+    .or(z.literal('')),
 });
 
 export const addNewHireAgreementDetailsSchema = z.object({

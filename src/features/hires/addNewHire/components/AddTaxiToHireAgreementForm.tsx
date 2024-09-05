@@ -102,8 +102,14 @@ export function AddTaxiToHireAgreementForm() {
 
   const handleSelectTaxi = (id: number) => {
     setOpen(false);
+    const selected = flatData.find((taxi) => taxi.id === id) ?? null;
     form.setValue('taxi_id', id);
-    setSelectedTaxi(flatData.find((taxi) => taxi.id === id) ?? null);
+    form.setValue('number_plate', selected?.number_plate ?? '');
+    form.setValue('phc_number', selected?.phc_number ?? '');
+    form.setValue('make', selected?.make ?? '');
+    form.setValue('model', selected?.model ?? '');
+    form.setValue('colour', selected?.colour ?? '');
+    setSelectedTaxi(selected);
   };
 
   return (
@@ -265,11 +271,11 @@ export function AddTaxiToHireAgreementForm() {
               }]}
               className="py-2 [&_.other-file-display]:border-primary-dark [&_.other-file-display]:dark:border-primary-light [&_.file-error-display]:border-primary-dark [&_.file-error-display]:dark:border-primary-light"
             />
-            <ReadOnlyInput title="Number Plate" value={selectedTaxi.number_plate} className="uppercase " />
-            <ReadOnlyInput title="PH Number" value={selectedTaxi.phc_number ?? ''} />
-            <ReadOnlyInput title="Make" value={selectedTaxi.make} />
-            <ReadOnlyInput title="Model" value={selectedTaxi.model} />
-            <ReadOnlyInput title="Colour" value={selectedTaxi.colour} />
+            <ReadOnlyInput title="Number Plate" value={selectedTaxi.number_plate} className="uppercase" />
+            <ReadOnlyInput title="PH Number" value={selectedTaxi.phc_number ?? ''} className="uppercase" />
+            <ReadOnlyInput title="Make" value={selectedTaxi.make} className="capitalize" />
+            <ReadOnlyInput title="Model" value={selectedTaxi.model} className="capitalize" />
+            <ReadOnlyInput title="Colour" value={selectedTaxi.colour} className="capitalize" />
           </FormSection>
         )}
 

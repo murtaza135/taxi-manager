@@ -10,7 +10,7 @@ const ACCEPTED_DOCUMENT_MIME_TYPE = /image\/.+|application\/pdf/;
 
 export const addNewDriverDetailsSchema = z.object({
   name: z
-    .string({ required_error: 'First name required' })
+    .string({ required_error: 'Name required' })
     .trim()
     .min(1, 'Name required'),
   email: z

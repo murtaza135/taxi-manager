@@ -103,8 +103,12 @@ export function AddDriverToHireAgreementForm() {
 
   const handleSelectDriver = (id: number) => {
     setOpen(false);
+    const selected = flatData.find((driver) => driver.id === id) ?? null;
     form.setValue('driver_id', id);
-    setSelectedDriver(flatData.find((driver) => driver.id === id) ?? null);
+    form.setValue('name', selected?.name ?? '');
+    form.setValue('email', selected?.email ?? '');
+    form.setValue('phone_number', selected?.phone_number ?? '');
+    setSelectedDriver(selected);
   };
 
   return (
