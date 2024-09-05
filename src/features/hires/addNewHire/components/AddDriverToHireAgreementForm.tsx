@@ -114,7 +114,7 @@ export function AddDriverToHireAgreementForm() {
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[24.75rem] min-w-0 p-0">
-                      <Command shouldFilter={false}>
+                      <Command shouldFilter={false} loop>
                         <CommandInput placeholder="Search driver..." value={originalSearch} onValueChange={setSearch} />
                         <CommandList>
                           {!isLoading && <CommandEmpty>No drivers found.</CommandEmpty>}
@@ -178,7 +178,7 @@ export function AddDriverToHireAgreementForm() {
                       Select driver that you would like to attach to this hire agreement
                     </DrawerDescription>
 
-                    <Command shouldFilter={false} className="border-0 border-t rounded-t-none">
+                    <Command shouldFilter={false} loop className="border-0 border-t rounded-t-none">
                       <CommandInput placeholder="Search driver..." value={originalSearch} onValueChange={setSearch} />
                       <CommandList>
                         {!isLoading && <CommandEmpty>No drivers found.</CommandEmpty>}
@@ -230,8 +230,8 @@ export function AddDriverToHireAgreementForm() {
               className="py-2 [&_.other-file-display]:border-primary-dark [&_.other-file-display]:dark:border-primary-light [&_.file-error-display]:border-primary-dark [&_.file-error-display]:dark:border-primary-light"
             />
             <ReadOnlyInput title="Name" value={selectedDriver.name} className="capitalize " />
-            <ReadOnlyInput title="Email" value={selectedDriver.email} />
-            <ReadOnlyInput title="Phone Number" value={selectedDriver.phone_number} />
+            <ReadOnlyInput title="Email" value={selectedDriver.email ?? ''} />
+            <ReadOnlyInput title="Phone Number" value={selectedDriver.phone_number ?? ''} />
           </FormSection>
         )}
 
