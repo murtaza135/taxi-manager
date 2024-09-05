@@ -1,5 +1,7 @@
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useMemo, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { FiEye } from 'react-icons/fi';
 import { useDebounceValue } from '@/hooks/useDebounceValue';
 import { cn } from '@/utils/cn';
 import {
@@ -276,6 +278,12 @@ export function AddTaxiToHireAgreementForm() {
             <ReadOnlyInput title="Make" value={selectedTaxi.make} className="capitalize" />
             <ReadOnlyInput title="Model" value={selectedTaxi.model} className="capitalize" />
             <ReadOnlyInput title="Colour" value={selectedTaxi.colour} className="capitalize" />
+
+            {!!selectedTaxi.hire_agreement_id && (
+              <div className="bg-orange-400 text-achromatic-lighter dark:bg-orange-500 dark:text-achromatic-lighter rounded-lg px-3 py-2 text-sm">
+                Warning: This taxi is already a part of an in-progress <Link to={`/hire/${selectedTaxi.hire_agreement_id}`} className="font-bold hover:opacity-50">Hire Agreement <FiEye className="inline text-xs -translate-y-[1px] -translate-x-[1px] mr-[3px]" /></Link> with <Link to={`/driver/${selectedTaxi.driver_id}`} className="font-bold hover:opacity-50">{selectedTaxi.driver_name ?? 'this driver'} <FiEye className="inline text-xs -translate-y-[1px] -translate-x-[1px] mr-[3px]" /></Link>.
+              </div>
+            )}
           </FormSection>
         )}
 
