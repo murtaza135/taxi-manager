@@ -116,10 +116,11 @@ export const addNewHireAgreementSchema = addTaxiToHireAgreementSchema
 
 // convert nullish values to undefined and FileList objects to File objects
 export const addNewHireAgreementTransformer = (data: AddNewHireAgreementSchema) => (
-  mapValues(data, (val) => {
+  mapValues(data, (val, key) => {
     if (!val) return undefined;
     if (Number.isNaN(val)) return undefined;
     if (val instanceof FileList) return val[0] as File | undefined;
+    if (key === 'rent_amount' || key === 'deposit_amount') return Number(val);
     return val;
   }) as AddNewHireAgreementTransformedSchema
 );
@@ -134,4 +135,6 @@ export type AddNewHireAgreementTransformedSchema = MergeOverwrite<AddNewHireAgre
   permission_letter_document_path?: File | undefined;
   contract_document_path?: File | undefined;
   deposit_receipt_document_path?: File | undefined;
+  rent_amount: number;
+  deposit_amount: number;
 }>;

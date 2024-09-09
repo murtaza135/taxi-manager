@@ -67,7 +67,6 @@ export function AddTaxiToHireAgreementForm() {
 
   const {
     formState,
-    prevStep,
     nextStep,
     updateFormState,
   } = useMultiStepFormContext<AddTaxiToHireAgreementSchema>();
@@ -97,11 +96,6 @@ export function AddTaxiToHireAgreementForm() {
     nextStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   });
-
-  const goPrevStep = () => {
-    prevStep();
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-  };
 
   const handleSelectTaxi = (id: number) => {
     setOpen(false);
@@ -289,8 +283,7 @@ export function AddTaxiToHireAgreementForm() {
           </FormSection>
         )}
 
-        <div className="pt-3 flex justify-between gap-3 flex-wrap-reverse">
-          <Button type="button" variant="outline" onClick={goPrevStep}>Back</Button>
+        <div className="pt-3 flex justify-end gap-3 flex-wrap-reverse">
           <Button type="submit" variant="primary">Next</Button>
         </div>
       </Form>

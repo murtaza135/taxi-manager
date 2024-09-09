@@ -6,13 +6,14 @@ import { addNewHireAgreementSchema, AddNewHireAgreementSchema, addNewHireAgreeme
 import { useZodForm, FormProvider, Form, FormTitle, FormSection, FormField } from '@/ui/form/Form';
 import { ReadOnlyInput } from '@/ui/form/Input';
 import { useToast } from '@/ui/toast';
+import { useAddNewHireAgreement } from '@/features/hires/general/hooks/useAddNewHireAgreement';
 
-const addNewTaxi = (arg1: unknown, arg2: unknown) => { };
+// const addNewTaxi = (arg1: unknown, arg2: unknown) => { };
 
 export function AddNewHireAgreementFormConfirmation() {
   const { toast } = useToast();
   const navigate = useNavigate();
-  // const { mutate: addNewTaxi } = useAddNewTaxi();
+  const { mutate: addNewHireAgreement } = useAddNewHireAgreement();
 
   const {
     formState,
@@ -34,8 +35,8 @@ export function AddNewHireAgreementFormConfirmation() {
   const handleSubmit = form.handleSubmit(
     (data) => {
       const transformedData = addNewHireAgreementTransformer(data);
-      addNewTaxi(transformedData, {
-        onSuccess: () => navigate('/hire', { preventScrollReset: false }),
+      addNewHireAgreement(transformedData, {
+        onSuccess: () => navigate('/hires', { preventScrollReset: false }),
       });
     },
     () => {

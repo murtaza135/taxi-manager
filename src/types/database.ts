@@ -1309,6 +1309,20 @@ export type Database = {
         };
         Returns: number;
       };
+      add_new_hire_agreement: {
+        Args: {
+          taxi_id: number;
+          driver_id: number;
+          rent_amount: number;
+          deposit_amount: number;
+          start_date: string;
+          end_date?: string;
+          permission_letter_document_path?: string;
+          contract_document_path?: string;
+          deposit_receipt_document_path?: string;
+        };
+        Returns: number;
+      };
       add_new_taxi: {
         Args: {
           number_plate: string;
