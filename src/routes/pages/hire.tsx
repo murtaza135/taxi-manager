@@ -1,27 +1,32 @@
-import { useParams } from 'react-router-dom';
-import { QueryClient } from '@tanstack/react-query';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
+import { HiresSwiper } from '@/features/hires/hiresSwiper/HiresSwiper';
+import { hireAgreementDetailsQueryOptions } from '@/features/hires/general/hooks/useHireDetails';
+import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
+import { APIError } from '@/errors/classes/APIError';
+import { ErrorUI } from '@/errors/components/ErrorUI';
 
-const hirePageLoader = (_queryClient: QueryClient) => () => null;
+const hirePageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
+  const id = Number(params.id);
+  if (Number.isNaN(id)) throw new APIError({ title: 'Not Found', status: 404 });
+  void queryClient.ensureQueryData(hireAgreementDetailsQueryOptions(id));
+  return null;
+};
 
 function HirePageSuspenseBoundary() {
-  const { id } = useParams();
-  useDocumentTitle(`Hire ${id}`);
+  useDocumentTitle('');
   return <div>HirePageSuspenseBoundary</div>;
 }
 
 function HirePageErrorBoundary() {
-  const { id } = useParams();
-  useDocumentTitle(`Hire ${id}`);
-  return <div>HirePageErrorBoundary</div>;
+  useDocumentTitle('');
+  return <ErrorUI />;
 }
 
 function HirePageComponent() {
-  const { id } = useParams();
-  useDocumentTitle(`Hire ${id}`);
+  useDocumentTitle('Hire');
 
   return (
-    <div>HirePageComponent</div>
+    <HiresSwiper />
   );
 }
 
