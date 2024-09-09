@@ -268,13 +268,15 @@ ReadOnlyInput.displayName = 'ReadOnlyInput';
 type EditableInputProps = {
   title?: string;
   error?: string;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
 };
 
 // TODO combine with ReadOnlyInput
 const EditableInput = React.forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement> & EditableInputProps
->(({ title, error, className, ...props }, ref) => (
+>(({ title, error, leftIcon, rightIcon, className, ...props }, ref) => (
   <div className="w-full">
     {title && (
       <p className="font-semibold text-sm text-achromatic-dark/65 dark:text-achromatic-500 space-x-4 xs:space-x-6">
@@ -282,12 +284,27 @@ const EditableInput = React.forwardRef<
         {error && <span className="text-red-700 dark:text-red-500 italic text-xs">* {error}</span>}
       </p>
     )}
-    <input
-      {...props}
-      ref={ref}
-      className={cn('w-full min-w-4 outline-none bg-transparent file:hidden overflow-ellipsis overflow-hidden whitespace-nowrap cursor-auto placeholder:text-achromatic-dark/65 dark:placeholder:text-achromatic-500 read-only:cursor-default border-achromatic-dark/65 dark:border-achromatic-500 pb-1 border-b read-only:border-transparent read-only:dark:border-transparent read-only:placeholder:text-achromatic-darker read-only:dark:placeholder:text-achromatic-lighter', className)}
-      placeholder={props.placeholder || 'N/A'}
-    />
+
+    <div className={cn('flex items-center gap-1 w-full border-achromatic-dark/65 dark:border-achromatic-500 pb-1 border-b', props.readOnly && 'border-transparent dark:border-transparent placeholder:text-achromatic-darker dark:placeholder:text-achromatic-lighter')}>
+      {!!leftIcon && (
+        <span className="-translate-y-[1px]">
+          {leftIcon}
+        </span>
+      )}
+
+      <input
+        {...props}
+        ref={ref}
+        className={cn('w-full min-w-4 outline-none bg-transparent file:hidden overflow-ellipsis overflow-hidden whitespace-nowrap cursor-auto placeholder:text-achromatic-dark/65 dark:placeholder:text-achromatic-500 read-only:cursor-default', className)}
+        placeholder={props.placeholder || 'N/A'}
+      />
+
+      {!!rightIcon && (
+        <span className="-translate-y-[1px]">
+          {rightIcon}
+        </span>
+      )}
+    </div>
   </div>
 ));
 EditableInput.displayName = 'EditableInput';

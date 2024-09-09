@@ -26,7 +26,10 @@ type SupabaseHireAgreementDetails = Prettify<
 >;
 
 type HireAgreementDetails = Prettify<
-  SupabaseHireAgreementDetails & {
+  Omit<
+    SupabaseHireAgreementDetails,
+    | 'rent_amount' | 'deposit_amount'
+  > & {
     id: number;
     permission_letter_document_src: string | null;
     permission_letter_document_file_type: FileType;
@@ -34,6 +37,8 @@ type HireAgreementDetails = Prettify<
     contract_document_file_type: FileType;
     deposit_receipt_document_src: string | null;
     deposit_receipt_document_file_type: FileType;
+    rent_amount: string,
+    deposit_amount: string,
   }
 >;
 
@@ -108,6 +113,8 @@ async function getHireAgreementDetails(id: number): Promise<HireAgreementDetails
   return {
     ...mappedData,
     id,
+    rent_amount: `${mappedData.rent_amount}`,
+    deposit_amount: `${mappedData.deposit_amount}`,
     permission_letter_document_src,
     permission_letter_document_file_type,
     contract_document_src,
@@ -124,7 +131,7 @@ export function hireAgreementDetailsQueryOptions(id: number) {
   });
 }
 
-export function useHireAgreementDetails(id: number) {
+export function useHireDetails(id: number) {
   const query = useSuspenseQuery(hireAgreementDetailsQueryOptions(id));
   return query;
 }

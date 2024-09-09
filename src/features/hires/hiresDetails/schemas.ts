@@ -2,7 +2,7 @@ import { z } from 'zod';
 import mapValues from 'lodash/mapValues';
 import { isBefore, isValid } from 'date-fns';
 import isCurrency from 'validator/es/lib/isCurrency';
-import { ReplaceUndefinedWithNull } from '@/types/utils';
+import { MergeOverwrite, ReplaceUndefinedWithNull } from '@/types/utils';
 
 export const updateHireAgreementDetailsSchema = z.object({
   start_date: z
@@ -49,7 +49,15 @@ export const updateHireAgreementDetailsTransformer = (data: UpdateHireAgreementD
     if (val === undefined || val === null || val === '') return null;
     if (key === 'rent_amount' || key === 'deposit_amount') return Number(val);
     return val;
-  }) as ReplaceUndefinedWithNull<UpdateHireAgreementDetailsSchema>
+  }) as UpdateHireAgreemenDetailstTransformedSchema
 );
 
 export type UpdateHireAgreementDetailsSchema = z.infer<typeof updateHireAgreementDetailsSchema>;
+
+export type UpdateHireAgreemenDetailstTransformedSchema = MergeOverwrite<
+  ReplaceUndefinedWithNull<UpdateHireAgreementDetailsSchema>,
+  {
+    rent_amount: number;
+    deposit_amount: number;
+  }
+>;
