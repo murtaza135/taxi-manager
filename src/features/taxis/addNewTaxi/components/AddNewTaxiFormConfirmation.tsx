@@ -36,7 +36,7 @@ export function AddNewTaxiFormConfirmation() {
     (data) => {
       const transformedData = addNewTaxiTransformer(data);
       addNewTaxi(transformedData, {
-        onSuccess: () => navigate('/taxis', { preventScrollReset: false }),
+        onSuccess: (id) => navigate(`/taxi/${id}`, { preventScrollReset: false }),
       });
     },
     () => {

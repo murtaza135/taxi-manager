@@ -34,7 +34,7 @@ export function AddNewDriverFormConfirmation() {
     (data) => {
       const transformedData = addNewDriverTransformer(data);
       addNewDriver(transformedData, {
-        onSuccess: () => navigate('/drivers', { preventScrollReset: false }),
+        onSuccess: (id) => navigate(`/driver/${id}`, { preventScrollReset: false }),
       });
     },
     () => {

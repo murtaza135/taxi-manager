@@ -36,7 +36,7 @@ export function AddNewHireAgreementFormConfirmation() {
     (data) => {
       const transformedData = addNewHireAgreementTransformer(data);
       addNewHireAgreement(transformedData, {
-        onSuccess: () => navigate('/hires', { preventScrollReset: false }),
+        onSuccess: (id) => navigate(`/hire/${id}`, { preventScrollReset: false }),
       });
     },
     () => {

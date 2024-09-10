@@ -29,6 +29,6 @@ BEGIN
     WHERE id = taxi_id
     AND auth_id = auth.uid();
 
-    RETURN taxi_id;
+    RETURN hire_id;
 END;
 $$ LANGUAGE plpgsql;
