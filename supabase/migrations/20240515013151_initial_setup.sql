@@ -72,6 +72,7 @@ create table "public"."driver_application" (
     "taxi_badge_number" text not null,
     "taxi_badge_start_date" date not null,
     "taxi_badge_end_date" date not null,
+    "is_submitted" boolean not null default false,
     "created_at" timestamp with time zone not null default now()
 );
 

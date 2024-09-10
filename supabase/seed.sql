@@ -284,8 +284,8 @@ INSERT INTO "public"."council_application_receipt" ("id", "auth_id", "taxi_id", 
 -- Data for Name: driver_application; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."driver_application" ("id", "company_id", "picture_path", "name", "phone_number", "email", "date_of_birth", "national_insurance_number", "drivers_licence_path", "drivers_licence_number", "drivers_licence_start_date", "drivers_licence_end_date", "taxi_badge_path", "taxi_badge_number", "taxi_badge_start_date", "taxi_badge_end_date", "created_at", "auth_id") VALUES
-	('faf37e18-664d-4ed6-9ced-008912e3799c', 1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72/driver-pictures/driver-a.jpg', 'driver A', '5442543656', 'driverA@test.com', '2023-02-08', 'fsafsdfsdfsd', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/drivers-licences/drivers-licence-a.png', 'sfgsdfsdfsdfsd', '2024-05-01', '2024-10-15', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-badges/taxi-badge-a.png', 'safdsfsdf', NULL, '2024-10-15', '2024-05-15 19:42:49.282068+00', 'cf9c4157-af64-4477-9f70-6b2c37e8da72');
+INSERT INTO "public"."driver_application" ("id", "company_id", "picture_path", "name", "phone_number", "email", "date_of_birth", "national_insurance_number", "drivers_licence_path", "drivers_licence_number", "drivers_licence_start_date", "drivers_licence_end_date", "taxi_badge_path", "taxi_badge_number", "taxi_badge_start_date", "taxi_badge_end_date", "created_at", "auth_id", "is_submitted") VALUES
+	('faf37e18-664d-4ed6-9ced-008912e3799c', 1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72/driver-pictures/driver-a.jpg', 'driver A', '5442543656', 'driverA@test.com', '2023-02-08', 'fsafsdfsdfsd', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/drivers-licences/drivers-licence-a.png', 'sfgsdfsdfsdfsd', '2024-05-01', '2024-10-15', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/taxi-badges/taxi-badge-a.png', 'safdsfsdf', NULL, '2024-10-15', '2024-05-15 19:42:49.282068+00', 'cf9c4157-af64-4477-9f70-6b2c37e8da72', false);
 
 
 --

@@ -91,10 +91,10 @@ async function getDriverApplication(id: number): Promise<DriverApplication> {
   );
   const taxi_badge_file_type = extractFileType(data.taxi_badge_path ?? undefined);
 
-  const mappedData = mapValues(data, (val) => val ?? undefined);
+  // eslint-disable-next-line max-len
+  const mappedData = mapValues(data, (val) => val ?? undefined) as ReplaceNullWithUndefined<typeof data>;
   return {
     ...mappedData,
-    created_at: mappedData.created_at as string,
     id,
     picture_src,
     picture_file_type,
