@@ -11,14 +11,14 @@ export function DriverAgreementsSwiperItem() {
     <Accordion type="single" collapsible>
       <AccordionItem value="current">
         <AccordionNonCollapsibleContent>
-          Current Agreement
+          Current Hire Agreement
         </AccordionNonCollapsibleContent>
       </AccordionItem>
 
       <AccordionItem value="previous">
-        <AccordionTrigger>Previous Agreements</AccordionTrigger>
+        <AccordionTrigger>Previous Hire Agreements</AccordionTrigger>
         <AccordionCollapsibleContent>
-          Previous Agreements
+          Previous hire Agreements
         </AccordionCollapsibleContent>
       </AccordionItem>
     </Accordion>

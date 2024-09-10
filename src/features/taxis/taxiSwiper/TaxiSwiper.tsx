@@ -23,7 +23,7 @@ export function TaxiSwiper() {
           <SwiperTabs>
             <SwiperTab index={1}>Details</SwiperTab>
             <SwiperTab index={2}>Drivers</SwiperTab>
-            <SwiperTab index={3}>Agreements</SwiperTab>
+            <SwiperTab index={3}>Hires</SwiperTab>
             <SwiperTab index={4}>Rent</SwiperTab>
           </SwiperTabs>
         )
@@ -31,7 +31,7 @@ export function TaxiSwiper() {
           <SwiperSelect>
             <SwiperSelectItem index={1}>Details</SwiperSelectItem>
             <SwiperSelectItem index={2}>Drivers</SwiperSelectItem>
-            <SwiperSelectItem index={3}>Agreements</SwiperSelectItem>
+            <SwiperSelectItem index={3}>Hires</SwiperSelectItem>
             <SwiperSelectItem index={4}>Rent</SwiperSelectItem>
           </SwiperSelect>
         )}
