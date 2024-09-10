@@ -16,6 +16,7 @@ type SupabaseDriverDetails = Prettify<
       | 'email' | 'phone_number' | 'date_of_birth'
       | 'national_insurance_number'
       | 'picture_path' | 'created_at'
+      | 'taxi_id' | 'hire_agreement_id'
     >
   >> & {
     name: string;
@@ -49,7 +50,7 @@ async function getDriverDetails(id: number): Promise<DriverDetails> {
 
   const { data, error, status } = await supabase
     .from('driver_view')
-    .select('email, phone_number, national_insurance_number, date_of_birth, picture_path, name, is_retired, created_at')
+    .select('email, phone_number, national_insurance_number, date_of_birth, picture_path, name, is_retired, created_at, taxi_id, hire_agreement_id')
     .eq('id', id)
     .eq('auth_id', session.user.id)
     .returns<SupabaseDriverDetails[]>()

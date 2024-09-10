@@ -24,7 +24,7 @@ export function DriverDetailsSwiperItem() {
 
       <AccordionItem value="driversLicence">
         <AccordionTrigger>Drivers Licence</AccordionTrigger>
-        <AccordionCollapsibleContent className="min-h-48 flex flex-col">
+        <AccordionCollapsibleContent className="flex flex-col">
           <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
           <Suspense fallback={<Spinner />}>
             <DriversLicenceDetailsSection />
@@ -34,7 +34,7 @@ export function DriverDetailsSwiperItem() {
 
       <AccordionItem value="taxiBadge">
         <AccordionTrigger>Taxi Badge</AccordionTrigger>
-        <AccordionCollapsibleContent className="min-h-48 flex flex-col">
+        <AccordionCollapsibleContent className="flex flex-col">
           <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
           <Suspense fallback={<Spinner />}>
             <DriversTaxiBadgeDetailsSection />
