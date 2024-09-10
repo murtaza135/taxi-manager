@@ -37,7 +37,7 @@ type Variables = {
 
 type Context = QueryFunctionContext<QueryKey, number>;
 
-async function getDrivers(
+async function getDriverApplications(
   { search = '', rowFilter = 'all' }: Variables,
   { pageParam }: Context,
 ): Promise<DriverApplicationsResult> {
@@ -49,7 +49,7 @@ async function getDrivers(
   let query = supabase
     .from('driver_application')
     .select(
-      'name, is_submitted, picture_path, created_at',
+      'id, name, is_submitted, picture_path, created_at',
       { count: 'estimated' },
     )
     .eq('auth_id', session.user.id);
@@ -59,7 +59,7 @@ async function getDrivers(
 
   query = query
     .order('created_at', { ascending: false })
-    .or(`name.ilike.%${search}%, email.ilike.%${search}%, number_plate.ilike.%${search}%`)
+    .or(`name.ilike.%${search}%, email.ilike.%${search}%`)
     .range(from, to);
 
   const { data, error, status, count } = await query.returns<DriverApplication[]>();
@@ -115,8 +115,8 @@ export function driverApplicationsQueryOptions(options?: Variables) {
     QueryKey,
     number
   >({
-    queryKey: ['drivers', 'list', { search, rowFilter }],
-    queryFn: (context) => getDrivers({ search, rowFilter }, context),
+    queryKey: ['driverApplications', 'list', { search, rowFilter }],
+    queryFn: (context) => getDriverApplications({ search, rowFilter }, context),
     initialPageParam: 0,
     getNextPageParam: (_lastGroup, groups) => groups.length,
     refetchOnWindowFocus: false,
