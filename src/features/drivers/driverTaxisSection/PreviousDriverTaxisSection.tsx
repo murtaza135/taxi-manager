@@ -41,7 +41,7 @@ export function PreviousDriverTaxisSection() {
   return (
     <List ref={ref} onScroll={fetchOnScroll}>
       {flatData.map((hire) => (
-        <Link key={hire.id} to={`/taxi/${hire.id}`} className="hover:opacity-70 transition-opacity">
+        <Link key={hire.id} to={`/taxi/${hire.taxi_id}`} className="hover:opacity-70 transition-opacity">
           <ListItem className="flex items-center gap-3">
             <Avatar>
               {hire.taxi_picture_path && (

@@ -92,8 +92,15 @@ export function useAddNewHireAgreement() {
 
   const mutation = useMutation<number, SupabaseError, AddNewHireAgreementTransformedSchema>({
     mutationFn: addNewHireAgreement,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['hires', 'list'] });
+    onSuccess: async (_data, { taxi_id, driver_id }) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['hires', 'list'] }),
+        queryClient.invalidateQueries({ queryKey: ['drivers', 'list'] }),
+        queryClient.invalidateQueries({ queryKey: ['drivers', driver_id, 'details'], exact: true }),
+        queryClient.invalidateQueries({ queryKey: ['taxis', 'list'] }),
+        queryClient.invalidateQueries({ queryKey: ['taxis', taxi_id, 'details'], exact: true }),
+
+      ]);
       revalidate();
     },
     onError: (error) => {

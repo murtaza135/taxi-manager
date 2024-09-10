@@ -15,6 +15,7 @@ type SupabaseTaxiDetails = Prettify<
       Tables<'taxi_view'>,
       | 'registration_date' | 'expected_expiry_date' | 'road_tax_expiry_date'
       | 'picture_path' | 'logbook_document_path' | 'cc' | 'fuel_type'
+      | 'driver_id' | 'hire_agreement_id'
     >
   >> & NonNullableObject<
     Pick<
@@ -61,7 +62,7 @@ async function getTaxiDetails(id: number): Promise<TaxiDetails> {
 
   const { data, error, status } = await supabase
     .from('taxi_view')
-    .select('number_plate, colour, chassis_number, is_retired, make, model, created_at, registration_date, expected_expiry_date, road_tax_expiry_date, picture_path, logbook_document_path, cc, fuel_type')
+    .select('number_plate, colour, chassis_number, is_retired, make, model, created_at, registration_date, expected_expiry_date, road_tax_expiry_date, picture_path, logbook_document_path, cc, fuel_type, driver_id, hire_agreement_id')
     .eq('id', id)
     .eq('auth_id', session.user.id)
     .returns<SupabaseTaxiDetails[]>()

@@ -25,7 +25,7 @@ type DelayedSpinnerProps = SpinnerProps & {
   delay?: number;
 };
 
-export function DelayedSpinner({ delay = 1000, ...rest }: DelayedSpinnerProps) {
+export function DelayedSpinner({ delay = 1000, size = 'default', ...rest }: DelayedSpinnerProps) {
   const [display, setDisplay] = useState<boolean>(false);
 
   useEffect(() => {
@@ -35,6 +35,6 @@ export function DelayedSpinner({ delay = 1000, ...rest }: DelayedSpinnerProps) {
     return () => clearTimeout(timeout);
   }, [delay]);
 
-  if (!display) return null;
-  return <Spinner {...rest} />;
+  if (!display) return <div className={cn('w-full', sizes[size])} />;
+  return <Spinner size={size} {...rest} />;
 }
