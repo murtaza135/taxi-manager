@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 
 const sizes = {
@@ -18,4 +19,22 @@ export function Spinner({ size = 'default', className }: SpinnerProps) {
       <span className={cn('spinner relative', sizes[size], className)} />
     </div>
   );
+}
+
+type DelayedSpinnerProps = SpinnerProps & {
+  delay?: number;
+};
+
+export function DelayedSpinner({ delay = 1000, ...rest }: DelayedSpinnerProps) {
+  const [display, setDisplay] = useState<boolean>(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDisplay(true);
+    }, delay);
+    return () => clearTimeout(timeout);
+  }, [delay]);
+
+  if (!display) return null;
+  return <Spinner {...rest} />;
 }

@@ -95,12 +95,14 @@ create view hire_agreement_view as
     hire_agreement.is_retired,
     hire_agreement.created_at,
     driver.id as driver_id,
-    driver.name AS driver_name,
+    driver.name as driver_name,
+    driver.picture_path as driver_picture_path,
     taxi.id as taxi_id,
     taxi.number_plate as taxi_number_plate,
     taxi.chassis_number as taxi_chassis_number,
     taxi_licence.phc_number as taxi_licence_phc_number,
-    taxi_licence.compliance_certificate_licence_number as taxi_licence_compliance_certificate_licence_number
+    taxi_licence.compliance_certificate_licence_number as taxi_licence_compliance_certificate_licence_number,
+    taxi.picture_path as taxi_picture_path
   from
     hire_agreement
     left join driver on hire_agreement.driver_id = driver.id

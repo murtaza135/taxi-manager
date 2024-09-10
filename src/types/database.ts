@@ -1221,6 +1221,7 @@ export type Database = {
           deposit_receipt_document_path: string | null;
           driver_id: number | null;
           driver_name: string | null;
+          driver_picture_path: string | null;
           end_date: string | null;
           id: number | null;
           is_retired: boolean | null;
@@ -1232,6 +1233,7 @@ export type Database = {
           taxi_licence_compliance_certificate_licence_number: string | null;
           taxi_licence_phc_number: string | null;
           taxi_number_plate: string | null;
+          taxi_picture_path: string | null;
         };
         Relationships: [
           {
