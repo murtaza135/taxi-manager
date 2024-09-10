@@ -169,6 +169,13 @@ export function HiresDetailsSection() {
         </div>
 
         <div className="space-y-3 flex-grow max-w-96">
+          <EditableInput
+            type="text"
+            title="Hire Agreement ID"
+            readOnly
+            value={hire_id}
+          />
+
           <FormField
             control={form.control}
             name="rent_amount"
