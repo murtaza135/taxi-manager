@@ -22,7 +22,7 @@ export function NavLink({ text, to, icon, active, className }: Props) {
     >
       <div className="flex items-center gap-4 pl-8 pr-10 md:pr-4 py-2 hover:translate-x-2 transition-transform">
         <i className="text-2xl sm:text-4xl md:text-2xl">{icon}</i>
-        <p className="inline sm:hidden md:inline">{text}</p>
+        <p className="inline sm:hidden md:inline overflow-hidden whitespace-nowrap text-ellipsis">{text}</p>
       </div>
     </Link>
   );
