@@ -1,14 +1,13 @@
 import { QueryClient } from '@tanstack/react-query';
 import { useScrollLock } from 'usehooks-ts';
-// import { DriversTable } from '@/features/drivers/driverTable/DriversTable';
+import { DriverApplicationsTable } from '@/features/drivers/driverApplicationsTable/DriverApplicationsTable';
 import {
   DataViewContainerSkeleton,
   DataViewTopBarSkeleton,
   DataViewTableSkeleton,
   DataViewGridSkeleton,
 } from '@/ui/dataview/DataView.skeleton';
-// import { useDriversLayout } from '@/features/drivers/driverTable/hooks/useDriversLayout';
-// import { driversQueryOptions } from '@/features/drivers/general/hooks/useDrivers';
+import { useDriverApplicationsLayout } from '@/features/drivers/driverApplicationsTable/hooks/useDriverApplicationsLayout';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { ErrorUI } from '@/errors/components/ErrorUI';
@@ -23,14 +22,13 @@ function DriverApplicationsPageSuspenseBoundary() {
   useDocumentTitle('Driver Applications');
   useScrollToTop();
   useScrollLock();
-  // const [layout] = useDriversLayout();
+  const [layout] = useDriverApplicationsLayout();
 
   return (
     <DataViewContainerSkeleton>
       <DataViewTopBarSkeleton />
-      {/* {layout === 'table' && <DataViewTableSkeleton />}
-      {layout === 'grid' && <DataViewGridSkeleton />} */}
-      <DataViewTableSkeleton />
+      {layout === 'table' && <DataViewTableSkeleton />}
+      {layout === 'grid' && <DataViewGridSkeleton />}
     </DataViewContainerSkeleton>
   );
 }
@@ -46,8 +44,7 @@ function DriverApplicationsPageComponent() {
   useScrollLock();
 
   return (
-    // <DriversTable />
-    <div />
+    <DriverApplicationsTable />
   );
 }
 
