@@ -25,7 +25,7 @@ type DelayedSpinnerProps = SpinnerProps & {
   delay?: number;
 };
 
-export function DelayedSpinner({ delay = 1000, size = 'default', ...rest }: DelayedSpinnerProps) {
+export function DelayedSpinner({ delay = 500, size = 'default', ...rest }: DelayedSpinnerProps) {
   const [display, setDisplay] = useState<boolean>(false);
 
   useEffect(() => {

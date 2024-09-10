@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Separator } from '@/ui/Separator';
 import { Card, CardTitle } from '@/ui/Card';
 import { DelayedSpinner } from '@/ui/Spinner';
+import { CurrentHireTaxiSection } from '@/features/hires/hiresTaxisSection/CurrentHireTaxiSection';
 
 export function HiresTaxiSwiperItem() {
   return (
@@ -10,7 +11,7 @@ export function HiresTaxiSwiperItem() {
       <div>
         <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
         <Suspense fallback={<DelayedSpinner />}>
-          <div>HiresTaxiSwiperItem</div>
+          <CurrentHireTaxiSection />
         </Suspense>
       </div>
     </Card>
