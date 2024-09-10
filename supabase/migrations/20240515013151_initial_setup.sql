@@ -59,7 +59,7 @@ create table "public"."driver_application" (
     "id" uuid not null default uuid_generate_v4(),
     "company_id" bigint not null,
     "picture_path" text,
-    "name" text,
+    "name" text not null,
     "phone_number" text,
     "email" text,
     "date_of_birth" date,

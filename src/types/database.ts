@@ -347,7 +347,7 @@ export type Database = {
           email: string | null;
           id: string;
           is_submitted: boolean;
-          name: string | null;
+          name: string;
           national_insurance_number: string | null;
           phone_number: string | null;
           picture_path: string | null;
@@ -368,7 +368,7 @@ export type Database = {
           email?: string | null;
           id?: string;
           is_submitted?: boolean;
-          name?: string | null;
+          name: string;
           national_insurance_number?: string | null;
           phone_number?: string | null;
           picture_path?: string | null;
@@ -389,7 +389,7 @@ export type Database = {
           email?: string | null;
           id?: string;
           is_submitted?: boolean;
-          name?: string | null;
+          name?: string;
           national_insurance_number?: string | null;
           phone_number?: string | null;
           picture_path?: string | null;
