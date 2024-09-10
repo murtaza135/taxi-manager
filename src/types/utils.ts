@@ -65,7 +65,7 @@ export type Prettify<T> = {
 /**
  * Make all properties in an object non-nullable
  */
-export type NonNullableObject<T> = { [K in keyof T]: NonNullable<T[K]> };
+export type NonNullableObject<T> = { [K in keyof T]-?: NonNullable<T[K]> };
 
 /**
  * Replace any nullables properties with undefined
