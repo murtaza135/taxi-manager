@@ -13,7 +13,7 @@ export function CurrentDriverHireSection() {
     return (
       <div className="space-y-3">
         <p>This driver currently has no hire agreement. Would you like to add one?</p>
-        <Link to="/hires/add" className={buttonVariants({ variant: 'primary' })}>Hire</Link>
+        <Link to="/hires/add" className={buttonVariants({ variant: 'primary' })}>Add</Link>
       </div>
     );
   }

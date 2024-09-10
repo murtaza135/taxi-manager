@@ -13,7 +13,7 @@ export function CurrentDriverTaxiSection() {
     return (
       <div className="space-y-3">
         <p>This driver currently has no hired taxi. Would you like to add one?</p>
-        <Link to="/hires/add" className={buttonVariants({ variant: 'primary' })}>Hire</Link>
+        <Link to="/hires/add" className={buttonVariants({ variant: 'primary' })}>Hire Taxi</Link>
       </div>
     );
   }
