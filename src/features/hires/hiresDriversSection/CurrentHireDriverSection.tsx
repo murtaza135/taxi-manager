@@ -1,28 +1,29 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { FiEye } from 'react-icons/fi';
 import { useMemo } from 'react';
-import { EditableInput } from '@/ui/form/Input';
 import { buttonVariants } from '@/ui/Button';
+import { EditableInput } from '@/ui/form/Input';
 import { FileListViewer, FileConfig } from '@/ui/files/FileListViewer';
 import { useDriverDetails } from '@/features/drivers/general/hooks/useDriverDetails';
+import { useHireDetails } from '@/features/hires/general/hooks/useHireDetails';
 import { toDateInputString } from '@/utils/date/toDateInputString';
 
-type Props = {
-  id: number;
-};
-
-export function CurrentTaxiDriverDisplaySection({ id }: Props) {
-  const { data } = useDriverDetails(id);
+export function CurrentHireDriverSection() {
+  const params = useParams();
+  const hire_id = Number(params.id);
+  const { data: hire_details } = useHireDetails(hire_id);
+  const { driver_id } = hire_details;
+  const { data: driver_details } = useDriverDetails(driver_id);
 
   const files: FileConfig[] = useMemo(() => [
     {
       key: 'picture',
       title: 'Picture',
-      file: data.picture_src ?? undefined,
-      fileType: data.picture_file_type,
+      file: driver_details.picture_src ?? undefined,
+      fileType: driver_details.picture_file_type,
       accept: 'image/*',
     },
-  ], [data.picture_src, data.picture_file_type]);
+  ], [driver_details.picture_src, driver_details.picture_file_type]);
 
   return (
     <form
@@ -33,7 +34,7 @@ export function CurrentTaxiDriverDisplaySection({ id }: Props) {
 
         <div className="flex gap-3 justify-center items-center w-full">
           <Link
-            to={`/driver/${id}`}
+            to={`/driver/${driver_id}`}
             className={buttonVariants({ variant: 'primary', className: 'w-full flex justify-center items-center gap-1' })}
           >
             <FiEye />
@@ -47,7 +48,7 @@ export function CurrentTaxiDriverDisplaySection({ id }: Props) {
           type="text"
           title="Name"
           readOnly
-          value={data.name}
+          value={driver_details.name}
           className="capitalize placeholder:normal-case"
         />
 
@@ -55,21 +56,21 @@ export function CurrentTaxiDriverDisplaySection({ id }: Props) {
           type="text"
           title="Email"
           readOnly
-          value={data.email}
+          value={driver_details.email}
         />
 
         <EditableInput
           type="text"
           title="Phone Number"
           readOnly
-          value={data.phone_number}
+          value={driver_details.phone_number}
         />
 
         <EditableInput
           type="text"
           title="National Insurance Number"
           readOnly
-          value={data.national_insurance_number}
+          value={driver_details.national_insurance_number}
           className="uppercase placeholder:normal-case"
         />
 
@@ -77,7 +78,7 @@ export function CurrentTaxiDriverDisplaySection({ id }: Props) {
           type="date"
           title="Date of Birth"
           readOnly
-          value={toDateInputString(new Date(data.date_of_birth ?? ''))}
+          value={toDateInputString(new Date(driver_details.date_of_birth ?? ''))}
         />
       </div>
     </form>

@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import { Separator } from '@/ui/Separator';
 import { Card, CardTitle } from '@/ui/Card';
+import { DelayedSpinner } from '@/ui/Spinner';
 
 export function HiresTaxiSwiperItem() {
   return (
@@ -7,7 +9,9 @@ export function HiresTaxiSwiperItem() {
       <CardTitle className="text-start text-base pb-4">Hired Taxi</CardTitle>
       <div>
         <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
-        <div>HiresTaxiSwiperItem</div>
+        <Suspense fallback={<DelayedSpinner />}>
+          <div>HiresTaxiSwiperItem</div>
+        </Suspense>
       </div>
     </Card>
   );
