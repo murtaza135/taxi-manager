@@ -11,10 +11,10 @@ import { useDriverApplicationsLayout } from '@/features/drivers/driverApplicatio
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { ErrorUI } from '@/errors/components/ErrorUI';
+import { driverApplicationsQueryOptions } from '@/features/drivers/general/hooks/useDriverApplications';
 
 const driverApplicationsPageLoader = (queryClient: QueryClient) => () => {
-  // void queryClient.prefetchInfiniteQuery(driversQueryOptions());
-  const temp = 1;
+  void queryClient.prefetchInfiniteQuery(driverApplicationsQueryOptions());
   return null;
 };
 

@@ -104,7 +104,7 @@ async function getDrivers(
   };
 }
 
-export function driversQueryOptions(options?: Variables) {
+export function driverApplicationsQueryOptions(options?: Variables) {
   const search = options?.search;
   const rowFilter = options?.rowFilter;
 
@@ -125,11 +125,11 @@ export function driversQueryOptions(options?: Variables) {
 }
 
 export function useDriverApplications(options?: Variables) {
-  const query = useSuspenseInfiniteQuery(driversQueryOptions(options));
+  const query = useSuspenseInfiniteQuery(driverApplicationsQueryOptions(options));
   return query;
 }
 
 export function useNonSuspenseDriverApplications(options?: Variables) {
-  const query = useInfiniteQuery(driversQueryOptions(options));
+  const query = useInfiniteQuery(driverApplicationsQueryOptions(options));
   return query;
 }
