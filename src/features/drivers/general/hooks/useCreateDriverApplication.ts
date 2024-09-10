@@ -1,17 +1,18 @@
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { useRevalidator } from 'react-router-dom';
+import { queryClient as globalQueryClient } from '@/config/api/queryClient';
 import { useToast } from '@/ui/toast';
 import { CreateDriverApplicationSchema } from '@/features/drivers/addNewDriverApplication/schemas';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { supabase } from '@/config/api/supabaseClient';
-
-// TODO setup company feature
-const company_id = 1;
+import { companyOptions } from '@/features/auth/hooks/useCompany';
 
 export async function createDriverApplication({ name }: CreateDriverApplicationSchema) {
+  const { name: company_name } = await globalQueryClient.ensureQueryData(companyOptions());
+
   const { data, error, status } = await supabase
     .from('driver_application')
-    .insert({ name, company_id })
+    .insert({ name, company_name })
     .select('id')
     .limit(1)
     .single();

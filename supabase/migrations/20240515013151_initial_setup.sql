@@ -57,7 +57,7 @@ alter table "public"."driver" enable row level security;
 
 create table "public"."driver_application" (
     "id" uuid not null default uuid_generate_v4(),
-    "company_id" bigint not null,
+    "company_name" text not null,
     "picture_path" text,
     "name" text not null,
     "phone_number" text,
@@ -386,10 +386,6 @@ alter table "public"."driver" validate constraint "driver_active_insurance_id_fk
 alter table "public"."driver" add constraint "driver_auth_id_fkey" FOREIGN KEY (auth_id) REFERENCES auth.users(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
 
 alter table "public"."driver" validate constraint "driver_auth_id_fkey";
-
-alter table "public"."driver_application" add constraint "driver_application_company_id_fkey" FOREIGN KEY (company_id) REFERENCES company(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
-
-alter table "public"."driver_application" validate constraint "driver_application_company_id_fkey";
 
 alter table "public"."drivers_licence" add constraint "drivers_licence_auth_id_fkey" FOREIGN KEY (auth_id) REFERENCES auth.users(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
 

@@ -337,7 +337,7 @@ export type Database = {
       driver_application: {
         Row: {
           auth_id: string;
-          company_id: number;
+          company_name: string;
           created_at: string;
           date_of_birth: string | null;
           drivers_licence_end_date: string | null;
@@ -358,7 +358,7 @@ export type Database = {
         };
         Insert: {
           auth_id?: string;
-          company_id: number;
+          company_name: string;
           created_at?: string;
           date_of_birth?: string | null;
           drivers_licence_end_date?: string | null;
@@ -379,7 +379,7 @@ export type Database = {
         };
         Update: {
           auth_id?: string;
-          company_id?: number;
+          company_name?: string;
           created_at?: string;
           date_of_birth?: string | null;
           drivers_licence_end_date?: string | null;
@@ -404,13 +404,6 @@ export type Database = {
             columns: ["auth_id"];
             isOneToOne: false;
             referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "driver_application_company_id_fkey";
-            columns: ["company_id"];
-            isOneToOne: false;
-            referencedRelation: "company";
             referencedColumns: ["id"];
           },
         ];

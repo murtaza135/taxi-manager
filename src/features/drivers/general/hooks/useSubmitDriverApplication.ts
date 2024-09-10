@@ -11,7 +11,7 @@ import { extname } from '@/utils/path/extname';
 export type Variables = Prettify<
   Omit<
     Tables<'driver_application'>,
-    | 'company_id' | 'auth_id' | 'created_at' | 'is_submitted'
+    | 'company_name' | 'auth_id' | 'created_at' | 'is_submitted'
     | 'picture_path' | 'drivers_licence_path' | 'taxi_badge_path'
   > & {
     picture?: File | null | undefined;
