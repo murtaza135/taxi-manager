@@ -30,13 +30,13 @@ type DriverApplication = Prettify<
 
 type PictureVariables = {
   id: number;
-  path?: string | null | undefined;
+  path?: string | undefined;
 };
 
 export function driverApplicationPictureQueryOptions({ id, path }: PictureVariables) {
   return queryOptions<string | null, void>({
     queryKey: ['driverApplications', id, 'picture', path],
-    queryFn: () => getFile(path ?? undefined),
+    queryFn: () => getFile(path),
     staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
@@ -44,7 +44,7 @@ export function driverApplicationPictureQueryOptions({ id, path }: PictureVariab
 export function driverApplicationLicenceQueryOptions({ id, path }: PictureVariables) {
   return queryOptions<string | null, void>({
     queryKey: ['driverApplications', id, 'licence', path],
-    queryFn: () => getFile(path ?? undefined),
+    queryFn: () => getFile(path),
     staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
@@ -52,7 +52,7 @@ export function driverApplicationLicenceQueryOptions({ id, path }: PictureVariab
 export function driverApplicationBadgeQueryOptions({ id, path }: PictureVariables) {
   return queryOptions<string | null, void>({
     queryKey: ['driverApplications', id, 'badge', path],
-    queryFn: () => getFile(path ?? undefined),
+    queryFn: () => getFile(path),
     staleTime: 1000 * 60 * 60, // 1 hour
   });
 }

@@ -1,122 +1,135 @@
-// import { keepPreviousData, infiniteQueryOptions, QueryKey, useSuspenseInfiniteQuery, InfiniteData, QueryFunctionContext, useInfiniteQuery } from '@tanstack/react-query';
-// import { Prettify, NonNullableObject } from '@/types/utils';
-// import { Tables } from '@/types/database';
-// import { queryClient } from '@/config/api/queryClient';
-// import { sessionOptions } from '@/features/auth/hooks/useSession';
-// import { supabase } from '@/config/api/supabaseClient';
-// import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
-// import { SupabaseError } from '@/errors/classes/SupabaseError';
-// import { driverPictureQueryOptions } from '@/features/drivers/general/hooks/useDriverDetails';
+import { keepPreviousData, infiniteQueryOptions, QueryKey, useSuspenseInfiniteQuery, InfiniteData, QueryFunctionContext, useInfiniteQuery } from '@tanstack/react-query';
+import { Prettify, ReplaceNullWithUndefined } from '@/types/utils';
+import { Tables } from '@/types/database';
+import { queryClient } from '@/config/api/queryClient';
+import { sessionOptions } from '@/features/auth/hooks/useSession';
+import { supabase } from '@/config/api/supabaseClient';
+import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
+import { SupabaseError } from '@/errors/classes/SupabaseError';
+import { driverApplicationPictureQueryOptions } from '@/features/drivers/general/hooks/useDriverApplication';
+import { DriverApplicationsRowFilterState } from '@/features/drivers/general/types';
 
-// const fetchSize = 50;
+const fetchSize = 50;
 
-// // TODO cleanup types merge SupabaseDriver and Driver types together
-// type SupabaseDriver = Prettify<
-//   Partial<NonNullableObject<
-//     Pick<
-//       Tables<'driver_view'>,
-//       | 'phone_number' | 'email' | 'picture_path'
-//       | 'taxi_id' | 'number_plate'
-//       | 'hire_agreement_id' | 'created_at'
-//     >
-//   >> & {
-//     name: string;
-//     is_retired: boolean;
-//   }
-// >;
+type SupabaseDriverApplication = ReplaceNullWithUndefined<
+  Pick<
+    Tables<'driver_application'>,
+    | 'name' | 'is_submitted' | 'created_at' | 'picture_path'
+  >
+>;
 
-// export type Driver = Prettify<
-//   SupabaseDriver & {
-//     id: number;
-//     picture_src: string | null;
-//   }
-// >;
+export type DriverApplication = Prettify<
+  SupabaseDriverApplication & {
+    id: number;
+    picture_src: string | null;
+  }
+>;
 
-// type DriversResult = {
-//   data: Driver[];
-//   count: number;
-// };
+type DriverApplicationsResult = {
+  data: DriverApplication[];
+  count: number;
+};
 
-// type Variables = {
-//   search?: string;
-//   isRetired?: boolean;
-// };
+type Variables = {
+  search?: string;
+  rowFilter?: DriverApplicationsRowFilterState;
+};
 
-// type Context = QueryFunctionContext<QueryKey, number>;
+type Context = QueryFunctionContext<QueryKey, number>;
 
-// async function getDrivers(
-//   { search = '', isRetired = false }: Variables,
-//   { pageParam }: Context,
-// ): Promise<DriversResult> {
-//   const session = await queryClient.ensureQueryData(sessionOptions());
+async function getDrivers(
+  { search = '', rowFilter = 'all' }: Variables,
+  { pageParam }: Context,
+): Promise<DriverApplicationsResult> {
+  const session = await queryClient.ensureQueryData(sessionOptions());
 
-//   const from = fetchSize * pageParam;
-//   const to = from + fetchSize - 1;
+  const from = fetchSize * pageParam;
+  const to = from + fetchSize - 1;
 
-//   const { data, error, status, count } = await supabase
-//     .from('driver_view')
-//     .select(
-//       'id, name, phone_number, email, picture_path, taxi_id, number_plate, is_retired, hire_agreement_id, created_at',
-//       { count: 'estimated' },
-//     )
-//     .eq('auth_id', session.user.id)
-//     .eq('is_retired', isRetired)
-//     .order('created_at', { ascending: false })
-//     .or(`name.ilike.%${search}%, email.ilike.%${search}%, number_plate.ilike.%${search}%`)
-//     .range(from, to)
-//     .returns<Driver[]>();
+  let query = supabase
+    .from('driver_application')
+    .select(
+      'name, is_submitted, picture_path, created_at',
+      { count: 'estimated' },
+    )
+    .eq('auth_id', session.user.id);
 
-//   if (status === 404) return { data: [], count: 0 };
+  if (rowFilter === 'notSubmitted') query = query.eq('is_submitted', false);
+  if (rowFilter === 'submitted') query = query.eq('is_submitted', true);
 
-//   if (error) {
-//     throw new SupabaseError(error, status, {
-//       globalTitle: 'Could not fetch drivers',
-//     });
-//   }
+  query = query
+    .order('created_at', { ascending: false })
+    .or(`name.ilike.%${search}%, email.ilike.%${search}%, number_plate.ilike.%${search}%`)
+    .range(from, to);
 
-//   const drivers = await Promise.all(
-//     data.map(async (driver) => {
-//       const name = capitalizeEachWord(driver.name);
-//       const number_plate = driver.number_plate?.toUpperCase();
-//       const picture_src = await queryClient.ensureQueryData(
-//         driverPictureQueryOptions({ id: driver.id, path: driver.picture_path }),
-//       );
-//       return { ...driver, name, number_plate, picture_src };
-//     }),
-//   );
+  const { data, error, status, count } = await query.returns<DriverApplication[]>();
 
-//   return {
-//     data: drivers,
-//     count: count ?? 0,
-//   };
-// }
+  // const { data, error, status, count } = await supabase
+  //   .from('driver_application')
+  //   .select(
+  //     'name, is_submitted, picture_path, created_at',
+  //     { count: 'estimated' },
+  //   )
+  //   .eq('auth_id', session.user.id)
+  //   .eq('is_retired', isRetired)
+  //   .order('created_at', { ascending: false })
+  //   .or(`name.ilike.%${search}%, email.ilike.%${search}%, number_plate.ilike.%${search}%`)
+  //   .range(from, to)
+  //   .returns<DriverApplication[]>();
 
-// export function driversQueryOptions(options?: Variables) {
-//   const search = options?.search;
-//   const isRetired = options?.isRetired;
+  if (status === 404) return { data: [], count: 0 };
 
-//   return infiniteQueryOptions<
-//     DriversResult,
-//     SupabaseError,
-//     InfiniteData<DriversResult, number>,
-//     QueryKey,
-//     number
-//   >({
-//     queryKey: ['drivers', 'list', { search, isRetired }],
-//     queryFn: (context) => getDrivers({ search, isRetired }, context),
-//     initialPageParam: 0,
-//     getNextPageParam: (_lastGroup, groups) => groups.length,
-//     refetchOnWindowFocus: false,
-//     placeholderData: keepPreviousData,
-//   });
-// }
+  if (error) {
+    throw new SupabaseError(error, status, {
+      globalTitle: 'Could not fetch driver applications',
+    });
+  }
 
-// export function useDrivers(options?: Variables) {
-//   const query = useSuspenseInfiniteQuery(driversQueryOptions(options));
-//   return query;
-// }
+  const driverApplications = await Promise.all(
+    data.map(async (application) => {
+      const name = capitalizeEachWord(application.name ?? '');
+      const picture_src = await queryClient.ensureQueryData(
+        driverApplicationPictureQueryOptions({
+          id: application.id,
+          path: application.picture_path,
+        }),
+      );
+      return { ...application, name, picture_src };
+    }),
+  );
 
-// export function useNonSuspenseDrivers(options?: Variables) {
-//   const query = useInfiniteQuery(driversQueryOptions(options));
-//   return query;
-// }
+  return {
+    data: driverApplications,
+    count: count ?? 0,
+  };
+}
+
+export function driversQueryOptions(options?: Variables) {
+  const search = options?.search;
+  const rowFilter = options?.rowFilter;
+
+  return infiniteQueryOptions<
+    DriverApplicationsResult,
+    SupabaseError,
+    InfiniteData<DriverApplicationsResult, number>,
+    QueryKey,
+    number
+  >({
+    queryKey: ['drivers', 'list', { search, rowFilter }],
+    queryFn: (context) => getDrivers({ search, rowFilter }, context),
+    initialPageParam: 0,
+    getNextPageParam: (_lastGroup, groups) => groups.length,
+    refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData,
+  });
+}
+
+export function useDriverApplications(options?: Variables) {
+  const query = useSuspenseInfiniteQuery(driversQueryOptions(options));
+  return query;
+}
+
+export function useNonSuspenseDriverApplications(options?: Variables) {
+  const query = useInfiniteQuery(driversQueryOptions(options));
+  return query;
+}
