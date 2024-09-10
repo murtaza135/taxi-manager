@@ -14,13 +14,12 @@ const fetchSize = 50;
 type SupabaseDriverApplication = ReplaceNullWithUndefined<
   Pick<
     Tables<'driver_application'>,
-    | 'name' | 'is_submitted' | 'created_at' | 'picture_path'
+    | 'id' | 'name' | 'is_submitted' | 'created_at' | 'picture_path'
   >
 >;
 
 export type DriverApplication = Prettify<
   SupabaseDriverApplication & {
-    id: number;
     picture_src: string | null;
   }
 >;

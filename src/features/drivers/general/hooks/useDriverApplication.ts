@@ -12,13 +12,12 @@ import { extractFileType, FileType } from '@/utils/path/extractFileType';
 type SupabaseDriverApplication = ReplaceNullWithUndefined<
   Omit<
     Tables<'driver_application'>,
-    'id' | 'auth_id' | 'company_id'
+    'auth_id' | 'company_id'
   >
 >;
 
 type DriverApplication = Prettify<
   SupabaseDriverApplication & {
-    id: number;
     picture_src: string | null;
     picture_file_type: FileType;
     drivers_licence_src: string | null;
@@ -29,7 +28,7 @@ type DriverApplication = Prettify<
 >;
 
 type PictureVariables = {
-  id: number;
+  id: string;
   path?: string | undefined;
 };
 
@@ -57,7 +56,7 @@ export function driverApplicationBadgeQueryOptions({ id, path }: PictureVariable
   });
 }
 
-async function getDriverApplication(id: number): Promise<DriverApplication> {
+async function getDriverApplication(id: string): Promise<DriverApplication> {
   const session = await queryClient.ensureQueryData(sessionOptions());
 
   const { data, error, status } = await supabase
@@ -105,14 +104,14 @@ async function getDriverApplication(id: number): Promise<DriverApplication> {
   };
 }
 
-export function driverApplicationQueryOptions(id: number) {
+export function driverApplicationQueryOptions(id: string) {
   return queryOptions<DriverApplication, SupabaseError>({
     queryKey: ['driverApplications', id],
     queryFn: () => getDriverApplication(id),
   });
 }
 
-export function useDriverApplication(id: number) {
+export function useDriverApplication(id: string) {
   const query = useSuspenseQuery(driverApplicationQueryOptions(id));
   return query;
 }
