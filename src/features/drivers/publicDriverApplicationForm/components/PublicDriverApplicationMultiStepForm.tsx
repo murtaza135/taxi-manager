@@ -6,6 +6,7 @@ import {
   MultiStepFormStepper,
   MultiStepFormStepperItem,
 } from '@/ui/form/MultiStepForm';
+import { PublicDriverApplicationCompanyDetailsForm } from '@/features/drivers/publicDriverApplicationForm/components/PublicDriverApplicationCompanyDetailsForm';
 import { PublicDriverApplicationDetailsForm } from '@/features/drivers/publicDriverApplicationForm/components/PublicDriverApplicationDetailsForm';
 import { PublicDriverApplicationDriversLicenceForm } from '@/features/drivers/publicDriverApplicationForm/components/PublicDriverApplicationDriversLicenceForm';
 import { PublicDriverApplicationTaxiBadgeForm } from '@/features/drivers/publicDriverApplicationForm/components/PublicDriverApplicationTaxiBadgeForm';
@@ -31,19 +32,21 @@ const initialFormState: PublicDriverApplicationNullableFileListSchema = {
 
 export function PublicDriverApplicationMultiStepForm() {
   return (
-    <MultiStepForm min={1} max={4} initialFormState={initialFormState}>
+    <MultiStepForm min={1} max={5} initialFormState={initialFormState}>
       <MultiStepFormStepper>
-        <MultiStepFormStepperItem step={1} title="Driver" />
-        <MultiStepFormStepperItem step={2} title="Drivers Licence" />
-        <MultiStepFormStepperItem step={3} title="Taxi Badge" />
-        <MultiStepFormStepperItem step={4} title="Confirmation" />
+        <MultiStepFormStepperItem step={1} title="Company" />
+        <MultiStepFormStepperItem step={2} title="Driver" />
+        <MultiStepFormStepperItem step={3} title="Drivers Licence" />
+        <MultiStepFormStepperItem step={4} title="Taxi Badge" />
+        <MultiStepFormStepperItem step={5} title="Confirmation" />
       </MultiStepFormStepper>
 
       <MultiStepFormItems className="flex justify-center items-start">
-        <MultiStepFormItem step={1}><PublicDriverApplicationDetailsForm /></MultiStepFormItem>
-        <MultiStepFormItem step={2}><PublicDriverApplicationDriversLicenceForm /></MultiStepFormItem>
-        <MultiStepFormItem step={3}><PublicDriverApplicationTaxiBadgeForm /></MultiStepFormItem>
-        <MultiStepFormItem step={4}><PublicDriverApplicationFormConfirmation /></MultiStepFormItem>
+        <MultiStepFormItem step={1}><PublicDriverApplicationCompanyDetailsForm /></MultiStepFormItem>
+        <MultiStepFormItem step={2}><PublicDriverApplicationDetailsForm /></MultiStepFormItem>
+        <MultiStepFormItem step={3}><PublicDriverApplicationDriversLicenceForm /></MultiStepFormItem>
+        <MultiStepFormItem step={4}><PublicDriverApplicationTaxiBadgeForm /></MultiStepFormItem>
+        <MultiStepFormItem step={5}><PublicDriverApplicationFormConfirmation /></MultiStepFormItem>
       </MultiStepFormItems>
     </MultiStepForm>
   );

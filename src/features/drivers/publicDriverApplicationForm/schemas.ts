@@ -9,6 +9,13 @@ const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; // 5MB
 const ACCEPTED_IMAGE_MIME_TYPE = /image\/.+/;
 const ACCEPTED_DOCUMENT_MIME_TYPE = /image\/.+|application\/pdf/;
 
+export const publicDriverApplicationCompanyDetailsSchema = z.object({
+  company_name: z
+    .string({ required_error: 'Company name required' })
+    .trim()
+    .min(1, 'Company name required'),
+});
+
 export const publicDriverApplicationDetailsSchema = z.object({
   name: z
     .string({ required_error: 'Name required' })
@@ -108,6 +115,7 @@ export const publicDriverApplicationTransformer = (data: PublicDriverApplication
   }) as PublicDriverApplicationTransformedSchema
 );
 
+export type PublicDriverApplicationCompanyDetailsSchema = z.infer<typeof publicDriverApplicationCompanyDetailsSchema>;
 export type PublicDriverApplicationDetailsSchema = z.infer<typeof publicDriverApplicationDetailsSchema>;
 export type PublicDriverApplicationLicenceSchema = z.infer<typeof publicDriverApplicationLicenceSchema>;
 export type PublicDriverApplicationTaxiBadgeSchema = z.infer<typeof publicDriverApplicationTaxiBadgeSchema>;

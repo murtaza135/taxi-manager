@@ -12,7 +12,7 @@ import { extractFileType, FileType } from '@/utils/path/extractFileType';
 type SupabaseDriverApplication = ReplaceNullWithUndefined<
   Omit<
     Tables<'driver_application'>,
-    'auth_id' | 'company_name'
+    'auth_id'
   >
 >;
 
