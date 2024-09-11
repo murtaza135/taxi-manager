@@ -119,3 +119,9 @@ export type PublicDriverApplicationTransformedSchema = MergeOverwrite<PublicDriv
   licence_document: File;
   badge_document: File;
 }>;
+
+export type PublicDriverApplicationNullableFileListSchema = MergeOverwrite<PublicDriverApplicationSchema, {
+  picture?: FileList | undefined;
+  licence_document?: FileList | undefined;
+  badge_document?: FileList | undefined;
+}>;

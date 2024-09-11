@@ -1,5 +1,50 @@
+/* eslint-disable max-len */
+import {
+  MultiStepForm,
+  MultiStepFormItems,
+  MultiStepFormItem,
+  MultiStepFormStepper,
+  MultiStepFormStepperItem,
+} from '@/ui/form/MultiStepForm';
+import { PublicDriverApplicationDetailsForm } from '@/features/drivers/publicDriverApplicationForm/components/PublicDriverApplicationDetailsForm';
+import { PublicDriverApplicationDriversLicenceForm } from '@/features/drivers/publicDriverApplicationForm/components/PublicDriverApplicationDriversLicenceForm';
+import { PublicDriverApplicationTaxiBadgeForm } from '@/features/drivers/publicDriverApplicationForm/components/PublicDriverApplicationTaxiBadgeForm';
+import { PublicDriverApplicationFormConfirmation } from '@/features/drivers/publicDriverApplicationForm/components/PublicDriverApplicationFormConfirmation';
+import { PublicDriverApplicationNullableFileListSchema } from '@/features/drivers/publicDriverApplicationForm/schemas';
+
+const initialFormState: PublicDriverApplicationNullableFileListSchema = {
+  name: '',
+  email: '',
+  phone_number: '',
+  national_insurance_number: '',
+  date_of_birth: '',
+  picture: undefined,
+  licence_number: '',
+  licence_start_date: '',
+  licence_end_date: '',
+  licence_document: undefined,
+  badge_number: '',
+  badge_start_date: '',
+  badge_end_date: '',
+  badge_document: undefined,
+};
+
 export function PublicDriverApplicationMultiStepForm() {
   return (
-    <div>PublicDriverApplicationMultiStepForm</div>
+    <MultiStepForm min={1} max={4} initialFormState={initialFormState}>
+      <MultiStepFormStepper>
+        <MultiStepFormStepperItem step={1} title="Driver" />
+        <MultiStepFormStepperItem step={2} title="Drivers Licence" />
+        <MultiStepFormStepperItem step={3} title="Taxi Badge" />
+        <MultiStepFormStepperItem step={4} title="Confirmation" />
+      </MultiStepFormStepper>
+
+      <MultiStepFormItems className="flex justify-center items-start">
+        <MultiStepFormItem step={1}><PublicDriverApplicationDetailsForm /></MultiStepFormItem>
+        <MultiStepFormItem step={2}><PublicDriverApplicationDriversLicenceForm /></MultiStepFormItem>
+        <MultiStepFormItem step={3}><PublicDriverApplicationTaxiBadgeForm /></MultiStepFormItem>
+        <MultiStepFormItem step={4}><PublicDriverApplicationFormConfirmation /></MultiStepFormItem>
+      </MultiStepFormItems>
+    </MultiStepForm>
   );
 }
