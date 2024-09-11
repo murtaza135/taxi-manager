@@ -2,6 +2,7 @@ import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
 import { APIError } from '@/errors/classes/APIError';
 import { ErrorUI } from '@/errors/components/ErrorUI';
+import { PublicDriverApplicationMultiStepForm } from '@/features/drivers/publicDriverApplicationForm/components/PublicDriverApplicationMultiStepForm';
 
 // eslint-disable-next-line max-len
 const publicDriverApplicationFormPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
@@ -27,7 +28,7 @@ function PublicDriverApplicationFormPageComponent() {
   useDocumentTitle('Apply for Taxi Vehicle');
 
   return (
-    <div />
+    <PublicDriverApplicationMultiStepForm />
   );
 }
 

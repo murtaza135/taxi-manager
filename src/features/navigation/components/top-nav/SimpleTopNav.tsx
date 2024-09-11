@@ -10,7 +10,7 @@ export function SimpleTopNav() {
   const { mutate: logout } = useLogout({ redirect: '/login' });
 
   return (
-    <div className="bg-primary-dark dark:bg-achromatic-dark h-16 w-full fixed top-0 left-0 right-0">
+    <div className="bg-primary-dark dark:bg-achromatic-dark h-16 w-full sticky top-0 left-0 right-0">
       <div className="flex justify-between items-center gap-4 w-full max-w-screen-2xl h-16 mx-auto pl-6 pr-6 z-20 text-white dark:text-primary-light">
         <NavLogo />
 

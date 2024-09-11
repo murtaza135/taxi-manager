@@ -18,7 +18,7 @@ function LoginPageComponent() {
   useDocumentTitle('Login');
 
   return (
-    <div className="min-h-dvh center">
+    <div className="min-h-[calc(100dvh-4rem)] center">
       <LoginForm />
     </div>
   );
