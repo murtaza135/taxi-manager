@@ -25,28 +25,7 @@ export function DriverApplicationDetailsSection() {
       fileType: data.picture_file_type,
       accept: 'image/*',
     },
-    {
-      key: 'licence',
-      title: 'Drivers Licence',
-      file: data.drivers_licence_src ?? undefined,
-      fileType: data.drivers_licence_file_type,
-      accept: 'image/*,.pdf',
-    },
-    {
-      key: 'taxiBadge',
-      title: 'Taxi Badge',
-      file: data.taxi_badge_src ?? undefined,
-      fileType: data.taxi_badge_file_type,
-      accept: 'image/*,.pdf',
-    },
-  ], [
-    data.picture_src,
-    data.picture_file_type,
-    data.drivers_licence_src,
-    data.drivers_licence_file_type,
-    data.taxi_badge_src,
-    data.taxi_badge_file_type,
-  ]);
+  ], [data.picture_src, data.picture_file_type]);
 
   const handleConvert: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault();
@@ -69,9 +48,7 @@ export function DriverApplicationDetailsSection() {
   };
 
   return (
-    <form
-      className="flex justify-start items-start gap-8 sm:gap-14 flex-col sm:flex-row py-3 px-2"
-    >
+    <form className="flex justify-start items-start gap-8 sm:gap-14 flex-col sm:flex-row py-3 px-2">
       <div className="flex flex-col justify-start items-start gap-4 flex-shrink-0">
         <FileListViewer files={files} />
 
