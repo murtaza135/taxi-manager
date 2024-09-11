@@ -14,12 +14,6 @@ import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { LazyMotion } from '@/lib/framer-motion/LazyMotion';
 import { cn } from '@/utils/cn';
 import { Backdrop } from '@/ui/Backdrop';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/ui/Tooltip';
 
 const SWIPE_CONFIDENCE_THRESHOLD = 10000;
 const swipePower = (offset: number, velocity: number) => Math.abs(offset) * velocity;
@@ -65,16 +59,7 @@ export function SideNav() {
               <NavLink to="/hires" icon={<LiaFileContractSolid />} active={pathname.startsWith('/hire')} text="Hires" />
               <NavLink to="/taxis" icon={<FaCarSide />} active={pathname.startsWith('/taxi')} text="Taxis" />
               <NavLink to="/drivers" icon={<BsPersonCircle />} active={pathname.startsWith('/driver') && !pathname.startsWith('/drivers/application')} text="Drivers" />
-
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger className="flex">
-                    <NavLink to="/drivers/applications" icon={<MdPersonAddAlt1 />} active={pathname.startsWith('/drivers/application')} text="Driver Applications" className="overflow-hidden whitespace-nowrap text-ellipsis" />
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">Driver Applications</TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
+              <NavLink to="/drivers/applications" icon={<MdPersonAddAlt1 />} active={pathname.startsWith('/drivers/application')} text="Applications" className="overflow-hidden whitespace-nowrap text-ellipsis" />
               <NavLink to="/settings" icon={<IoMdSettings />} active={pathname === '/settings'} text="Settings" className="mt-auto" />
             </div>
           </m.nav>
