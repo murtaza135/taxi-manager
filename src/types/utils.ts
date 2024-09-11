@@ -67,6 +67,11 @@ export type Prettify<T> = {
  */
 export type NonNullableObject<T> = { [K in keyof T]-?: NonNullable<T[K]> };
 
+type Temp = {
+  a: number | undefined;
+};
+type Temp2 = NonNullableObject<Temp>;
+
 /**
  * Replace any nullables properties with undefined
  */

@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { IoEllipsisVertical } from 'react-icons/io5';
 import { FiEye } from 'react-icons/fi';
 import { FaTrashAlt } from 'react-icons/fa';
-import { IoMdAddCircle } from 'react-icons/io';
-import { PiArrowUDownLeftBold } from 'react-icons/pi';
 import { MdPersonAddAlt1 } from 'react-icons/md';
 import { format } from 'date-fns';
 import {
@@ -21,10 +19,13 @@ import { Button } from '@/ui/Button';
 import { DriverApplication } from '@/features/drivers/general/hooks/useDriverApplications';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { cn } from '@/utils/cn';
-import { NoDataCell, LinkCell, PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
+import { LinkCell } from '@/ui/dataview/Cell';
 import { useReactTableContext } from '@/lib/tanstack-table/ReactTable';
-import { DriverApplicationsRowFilterState } from '@/features/drivers/general/types';
-// import { useUpdateDriverDetails } from '@/features/drivers/general/hooks/useUpdateDriverDetails';
+import { useDeleteDriverApplication } from '@/features/drivers/general/hooks/useDeleteDriverApplication';
+import { useConvertDriverApplicationToDriver } from '@/features/drivers/general/hooks/useConvertDriverApplicationToDriver';
+import { queryClient } from '@/config/api/queryClient';
+import { driverApplicationQueryOptions } from '@/features/drivers/general/hooks/useDriverApplication';
+import { NonNullableObject } from '@/types/utils';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<DriverApplication>[] = [
@@ -49,7 +50,7 @@ export const tableColumns: ColumnDef<DriverApplication>[] = [
           />
         )}
         <AvatarPersistentFallback>
-          {extractInitials(row.original.name ?? '')}
+          {extractInitials(row.original.name)}
         </AvatarPersistentFallback>
       </Avatar>
     ),
@@ -60,14 +61,11 @@ export const tableColumns: ColumnDef<DriverApplication>[] = [
     id: 'Name',
     accessorKey: 'name',
     header: 'Name',
-    cell: ({ row }) => {
-      if (!row.original.name) return <NoDataCell />;
-      return (
-        <LinkCell to={`/driver-application/${row.original.id}`}>
-          {row.original.name}
-        </LinkCell>
-      );
-    },
+    cell: ({ row }) => (
+      <LinkCell to={`/driver-application/${row.original.id}`}>
+        {row.original.name}
+      </LinkCell>
+    ),
   },
   {
     id: 'Submitted',
@@ -90,11 +88,34 @@ export const tableColumns: ColumnDef<DriverApplication>[] = [
     header: 'Actions',
     cell: function ActionsCell({ row }) {
       const table = useReactTableContext();
-      // const { mutateAsync: update } = useUpdateDriverDetails();
+      const { mutateAsync: deleteDriverApplication } = useDeleteDriverApplication();
+      const { mutate: convert } = useConvertDriverApplicationToDriver();
 
-      const handleSetDriverRetirement = (is_retired: boolean) => {
-        // await update({ id: row.original.id, is_retired });
+      const handleDeleteDriverApplication = async () => {
+        await deleteDriverApplication(row.original.id);
         table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
+      };
+
+      const handleConvertDriverApplicationToDriver = async () => {
+        if (row.original.is_submitted) {
+          const data = await queryClient.ensureQueryData(
+            driverApplicationQueryOptions(row.original.id),
+          );
+
+          const nonNullableData = data as NonNullableObject<typeof data>;
+
+          convert({
+            ...nonNullableData,
+            licence_number: nonNullableData.drivers_licence_number,
+            licence_start_date: nonNullableData.drivers_licence_start_date,
+            licence_end_date: nonNullableData.drivers_licence_end_date,
+            badge_number: nonNullableData.taxi_badge_number,
+            badge_end_date: nonNullableData.taxi_badge_end_date,
+            licence_document_path: nonNullableData.drivers_licence_path,
+            badge_document_path: nonNullableData.taxi_badge_path,
+            badge_start_date: nonNullableData.taxi_badge_start_date,
+          });
+        }
       };
 
       return (
@@ -104,10 +125,10 @@ export const tableColumns: ColumnDef<DriverApplication>[] = [
               <FiEye className="text-xl" />
             </Button>
           </Link>
-          <Button variant="ghost" className="p-0" onClick={() => { }} disabled={row.original.is_submitted}>
+          <Button variant="ghost" className="p-0" onClick={handleConvertDriverApplicationToDriver} disabled={row.original.is_submitted}>
             <MdPersonAddAlt1 className="text-2xl text-primary-dark dark:text-primary-light" />
           </Button>
-          <Button variant="ghost" className="p-0" onClick={() => handleSetDriverRetirement(true)}>
+          <Button variant="ghost" className="p-0" onClick={handleDeleteDriverApplication}>
             <FaTrashAlt className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
           </Button>
         </div>
@@ -130,11 +151,11 @@ export const gridColumns: ColumnDef<DriverApplication>[] = [
         {row.original.picture_src && (
           <AvatarImage
             src={row.original.picture_src}
-            alt={`user-${row.original.id}`}
+            alt={`driver-application-${row.original.id}`}
           />
         )}
         <AvatarPersistentFallback className="text-3xl">
-          {extractInitials(row.original.name ?? '')}
+          {extractInitials(row.original.name)}
         </AvatarPersistentFallback>
       </Avatar>
     ),
@@ -150,19 +171,46 @@ export const gridColumns: ColumnDef<DriverApplication>[] = [
     id: 'Submitted',
     accessorKey: 'is_submitted',
     header: 'Submitted?',
-    cell: ({ row }) => (row.original.is_submitted ? 'Submitted' : 'Not Submitted'),
+    cell: ({ row }) => (row.original.is_submitted ? 'Yes' : 'No'),
+  },
+  {
+    id: 'Date Created',
+    accessorKey: 'created_at',
+    header: 'Date Created',
+    cell: ({ row }) => format(row.original.created_at, 'dd/MM/yyyy'),
   },
   {
     id: 'Options Top',
     cell: function ActionsCell({ row }) {
       const table = useReactTableContext();
-      // eslint-disable-next-line max-len
-      const rowFilter = table.options.meta?.rowFilter as DriverApplicationsRowFilterState | undefined;
-      // const { mutateAsync: update } = useUpdateDriverDetails();
+      const { mutateAsync: deleteDriverApplication } = useDeleteDriverApplication();
+      const { mutate: convert } = useConvertDriverApplicationToDriver();
 
-      const handleSetDriverRetirement = (is_retired: boolean) => {
-        // await update({ id: row.original.id, is_retired });
+      const handleDeleteDriverApplication = async () => {
+        await deleteDriverApplication(row.original.id);
         table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
+      };
+
+      const handleConvertDriverApplicationToDriver = async () => {
+        if (row.original.is_submitted) {
+          const data = await queryClient.ensureQueryData(
+            driverApplicationQueryOptions(row.original.id),
+          );
+
+          const nonNullableData = data as NonNullableObject<typeof data>;
+
+          convert({
+            ...nonNullableData,
+            licence_number: nonNullableData.drivers_licence_number,
+            licence_start_date: nonNullableData.drivers_licence_start_date,
+            licence_end_date: nonNullableData.drivers_licence_end_date,
+            badge_number: nonNullableData.taxi_badge_number,
+            badge_end_date: nonNullableData.taxi_badge_end_date,
+            licence_document_path: nonNullableData.drivers_licence_path,
+            badge_document_path: nonNullableData.taxi_badge_path,
+            badge_start_date: nonNullableData.taxi_badge_start_date,
+          });
+        }
       };
 
       return (
@@ -177,18 +225,14 @@ export const gridColumns: ColumnDef<DriverApplication>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="hover:!opacity-100">
-              {/* {rowFilter === 'notRetired' && (
-                <Button variant="ghost" className="p-0 gap-2" onClick={() => handleSetDriverRetirement(true)}>
-                  <FaTrashAlt className="text-red-600 dark:text-red-500/70" />
-                  <p className="translate-y-[1px]">Retire</p>
-                </Button>
-              )}
-              {rowFilter === 'retired' && (
-                <Button variant="ghost" className="p-0 gap-2" onClick={() => handleSetDriverRetirement(false)}>
-                  <PiArrowUDownLeftBold className="text-primary-dark dark:text-achromatic-lighter" />
-                  <p>Recover</p>
-                </Button>
-              )} */}
+              <Button variant="ghost" className="p-0 gap-2" onClick={handleConvertDriverApplicationToDriver} disabled={row.original.is_submitted}>
+                <MdPersonAddAlt1 className="text-2xl text-primary-dark dark:text-primary-light" />
+                <p className="translate-y-[1px]">Convert to Driver</p>
+              </Button>
+              <Button variant="ghost" className="p-0 gap-2" onClick={handleDeleteDriverApplication}>
+                <FaTrashAlt className="text-red-600 dark:text-red-500/70" />
+                <p className="translate-y-[1px]">Delete</p>
+              </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

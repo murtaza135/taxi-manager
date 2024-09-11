@@ -20,22 +20,13 @@ import { useDriverApplications } from '@/features/drivers/general/hooks/useDrive
 import { Button } from '@/ui/Button';
 import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 import { useSearchParam } from '@/hooks/useSearchParam';
-// import { useDriversColumnVisibility } from '@/features/drivers/driverTable/hooks/useDriversColumnVisibility';
-// import { useDriversLayout } from '@/features/drivers/driverTable/hooks/useDriversLayout';
 import { useDriverApplicationsColumnVisibility } from '@/features/drivers/driverApplicationsTable/hooks/useDriverApplicationsColumnVisibility';
 import { useDriverApplicationsLayout } from '@/features/drivers/driverApplicationsTable/hooks/useDriverApplicationsLayout';
-// import { useDriversRowFilter } from '@/features/drivers/driverTable/hooks/useDriversRowFilter';
 import { useDriverApplicationsRowFilter } from '@/features/drivers/driverApplicationsTable/hooks/useDriverApplicationsRowFilter';
-// import { useSetDriversRetirements } from '@/features/drivers/general/hooks/useSetDriversRetirements';
-// import { DriversRowFilterState } from '@/features/drivers/general/types';
 import { DriverApplicationsRowFilterState } from '@/features/drivers/general/types';
+import { useBulkDeleteDriverApplications } from '@/features/drivers/general/hooks/useBulkDeleteDriverApplications';
 
 const rowFilters: DriverApplicationsRowFilterState[] = ['all', 'notSubmitted', 'submitted'];
-
-type HandleSetDriversRetirementsAttributes = {
-  ids: string[];
-  isRetired: boolean;
-};
 
 export function DriverApplicationsTable() {
   const [globalFilterBase, setGlobalFilter] = useSearchParam<string>('search');
@@ -45,7 +36,7 @@ export function DriverApplicationsTable() {
   const [rowFilter, setRowFilter] = useDriverApplicationsRowFilter();
   const globalFilter = globalFilterBase ?? '';
 
-  // const { mutateAsync: setDriversRetirements } = useSetDriversRetirements();
+  const { mutateAsync: bulkDeleteDriverApplications } = useBulkDeleteDriverApplications();
 
   const {
     data,
@@ -95,15 +86,8 @@ export function DriverApplicationsTable() {
     void fetchOnScroll();
   }, [fetchOnScroll]);
 
-  const handleSetDriversRetirements = ({
-    ids,
-    isRetired,
-  }: HandleSetDriversRetirementsAttributes) => {
-    const idNumbers = ids
-      .map((id) => Number(id))
-      .filter((id) => !Number.isNaN(id));
-
-    // await setDriversRetirements({ ids: idNumbers, isRetired });
+  const handleDeleteDriverApplications = async (ids: string[]) => {
+    await bulkDeleteDriverApplications(ids);
     table.resetRowSelection();
   };
 
@@ -121,11 +105,9 @@ export function DriverApplicationsTable() {
           <Button variant="ghost" size="auto" className="text-xl center" onClick={() => refetch()}>
             <IoReload />
           </Button>
-          {/* {rowFilter === 'notRetired' && (
-            <DataViewDeleteSelectedRowsButton
-              onDelete={(ids) => handleSetDriversRetirements({ ids, isRetired: true })}
-            />
-          )} */}
+          <DataViewDeleteSelectedRowsButton
+            onDelete={(ids) => handleDeleteDriverApplications(ids)}
+          />
         </DataViewTopBarSection>
         <DataViewTopBarSection>
           <DataViewRowSelectionCount />
