@@ -72,7 +72,7 @@ export const tableColumns: ColumnDef<DriverApplication>[] = [
     accessorKey: 'is_submitted',
     header: 'Submitted?',
     cell: ({ row }) => (
-      <div className={cn('py-1 px-2 rounded-full text-nowrap w-fit', row.original.is_submitted ? 'bg-green-500 text-achromatic-lighter dark:bg-green-400 dark:text-achromatic-dark' : 'bg-red-500 text-achromatic-lighter dark:bg-red-500 dark:text-achromatic-dark')}>
+      <div className={cn('py-1 px-2 rounded-full text-nowrap w-fit', row.original.is_submitted ? 'bg-green-500 text-achromatic-lighter dark:bg-green-400 dark:text-achromatic-dark' : 'bg-red-500 text-achromatic-lighter dark:bg-red-500 dark:text-achromatic-lighter')}>
         {row.original.is_submitted ? 'Yes' : 'No'}
       </div>
     ),

@@ -69,7 +69,7 @@ export function SideNav() {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger className="flex">
-                    <NavLink to="/drivers/applications" icon={<MdPersonAddAlt1 />} active={pathname.startsWith('/drivers/applications')} text="Driver Applications" className="overflow-hidden whitespace-nowrap text-ellipsis" />
+                    <NavLink to="/drivers/applications" icon={<MdPersonAddAlt1 />} active={pathname.startsWith('/drivers/application')} text="Driver Applications" className="overflow-hidden whitespace-nowrap text-ellipsis" />
                   </TooltipTrigger>
                   <TooltipContent side="bottom">Driver Applications</TooltipContent>
                 </Tooltip>
