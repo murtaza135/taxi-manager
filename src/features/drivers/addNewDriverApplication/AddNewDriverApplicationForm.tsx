@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
-import { useNavigate } from 'react-router-dom';
 import { MdPersonAddAlt1 } from 'react-icons/md';
+import { useState } from 'react';
+import urlJoin from 'url-join';
 import {
   FormProvider,
   Form,
@@ -14,23 +15,29 @@ import { Button } from '@/ui/Button';
 import { createDriverApplicationSchema, CreateDriverApplicationSchema } from '@/features/drivers/addNewDriverApplication/schemas';
 import { useCreateDriverApplication } from '@/features/drivers/general/hooks/useCreateDriverApplication';
 import { Separator } from '@/ui/Separator';
+import { CopyField } from '@/ui/CopyField';
+import { config } from '@/config/config';
 
 const defaultValues: CreateDriverApplicationSchema = {
   name: '',
 };
 
 export function AddNewDriverApplicationForm() {
-  const navigate = useNavigate();
-  const { mutate: create } = useCreateDriverApplication();
+  const { mutateAsync: create, isPending } = useCreateDriverApplication();
+  const [newApplicationId, setNewApplicationId] = useState<string>('');
+  const link = newApplicationId
+    ? urlJoin(config.env.VITE_CLIENT_URL, 'driver-application', newApplicationId)
+    : '';
+  const isCopyFieldDisbaled = !newApplicationId;
+
   const form = useZodForm({
     schema: createDriverApplicationSchema,
     defaultValues,
   });
 
-  const handleSubmit = form.handleSubmit((data) => {
-    create(data, {
-      onSuccess: (id) => navigate(`/drivers/application/${id}`, { preventScrollReset: false }),
-    });
+  const handleSubmit = form.handleSubmit(async (data) => {
+    const id = await create(data);
+    setNewApplicationId(id);
   });
 
   return (
@@ -51,7 +58,9 @@ export function AddNewDriverApplicationForm() {
             <FormGroup label="* Driver Name">
               <div className="flex items-center gap-2">
                 <Input placeholder="Driver Name" {...field} />
-                <Button type="submit" variant="primary" className=""><MdPersonAddAlt1 className="text-xl" /></Button>
+                <Button type="submit" variant="primary" disabled={isPending}>
+                  <MdPersonAddAlt1 className="text-xl" />
+                </Button>
               </div>
             </FormGroup>
           )}
@@ -61,6 +70,11 @@ export function AddNewDriverApplicationForm() {
           <Separator className="dark:bg-achromatic-darker" />
         </div>
 
+        <CopyField
+          text={link}
+          defaultText="Application link not generated yet."
+          disabled={isCopyFieldDisbaled}
+        />
       </Form>
     </FormProvider>
   );
