@@ -95,7 +95,7 @@ export function DriverApplicationsTable() {
     <DataView table={table}>
       <DataViewTopBar>
         <DataViewTopBarSection>
-          <Link to="/drivers/add">
+          <Link to="/drivers/applications/add">
             <Button className="px-3 py-1">New</Button>
           </Link>
           <DataViewSearchPopover />

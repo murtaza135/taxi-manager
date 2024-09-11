@@ -62,7 +62,7 @@ export const tableColumns: ColumnDef<DriverApplication>[] = [
     accessorKey: 'name',
     header: 'Name',
     cell: ({ row }) => (
-      <LinkCell to={`/driver-application/${row.original.id}`}>
+      <LinkCell to={`/drivers/application/${row.original.id}`}>
         {row.original.name}
       </LinkCell>
     ),
@@ -120,7 +120,7 @@ export const tableColumns: ColumnDef<DriverApplication>[] = [
 
       return (
         <div className="flex items-center gap-6">
-          <Link to={`/driver/${row.original.id}`} className="center">
+          <Link to={`/drivers/application/${row.original.id}`} className="center">
             <Button variant="ghost" className="p-0">
               <FiEye className="text-xl" />
             </Button>
@@ -247,7 +247,7 @@ export const gridColumns: ColumnDef<DriverApplication>[] = [
   {
     id: 'Options Bottom',
     cell: ({ row }) => (
-      <Link to={`/driver-application/${row.original.id}`} className="w-full">
+      <Link to={`/drivers/application/${row.original.id}`} className="w-full">
         <Button className="w-full">Open</Button>
       </Link>
     ),
