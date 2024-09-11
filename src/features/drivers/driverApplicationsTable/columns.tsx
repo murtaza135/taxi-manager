@@ -125,7 +125,7 @@ export const tableColumns: ColumnDef<DriverApplication>[] = [
               <FiEye className="text-xl" />
             </Button>
           </Link>
-          <Button variant="ghost" className="p-0" onClick={handleConvertDriverApplicationToDriver} disabled={row.original.is_submitted}>
+          <Button variant="ghost" className="p-0" onClick={handleConvertDriverApplicationToDriver} disabled={!row.original.is_submitted}>
             <MdPersonAddAlt1 className="text-2xl text-primary-dark dark:text-primary-light" />
           </Button>
           <Button variant="ghost" className="p-0" onClick={handleDeleteDriverApplication}>
@@ -224,12 +224,14 @@ export const gridColumns: ColumnDef<DriverApplication>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="hover:!opacity-100">
-              <Button variant="ghost" className="p-0 gap-2" onClick={handleConvertDriverApplicationToDriver} disabled={row.original.is_submitted}>
-                <MdPersonAddAlt1 className="text-2xl text-primary-dark dark:text-primary-light" />
-                <p className="translate-y-[1px]">Convert to Driver</p>
+            <DropdownMenuItem className={cn('hover:!opacity-100', !row.original.is_submitted && 'cursor-auto')}>
+              <Button variant="ghost" className="p-0 gap-2" onClick={handleConvertDriverApplicationToDriver} disabled={!row.original.is_submitted}>
+                <MdPersonAddAlt1 className="text-xl text-primary-dark dark:text-primary-light" />
+                <p className="translate-y-[1px]">Add</p>
               </Button>
-              <Button variant="ghost" className="p-0 gap-2" onClick={handleDeleteDriverApplication}>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="hover:!opacity-100">
+              <Button variant="ghost" className="p-0 gap-3.5" onClick={handleDeleteDriverApplication}>
                 <FaTrashAlt className="text-red-600 dark:text-red-500/70" />
                 <p className="translate-y-[1px]">Delete</p>
               </Button>
