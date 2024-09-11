@@ -14,7 +14,7 @@ const publicOrPrivateLayoutLoader = (queryClient: QueryClient) => () => {
 function PublicOrPrivateLayoutComponent() {
   return (
     <>
-      <SimpleTopNav />
+      <SimpleTopNav disableLink />
       <BasicContainer>
         <Outlet />
       </BasicContainer>

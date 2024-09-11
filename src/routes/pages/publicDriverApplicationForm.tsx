@@ -28,7 +28,9 @@ function PublicDriverApplicationFormPageComponent() {
   useDocumentTitle('Apply for Taxi Vehicle');
 
   return (
-    <PublicDriverApplicationMultiStepForm />
+    <div className="py-12">
+      <PublicDriverApplicationMultiStepForm />
+    </div>
   );
 }
 
