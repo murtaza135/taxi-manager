@@ -102,6 +102,7 @@ export const tableColumns: ColumnDef<DriverApplication>[] = [
             driverApplicationQueryOptions(row.original.id),
           );
 
+          // TODO not all data is NonNullable
           const nonNullableData = data as NonNullableObject<typeof data>;
 
           convert({
