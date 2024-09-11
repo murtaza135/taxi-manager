@@ -6,8 +6,8 @@ import { APIError } from '@/errors/classes/APIError';
 import { ErrorUI } from '@/errors/components/ErrorUI';
 
 const driverApplicationPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
+  if (!params.id) throw new APIError({ title: 'Not Found', status: 404 });
   // void queryClient.ensureQueryData(driverDetailsQueryOptions(id));
-  const temp = 1;
   return null;
 };
 
