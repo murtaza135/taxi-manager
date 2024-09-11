@@ -9,11 +9,12 @@ import { Separator } from '@/ui/Separator';
 import { DriverApplicationDetailsSection } from '@/features/drivers/driverApplicationDetails/DriverApplicationDetailsSection';
 import { DriverApplicationLicenceDetailsSection } from '@/features/drivers/driverApplicationDetails/DriverApplicationLicenceDetailsSection';
 import { DriverApplicationTaxiBadgeDetailsSection } from '@/features/drivers/driverApplicationDetails/DriverApplicationTaxiBadgeDetailsSection';
+import { DriverApplicationConverterSection } from '@/features/drivers/driverApplicationDetails/DriverApplicationConverterSection';
 import { Spinner } from '@/ui/Spinner';
 
 export function DriverApplicationAccordion() {
   return (
-    <Accordion type="multiple" defaultValue={['details']} className="!flex-grow-0">
+    <Accordion type="multiple" defaultValue={['details', 'convert']} className="!flex-grow-0">
       <AccordionItem value="details">
         <AccordionTrigger>Driver Details</AccordionTrigger>
         <AccordionCollapsibleContent>
@@ -38,6 +39,16 @@ export function DriverApplicationAccordion() {
           <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
           <Suspense fallback={<Spinner />}>
             <DriverApplicationTaxiBadgeDetailsSection />
+          </Suspense>
+        </AccordionCollapsibleContent>
+      </AccordionItem>
+
+      <AccordionItem value="convert">
+        <AccordionTrigger>Convert to Driver</AccordionTrigger>
+        <AccordionCollapsibleContent className="flex flex-col">
+          <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
+          <Suspense fallback={<Spinner />}>
+            <DriverApplicationConverterSection />
           </Suspense>
         </AccordionCollapsibleContent>
       </AccordionItem>
