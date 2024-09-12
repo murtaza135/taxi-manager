@@ -11,9 +11,7 @@ import { Tables } from '@/types/database';
 import { Prettify } from '@/types/utils';
 import { extname } from '@/utils/path/extname';
 
-type Email = Tables<'company'>['email'];
-
-export async function changeEmail(email: Email) {
+export async function changeEmail(email: string) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
 
   // const { error, status } = await supabase
@@ -35,7 +33,7 @@ export function useChangeEmail() {
   const { revalidate } = useRevalidator();
   const { toast } = useToast();
 
-  const mutation = useMutation<Email, SupabaseError, Email>({
+  const mutation = useMutation<string, SupabaseError, string>({
     mutationFn: changeEmail,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['auth', 'company'], exact: true });

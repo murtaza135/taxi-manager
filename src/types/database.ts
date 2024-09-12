@@ -40,7 +40,6 @@ export type Database = {
           auth_id: string;
           company_number: string;
           created_at: string;
-          email: string;
           id: number;
           logo_path: string | null;
           name: string;
@@ -51,7 +50,6 @@ export type Database = {
           auth_id?: string;
           company_number: string;
           created_at?: string;
-          email: string;
           id?: number;
           logo_path?: string | null;
           name: string;
@@ -62,7 +60,6 @@ export type Database = {
           auth_id?: string;
           company_number?: string;
           created_at?: string;
-          email?: string;
           id?: number;
           logo_path?: string | null;
           name?: string;

@@ -6,7 +6,6 @@ create table "public"."company" (
     "company_number" text not null,
     "address" text not null,
     "phone_number" text,
-    "email" text not null,
     "created_at" timestamp with time zone not null default now()
 );
 

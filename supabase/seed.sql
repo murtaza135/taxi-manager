@@ -130,10 +130,10 @@ INSERT INTO "auth"."identities" ("provider_id", "user_id", "identity_data", "pro
 -- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."company" ("id", "auth_id", "logo_path", "name", "company_number", "address", "phone_number", "email", "created_at") VALUES
-	(2, '2a8b0fb4-094c-47b0-b701-2282a6cd8993', NULL, 'test2', 'SC1234567890', '123 test address, test, TT12 3TT', NULL, 'test2@test.com', '2024-05-15 14:47:00.713781+00'),
-	(3, '34a3aed7-3db5-4cff-a0e5-761d85a8074b', '34a3aed7-3db5-4cff-a0e5-761d85a8074b/logos/logo3.jpg', 'test3', 'SC1234567890', '123 test address, test, TT12 3TT', NULL, 'test3@test.com', '2024-05-15 14:47:57.337059+00'),
-	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logos/logo1.jpg', 'test1', 'SC1234567890', '123 test address, test, TT12 3TT', '0123456789', 'test1@test.com', '2024-05-15 13:12:50.722732+00');
+INSERT INTO "public"."company" ("id", "auth_id", "logo_path", "name", "company_number", "address", "phone_number", "created_at") VALUES
+	(2, '2a8b0fb4-094c-47b0-b701-2282a6cd8993', NULL, 'test2', 'SC1234567890', '123 test address, test, TT12 3TT', NULL, '2024-05-15 14:47:00.713781+00'),
+	(3, '34a3aed7-3db5-4cff-a0e5-761d85a8074b', '34a3aed7-3db5-4cff-a0e5-761d85a8074b/logos/logo3.jpg', 'test3', 'SC1234567890', '123 test address, test, TT12 3TT', NULL, '2024-05-15 14:47:57.337059+00'),
+	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'cf9c4157-af64-4477-9f70-6b2c37e8da72/logos/logo1.jpg', 'test1', 'SC1234567890', '123 test address, test, TT12 3TT', '0123456789', '2024-05-15 13:12:50.722732+00');
 
 
 --

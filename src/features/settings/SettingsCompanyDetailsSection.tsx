@@ -16,11 +16,14 @@ import { companyDetailsSchema, companyDetailsTransformer } from '@/features/sett
 import { cn } from '@/utils/cn';
 import { PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
 import { FileListViewer, FileConfig, FileListViewerOnChangeHandler, FileListViewerOnDeleteHandler } from '@/ui/files/FileListViewer';
+import { useSession } from '@/features/auth/hooks/useSession';
 
 const updateCompanyDetails = (arg1: unknown, arg2?: unknown) => { };
 
 export function SettingsCompanyDetailsSection() {
   const { data } = useCompany();
+  const { data: sessionData } = useSession();
+  const { email } = sessionData.user;
   const [isEditMode, setEditMode] = useState<boolean>(false);
   // const { mutate: updateDriver } = useUpdateDriverDetails();
 
@@ -197,23 +200,15 @@ export function SettingsCompanyDetailsSection() {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <EmailCell email={field.value} className="w-full [&>.icon]:pr-6">
-                <EditableInput
-                  type="email"
-                  title="Email"
-                  readOnly
-                  {...field}
-                  error={form.formState.errors[field.name]?.message}
-                  value={field.value ?? ''}
-                  className="!cursor-pointer"
-                />
-              </EmailCell>
-            )}
-          />
+          <EmailCell email={email ?? ''} className="w-full [&>.icon]:pr-6">
+            <EditableInput
+              type="email"
+              title="Email"
+              readOnly
+              value={email ?? ''}
+              className="!cursor-pointer"
+            />
+          </EmailCell>
         </div>
       </form>
     </FormProvider>

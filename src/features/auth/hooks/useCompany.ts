@@ -13,7 +13,7 @@ type SupabaseCompanyDetails = Prettify<
   ReplaceNullWithUndefined<
     Pick<
       Tables<'company'>,
-      'logo_path' | 'name' | 'company_number' | 'address' | 'phone_number' | 'email'
+      'logo_path' | 'name' | 'company_number' | 'address' | 'phone_number'
     >
   >
 >;
@@ -38,7 +38,7 @@ async function getCompany(): Promise<CompanyDetails> {
 
   const { data, error, status } = await supabase
     .from('company')
-    .select('logo_path, name, company_number, address, phone_number, email')
+    .select('logo_path, name, company_number, address, phone_number')
     .eq('auth_id', session.user.id)
     .limit(1)
     .single();
