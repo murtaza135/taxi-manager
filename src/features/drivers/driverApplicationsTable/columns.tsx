@@ -5,6 +5,8 @@ import { FiEye } from 'react-icons/fi';
 import { FaTrashAlt } from 'react-icons/fa';
 import { MdPersonAddAlt1 } from 'react-icons/md';
 import { format } from 'date-fns';
+import { FaLink } from 'react-icons/fa6';
+import urlJoin from 'url-join';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,13 +21,15 @@ import { Button } from '@/ui/Button';
 import { DriverApplication } from '@/features/drivers/general/hooks/useDriverApplications';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { cn } from '@/utils/cn';
-import { LinkCell } from '@/ui/dataview/Cell';
+import { LinkCell, CopyCell } from '@/ui/dataview/Cell';
 import { useReactTableContext } from '@/lib/tanstack-table/ReactTable';
 import { useDeleteDriverApplication } from '@/features/drivers/general/hooks/useDeleteDriverApplication';
 import { useConvertDriverApplicationToDriver } from '@/features/drivers/general/hooks/useConvertDriverApplicationToDriver';
 import { queryClient } from '@/config/api/queryClient';
 import { driverApplicationQueryOptions } from '@/features/drivers/general/hooks/useDriverApplication';
 import { NonNullableObject } from '@/types/utils';
+import { config } from '@/config/config';
+import { useToast } from '@/ui/toast';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<DriverApplication>[] = [
@@ -78,18 +82,25 @@ export const tableColumns: ColumnDef<DriverApplication>[] = [
     ),
   },
   {
-    id: 'Date Created',
-    accessorKey: 'created_at',
-    header: 'Date Created',
-    cell: ({ row }) => format(row.original.created_at, 'dd/MM/yyyy'),
+    id: 'Reference Number',
+    accessorKey: 'id',
+    header: 'Reference Number',
+    cell: ({ row }) => <CopyCell text={row.original.id} />,
   },
   {
     id: 'Actions',
     header: 'Actions',
     cell: function ActionsCell({ row }) {
+      const { toast } = useToast();
       const table = useReactTableContext();
       const { mutateAsync: deleteDriverApplication } = useDeleteDriverApplication();
       const { mutate: convert } = useConvertDriverApplicationToDriver();
+
+      const handleCopyApplicationLink = async () => {
+        const link = urlJoin(config.env.VITE_CLIENT_URL, 'driver-application', row.original.id);
+        await navigator.clipboard.writeText(link);
+        toast({ title: 'Copied application link to clipboard' });
+      };
 
       const handleDeleteDriverApplication = async () => {
         await deleteDriverApplication(row.original.id);
@@ -126,6 +137,9 @@ export const tableColumns: ColumnDef<DriverApplication>[] = [
               <FiEye className="text-xl" />
             </Button>
           </Link>
+          <Button variant="ghost" className="p-0" onClick={handleCopyApplicationLink}>
+            <FaLink className="text-2xl text-primary-dark dark:text-primary-light" />
+          </Button>
           <Button variant="ghost" className="p-0" onClick={handleConvertDriverApplicationToDriver} disabled={!row.original.is_submitted}>
             <MdPersonAddAlt1 className="text-2xl text-primary-dark dark:text-primary-light" />
           </Button>
@@ -175,6 +189,12 @@ export const gridColumns: ColumnDef<DriverApplication>[] = [
     cell: ({ row }) => (row.original.is_submitted ? 'Yes' : 'No'),
   },
   {
+    id: 'Reference Number',
+    accessorKey: 'id',
+    header: 'Reference Number',
+    cell: ({ row }) => <p className="text-nowrap whitespace-normal text-ellipsis overflow-hidden">{row.original.id}</p>,
+  },
+  {
     id: 'Date Created',
     accessorKey: 'created_at',
     header: 'Date Created',
@@ -183,9 +203,16 @@ export const gridColumns: ColumnDef<DriverApplication>[] = [
   {
     id: 'Options Top',
     cell: function ActionsCell({ row }) {
+      const { toast } = useToast();
       const table = useReactTableContext();
       const { mutateAsync: deleteDriverApplication } = useDeleteDriverApplication();
       const { mutate: convert } = useConvertDriverApplicationToDriver();
+
+      const handleCopyApplicationLink = async () => {
+        const link = urlJoin(config.env.VITE_CLIENT_URL, 'driver-application', row.original.id);
+        await navigator.clipboard.writeText(link);
+        toast({ title: 'Copied application link to clipboard' });
+      };
 
       const handleDeleteDriverApplication = async () => {
         await deleteDriverApplication(row.original.id);
@@ -225,6 +252,12 @@ export const gridColumns: ColumnDef<DriverApplication>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
+            <DropdownMenuItem className={cn('hover:!opacity-100', !row.original.is_submitted && 'cursor-auto')}>
+              <Button variant="ghost" className="p-0 gap-2" onClick={handleCopyApplicationLink}>
+                <FaLink className="text-lg text-primary-dark dark:text-primary-light" />
+                <p className="translate-y-[1px]">Copy Link</p>
+              </Button>
+            </DropdownMenuItem>
             <DropdownMenuItem className={cn('hover:!opacity-100', !row.original.is_submitted && 'cursor-auto')}>
               <Button variant="ghost" className="p-0 gap-2" onClick={handleConvertDriverApplicationToDriver} disabled={!row.original.is_submitted}>
                 <MdPersonAddAlt1 className="text-xl text-primary-dark dark:text-primary-light" />
