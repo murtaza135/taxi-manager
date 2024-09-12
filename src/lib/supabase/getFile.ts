@@ -1,7 +1,7 @@
 import { supabase } from '@/config/api/supabaseClient';
 
 const defaultBucket = 'main';
-const defaultExpiresIn = 10 * 60; // 10 minutes
+const defaultExpiresIn = 60 * 60; // 1 hour
 
 type Options = {
   bucket?: string;

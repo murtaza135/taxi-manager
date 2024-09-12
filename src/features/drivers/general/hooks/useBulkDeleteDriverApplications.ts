@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRevalidator } from 'react-router-dom';
 import { supabase } from '@/config/api/supabaseClient';

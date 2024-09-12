@@ -8,7 +8,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/ui/DropdownMenu';
 import { useLogout } from '@/features/auth/hooks/useLogout';
 import { useCompany } from '@/features/auth/hooks/useCompany';
-import { useCompanyLogo } from '@/features/auth/hooks/useCompanyLogo';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { SimpleDarkmodeSwitch } from '@/features/darkmode/components/SimpleDarkmodeSwitch';
@@ -18,7 +17,6 @@ export function TopNav() {
   const { toggleNav } = useNavActions();
   const { mutate: logout } = useLogout({ redirect: '/login' });
   const { data } = useCompany();
-  const { data: src } = useCompanyLogo();
 
   return (
     <div className="flex justify-between items-center gap-4 w-full max-w-screen-2xl h-20 mx-auto pl-5 sm:pl-[9.625rem] md:pl-[18.5rem] pr-5 fixed top-0 left-0 right-0 z-20 bg-achromatic-light dark:bg-achromatic-darker text-primary-dark dark:text-primary-light">
@@ -37,7 +35,7 @@ export function TopNav() {
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger className="outline-none">
             <Avatar className="hover:opacity-65 transition-opacity">
-              {src && <AvatarImage src={src} alt="user" />}
+              {data.logo_src && <AvatarImage src={data.logo_src} alt="user" />}
               <AvatarFallback className="">
                 {extractInitials(data.name ?? '')}
               </AvatarFallback>

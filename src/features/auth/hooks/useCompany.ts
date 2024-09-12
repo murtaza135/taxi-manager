@@ -7,6 +7,7 @@ import { queryClient } from '@/config/api/queryClient';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { Prettify, ReplaceNullWithUndefined } from '@/types/utils';
 import { extractFileType, FileType } from '@/utils/path/extractFileType';
+import { getFile } from '@/lib/supabase/getFile';
 
 type SupabaseCompanyDetails = Prettify<
   ReplaceNullWithUndefined<
@@ -24,6 +25,14 @@ type CompanyDetails = Prettify<
   }
 >;
 
+export function companyLogoOptions(path?: string) {
+  return queryOptions<string | null>({
+    queryKey: ['auth', 'company', 'logo', path],
+    queryFn: () => getFile(path),
+    staleTime: 1000 * 60 * 60, // 1 hour
+  });
+}
+
 async function getCompany(): Promise<CompanyDetails> {
   const session = await queryClient.ensureQueryData(sessionOptions());
 
@@ -40,9 +49,13 @@ async function getCompany(): Promise<CompanyDetails> {
     });
   }
 
+  const logo_src = await queryClient.ensureQueryData(
+    companyLogoOptions(data.logo_path ?? undefined),
+  );
   const logo_file_type = extractFileType(data.logo_path ?? undefined);
+
   const mappedData = mapValues(data, (val) => val ?? undefined) as SupabaseCompanyDetails;
-  return { ...mappedData, logo_src: null, logo_file_type };
+  return { ...mappedData, logo_src, logo_file_type };
 }
 
 export function companyOptions() {

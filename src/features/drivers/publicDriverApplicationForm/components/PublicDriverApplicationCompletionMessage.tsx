@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { useParams } from 'react-router-dom';
 import { FaCircleCheck } from 'react-icons/fa6';
 import { Card, CardTitle } from '@/ui/Card';
