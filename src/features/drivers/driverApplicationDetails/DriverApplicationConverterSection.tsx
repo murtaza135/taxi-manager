@@ -37,14 +37,14 @@ export function DriverApplicationConverterSection() {
     <div className="space-y-3">
       {data.is_submitted
         ? (
-          <span className="flex gap-2 items-center">
-            <FaCheckCircle className="text-green-500 dark:text-green-500 -translate-y-[0.5px]" />
+          <span className="flex gap-2">
+            <FaCheckCircle className="text-green-500 dark:text-green-500 flex-shrink-0 translate-y-[3.75px]" />
             <p>The driver has submitted all details</p>
           </span>
         )
         : (
-          <span className="flex gap-2 items-center">
-            <FaTimesCircle className="text-red-500 dark:text-red-400 opacity-60 dark:opacity-50 -translate-y-[0.5px]" />
+          <span className="flex gap-2">
+            <FaTimesCircle className="text-red-500 dark:text-red-400 opacity-60 dark:opacity-50 flex-shrink-0 translate-y-[3.75px]" />
             <p>The driver still needs to submit his details.</p>
           </span>
         )}
