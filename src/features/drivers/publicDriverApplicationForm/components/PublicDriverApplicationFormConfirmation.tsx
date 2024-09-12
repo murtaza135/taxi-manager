@@ -44,6 +44,9 @@ export function PublicDriverApplicationFormConfirmation() {
         taxi_badge_number: transformedData.badge_number,
         taxi_badge_start_date: transformedData.badge_start_date ?? null,
         taxi_badge_end_date: transformedData.badge_end_date,
+        picture: transformedData.picture,
+        drivers_licence: transformedData.licence_document,
+        taxi_badge: transformedData.badge_document,
       };
 
       submitDriverApplication(submissionData, {

@@ -4,7 +4,6 @@ import { supabase } from '@/config/api/supabaseClient';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
-import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { Prettify, ReplaceNullWithUndefined } from '@/types/utils';
 import { getFile } from '@/lib/supabase/getFile';
 import { extractFileType, FileType } from '@/utils/path/extractFileType';
@@ -57,13 +56,10 @@ export function driverApplicationBadgeQueryOptions({ id, path }: PictureVariable
 }
 
 async function getDriverApplication(id: string): Promise<DriverApplication> {
-  const session = await queryClient.ensureQueryData(sessionOptions());
-
   const { data, error, status } = await supabase
     .from('driver_application')
     .select('*')
     .eq('id', id)
-    .eq('auth_id', session.user.id)
     .returns<SupabaseDriverApplication[]>()
     .limit(1)
     .single();
