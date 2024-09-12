@@ -63,19 +63,6 @@ async function getDriverApplications(
 
   const { data, error, status, count } = await query.returns<DriverApplication[]>();
 
-  // const { data, error, status, count } = await supabase
-  //   .from('driver_application')
-  //   .select(
-  //     'name, is_submitted, picture_path, created_at',
-  //     { count: 'estimated' },
-  //   )
-  //   .eq('auth_id', session.user.id)
-  //   .eq('is_retired', isRetired)
-  //   .order('created_at', { ascending: false })
-  //   .or(`name.ilike.%${search}%, email.ilike.%${search}%, number_plate.ilike.%${search}%`)
-  //   .range(from, to)
-  //   .returns<DriverApplication[]>();
-
   if (status === 404) return { data: [], count: 0 };
 
   if (error) {
