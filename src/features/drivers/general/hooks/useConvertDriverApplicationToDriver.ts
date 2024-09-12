@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { useRevalidator } from 'react-router-dom';
+import pick from 'lodash/pick';
 import { useToast } from '@/ui/toast';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { queryClient as globalQueryClient } from '@/config/api/queryClient';
@@ -38,9 +39,23 @@ export async function convertDriverApplicationToDriver(formData: Variables) {
   const licence_document_path = await moveDocumentToUserFolder(formData.licence_document_path, userId);
   const badge_document_path = await moveDocumentToUserFolder(formData.badge_document_path, userId);
 
+  const submissionData = pick(restFormData, [
+    'badge_end_date',
+    'badge_number',
+    'badge_start_date',
+    'date_of_birth',
+    'email',
+    'name',
+    'phone_number',
+    'national_insurance_number',
+    'licence_end_date',
+    'licence_number',
+    'licence_start_date',
+  ]);
+
   const { data: driverId, error, status } = await supabase.rpc(
     'add_new_driver',
-    { ...restFormData, picture_path, licence_document_path, badge_document_path },
+    { ...submissionData, picture_path, licence_document_path, badge_document_path },
   );
 
   if (error) {
