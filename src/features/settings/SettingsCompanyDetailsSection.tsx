@@ -1,31 +1,23 @@
-import { useParams } from 'react-router-dom';
 import { MdModeEdit, MdCancel } from 'react-icons/md';
 import { BiSave } from 'react-icons/bi';
-import { useId, useState, useMemo } from 'react';
-// import { useDriverDetails } from '@/features/drivers/general/hooks/useDriverDetails';
+import { useState, useMemo } from 'react';
 import { useCompany } from '@/features/auth/hooks/useCompany';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { EditableInput } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
-import { toDateInputString } from '@/utils/date/toDateInputString';
-import { Checkbox } from '@/ui/form/Checkbox';
-// import { useUpdateDriverDetails } from '@/features/drivers/general/hooks/useUpdateDriverDetails';
+import { useUpdateCompany } from '@/features/auth/hooks/useUpdateCompany';
 import { useZodForm, FormProvider, FormField } from '@/ui/form/Form';
-// import { updateDriverTransformer, updateDriverDetailsSchema } from '@/features/drivers/driverDetails/schemas';
 import { companyDetailsSchema, companyDetailsTransformer } from '@/features/settings/schemas';
-import { cn } from '@/utils/cn';
 import { PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
 import { FileListViewer, FileConfig, FileListViewerOnChangeHandler, FileListViewerOnDeleteHandler } from '@/ui/files/FileListViewer';
 import { useSession } from '@/features/auth/hooks/useSession';
-
-const updateCompanyDetails = (arg1: unknown, arg2?: unknown) => { };
 
 export function SettingsCompanyDetailsSection() {
   const { data } = useCompany();
   const { data: sessionData } = useSession();
   const { email } = sessionData.user;
   const [isEditMode, setEditMode] = useState<boolean>(false);
-  // const { mutate: updateDriver } = useUpdateDriverDetails();
+  const { mutate: updateCompanyDetails } = useUpdateCompany();
 
   const form = useZodForm({
     schema: companyDetailsSchema,
@@ -34,7 +26,7 @@ export function SettingsCompanyDetailsSection() {
 
   const files: FileConfig[] = useMemo(() => [
     {
-      key: 'picture',
+      key: 'logo',
       title: 'Logo',
       file: data.logo_src ?? undefined,
       fileType: data.logo_file_type,

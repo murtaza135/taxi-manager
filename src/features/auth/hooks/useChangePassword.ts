@@ -1,30 +1,34 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRevalidator } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
-import isEmpty from 'lodash/isEmpty';
 import { supabase } from '@/config/api/supabaseClient';
 import { queryClient as globalQueryClient } from '@/config/api/queryClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
-import { Tables } from '@/types/database';
-import { Prettify } from '@/types/utils';
-import { extname } from '@/utils/path/extname';
 import { ChangePasswordSchema } from '@/features/settings/schemas';
 
-export async function changePassword(data: ChangePasswordSchema) {
+export async function changePassword(vars: ChangePasswordSchema) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
+  const email = session.user.email as string;
 
-  // const { error, status } = await supabase
-  //   .from('company')
-  //   .update(vars)
-  //   .eq('auth_id', session.user.id);
+  const { error: signInError } = await supabase.auth.signInWithPassword({
+    email,
+    password: vars.newPassword,
+  });
 
-  // if (error) {
-  //   throw new SupabaseError(error, status, {
-  //     globalTitle: 'Could not update company',
-  //   });
-  // }
+  if (signInError) {
+    throw new SupabaseError(signInError, null, {
+      globalTitle: 'Incorrect password',
+    });
+  }
+
+  const { error: updateError } = await supabase.auth.updateUser({ password: vars.newPassword });
+
+  if (updateError) {
+    throw new SupabaseError(updateError, null, {
+      globalTitle: 'Could not update password',
+    });
+  }
 }
 
 export function useChangePassword() {
