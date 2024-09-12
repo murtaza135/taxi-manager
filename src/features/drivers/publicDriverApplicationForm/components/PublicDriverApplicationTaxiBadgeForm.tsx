@@ -90,7 +90,7 @@ export function PublicDriverApplicationTaxiBadgeForm() {
           control={form.control}
           name="badge_document"
           render={() => (
-            <FormGroup label="Taxi Badge">
+            <FormGroup label="* Taxi Badge">
               <Input placeholder="Taxi Badge" type="file" accept="image/*,.pdf" {...fileField} />
             </FormGroup>
           )}

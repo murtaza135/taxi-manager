@@ -36,7 +36,7 @@ export function PublicDriverApplicationCompanyDetailsForm() {
         className="w-full max-w-[32rem] space-y-4"
       >
         <FormTitle>Company</FormTitle>
-        <p className="text-sm">Please make sure the company for which you are applying for a taxi is correct.</p>
+        <p className="text-sm">Please make sure the company is correct.</p>
 
         <FormField
           control={form.control}

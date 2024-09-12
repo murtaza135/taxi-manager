@@ -85,8 +85,7 @@ export const publicDriverApplicationTaxiBadgeSchema = z.object({
     .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
     .refine((fileList) => fileList.length === 1, { message: 'Taxi badge required' })
     .refine((fileList) => fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((fileList) => fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
-    .optional(),
+    .refine((fileList) => fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF'),
 })
   .refine(
     ({ badge_start_date, badge_end_date }) => {

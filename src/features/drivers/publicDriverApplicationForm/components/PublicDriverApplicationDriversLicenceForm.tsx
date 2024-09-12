@@ -90,7 +90,7 @@ export function PublicDriverApplicationDriversLicenceForm() {
           control={form.control}
           name="licence_document"
           render={() => (
-            <FormGroup label="Drivers Licence">
+            <FormGroup label="* Drivers Licence">
               <Input placeholder="Drivers Licence" type="file" accept="image/*,.pdf" {...fileField} />
             </FormGroup>
           )}

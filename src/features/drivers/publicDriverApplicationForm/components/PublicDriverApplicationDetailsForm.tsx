@@ -54,7 +54,7 @@ export function PublicDriverApplicationDetailsForm() {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormGroup label="Email">
+            <FormGroup label="* Email">
               <Input placeholder="Email" type="email" {...field} />
             </FormGroup>
           )}
@@ -64,7 +64,7 @@ export function PublicDriverApplicationDetailsForm() {
           control={form.control}
           name="phone_number"
           render={({ field }) => (
-            <FormGroup label="Phone Number">
+            <FormGroup label="* Phone Number">
               <Input placeholder="Phone Number" type="tel" {...field} />
             </FormGroup>
           )}
@@ -74,7 +74,7 @@ export function PublicDriverApplicationDetailsForm() {
           control={form.control}
           name="national_insurance_number"
           render={({ field }) => (
-            <FormGroup label="National Insurance Number">
+            <FormGroup label="* National Insurance Number">
               <Input placeholder="National Insurance Number" className="[&>input]:uppercase [&>input]:placeholder:normal-case" {...field} />
             </FormGroup>
           )}
@@ -84,7 +84,7 @@ export function PublicDriverApplicationDetailsForm() {
           control={form.control}
           name="date_of_birth"
           render={({ field }) => (
-            <FormGroup label="Date of Birth">
+            <FormGroup label="* Date of Birth">
               <Input
                 placeholder="Date of Birth"
                 type="date"
@@ -99,7 +99,7 @@ export function PublicDriverApplicationDetailsForm() {
           control={form.control}
           name="picture"
           render={() => (
-            <FormGroup label="Picture">
+            <FormGroup label="* Picture">
               <Input type="file" placeholder="Picture" accept="image/*" {...fileListField} />
             </FormGroup>
           )}

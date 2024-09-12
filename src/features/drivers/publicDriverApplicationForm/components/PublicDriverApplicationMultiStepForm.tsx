@@ -1,4 +1,6 @@
 /* eslint-disable max-len */
+import { useParams } from 'react-router-dom';
+import { useMemo } from 'react';
 import {
   MultiStepForm,
   MultiStepFormItems,
@@ -12,25 +14,30 @@ import { PublicDriverApplicationDriversLicenceForm } from '@/features/drivers/pu
 import { PublicDriverApplicationTaxiBadgeForm } from '@/features/drivers/publicDriverApplicationForm/components/PublicDriverApplicationTaxiBadgeForm';
 import { PublicDriverApplicationFormConfirmation } from '@/features/drivers/publicDriverApplicationForm/components/PublicDriverApplicationFormConfirmation';
 import { PublicDriverApplicationNullableFileListSchema } from '@/features/drivers/publicDriverApplicationForm/schemas';
-
-const initialFormState: PublicDriverApplicationNullableFileListSchema = {
-  name: '',
-  email: '',
-  phone_number: '',
-  national_insurance_number: '',
-  date_of_birth: '',
-  picture: undefined,
-  licence_number: '',
-  licence_start_date: '',
-  licence_end_date: '',
-  licence_document: undefined,
-  badge_number: '',
-  badge_start_date: '',
-  badge_end_date: '',
-  badge_document: undefined,
-};
+import { useDriverApplication } from '@/features/drivers/general/hooks/useDriverApplication';
 
 export function PublicDriverApplicationMultiStepForm() {
+  const application_id = useParams().id as string;
+  const { data } = useDriverApplication(application_id);
+  const { name } = data;
+
+  const initialFormState: PublicDriverApplicationNullableFileListSchema = useMemo(() => ({
+    name,
+    email: '',
+    phone_number: '',
+    national_insurance_number: '',
+    date_of_birth: '',
+    picture: undefined,
+    licence_number: '',
+    licence_start_date: '',
+    licence_end_date: '',
+    licence_document: undefined,
+    badge_number: '',
+    badge_start_date: '',
+    badge_end_date: '',
+    badge_document: undefined,
+  }), [name]);
+
   return (
     <MultiStepForm min={1} max={5} initialFormState={initialFormState}>
       <MultiStepFormStepper>
