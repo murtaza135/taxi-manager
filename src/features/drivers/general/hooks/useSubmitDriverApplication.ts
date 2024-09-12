@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRevalidator } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import pick from 'lodash/pick';
 import { supabase } from '@/config/api/supabaseClient';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
@@ -80,9 +81,23 @@ export async function submitDriverApplication({
     }
   }
 
+  const application_data = pick(vars, [
+    'date_of_birth',
+    'drivers_licence_end_date',
+    'drivers_licence_number',
+    'drivers_licence_start_date',
+    'email',
+    'name',
+    'national_insurance_number',
+    'phone_number',
+    'taxi_badge_end_date',
+    'taxi_badge_number',
+    'taxi_badge_start_date',
+  ]);
+
   const { error, status } = await supabase
     .from('driver_application')
-    .update({ ...vars, ...documentPaths, is_submitted: true })
+    .update({ ...application_data, ...documentPaths, is_submitted: true })
     .eq('id', id);
 
   if (error) {

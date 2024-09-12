@@ -9,17 +9,17 @@ import {
 import { Input } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
-import { publicDriverApplicationSchema, PublicDriverApplicationSchema } from '@/features/drivers/publicDriverApplicationForm/schemas';
+import { publicDriverApplicationDetailsSchema, PublicDriverApplicationDetailsSchema } from '@/features/drivers/publicDriverApplicationForm/schemas';
 
 export function PublicDriverApplicationDetailsForm() {
   const {
     formState,
     nextStep,
     updateFormState,
-  } = useMultiStepFormContext<PublicDriverApplicationSchema>();
+  } = useMultiStepFormContext<PublicDriverApplicationDetailsSchema>();
 
   const form = useZodForm({
-    schema: publicDriverApplicationSchema,
+    schema: publicDriverApplicationDetailsSchema,
     defaultValues: formState,
   });
 
