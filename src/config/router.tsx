@@ -16,6 +16,7 @@ const driverApplicationPageOptions = () => import('@/routes/pages/driverApplicat
 const driverApplicationsPageOptions = () => import('@/routes/pages/driverApplications');
 const addNewDriverApplicationPageOptions = () => import('@/routes/pages/addNewDriverApplication');
 const publicDriverApplicationFormPageOptions = () => import('@/routes/pages/publicDriverApplicationForm');
+const publicDriverApplicationFormCompletePageOptions = () => import('@/routes/pages/publicDriverApplicationFormComplete');
 const hirePageOptions = () => import('@/routes/pages/hire');
 const addNewHireAgreementPageOptions = () => import('@/routes/pages/addNewHireAgreement');
 const hiresPageOptions = () => import('@/routes/pages/hires');
@@ -39,6 +40,7 @@ const driverApplicationPageProps = createRouteOptions(driverApplicationPageOptio
 const driverApplicationsPageProps = createRouteOptions(driverApplicationsPageOptions, queryClient);
 const addNewDriverApplicationPageProps = createRouteOptions(addNewDriverApplicationPageOptions, queryClient);
 const publicDriverApplicationFormPageProps = createRouteOptions(publicDriverApplicationFormPageOptions, queryClient);
+const publicDriverApplicationFormCompletePageProps = createRouteOptions(publicDriverApplicationFormCompletePageOptions, queryClient);
 const hirePageProps = createRouteOptions(hirePageOptions, queryClient);
 const addNewHireAgreementPageProps = createRouteOptions(addNewHireAgreementPageOptions, queryClient);
 const hiresPageProps = createRouteOptions(hiresPageOptions, queryClient);
@@ -55,6 +57,7 @@ const routes = createRoutesFromElements(
     <Route index {...startPageProps} />
     <Route {...publicOrPrivateLayoutProps}>
       <Route path="/driver-application/:id" lazy={publicDriverApplicationFormPageProps} />
+      <Route path="/driver-application/:id/complete" lazy={publicDriverApplicationFormCompletePageProps} />
     </Route>
     <Route {...publicOnlyLayoutProps}>
       <Route path="/login" lazy={loginPageProps} />

@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { Button } from '@/ui/Button';
 import { Separator } from '@/ui/Separator';
@@ -10,13 +10,13 @@ import { useSubmitDriverApplication, Variables as SubmitDriverApplicationVariabl
 
 export function PublicDriverApplicationFormConfirmation() {
   const id = useParams().id as string;
+  const navigate = useNavigate();
   const { toast } = useToast();
   const { mutate: submitDriverApplication } = useSubmitDriverApplication();
 
   const {
     formState,
     prevStep,
-    nextStep,
     setStep,
   } = useMultiStepFormContext<PublicDriverApplicationSchema>();
 
@@ -47,10 +47,7 @@ export function PublicDriverApplicationFormConfirmation() {
       };
 
       submitDriverApplication(submissionData, {
-        onSuccess: () => {
-          nextStep();
-          window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-        },
+        onSuccess: () => navigate(`/driver-application/${id}/complete`),
       });
     },
     () => {
