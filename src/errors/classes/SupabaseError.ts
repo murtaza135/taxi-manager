@@ -9,6 +9,7 @@ export type SupabaseErrorConstructorOptions = {
   globalDescription?: string;
   titles?: Partial<Record<ErrorType, string>>;
   descriptions?: Partial<Record<ErrorType, string>>;
+  context?: Partial<Record<string, unknown>>;
 };
 
 export class SupabaseError extends APIError {
@@ -42,6 +43,7 @@ export class SupabaseError extends APIError {
       type,
       status: statusCode,
       cause,
+      context: options?.context,
     });
 
     this.name = 'SupabaseError';

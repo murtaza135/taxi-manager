@@ -15,7 +15,7 @@ export function SettingsChangeEmailSection() {
 
   const form = useZodForm({
     schema: changeEmailSchema,
-    values: { email },
+    defaultValues: { email },
   });
 
   const handleSubmitUpdate = form.handleSubmit(async (formData) => {
@@ -35,8 +35,8 @@ export function SettingsChangeEmailSection() {
           render={({ field }) => (
             <FormGroup label="Email" className="w-full">
               <div className="w-full flex items-center gap-2">
-                <Input placeholder="Email" {...field} />
-                <Button type="submit" variant="primary" className="">Submit</Button>
+                <Input type="email" placeholder="Email" {...field} />
+                <Button type="submit" variant="primary">Submit</Button>
               </div>
             </FormGroup>
           )}

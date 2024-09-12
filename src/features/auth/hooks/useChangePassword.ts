@@ -6,6 +6,7 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
 import { ChangePasswordSchema } from '@/features/settings/schemas';
+import { useLogout } from '@/features/auth/hooks/useLogout';
 
 export async function changePassword(vars: ChangePasswordSchema) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
@@ -13,12 +14,14 @@ export async function changePassword(vars: ChangePasswordSchema) {
 
   const { error: signInError } = await supabase.auth.signInWithPassword({
     email,
-    password: vars.newPassword,
+    password: vars.oldPassword,
   });
 
   if (signInError) {
     throw new SupabaseError(signInError, null, {
       globalTitle: 'Incorrect password',
+      globalDescription: 'You have entered an incorrect password',
+      context: { verificationFailed: true },
     });
   }
 
@@ -35,6 +38,7 @@ export function useChangePassword() {
   const queryClient = useQueryClient();
   const { revalidate } = useRevalidator();
   const { toast } = useToast();
+  const { mutate: logout } = useLogout({ redirect: '/login' });
 
   const mutation = useMutation<void, SupabaseError, ChangePasswordSchema>({
     mutationFn: changePassword,
@@ -51,6 +55,10 @@ export function useChangePassword() {
         description: error.description,
         variant: 'destructive',
       });
+
+      if (error.context?.verificationFailed) {
+        logout();
+      }
     },
   });
 

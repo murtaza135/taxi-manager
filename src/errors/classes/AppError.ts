@@ -6,6 +6,7 @@ export type AppErrorConstructor = {
   type?: ErrorType;
   debugMessage?: string | null | undefined;
   cause?: Error | null | undefined;
+  context?: Partial<Record<string, unknown>>;
 };
 
 export class AppError extends Error {
@@ -27,11 +28,17 @@ export class AppError extends Error {
    */
   public readonly type: ErrorType;
 
+  /**
+   * Any additional context information
+   */
+  public readonly context?: Partial<Record<string, unknown>>;
+
   constructor({
     title,
     description,
     type = 'unknown',
     debugMessage,
+    context,
     cause,
   }: AppErrorConstructor) {
     // @ts-expect-error https://github.com/tc39/proposal-error-cause
@@ -41,5 +48,6 @@ export class AppError extends Error {
     this.title = title;
     this.description = description;
     this.type = type;
+    this.context = context;
   }
 }

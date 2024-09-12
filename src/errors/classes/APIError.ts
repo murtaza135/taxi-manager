@@ -19,9 +19,10 @@ export class APIError extends AppError {
     type,
     debugMessage,
     status,
+    context,
     cause,
   }: APIErrorConstructor) {
-    super({ title, description, type, debugMessage, cause });
+    super({ title, description, type, debugMessage, context, cause });
 
     this.name = 'APIError';
     this.status = status;

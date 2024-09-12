@@ -52,8 +52,9 @@ export const changePasswordSchema = z.object({
       { message: 'Must contain minimum 8 characters and at least 1 lowercase, 1 uppercase and 1 digit' },
     ),
   confirmPassword: z
-    .string({ required_error: 'Passwords do not match' })
-    .trim(),
+    .string({ required_error: 'Please confirm your new password' })
+    .trim()
+    .min(1, 'Please confirm your new password'),
 })
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: 'Passwords do not match',
