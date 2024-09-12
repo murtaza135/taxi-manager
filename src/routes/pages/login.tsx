@@ -1,5 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
-import { LoginForm } from '@/features/auth/components/LoginForm';
+import { LoginForm } from '@/features/auth/login/LoginForm';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 
 const loginPageLoader = (_queryClient: QueryClient) => () => null;

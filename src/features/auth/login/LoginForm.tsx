@@ -11,7 +11,7 @@ import { Button } from '@/ui/Button';
 import { loginFormSchema } from '@/features/auth/schemas';
 import { useLogin } from '@/features/auth/hooks/useLogin';
 import { useAnonymousLogin } from '@/features/auth/hooks/useAnonymousLogin';
-import { LoginFormGroup } from '@/features/auth/components/LoginFormGroup';
+import { LoginFormGroup } from '@/features/auth/login/LoginFormGroup';
 
 export function LoginForm() {
   const form = useZodForm({
