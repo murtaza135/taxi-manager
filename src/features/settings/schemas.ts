@@ -18,9 +18,6 @@ export const companyDetailsSchema = z.object({
     .string({ required_error: 'Address required' })
     .trim()
     .min(1, 'Address required'),
-  email: z
-    .string({ required_error: 'Email required' })
-    .email({ message: 'Invalid email address' }),
   phone_number: z
     .string()
     .refine((val) => isMobilePhone(val), 'Invalid phone number')
@@ -42,7 +39,13 @@ export const changeEmailSchema = z.object({
 });
 
 export const changePasswordSchema = z.object({
-  password: z
+  oldPassword: z
+    .string()
+    .refine(
+      (val) => isStrongPassword(val),
+      { message: 'Must contain minimum 8 characters and at least 1 lowercase, 1 uppercase and 1 digit' },
+    ),
+  newPassword: z
     .string()
     .refine(
       (val) => isStrongPassword(val),
@@ -52,7 +55,7 @@ export const changePasswordSchema = z.object({
     .string({ required_error: 'Passwords do not match' })
     .trim(),
 })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.newPassword === data.confirmPassword, {
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   });
