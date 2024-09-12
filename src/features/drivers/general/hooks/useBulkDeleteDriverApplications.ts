@@ -26,15 +26,17 @@ export async function bulkDeleteDriverApplications(ids: string[]) {
     .flatMap((obj) => [obj.picture_path, obj.drivers_licence_path, obj.taxi_badge_path])
     .filter((file) => !!file) as string[];
 
-  const { error: storageError } = await supabase
-    .storage
-    .from('main')
-    .remove(files);
+  if (files.length > 0) {
+    const { error: storageError } = await supabase
+      .storage
+      .from('main')
+      .remove(files);
 
-  if (storageError) {
-    throw new SupabaseError(storageError, null, {
-      globalTitle: 'Could not delete driver application',
-    });
+    if (storageError) {
+      throw new SupabaseError(storageError, null, {
+        globalTitle: 'Could not delete driver application',
+      });
+    }
   }
 
   const { error, status } = await supabase
