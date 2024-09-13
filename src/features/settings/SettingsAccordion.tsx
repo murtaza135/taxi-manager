@@ -9,6 +9,7 @@ import { Separator } from '@/ui/Separator';
 import { SettingsCompanyDetailsSection } from '@/features/settings/SettingsCompanyDetailsSection';
 import { SettingsChangeEmailSection } from '@/features/settings/SettingsChangeEmailSection';
 import { SettingsChangePasswordSection } from '@/features/settings/SettingsChangePasswordSection';
+import { SettingsRentSection } from '@/features/settings/SettingsRentSection';
 import { Spinner } from '@/ui/Spinner';
 
 export function SettingsAccordion() {
@@ -38,6 +39,16 @@ export function SettingsAccordion() {
           <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
           <Suspense fallback={<Spinner />}>
             <SettingsChangePasswordSection />
+          </Suspense>
+        </AccordionCollapsibleContent>
+      </AccordionItem>
+
+      <AccordionItem value="rentSettings">
+        <AccordionTrigger>Rent Settings</AccordionTrigger>
+        <AccordionCollapsibleContent className="flex flex-col">
+          <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
+          <Suspense fallback={<Spinner />}>
+            <SettingsRentSection />
           </Suspense>
         </AccordionCollapsibleContent>
       </AccordionItem>
