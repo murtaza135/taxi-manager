@@ -67,8 +67,8 @@ function isDay(value: unknown): value is Day {
   return days.includes(value as Day);
 }
 
-export const daySchema = z.object({
-  day: z
+export const rentDaySchema = z.object({
+  rent_day: z
     .string({ required_error: 'Please select the day the rent should start' })
     .refine(isDay),
 });
@@ -76,4 +76,4 @@ export const daySchema = z.object({
 export type CompanyDetailsSchema = z.infer<typeof companyDetailsSchema>;
 export type ChangeEmailSchema = z.infer<typeof changeEmailSchema>;
 export type ChangePasswordSchema = z.infer<typeof changePasswordSchema>;
-export type DaySchema = z.infer<typeof daySchema>;
+export type RentDaySchema = z.infer<typeof rentDaySchema>;

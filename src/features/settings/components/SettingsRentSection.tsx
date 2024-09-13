@@ -1,5 +1,3 @@
-import { IoIosWarning } from 'react-icons/io';
-import { useState } from 'react';
 import { capitalCase } from 'change-case';
 import {
   Select,
@@ -10,29 +8,38 @@ import {
 } from '@/ui/Select';
 import { Separator } from '@/ui/Separator';
 import { Button } from '@/ui/Button';
-import { Input } from '@/ui/form/Input';
-// import { useChangeEmail } from '@/features/auth/hooks/useChangeEmail';
 import { useZodForm, FormProvider, FormField, FormGroup } from '@/ui/form/Form';
-import { daySchema, days } from '@/features/settings/schemas';
-// import { useSession } from '@/features/auth/hooks/useSession';
+import { rentDaySchema, days } from '@/features/settings/schemas';
+import { useSettings } from '@/features/settings/hooks/useSettings';
+import { useUpdateSettings } from '@/features/settings/hooks/useUpdateSettings';
+import { useToast } from '@/ui/toast';
 
 export function SettingsRentSection() {
-  // const { data } = useSession();
-  // const { email = '' } = data.user;
-  // const { mutateAsync: changeEmail } = useChangeEmail();
+  const { data } = useSettings();
+  const { mutate: updateSettings } = useUpdateSettings();
+  const { toast } = useToast();
 
   const form = useZodForm({
-    schema: daySchema,
+    schema: rentDaySchema,
+    values: data,
   });
 
-  const handleSubmitUpdate = form.handleSubmit(async (formData) => {
-    console.log(formData);
-    // await changeEmail(formData.email);
+  const handleSubmitUpdate = form.handleSubmit((formData) => {
+    updateSettings(formData, {
+      onSuccess: () => {
+        toast({
+          title: 'Settings updated',
+          description: 'Your settings have successfully been updated',
+          variant: 'default',
+        });
+        form.reset();
+      },
+    });
   });
 
   const handleCancelUpdate: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault();
-    form.reset();
+    form.reset(data);
   };
 
   return (
@@ -43,11 +50,11 @@ export function SettingsRentSection() {
       >
         <FormField
           control={form.control}
-          name="day"
+          name="rent_day"
           render={({ field }) => (
             <FormGroup label="Rent Start Day" className="w-full">
-              <Select onValueChange={field.onChange}>
-                <SelectTrigger className="w-full">
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger className="w-full border-primary-dark dark:border-primary-light">
                   <SelectValue placeholder="Please select the day the rent is to start" />
                 </SelectTrigger>
                 <SelectContent>
