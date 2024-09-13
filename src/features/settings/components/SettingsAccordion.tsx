@@ -6,10 +6,10 @@ import {
   AccordionCollapsibleContent,
 } from '@/ui/Accordion';
 import { Separator } from '@/ui/Separator';
-import { SettingsCompanyDetailsSection } from '@/features/settings/SettingsCompanyDetailsSection';
-import { SettingsChangeEmailSection } from '@/features/settings/SettingsChangeEmailSection';
-import { SettingsChangePasswordSection } from '@/features/settings/SettingsChangePasswordSection';
-import { SettingsRentSection } from '@/features/settings/SettingsRentSection';
+import { SettingsCompanyDetailsSection } from '@/features/settings/components/SettingsCompanyDetailsSection';
+import { SettingsChangeEmailSection } from '@/features/settings/components/SettingsChangeEmailSection';
+import { SettingsChangePasswordSection } from '@/features/settings/components/SettingsChangePasswordSection';
+import { SettingsRentSection } from '@/features/settings/components/SettingsRentSection';
 import { Spinner } from '@/ui/Spinner';
 
 export function SettingsAccordion() {

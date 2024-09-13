@@ -1,6 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
-import { SettingsAccordion } from '@/features/settings/SettingsAccordion';
+import { SettingsAccordion } from '@/features/settings/components/SettingsAccordion';
 
 const settingsPageLoader = (_queryClient: QueryClient) => () => null;
 
