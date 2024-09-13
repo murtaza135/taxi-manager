@@ -3,6 +3,7 @@ import isMobilePhone from 'validator/es/lib/isMobilePhone';
 import mapValues from 'lodash/mapValues';
 import { isStrongPassword } from '@/utils/string/isStrongPassword';
 import { ReplaceUndefinedWithNull } from '@/types/utils';
+import { isDay } from '@/utils/date/days';
 
 export const companyDetailsSchema = z.object({
   name: z
@@ -60,12 +61,6 @@ export const changePasswordSchema = z.object({
     message: 'Passwords do not match',
     path: ['confirmPassword'],
   });
-
-export const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
-export type Day = typeof days[number];
-function isDay(value: unknown): value is Day {
-  return days.includes(value as Day);
-}
 
 export const rentDaySchema = z.object({
   rent_day: z

@@ -9,7 +9,8 @@ import {
 import { Separator } from '@/ui/Separator';
 import { Button } from '@/ui/Button';
 import { useZodForm, FormProvider, FormField, FormGroup } from '@/ui/form/Form';
-import { rentDaySchema, days } from '@/features/settings/schemas';
+import { rentDaySchema } from '@/features/settings/schemas';
+import { days } from '@/utils/date/days';
 import { useSettings } from '@/features/settings/hooks/useSettings';
 import { useUpdateSettings } from '@/features/settings/hooks/useUpdateSettings';
 import { useToast } from '@/ui/toast';
