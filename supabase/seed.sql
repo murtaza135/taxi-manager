@@ -127,6 +127,17 @@ INSERT INTO "auth"."identities" ("provider_id", "user_id", "identity_data", "pro
 
 
 --
+-- Data for Name: settings; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."settings" ("id", "auth_id", "rent_day") VALUES
+	(2, '2a8b0fb4-094c-47b0-b701-2282a6cd8993', 'monday'),
+	(3, '34a3aed7-3db5-4cff-a0e5-761d85a8074b', 'monday'),
+	(1, 'cf9c4157-af64-4477-9f70-6b2c37e8da72', 'monday');
+
+
+
+--
 -- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
