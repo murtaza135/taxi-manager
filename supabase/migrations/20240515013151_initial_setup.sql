@@ -179,6 +179,7 @@ create table "public"."rent" (
     "end_date" date not null,
     "amount" numeric(12,2) not null,
     "is_paid" boolean not null default false,
+    "paid_date" date null,
     "created_at" timestamp with time zone not null default now()
 );
 

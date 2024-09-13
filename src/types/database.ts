@@ -887,6 +887,7 @@ export type Database = {
           hire_id: number;
           id: number;
           is_paid: boolean;
+          paid_date: string | null;
           receipt_document_path: string | null;
           start_date: string;
         };
@@ -898,6 +899,7 @@ export type Database = {
           hire_id: number;
           id?: number;
           is_paid?: boolean;
+          paid_date?: string | null;
           receipt_document_path?: string | null;
           start_date: string;
         };
@@ -909,6 +911,7 @@ export type Database = {
           hire_id?: number;
           id?: number;
           is_paid?: boolean;
+          paid_date?: string | null;
           receipt_document_path?: string | null;
           start_date?: string;
         };
