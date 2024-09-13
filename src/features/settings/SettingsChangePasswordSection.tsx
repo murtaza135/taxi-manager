@@ -4,6 +4,7 @@ import { useChangePassword } from '@/features/auth/hooks/useChangePassword';
 import { useZodForm, FormProvider, FormField, FormGroup } from '@/ui/form/Form';
 import { changePasswordSchema, ChangePasswordSchema } from '@/features/settings/schemas';
 import { useToast } from '@/ui/toast';
+import { Separator } from '@/ui/Separator';
 
 const defaultValues: ChangePasswordSchema = {
   oldPassword: '',
@@ -32,6 +33,11 @@ export function SettingsChangePasswordSection() {
       },
     });
   });
+
+  const handleCancelUpdate: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault();
+    form.reset(defaultValues);
+  };
 
   return (
     <FormProvider {...form}>
@@ -69,8 +75,12 @@ export function SettingsChangePasswordSection() {
           )}
         />
 
-        <div className="w-full pt-2">
-          <Button type="submit" variant="primary" className="w-full">Submit</Button>
+        <div className="space-y-2.5 pt-1">
+          <Separator className="h-[1px] bg-achromatic-light dark:bg-achromatic-darker" />
+          <div className="flex items-center justify-end gap-2">
+            <Button type="button" variant="danger" onClick={handleCancelUpdate}>Cancel</Button>
+            <Button type="submit" variant="primary">Save</Button>
+          </div>
         </div>
       </form>
     </FormProvider>

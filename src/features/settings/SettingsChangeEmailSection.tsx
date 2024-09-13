@@ -6,6 +6,7 @@ import { useChangeEmail } from '@/features/auth/hooks/useChangeEmail';
 import { useZodForm, FormProvider, FormField, FormGroup } from '@/ui/form/Form';
 import { changeEmailSchema } from '@/features/settings/schemas';
 import { useSession } from '@/features/auth/hooks/useSession';
+import { Separator } from '@/ui/Separator';
 
 export function SettingsChangeEmailSection() {
   const { data } = useSession();
@@ -23,6 +24,11 @@ export function SettingsChangeEmailSection() {
     setHasSubmittedChange(true);
   });
 
+  const handleCancelUpdate: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault();
+    form.reset({ email });
+  };
+
   return (
     <FormProvider {...form}>
       <form
@@ -34,10 +40,7 @@ export function SettingsChangeEmailSection() {
           name="email"
           render={({ field }) => (
             <FormGroup label="Email" className="w-full">
-              <div className="w-full flex items-center gap-2">
-                <Input type="email" placeholder="Email" {...field} />
-                <Button type="submit" variant="primary">Submit</Button>
-              </div>
+              <Input type="email" placeholder="Email" {...field} />
             </FormGroup>
           )}
         />
@@ -48,6 +51,14 @@ export function SettingsChangeEmailSection() {
             <p>Please go to your new email and confirm any changes.</p>
           </div>
         )}
+
+        <div className="space-y-2.5 pt-1">
+          <Separator className="h-[1px] bg-achromatic-light dark:bg-achromatic-darker" />
+          <div className="flex items-center justify-end gap-2">
+            <Button type="button" variant="danger" onClick={handleCancelUpdate}>Cancel</Button>
+            <Button type="submit" variant="primary">Save</Button>
+          </div>
+        </div>
       </form>
     </FormProvider>
   );
