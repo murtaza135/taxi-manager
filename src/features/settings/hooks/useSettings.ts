@@ -36,7 +36,7 @@ async function getSettings(): Promise<Settings> {
   return mappedData;
 }
 
-export function settingsOptions() {
+export function settingsQueryOptions() {
   return queryOptions<Settings, SupabaseError>({
     queryKey: ['auth', 'settings'],
     queryFn: getSettings,
@@ -44,6 +44,6 @@ export function settingsOptions() {
 }
 
 export function useSettings() {
-  const query = useSuspenseQuery(settingsOptions());
+  const query = useSuspenseQuery(settingsQueryOptions());
   return query;
 }

@@ -1,116 +1,68 @@
-// import { useQueryClient, useMutation } from '@tanstack/react-query';
-// import { useRevalidator } from 'react-router-dom';
-// import { v4 as uuidv4 } from 'uuid';
-// import { useToast } from '@/ui/toast';
-// import { AddNewRentAgreementTransformedSchema } from '@/features/rents/addNewRent/schemas';
-// import { SupabaseError } from '@/errors/classes/SupabaseError';
-// import { queryClient as globalQueryClient } from '@/config/api/queryClient';
-// import { sessionOptions } from '@/features/auth/hooks/useSession';
-// import { supabase } from '@/config/api/supabaseClient';
-// import { extname } from '@/utils/path/extname';
+/* eslint-disable max-len */
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { useRevalidator } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+import { useToast } from '@/ui/toast';
+import { SupabaseError } from '@/errors/classes/SupabaseError';
+import { queryClient as globalQueryClient } from '@/config/api/queryClient';
+import { sessionOptions } from '@/features/auth/hooks/useSession';
+import { supabase } from '@/config/api/supabaseClient';
+import { extname } from '@/utils/path/extname';
+import { Tables } from '@/types/database';
+import { Prettify } from '@/types/utils';
+import { hireAgreementDetailsQueryOptions } from '@/features/hires/general/hooks/useHireDetails';
+import { settingsQueryOptions } from '@/features/settings/hooks/useSettings';
 
-// type RentAgreementDocumentPathsObject = {
-//   permission_letter_document_path?: string;
-//   contract_document_path?: string;
-//   deposit_receipt_document_path?: string;
-// };
+type RentFormData = Pick<Tables<'rent'>, 'hire_id'>;
 
-// export async function addNewRentAgreement(formData: AddNewRentAgreementTransformedSchema) {
-//   const session = await globalQueryClient.ensureQueryData(sessionOptions());
-//   const documentPaths: RentAgreementDocumentPathsObject = {};
-//   const {
-//     permission_letter_document_path: permission_letter_document,
-//     contract_document_path: contract_document,
-//     deposit_receipt_document_path: deposit_receipt_document,
-//     ...nonFileFormData
-//   } = formData;
+export async function addNewRent({ hire_id }: RentFormData) {
+  const session = await globalQueryClient.ensureQueryData(sessionOptions());
+  const { rent_day } = await globalQueryClient.ensureQueryData(settingsQueryOptions());
+  const hireData = await globalQueryClient.ensureQueryData(
+    hireAgreementDetailsQueryOptions(hire_id),
+  );
 
-//   // TODO add storage rollback on error
-//   if (permission_letter_document) {
-//     const fileName = `${session.user.id}/permission-letters/${uuidv4()}${extname(permission_letter_document.name)}`;
+  const start_date = '2024-10-01';
+  const end_date = '2024-10-01';
 
-//     const { data: storageData } = await supabase
-//       .storage
-//       .from('main')
-//       .upload(fileName, permission_letter_document, { upsert: true });
+  const { data, error, status } = await supabase
+    .from('rent')
+    .insert({
+      hire_id,
+      start_date,
+      end_date,
+      amount: Number(hireData.rent_amount),
+    })
+    .select('id')
+    .limit(1)
+    .single();
 
-//     if (storageData) {
-//       documentPaths.permission_letter_document_path = storageData.path;
-//     }
-//   }
+  if (error) {
+    throw new SupabaseError(error, status);
+  }
 
-//   if (contract_document) {
-//     const fileName = `${session.user.id}/rent-contracts/${uuidv4()}${extname(contract_document.name)}`;
+  return data.id;
+}
 
-//     const { data: storageData } = await supabase
-//       .storage
-//       .from('main')
-//       .upload(fileName, contract_document, { upsert: true });
+export function useAddNewRent() {
+  const queryClient = useQueryClient();
+  const { revalidate } = useRevalidator();
+  const { toast } = useToast();
 
-//     if (storageData) {
-//       documentPaths.contract_document_path = storageData.path;
-//     }
-//   }
+  const mutation = useMutation<number, SupabaseError, RentFormData>({
+    mutationFn: addNewRent,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['rents', 'list'] });
+      revalidate();
+    },
+    onError: (error) => {
+      toast({
+        title: error.title,
+        description: error.description,
+        variant: 'destructive',
+      });
+    },
+  });
 
-//   if (deposit_receipt_document) {
-//     const fileName = `${session.user.id}/deposit-receipts/${uuidv4()}${extname(deposit_receipt_document.name)}`;
-
-//     const { data: storageData } = await supabase
-//       .storage
-//       .from('main')
-//       .upload(fileName, deposit_receipt_document, { upsert: true });
-
-//     if (storageData) {
-//       documentPaths.deposit_receipt_document_path = storageData.path;
-//     }
-//   }
-
-//   const { data: rentAgreementId, error, status } = await supabase.rpc(
-//     'add_new_rent_agreement',
-//     {
-//       ...documentPaths,
-//       taxi_id: nonFileFormData.taxi_id,
-//       driver_id: nonFileFormData.driver_id,
-//       rent_amount: nonFileFormData.rent_amount,
-//       deposit_amount: nonFileFormData.deposit_amount,
-//       start_date: nonFileFormData.start_date,
-//       end_date: nonFileFormData.end_date,
-//     },
-//   );
-
-//   if (error) {
-//     throw new SupabaseError(error, status);
-//   }
-
-//   return rentAgreementId;
-// }
-
-// export function useAddNewRentAgreement() {
-//   const queryClient = useQueryClient();
-//   const { revalidate } = useRevalidator();
-//   const { toast } = useToast();
-
-//   const mutation = useMutation<number, SupabaseError, AddNewRentAgreementTransformedSchema>({
-//     mutationFn: addNewRentAgreement,
-//     onSuccess: async (_data, { taxi_id, driver_id }) => {
-//       await Promise.all([
-//         queryClient.invalidateQueries({ queryKey: ['rents', 'list'] }),
-//         queryClient.invalidateQueries({ queryKey: ['drivers', 'list'] }),
-//         queryClient.invalidateQueries({ queryKey: ['drivers', driver_id, 'details'], exact: true }),
-//         queryClient.invalidateQueries({ queryKey: ['taxis', 'list'] }),
-//         queryClient.invalidateQueries({ queryKey: ['taxis', taxi_id, 'details'], exact: true }),
-
-//       ]);
-//       revalidate();
-//     },
-//     onError: (error) => {
-//       toast({
-//         title: error.title,
-//         description: error.description,
-//         variant: 'destructive',
-//       });
-//     },
-//   });
-
-//   return mutation;
-// }
+  return mutation;
+}
