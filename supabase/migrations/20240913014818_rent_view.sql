@@ -14,7 +14,7 @@ create view rent_view as
     taxi.id as taxi_id,
     taxi.number_plate,
     taxi_licence.phc_number,
-    hire_agreement.id as hire_agreement_id
+    hire_agreement.id as hire_id
   from
     rent
     left join hire_agreement on rent.hire_id = hire_agreement.id

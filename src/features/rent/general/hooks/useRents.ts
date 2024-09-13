@@ -19,7 +19,7 @@ type SupabaseRent = Prettify<
   >> & NonNullableObject<
     Pick<
       Tables<'rent_view'>,
-      | 'id' | 'hire_agreement_id' | 'start_date'
+      | 'id' | 'hire_id' | 'start_date'
       | 'end_date' | 'amount' | 'is_paid' | 'created_at'
       | 'driver_id' | 'driver_name'
       | 'taxi_id' | 'number_plate'
@@ -41,7 +41,7 @@ type RentResult = {
 type Variables = {
   search?: string;
   isRetired?: boolean;
-  hire_agreement_id?: number;
+  hire_id?: number;
   driver_id?: number;
   taxi_id?: number;
 };
@@ -49,7 +49,7 @@ type Variables = {
 type Context = QueryFunctionContext<QueryKey, number>;
 
 async function getRents(
-  { search = '', isRetired = false, hire_agreement_id, driver_id, taxi_id }: Variables,
+  { search = '', isRetired = false, hire_id, driver_id, taxi_id }: Variables,
   { pageParam }: Context,
 ): Promise<RentResult> {
   const session = await queryClient.ensureQueryData(sessionOptions());
@@ -60,13 +60,13 @@ async function getRents(
   let query = supabase
     .from('rent_view')
     .select(
-      'id, hire_agreement_id, start_date, end_date, amount, is_paid, created_at, driver_id, driver_name, taxi_id, number_plate, paid_date, phc_number',
+      'id, hire_id, start_date, end_date, amount, is_paid, created_at, driver_id, driver_name, taxi_id, number_plate, paid_date, phc_number',
       { count: 'estimated' },
     )
     .eq('auth_id', session.user.id)
     .eq('is_retired', isRetired);
 
-  if (hire_agreement_id) query = query.eq('hire_agreement_id', hire_agreement_id);
+  if (hire_id) query = query.eq('hire_id', hire_id);
   if (driver_id) query = query.eq('driver_id', driver_id);
   if (taxi_id) query = query.eq('taxi_id', taxi_id);
 
@@ -109,7 +109,7 @@ async function getRents(
 export function rentsQueryOptions(options?: Variables) {
   const search = options?.search;
   const isRetired = options?.isRetired;
-  const hire_agreement_id = options?.hire_agreement_id;
+  const hire_id = options?.hire_id;
   const driver_id = options?.driver_id;
   const taxi_id = options?.taxi_id;
 
@@ -120,8 +120,8 @@ export function rentsQueryOptions(options?: Variables) {
     QueryKey,
     number
   >({
-    queryKey: ['rents', 'list', { search, isRetired, hire_agreement_id, driver_id, taxi_id }],
-    queryFn: (context) => getRents({ search, isRetired, hire_agreement_id, driver_id, taxi_id }, context),
+    queryKey: ['rents', 'list', { search, isRetired, hire_id, driver_id, taxi_id }],
+    queryFn: (context) => getRents({ search, isRetired, hire_id, driver_id, taxi_id }, context),
     initialPageParam: 0,
     getNextPageParam: (_lastGroup, groups) => groups.length,
     refetchOnWindowFocus: false,

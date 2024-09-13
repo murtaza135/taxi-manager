@@ -313,7 +313,7 @@ export type Database = {
             columns: ["active_hire_agreement_id"];
             isOneToOne: false;
             referencedRelation: "rent_view";
-            referencedColumns: ["hire_agreement_id"];
+            referencedColumns: ["hire_id"];
           },
           {
             foreignKeyName: "driver_active_hire_agreement_id_fkey";
@@ -937,7 +937,7 @@ export type Database = {
             columns: ["hire_id"];
             isOneToOne: false;
             referencedRelation: "rent_view";
-            referencedColumns: ["hire_agreement_id"];
+            referencedColumns: ["hire_id"];
           },
           {
             foreignKeyName: "picture_hire_id_fkey";
@@ -1019,7 +1019,7 @@ export type Database = {
             columns: ["hire_id"];
             isOneToOne: false;
             referencedRelation: "rent_view";
-            referencedColumns: ["hire_agreement_id"];
+            referencedColumns: ["hire_id"];
           },
           {
             foreignKeyName: "rent_hire_id_fkey";
@@ -1139,7 +1139,7 @@ export type Database = {
             columns: ["active_hire_agreement_id"];
             isOneToOne: false;
             referencedRelation: "rent_view";
-            referencedColumns: ["hire_agreement_id"];
+            referencedColumns: ["hire_id"];
           },
           {
             foreignKeyName: "taxi_active_hire_agreement_id_fkey";
@@ -1358,7 +1358,7 @@ export type Database = {
           driver_id: number | null;
           driver_name: string | null;
           end_date: string | null;
-          hire_agreement_id: number | null;
+          hire_id: number | null;
           id: number | null;
           is_paid: boolean | null;
           number_plate: string | null;

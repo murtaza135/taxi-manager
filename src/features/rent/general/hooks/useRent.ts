@@ -18,7 +18,7 @@ type SupabaseRent = Prettify<
   >> & NonNullableObject<
     Pick<
       Tables<'rent_view'>,
-      | 'id' | 'hire_agreement_id' | 'start_date'
+      | 'id' | 'hire_id' | 'start_date'
       | 'end_date' | 'amount' | 'is_paid' | 'created_at'
       | 'driver_id' | 'driver_name'
       | 'taxi_id' | 'number_plate'
@@ -52,7 +52,7 @@ async function getRent(id: number): Promise<Rent> {
 
   const { data, error, status } = await supabase
     .from('rent_view')
-    .select('hire_agreement_id, start_date, end_date, amount, is_paid, created_at, driver_id, driver_name, taxi_id, number_plate, receipt_document_path, paid_date, phc_number')
+    .select('hire_id, start_date, end_date, amount, is_paid, created_at, driver_id, driver_name, taxi_id, number_plate, receipt_document_path, paid_date, phc_number')
     .eq('id', id)
     .eq('auth_id', session.user.id)
     .returns<SupabaseRent[]>()
