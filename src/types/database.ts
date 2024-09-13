@@ -1030,6 +1030,24 @@ export type Database = {
           },
         ];
       };
+      settings: {
+        Row: {
+          auth_id: string;
+          id: number;
+          rent_day: Database["public"]["Enums"]["day"];
+        };
+        Insert: {
+          auth_id?: string;
+          id?: number;
+          rent_day?: Database["public"]["Enums"]["day"];
+        };
+        Update: {
+          auth_id?: string;
+          id?: number;
+          rent_day?: Database["public"]["Enums"]["day"];
+        };
+        Relationships: [];
+      };
       taxi: {
         Row: {
           active_hire_agreement_id: number | null;
@@ -1470,7 +1488,14 @@ export type Database = {
       };
     };
     Enums: {
-      [_ in never]: never
+      day:
+      | "monday"
+      | "tuesday"
+      | "wednesday"
+      | "thursday"
+      | "friday"
+      | "saturday"
+      | "sunday";
     };
     CompositeTypes: {
       [_ in never]: never
