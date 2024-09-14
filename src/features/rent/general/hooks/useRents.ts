@@ -7,6 +7,7 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { supabase } from '@/config/api/supabaseClient';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
+import { RentRowFilterState } from '@/features/rent/general/types';
 
 const fetchSize = 50;
 
@@ -40,7 +41,7 @@ type RentResult = {
 
 type Variables = {
   search?: string;
-  isRetired?: boolean;
+  rowFilter?: RentRowFilterState;
   hire_id?: number;
   driver_id?: number;
   taxi_id?: number;
@@ -49,7 +50,7 @@ type Variables = {
 type Context = QueryFunctionContext<QueryKey, number>;
 
 async function getRents(
-  { search = '', isRetired = false, hire_id, driver_id, taxi_id }: Variables,
+  { search = '', rowFilter = 'all', hire_id, driver_id, taxi_id }: Variables,
   { pageParam }: Context,
 ): Promise<RentResult> {
   const session = await queryClient.ensureQueryData(sessionOptions());
@@ -63,9 +64,10 @@ async function getRents(
       'id, hire_id, start_date, end_date, amount, is_paid, created_at, driver_id, driver_name, taxi_id, number_plate, paid_date, phc_number',
       { count: 'estimated' },
     )
-    .eq('auth_id', session.user.id)
-    .eq('is_retired', isRetired);
+    .eq('auth_id', session.user.id);
 
+  if (rowFilter === 'notPaid') query = query.eq('is_retired', false);
+  if (rowFilter === 'paid') query = query.eq('is_retired', true);
   if (hire_id) query = query.eq('hire_id', hire_id);
   if (driver_id) query = query.eq('driver_id', driver_id);
   if (taxi_id) query = query.eq('taxi_id', taxi_id);
@@ -108,7 +110,7 @@ async function getRents(
 
 export function rentsQueryOptions(options?: Variables) {
   const search = options?.search;
-  const isRetired = options?.isRetired;
+  const rowFilter = options?.rowFilter;
   const hire_id = options?.hire_id;
   const driver_id = options?.driver_id;
   const taxi_id = options?.taxi_id;
@@ -120,8 +122,8 @@ export function rentsQueryOptions(options?: Variables) {
     QueryKey,
     number
   >({
-    queryKey: ['rents', 'list', { search, isRetired, hire_id, driver_id, taxi_id }],
-    queryFn: (context) => getRents({ search, isRetired, hire_id, driver_id, taxi_id }, context),
+    queryKey: ['rents', 'list', { search, rowFilter, hire_id, driver_id, taxi_id }],
+    queryFn: (context) => getRents({ search, rowFilter, hire_id, driver_id, taxi_id }, context),
     initialPageParam: 0,
     getNextPageParam: (_lastGroup, groups) => groups.length,
     refetchOnWindowFocus: false,
