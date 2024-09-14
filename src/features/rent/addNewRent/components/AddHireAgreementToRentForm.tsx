@@ -1,7 +1,7 @@
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { capitalCase } from 'change-case';
 import { useMemo, useState, useEffect } from 'react';
-import { startOfToday } from 'date-fns';
+import { addHours, differenceInDays, startOfToday } from 'date-fns';
 import { useDebounceValue } from '@/hooks/useDebounceValue';
 import { cn } from '@/utils/cn';
 import {
@@ -12,7 +12,6 @@ import {
   FormGroup,
   useZodForm,
   FormSection,
-  UseZodFormReturn,
 } from '@/ui/form/Form';
 import { ReadOnlyInput } from '@/ui/form/Input';
 import {
@@ -37,14 +36,22 @@ import {
 } from '@/ui/Drawer';
 import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
-import { addNewRentHireSchema, AddNewRentHireSchema, addNewRentSchema } from '@/features/rent/addNewRent/schemas';
+import { addNewRentHireSchema, AddNewRentSchema } from '@/features/rent/addNewRent/schemas';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { FileListViewer } from '@/ui/files/FileListViewer';
 import { Spinner } from '@/ui/Spinner';
 import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 import { useNonSuspenseHires, Hire } from '@/features/hires/general/hooks/useHires';
 import { useSettings } from '@/features/settings/hooks/useSettings';
-import { getNextDateFromDay } from '@/utils/date/days';
+import { getPreviousDay, getNextDateFromDay } from '@/utils/date/days';
+
+// TODO this is a real mess, make it simpler
+
+function calculateRentAmount(value: number | undefined, diffDays: number) {
+  if (!value) return undefined;
+  const amount = Math.ceil((value * diffDays) / 7);
+  return Math.max(amount, 0);
+}
 
 export function AddHireAgreementToRentForm() {
   const sm = useBreakpoint('sm');
@@ -74,14 +81,14 @@ export function AddHireAgreementToRentForm() {
     prevStep,
     nextStep,
     updateFormState,
-  } = useMultiStepFormContext<AddNewRentHireSchema>();
+  } = useMultiStepFormContext<AddNewRentSchema>();
 
   const [selectedHire, setSelectedHire] = useState<Hire | null>(
     () => flatData.find((hire) => hire.id === formState.hire_id) ?? null,
   );
 
   const form = useZodForm({
-    schema: addNewRentHireSchema,
+    schema: addNewRentHireSchema, // hire schema only
     defaultValues: formState,
   });
 
@@ -97,7 +104,18 @@ export function AddHireAgreementToRentForm() {
   }, [fetchOnScroll]);
 
   const handleSubmit = form.handleSubmit((formData) => {
-    updateFormState(formData);
+    const start_date = addHours(startOfToday(), 1);
+    const end_day = getPreviousDay(rent_day);
+    const end_date = addHours(getNextDateFromDay(end_day), 1);
+    const diff_days = Math.abs(differenceInDays(start_date, end_date));
+    const amount = calculateRentAmount(selectedHire?.rent_amount, diff_days);
+
+    updateFormState({
+      amount: amount?.toString() ?? '',
+      start_date: start_date.toDateString(),
+      end_date: end_date.toDateString(),
+      ...formData,
+    });
     nextStep();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   });
@@ -109,18 +127,8 @@ export function AddHireAgreementToRentForm() {
 
   const handleSelectHire = (id: number) => {
     setOpen(false);
-
     const selected = flatData.find((hire) => hire.id === id) ?? null;
-    const amount = selected?.rent_amount.toString() ?? '';
-    const start_date = startOfToday().toString();
-    const end_date = getNextDateFromDay(rent_day).toString();
-
-    const totalForm = form as unknown as UseZodFormReturn<typeof addNewRentSchema>;
-    totalForm.setValue('hire_id', id);
-    totalForm.setValue('amount', amount);
-    totalForm.setValue('start_date', start_date);
-    totalForm.setValue('end_date', end_date);
-
+    form.setValue('hire_id', id);
     setSelectedHire(selected);
   };
 
@@ -295,6 +303,7 @@ export function AddHireAgreementToRentForm() {
             <ReadOnlyInput title="Number Plate" value={selectedHire.taxi_number_plate} className="capitalize " />
             <ReadOnlyInput title="PH Number" value={selectedHire.taxi_licence_phc_number ?? ''} />
             <ReadOnlyInput title="Driver" value={selectedHire.driver_name} />
+            <ReadOnlyInput title="Weekly Rent" value={`£${selectedHire.rent_amount}`} />
           </FormSection>
         )}
 

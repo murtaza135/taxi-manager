@@ -6,8 +6,8 @@ import { MergeOverwrite } from '@/types/utils';
 
 export const addNewRentHireSchema = z.object({
   hire_id: z
-    .number({ required_error: 'Taxi required' })
-    .positive('Taxi required'),
+    .number({ required_error: 'Hire required' })
+    .positive('Hire required'),
 });
 
 export const addNewRentDetailsSchema = z.object({
