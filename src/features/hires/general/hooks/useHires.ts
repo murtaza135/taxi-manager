@@ -1,4 +1,4 @@
-import { keepPreviousData, infiniteQueryOptions, QueryKey, useSuspenseInfiniteQuery, InfiniteData, QueryFunctionContext } from '@tanstack/react-query';
+import { keepPreviousData, infiniteQueryOptions, QueryKey, useSuspenseInfiniteQuery, InfiniteData, QueryFunctionContext, useInfiniteQuery } from '@tanstack/react-query';
 import { Prettify, NonNullableObject } from '@/types/utils';
 import { Tables } from '@/types/database';
 import { queryClient } from '@/config/api/queryClient';
@@ -6,6 +6,8 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { supabase } from '@/config/api/supabaseClient';
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
+import { driverPictureQueryOptions } from '@/features/drivers/general/hooks/useDriverDetails';
+import { taxiPictureQueryOptions } from '@/features/taxis/general/hooks/useTaxiDetails';
 
 const fetchSize = 50;
 
@@ -25,7 +27,10 @@ export type Hire = Prettify<
       | 'rent_amount' | 'deposit_amount' | 'is_retired'
       | 'taxi_chassis_number' | 'created_at'
     >
-  >
+  > & {
+    driver_picture_src: string | null;
+    taxi_picture_src: string | null;
+  }
 >;
 
 type HireResult = {
@@ -79,11 +84,19 @@ async function getHires(
   }
 
   const hires = await Promise.all(
-    data.map((hire) => {
+    data.map(async (hire) => {
       const driver_name = capitalizeEachWord(hire.driver_name);
       const taxi_chassis_number = hire.taxi_chassis_number.toUpperCase();
       const taxi_licence_phc_number = hire.taxi_licence_phc_number?.toUpperCase();
       const taxi_number_plate = hire.taxi_number_plate.toUpperCase();
+
+      const driver_picture_src = await queryClient.ensureQueryData(
+        driverPictureQueryOptions({ id: hire.driver_id, path: hire.driver_picture_path }),
+      );
+
+      const taxi_picture_src = await queryClient.ensureQueryData(
+        taxiPictureQueryOptions({ id: hire.taxi_id, path: hire.taxi_picture_path }),
+      );
 
       return {
         ...hire,
@@ -91,6 +104,8 @@ async function getHires(
         taxi_chassis_number,
         taxi_licence_phc_number,
         taxi_number_plate,
+        driver_picture_src,
+        taxi_picture_src,
       };
     }),
   );
@@ -125,5 +140,10 @@ export function hiresQueryOptions(options?: Variables) {
 
 export function useHires(options?: Variables) {
   const query = useSuspenseInfiniteQuery(hiresQueryOptions(options));
+  return query;
+}
+
+export function useNonSuspenseHires(options?: Variables) {
+  const query = useInfiniteQuery(hiresQueryOptions(options));
   return query;
 }

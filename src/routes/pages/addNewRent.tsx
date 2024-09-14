@@ -5,9 +5,9 @@ import { settingsQueryOptions } from '@/features/settings/hooks/useSettings';
 import { hiresQueryOptions } from '@/features/hires/general/hooks/useHires';
 import { AddNewRentMultiStepForm } from '@/features/rent/addNewRent/components/AddNewRentMultiStepForm';
 
-const addNewDriverApplicationPageLoader: QueryLoaderFunction = (queryClient) => () => {
+const addNewDriverApplicationPageLoader: QueryLoaderFunction = (queryClient) => async () => {
   void queryClient.ensureQueryData(hiresQueryOptions());
-  void queryClient.ensureQueryData(settingsQueryOptions());
+  await queryClient.ensureQueryData(settingsQueryOptions());
   return null;
 };
 

@@ -235,7 +235,7 @@ function FileListViewer({ files, initial, onChange, onDelete, className }: Props
               key={config.key}
               type="submit"
               variant="ghost"
-              className={cn('rounded-lg p-0 overflow-hidden flex-shrink-0 bg-achromatic-lighter border border-solid border-achromatic-darker hover:opacity-100', currentFileIndex !== index && 'opacity-50')}
+              className={cn('rounded-lg p-0 overflow-hidden w-12 h-12 flex-shrink-0 bg-achromatic-lighter border border-solid border-achromatic-darker hover:opacity-100', currentFileIndex !== index && 'opacity-50')}
               onMouseEnter={() => handleChange(index)}
               onClick={() => handleChange(index)}
             >

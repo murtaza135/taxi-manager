@@ -31,7 +31,7 @@ type UseZodFormProps<TSchema extends AnyZodObjectOrEffect, TContext = any> =
     schema: TSchema;
   };
 
-type UseZodFormReturn<
+export type UseZodFormReturn<
   TSchema extends AnyZodObjectOrEffect,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TContext = any,

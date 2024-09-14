@@ -1,4 +1,4 @@
-import { useSuspenseQuery, queryOptions } from '@tanstack/react-query';
+import { useSuspenseQuery, queryOptions, useQuery } from '@tanstack/react-query';
 import mapValues from 'lodash/mapValues';
 import { supabase } from '@/config/api/supabaseClient';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
@@ -45,5 +45,10 @@ export function settingsQueryOptions() {
 
 export function useSettings() {
   const query = useSuspenseQuery(settingsQueryOptions());
+  return query;
+}
+
+export function useNonSuspenseSettings() {
+  const query = useQuery(settingsQueryOptions());
   return query;
 }
