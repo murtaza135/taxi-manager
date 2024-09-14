@@ -25,7 +25,7 @@ export type Variables = Prettify<
   }
 >;
 
-export async function updateRentDetails({ id, receipt_document, ...vars }: Variables) {
+export async function updateRent({ id, receipt_document, ...vars }: Variables) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
 
   if (!isEmpty(vars)) {
@@ -124,13 +124,13 @@ export async function updateRentDetails({ id, receipt_document, ...vars }: Varia
   }
 }
 
-export function useUpdateRentDetails() {
+export function useUpdateRent() {
   const queryClient = useQueryClient();
   const { revalidate } = useRevalidator();
   const { toast } = useToast();
 
   const mutation = useMutation<void, SupabaseError, Variables>({
-    mutationFn: updateRentDetails,
+    mutationFn: updateRent,
     onSuccess: async (_data, { id, receipt_document }) => {
       if (receipt_document !== undefined) {
         queryClient.removeQueries({ queryKey: ['rents', id, 'receipt'] });
