@@ -7,6 +7,7 @@ import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
 
 // TODO combine with payRent?
+// TODO add optimistic update
 
 export async function unpayRent(id: number) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());

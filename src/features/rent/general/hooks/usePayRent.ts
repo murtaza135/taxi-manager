@@ -6,6 +6,8 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
 
+// TODO add optimistic update
+
 export async function payRent(id: number) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
 
