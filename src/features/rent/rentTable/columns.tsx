@@ -2,8 +2,8 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Link } from 'react-router-dom';
 import { IoEllipsisVertical } from 'react-icons/io5';
 import { FiEye } from 'react-icons/fi';
+import { TbCurrencyPound, TbCurrencyPoundOff } from 'react-icons/tb';
 import { FaTrashAlt } from 'react-icons/fa';
-import { PiArrowUDownLeftBold } from 'react-icons/pi';
 import { format } from 'date-fns';
 import {
   DropdownMenu,
@@ -18,9 +18,9 @@ import { Button } from '@/ui/Button';
 import { NoDataCell, LinkCell, CopyCell } from '@/ui/dataview/Cell';
 import { useReactTableContext } from '@/lib/tanstack-table/ReactTable';
 import { Rent } from '@/features/rent/general/hooks/useRents';
-import { RentRowFilterState } from '@/features/rent/general/types';
-import { useUpdateRent } from '@/features/rent/general/hooks/useUpdateRent';
 import { usePayRent } from '@/features/rent/general/hooks/usePayRent';
+import { useUnpayRent } from '@/features/rent/general/hooks/useUnpayRent';
+import { useDeleteRent } from '@/features/rent/general/hooks/useDeleteRent';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<Rent>[] = [
@@ -57,7 +57,7 @@ export const tableColumns: ColumnDef<Rent>[] = [
   },
   {
     id: 'Hire ID',
-    accessorKey: 'id',
+    accessorKey: 'hire_id',
     header: 'Hire ID',
     cell: ({ row }) => (
       <LinkCell to={`/hire/${row.original.hire_id}`}>
@@ -123,11 +123,20 @@ export const tableColumns: ColumnDef<Rent>[] = [
     header: 'Actions',
     cell: function ActionsCell({ row }) {
       const table = useReactTableContext();
-      const rowFilter = table.options.meta?.rowFilter as RentRowFilterState | undefined;
-      // const { mutateAsync: update } = useUpdateRentDetails();
+      const { mutateAsync: payRent } = usePayRent();
+      const { mutateAsync: unpayRent } = useUnpayRent();
+      const { mutateAsync: deleteRent } = useDeleteRent();
 
-      const handleSetRentRetirement = (is_retired: boolean) => {
-        // await update({ id: row.original.id, is_retired });
+      const handlePayRent = async () => {
+        await payRent(row.original.id);
+        table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
+      };
+      const handleUnpayRent = async () => {
+        await unpayRent(row.original.id);
+        table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
+      };
+      const handleDeleteRent = async () => {
+        await deleteRent(row.original.id);
         table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
       };
 
@@ -138,16 +147,19 @@ export const tableColumns: ColumnDef<Rent>[] = [
               <FiEye className="text-xl" />
             </Button>
           </Link>
-          {rowFilter === 'inProgress' && (
-            <Button variant="ghost" className="p-0" onClick={() => handleSetRentRetirement(true)}>
-              <FaTrashAlt className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
+          {!row.original.is_paid && (
+            <Button variant="ghost" className="p-0" onClick={handlePayRent}>
+              <TbCurrencyPound className="text-xl text-primary-dark dark:text-achromatic-lighter -translate-y-[1px]" />
             </Button>
           )}
-          {rowFilter === 'terminated' && (
-            <Button variant="ghost" className="p-0" onClick={() => handleSetRentRetirement(false)}>
-              <PiArrowUDownLeftBold className="text-xl text-primary-dark dark:text-achromatic-lighter" />
+          {row.original.is_paid && (
+            <Button variant="ghost" className="p-0" onClick={handleUnpayRent}>
+              <TbCurrencyPoundOff className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
             </Button>
           )}
+          <Button variant="ghost" className="p-0" onClick={handleDeleteRent}>
+            <FaTrashAlt className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
+          </Button>
         </div>
       );
     },
@@ -160,48 +172,39 @@ export const tableColumns: ColumnDef<Rent>[] = [
 // another ColumnDef for the grid layout
 export const gridColumns: ColumnDef<Rent>[] = [
   {
-    id: 'Rent Agreement ID',
+    id: 'Rent ID',
     accessorKey: 'id',
-    header: 'Rent Agreement ID',
+    header: 'Rent ID',
   },
   {
-    id: 'Driver Name',
-    accessorKey: 'driver_name',
-    header: 'Driver Name',
+    id: 'Hire ID',
+    accessorKey: 'hire_id',
+    header: 'Hire ID',
     cell: ({ row }) => (
-      <LinkCell to={`/driver/${row.original.driver_id}`}>
+      <LinkCell to={`/hire/${row.original.hire_id}`}>
+        {row.original.id}
+      </LinkCell>
+    ),
+  },
+  {
+    id: 'Taxi',
+    accessorKey: 'number_plate',
+    header: 'Taxi',
+    cell: ({ row }) => (
+      <LinkCell to={`/taxi/${row.original.taxi_id}`} className="uppercase">
+        {row.original.number_plate}{row.original.phc_number ? `(${row.original.phc_number})` : ''}
+      </LinkCell>
+    ),
+  },
+  {
+    id: 'Driver',
+    accessorKey: 'driver_name',
+    header: 'Driver',
+    cell: ({ row }) => (
+      <LinkCell to={`/driver/${row.original.driver_id}`} className="capitalize">
         {row.original.driver_name}
       </LinkCell>
     ),
-  },
-  {
-    id: 'Number Plate',
-    accessorKey: 'number_plate',
-    header: 'Number Plate',
-    cell: ({ row }) => (
-      <LinkCell to={`/taxi/${row.original.taxi_id}`}>
-        {row.original.taxi_number_plate}
-      </LinkCell>
-    ),
-  },
-  {
-    id: 'PHC Number',
-    accessorKey: 'taxi_licence_phc_number',
-    header: 'PHC Number',
-    cell: ({ row }) => {
-      if (!row.original.taxi_licence_phc_number) return <NoDataCell />;
-      return (
-        <LinkCell to={`/taxi/${row.original.taxi_id}`}>
-          {row.original.taxi_licence_phc_number}
-        </LinkCell>
-      );
-    },
-  },
-  {
-    id: 'Rent',
-    accessorKey: 'rent_amount',
-    header: 'Rent',
-    cell: ({ row }) => <CopyCell text={`${row.original.rent_amount}`} />,
   },
   {
     id: 'Start Date',
@@ -227,14 +230,56 @@ export const gridColumns: ColumnDef<Rent>[] = [
     },
   },
   {
+    id: 'Amount',
+    accessorKey: 'amount',
+    header: 'Amount',
+    cell: ({ row }) => (
+      <CopyCell text={`${row.original.amount}`}>
+        £{row.original.amount}
+      </CopyCell>
+    ),
+  },
+  {
+    id: 'Paid?',
+    accessorKey: 'is_paid',
+    header: 'Paid?',
+    cell: ({ row }) => (
+      <div>
+        {row.original.is_paid}
+      </div>
+    ),
+  },
+  {
+    id: 'Paid Date',
+    accessorKey: 'paid_date',
+    header: 'Paid Date',
+    cell: ({ row }) => {
+      if (!row.original.end_date) return <NoDataCell />;
+      return (
+        <CopyCell
+          text={format(new Date(row.original.paid_date ?? ''), 'dd/MM/yyyy')}
+        />
+      );
+    },
+  },
+  {
     id: 'Options Top',
     cell: function ActionsCell({ row }) {
       const table = useReactTableContext();
-      const rowFilter = table.options.meta?.rowFilter as RentsRowFilterState | undefined;
-      // const { mutateAsync: update } = useUpdateRentDetails();
+      const { mutateAsync: payRent } = usePayRent();
+      const { mutateAsync: unpayRent } = useUnpayRent();
+      const { mutateAsync: deleteRent } = useDeleteRent();
 
-      const handleSetRentRetirement = (is_retired: boolean) => {
-        // await update({ id: row.original.id, is_retired });
+      const handlePayRent = async () => {
+        await payRent(row.original.id);
+        table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
+      };
+      const handleUnpayRent = async () => {
+        await unpayRent(row.original.id);
+        table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
+      };
+      const handleDeleteRent = async () => {
+        await deleteRent(row.original.id);
         table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
       };
 
@@ -250,18 +295,22 @@ export const gridColumns: ColumnDef<Rent>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="hover:!opacity-100">
-              {rowFilter === 'inProgress' && (
-                <Button variant="ghost" className="p-0 gap-2" onClick={() => handleSetRentRetirement(true)}>
-                  <FaTrashAlt className="text-red-600 dark:text-red-500/70" />
-                  <p className="translate-y-[1px]">Retire</p>
+              {!row.original.is_paid && (
+                <Button variant="ghost" className="p-0 gap-2" onClick={handlePayRent}>
+                  <TbCurrencyPound className="text-xl text-primary-dark dark:text-achromatic-lighter -translate-y-[1px]" />
+                  <p>Pay</p>
                 </Button>
               )}
-              {rowFilter === 'terminated' && (
-                <Button variant="ghost" className="p-0 gap-2" onClick={() => handleSetRentRetirement(false)}>
-                  <PiArrowUDownLeftBold className="text-primary-dark dark:text-achromatic-lighter" />
-                  <p>Recover</p>
+              {row.original.is_paid && (
+                <Button variant="ghost" className="p-0 gap-2" onClick={handleUnpayRent}>
+                  <TbCurrencyPoundOff className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
+                  <p>Unpay</p>
                 </Button>
               )}
+              <Button variant="ghost" className="p-0 gap-2" onClick={handleDeleteRent}>
+                <FaTrashAlt className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
+                <p>Delete</p>
+              </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -285,7 +334,7 @@ export const gridColumns: ColumnDef<Rent>[] = [
 ];
 
 export const mapper: DataViewCardMainDataMapper = {
-  title: 'Rent Agreement ID',
+  title: 'Rent ID',
   optionsTop: 'Options Top',
   optionsBottom: 'Options Bottom',
 } as const;

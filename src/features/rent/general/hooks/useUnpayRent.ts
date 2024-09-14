@@ -6,12 +6,14 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { useToast } from '@/ui/toast';
 
-export async function payRent(id: number) {
+// TODO combine with payRent?
+
+export async function unpayRent(id: number) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
 
   const { error, status } = await supabase
     .from('rent')
-    .update({ is_paid: true, paid_date: new Date().toISOString() })
+    .update({ is_paid: false, paid_date: null })
     .eq('auth_id', session.user.id)
     .eq('id', id);
 
@@ -22,13 +24,13 @@ export async function payRent(id: number) {
   }
 }
 
-export function usePayRent() {
+export function useUnpayRent() {
   const queryClient = useQueryClient();
   const { revalidate } = useRevalidator();
   const { toast } = useToast();
 
   const mutation = useMutation<void, SupabaseError, number>({
-    mutationFn: payRent,
+    mutationFn: unpayRent,
     onSuccess: async (_data, id) => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['rents', 'list'] }),
