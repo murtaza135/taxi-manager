@@ -15,14 +15,15 @@ import {
 } from '@/ui/DropdownMenu';
 import { DataViewCheckbox, DataViewCardMainDataMapper } from '@/ui/dataview/DataView';
 import { Button } from '@/ui/Button';
-import { Hire } from '@/features/hires/general/hooks/useHires';
 import { NoDataCell, LinkCell, CopyCell } from '@/ui/dataview/Cell';
 import { useReactTableContext } from '@/lib/tanstack-table/ReactTable';
-import { HiresRowFilterState } from '@/features/hires/general/types';
-// import { useUpdateHireDetails } from '@/features/hires/general/hooks/useUpdateHireDetails';
+import { Rent } from '@/features/rent/general/hooks/useRents';
+import { RentRowFilterState } from '@/features/rent/general/types';
+import { useUpdateRent } from '@/features/rent/general/hooks/useUpdateRent';
+import { usePayRent } from '@/features/rent/general/hooks/usePayRent';
 
 // ColumnDef for the table layout
-export const tableColumns: ColumnDef<Hire>[] = [
+export const tableColumns: ColumnDef<Rent>[] = [
   {
     id: 'Select',
     header: () => <DataViewCheckbox.Header />,
@@ -30,59 +31,6 @@ export const tableColumns: ColumnDef<Hire>[] = [
     enableSorting: false,
     enableHiding: false,
     enableGlobalFilter: false,
-  },
-  {
-    id: 'Hire ID',
-    accessorKey: 'id',
-    header: 'Hire ID',
-    cell: ({ row }) => (
-      <LinkCell to={`/hire/${row.original.id}`}>
-        {row.original.id}
-      </LinkCell>
-    ),
-  },
-  {
-    id: 'Driver Name',
-    accessorKey: 'driver_name',
-    header: 'Driver Name',
-    cell: ({ row }) => (
-      <LinkCell to={`/driver/${row.original.driver_id}`}>
-        {row.original.driver_name}
-      </LinkCell>
-    ),
-  },
-  {
-    id: 'Number Plate',
-    accessorKey: 'number_plate',
-    header: 'Number Plate',
-    cell: ({ row }) => (
-      <LinkCell to={`/taxi/${row.original.taxi_id}`}>
-        {row.original.taxi_number_plate}
-      </LinkCell>
-    ),
-  },
-  {
-    id: 'PHC Number',
-    accessorKey: 'taxi_licence_phc_number',
-    header: 'PHC Number',
-    cell: ({ row }) => {
-      if (!row.original.taxi_licence_phc_number) return <NoDataCell />;
-      return (
-        <LinkCell to={`/taxi/${row.original.taxi_id}`}>
-          {row.original.taxi_licence_phc_number}
-        </LinkCell>
-      );
-    },
-  },
-  {
-    id: 'Rent',
-    accessorKey: 'rent_amount',
-    header: 'Rent',
-    cell: ({ row }) => (
-      <CopyCell text={`${row.original.rent_amount}`}>
-        £{row.original.rent_amount}
-      </CopyCell>
-    ),
   },
   {
     id: 'Start Date',
@@ -108,32 +56,95 @@ export const tableColumns: ColumnDef<Hire>[] = [
     },
   },
   {
+    id: 'Hire ID',
+    accessorKey: 'id',
+    header: 'Hire ID',
+    cell: ({ row }) => (
+      <LinkCell to={`/hire/${row.original.hire_id}`}>
+        {row.original.id}
+      </LinkCell>
+    ),
+  },
+  {
+    id: 'Taxi',
+    accessorKey: 'number_plate',
+    header: 'Taxi',
+    cell: ({ row }) => (
+      <LinkCell to={`/taxi/${row.original.taxi_id}`} className="uppercase">
+        {row.original.number_plate}{row.original.phc_number ? `(${row.original.phc_number})` : ''}
+      </LinkCell>
+    ),
+  },
+  {
+    id: 'Driver',
+    accessorKey: 'driver_name',
+    header: 'Driver',
+    cell: ({ row }) => (
+      <LinkCell to={`/driver/${row.original.driver_id}`} className="capitalize">
+        {row.original.driver_name}
+      </LinkCell>
+    ),
+  },
+  {
+    id: 'Amount',
+    accessorKey: 'amount',
+    header: 'Amount',
+    cell: ({ row }) => (
+      <CopyCell text={`${row.original.amount}`}>
+        £{row.original.amount}
+      </CopyCell>
+    ),
+  },
+  {
+    id: 'Paid?',
+    accessorKey: 'is_paid',
+    header: 'Paid?',
+    cell: ({ row }) => (
+      <div>
+        {row.original.is_paid}
+      </div>
+    ),
+  },
+  {
+    id: 'Paid Date',
+    accessorKey: 'paid_date',
+    header: 'Paid Date',
+    cell: ({ row }) => {
+      if (!row.original.end_date) return <NoDataCell />;
+      return (
+        <CopyCell
+          text={format(new Date(row.original.paid_date ?? ''), 'dd/MM/yyyy')}
+        />
+      );
+    },
+  },
+  {
     id: 'Actions',
     header: 'Actions',
     cell: function ActionsCell({ row }) {
       const table = useReactTableContext();
-      const rowFilter = table.options.meta?.rowFilter as HiresRowFilterState | undefined;
-      // const { mutateAsync: update } = useUpdateHireDetails();
+      const rowFilter = table.options.meta?.rowFilter as RentRowFilterState | undefined;
+      // const { mutateAsync: update } = useUpdateRentDetails();
 
-      const handleSetHireRetirement = (is_retired: boolean) => {
+      const handleSetRentRetirement = (is_retired: boolean) => {
         // await update({ id: row.original.id, is_retired });
         table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
       };
 
       return (
         <div className="flex items-center gap-6">
-          <Link to={`/hire/${row.original.id}`} className="center">
+          <Link to={`/rent/${row.original.id}`} className="center">
             <Button variant="ghost" className="p-0">
               <FiEye className="text-xl" />
             </Button>
           </Link>
           {rowFilter === 'inProgress' && (
-            <Button variant="ghost" className="p-0" onClick={() => handleSetHireRetirement(true)}>
+            <Button variant="ghost" className="p-0" onClick={() => handleSetRentRetirement(true)}>
               <FaTrashAlt className="text-xl text-red-800 dark:text-red-500/70 -translate-y-[1px]" />
             </Button>
           )}
           {rowFilter === 'terminated' && (
-            <Button variant="ghost" className="p-0" onClick={() => handleSetHireRetirement(false)}>
+            <Button variant="ghost" className="p-0" onClick={() => handleSetRentRetirement(false)}>
               <PiArrowUDownLeftBold className="text-xl text-primary-dark dark:text-achromatic-lighter" />
             </Button>
           )}
@@ -147,11 +158,11 @@ export const tableColumns: ColumnDef<Hire>[] = [
 ];
 
 // another ColumnDef for the grid layout
-export const gridColumns: ColumnDef<Hire>[] = [
+export const gridColumns: ColumnDef<Rent>[] = [
   {
-    id: 'Hire Agreement ID',
+    id: 'Rent Agreement ID',
     accessorKey: 'id',
-    header: 'Hire Agreement ID',
+    header: 'Rent Agreement ID',
   },
   {
     id: 'Driver Name',
@@ -219,10 +230,10 @@ export const gridColumns: ColumnDef<Hire>[] = [
     id: 'Options Top',
     cell: function ActionsCell({ row }) {
       const table = useReactTableContext();
-      const rowFilter = table.options.meta?.rowFilter as HiresRowFilterState | undefined;
-      // const { mutateAsync: update } = useUpdateHireDetails();
+      const rowFilter = table.options.meta?.rowFilter as RentsRowFilterState | undefined;
+      // const { mutateAsync: update } = useUpdateRentDetails();
 
-      const handleSetHireRetirement = (is_retired: boolean) => {
+      const handleSetRentRetirement = (is_retired: boolean) => {
         // await update({ id: row.original.id, is_retired });
         table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
       };
@@ -240,13 +251,13 @@ export const gridColumns: ColumnDef<Hire>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem className="hover:!opacity-100">
               {rowFilter === 'inProgress' && (
-                <Button variant="ghost" className="p-0 gap-2" onClick={() => handleSetHireRetirement(true)}>
+                <Button variant="ghost" className="p-0 gap-2" onClick={() => handleSetRentRetirement(true)}>
                   <FaTrashAlt className="text-red-600 dark:text-red-500/70" />
                   <p className="translate-y-[1px]">Retire</p>
                 </Button>
               )}
               {rowFilter === 'terminated' && (
-                <Button variant="ghost" className="p-0 gap-2" onClick={() => handleSetHireRetirement(false)}>
+                <Button variant="ghost" className="p-0 gap-2" onClick={() => handleSetRentRetirement(false)}>
                   <PiArrowUDownLeftBold className="text-primary-dark dark:text-achromatic-lighter" />
                   <p>Recover</p>
                 </Button>
@@ -263,7 +274,7 @@ export const gridColumns: ColumnDef<Hire>[] = [
   {
     id: 'Options Bottom',
     cell: ({ row }) => (
-      <Link to={`/hire/${row.original.id}`} className="w-full">
+      <Link to={`/rent/${row.original.id}`} className="w-full">
         <Button className="w-full">Open</Button>
       </Link>
     ),
@@ -274,7 +285,7 @@ export const gridColumns: ColumnDef<Hire>[] = [
 ];
 
 export const mapper: DataViewCardMainDataMapper = {
-  title: 'Hire Agreement ID',
+  title: 'Rent Agreement ID',
   optionsTop: 'Options Top',
   optionsBottom: 'Options Bottom',
 } as const;

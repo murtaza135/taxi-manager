@@ -11,7 +11,7 @@ import { RentRowFilterState } from '@/features/rent/general/types';
 
 const fetchSize = 50;
 
-type SupabaseRent = Prettify<
+export type Rent = Prettify<
   Partial<NonNullableObject<
     Pick<
       Tables<'rent_view'>,
@@ -28,11 +28,11 @@ type SupabaseRent = Prettify<
   >
 >;
 
-type Rent = Prettify<
-  Omit<SupabaseRent, 'amount'> & {
-    amount: string,
-  }
->;
+// export type Rent = Prettify<
+//   Omit<SupabaseRent, 'amount'> & {
+//     amount: string,
+//   }
+// >;
 
 type RentResult = {
   data: Rent[];
