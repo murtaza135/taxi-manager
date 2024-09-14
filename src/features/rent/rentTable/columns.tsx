@@ -71,7 +71,7 @@ export const tableColumns: ColumnDef<Rent>[] = [
     header: 'Taxi',
     cell: ({ row }) => (
       <LinkCell to={`/taxi/${row.original.taxi_id}`} className="uppercase">
-        {row.original.number_plate}{row.original.phc_number ? `(${row.original.phc_number})` : ''}
+        {row.original.number_plate}{row.original.phc_number ? ` (${row.original.phc_number})` : ''}
       </LinkCell>
     ),
   },
@@ -101,7 +101,7 @@ export const tableColumns: ColumnDef<Rent>[] = [
     header: 'Paid?',
     cell: ({ row }) => (
       <div>
-        {row.original.is_paid}
+        {`${row.original.is_paid}`}
       </div>
     ),
   },
@@ -110,10 +110,10 @@ export const tableColumns: ColumnDef<Rent>[] = [
     accessorKey: 'paid_date',
     header: 'Paid Date',
     cell: ({ row }) => {
-      if (!row.original.end_date) return <NoDataCell />;
+      if (!row.original.paid_date) return <NoDataCell />;
       return (
         <CopyCell
-          text={format(new Date(row.original.paid_date ?? ''), 'dd/MM/yyyy')}
+          text={format(new Date(row.original.paid_date), 'dd/MM/yyyy')}
         />
       );
     },
@@ -192,7 +192,7 @@ export const gridColumns: ColumnDef<Rent>[] = [
     header: 'Taxi',
     cell: ({ row }) => (
       <LinkCell to={`/taxi/${row.original.taxi_id}`} className="uppercase">
-        {row.original.number_plate}{row.original.phc_number ? `(${row.original.phc_number})` : ''}
+        {row.original.number_plate}{row.original.phc_number ? ` (${row.original.phc_number})` : ''}
       </LinkCell>
     ),
   },
@@ -254,7 +254,7 @@ export const gridColumns: ColumnDef<Rent>[] = [
     accessorKey: 'paid_date',
     header: 'Paid Date',
     cell: ({ row }) => {
-      if (!row.original.end_date) return <NoDataCell />;
+      if (!row.original.paid_date) return <NoDataCell />;
       return (
         <CopyCell
           text={format(new Date(row.original.paid_date ?? ''), 'dd/MM/yyyy')}

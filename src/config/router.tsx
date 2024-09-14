@@ -23,6 +23,7 @@ const hiresPageOptions = () => import('@/routes/pages/hires');
 const homePageOptions = () => import('@/routes/pages/home');
 const loginPageOptions = () => import('@/routes/pages/login');
 const rentPageOptions = () => import('@/routes/pages/rent');
+const rentsPageOptions = () => import('@/routes/pages/rents');
 const settingsPageOptions = () => import('@/routes/pages/settings');
 const taxiPageOptions = () => import('@/routes/pages/taxi');
 const addNewTaxiPageOptions = () => import('@/routes/pages/addNewTaxi');
@@ -47,6 +48,7 @@ const hiresPageProps = createRouteOptions(hiresPageOptions, queryClient);
 const homePageProps = createRouteOptions(homePageOptions, queryClient);
 const loginPageProps = createRouteOptions(loginPageOptions, queryClient);
 const rentPageProps = createRouteOptions(rentPageOptions, queryClient);
+const rentsPageProps = createRouteOptions(rentsPageOptions, queryClient);
 const settingsPageProps = createRouteOptions(settingsPageOptions, queryClient);
 const taxiPageProps = createRouteOptions(taxiPageOptions, queryClient);
 const addNewTaxiPageProps = createRouteOptions(addNewTaxiPageOptions, queryClient);
@@ -73,7 +75,8 @@ const routes = createRoutesFromElements(
       <Route path="/hires" lazy={hiresPageProps} />
       <Route path="/hires/add" lazy={addNewHireAgreementPageProps} />
       <Route path="/home" lazy={homePageProps} />
-      <Route path="/rent" lazy={rentPageProps} />
+      <Route path="/rent/:id" lazy={rentPageProps} />
+      <Route path="/rents" lazy={rentsPageProps} />
       <Route path="/settings" lazy={settingsPageProps} />
       <Route path="/taxi/:id" lazy={taxiPageProps} />
       <Route path="/taxis" lazy={taxisPageProps} />
