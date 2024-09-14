@@ -21,6 +21,14 @@ import { Rent } from '@/features/rent/general/hooks/useRents';
 import { usePayRent } from '@/features/rent/general/hooks/usePayRent';
 import { useUnpayRent } from '@/features/rent/general/hooks/useUnpayRent';
 import { useDeleteRent } from '@/features/rent/general/hooks/useDeleteRent';
+import { cn } from '@/utils/cn';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/ui/Select';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<Rent>[] = [
@@ -99,11 +107,31 @@ export const tableColumns: ColumnDef<Rent>[] = [
     id: 'Paid?',
     accessorKey: 'is_paid',
     header: 'Paid?',
-    cell: ({ row }) => (
-      <div>
-        {`${row.original.is_paid}`}
-      </div>
-    ),
+    cell: function PaidCell({ row }) {
+      const { mutate: payRent } = usePayRent();
+      const { mutate: unpayRent } = useUnpayRent();
+      const isPaidValue = row.original.is_paid ? 'yes' : 'no';
+
+      const handleValueChange = (value: string) => {
+        if (value === 'yes') {
+          payRent(row.original.id);
+        } else {
+          unpayRent(row.original.id);
+        }
+      };
+
+      return (
+        <Select onValueChange={handleValueChange} value={isPaidValue}>
+          <SelectTrigger className={cn('py-1 px-2 rounded-full text-nowrap w-fit border-0 [&>.chevron]:hidden h-auto', row.original.is_paid ? 'bg-green-500 text-achromatic-lighter dark:bg-green-400 dark:text-achromatic-dark' : 'bg-red-500 text-achromatic-lighter dark:bg-red-500 dark:text-achromatic-lighter')}>
+            <SelectValue placeholder="Paid?" />
+          </SelectTrigger>
+          <SelectContent className="min-w-fit px-1" align="center">
+            <SelectItem value="yes" className="w-auto pl-2 my-1 *:text-center rounded-full [&>.check-wrapper]:hidden focus:opacity-60 transition-opacity bg-green-600 text-achromatic-lighter focus:bg-green-500 dark:bg-green-400 dark:text-achromatic-dark dark:focus:bg-green-400">Yes</SelectItem>
+            <SelectItem value="no" className="w-auto pl-2 my-1 mt-2 *:text-center rounded-full [&>.check-wrapper]:hidden focus:opacity-50 transition-opacity bg-red-500 text-achromatic-lighter focus:bg-red-500 dark:bg-red-500 focus:!text-achromatic-lighter dark:text-achromatic-lighter dark:focus:bg-red-500">No</SelectItem>
+          </SelectContent>
+        </Select>
+      );
+    },
   },
   {
     id: 'Paid Date',
@@ -172,11 +200,6 @@ export const tableColumns: ColumnDef<Rent>[] = [
 // another ColumnDef for the grid layout
 export const gridColumns: ColumnDef<Rent>[] = [
   {
-    id: 'Rent ID',
-    accessorKey: 'id',
-    header: 'Rent ID',
-  },
-  {
     id: 'Hire ID',
     accessorKey: 'hire_id',
     header: 'Hire ID',
@@ -243,11 +266,31 @@ export const gridColumns: ColumnDef<Rent>[] = [
     id: 'Paid?',
     accessorKey: 'is_paid',
     header: 'Paid?',
-    cell: ({ row }) => (
-      <div>
-        {row.original.is_paid}
-      </div>
-    ),
+    cell: function PaidCell({ row }) {
+      const { mutate: payRent } = usePayRent();
+      const { mutate: unpayRent } = useUnpayRent();
+      const isPaidValue = row.original.is_paid ? 'yes' : 'no';
+
+      const handleValueChange = (value: string) => {
+        if (value === 'yes') {
+          payRent(row.original.id);
+        } else {
+          unpayRent(row.original.id);
+        }
+      };
+
+      return (
+        <Select onValueChange={handleValueChange} value={isPaidValue}>
+          <SelectTrigger className={cn('py-1 px-2 rounded-full text-nowrap w-fit border-0 [&>.chevron]:hidden h-auto my-1', row.original.is_paid ? 'bg-green-500 text-achromatic-lighter dark:bg-green-400 dark:text-achromatic-dark' : 'bg-red-500 text-achromatic-lighter dark:bg-red-500 dark:text-achromatic-lighter')}>
+            <SelectValue placeholder="Paid?" />
+          </SelectTrigger>
+          <SelectContent className="min-w-fit px-1" align="center">
+            <SelectItem value="yes" className="w-auto pl-2 my-1 *:text-center rounded-full [&>.check-wrapper]:hidden focus:opacity-60 transition-opacity bg-green-600 text-achromatic-lighter focus:bg-green-500 dark:bg-green-400 dark:text-achromatic-dark dark:focus:bg-green-400">Yes</SelectItem>
+            <SelectItem value="no" className="w-auto pl-2 my-1 mt-2 *:text-center rounded-full [&>.check-wrapper]:hidden focus:opacity-50 transition-opacity bg-red-500 text-achromatic-lighter focus:bg-red-500 dark:bg-red-500 focus:!text-achromatic-lighter dark:text-achromatic-lighter dark:focus:bg-red-500">No</SelectItem>
+          </SelectContent>
+        </Select>
+      );
+    },
   },
   {
     id: 'Paid Date',
@@ -334,7 +377,6 @@ export const gridColumns: ColumnDef<Rent>[] = [
 ];
 
 export const mapper: DataViewCardMainDataMapper = {
-  title: 'Rent ID',
   optionsTop: 'Options Top',
   optionsBottom: 'Options Bottom',
 } as const;

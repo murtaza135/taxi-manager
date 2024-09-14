@@ -204,7 +204,7 @@ function DataViewCard(
         )}
       </div>
 
-      <div className={cn('px-6 pt-4 space-y-10', optionsBottomElement ? 'pb-4' : 'pb-8')}>
+      <div className={cn('px-6 pt-4', optionsBottomElement ? 'pb-4' : 'pb-8', (avatarElement || titleElement || subtitleElement ? 'space-y-10' : 'space-y-5 -translate-y-1'))}>
         <div className="text-center">
           {titleElement && (
             <p className="text-2xl font-semibold">{titleElement}</p>
@@ -227,7 +227,7 @@ function DataViewCard(
                   <div className="text-xs font-semibold text-achromatic-dark/60 dark:text-achromatic-lighter/50">
                     {flexRenderHeader(headerRow[cellA.column.id])}
                   </div>
-                  <div className="text-ellipsis overflow-hidden">
+                  <div className="text-ellipsis overflow-hidden center">
                     {flexRenderCell(cellA)}
                   </div>
                 </div>
@@ -237,7 +237,7 @@ function DataViewCard(
                     <div className="text-xs font-semibold text-achromatic-dark/50 dark:text-achromatic-lighter/50">
                       {flexRenderHeader(headerRow[cellB.column.id])}
                     </div>
-                    <div className="text-ellipsis overflow-hidden">
+                    <div className="text-ellipsis overflow-hidden center">
                       {flexRenderCell(cellB)}
                     </div>
                   </div>

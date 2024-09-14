@@ -55,7 +55,7 @@ export function SideNav() {
 
             <div className={cn('bg-achromatic-lighter dark:bg-achromatic-dark rounded-lg pt-12 sm:py-8 flex flex-col gap-4 flex-1', breakpoint && 'shadow')}>
               <NavLink to="/home" icon={<TiHome />} active={pathname === '/home'} text="Home" />
-              <NavLink to="/rents" icon={<RiMoneyPoundCircleFill />} active={pathname === '/rent'} text="Rent" />
+              <NavLink to="/rents" icon={<RiMoneyPoundCircleFill />} active={pathname.startsWith('/rent')} text="Rent" />
               <NavLink to="/hires" icon={<LiaFileContractSolid />} active={pathname.startsWith('/hire')} text="Hires" />
               <NavLink to="/taxis" icon={<FaCarSide />} active={pathname.startsWith('/taxi')} text="Taxis" />
               <NavLink to="/drivers" icon={<BsPersonCircle />} active={pathname.startsWith('/driver') && !pathname.startsWith('/drivers/application')} text="Drivers" />
