@@ -1,1 +1,1 @@
-export type RentRowFilterState = 'notPaid' | 'paid';
+export type RentRowFilterState = 'all' | 'notPaid' | 'paid';
