@@ -1,23 +1,32 @@
-import { QueryClient } from '@tanstack/react-query';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
+import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
+import { APIError } from '@/errors/classes/APIError';
+import { rentQueryOptions } from '@/features/rent/general/hooks/useRent';
+import { ErrorUI } from '@/errors/components/ErrorUI';
+import { RentSwiper } from '@/features/rent/rentSwiper/RentSwiper';
 
-const rentPageLoader = (_queryClient: QueryClient) => () => null;
+const rentPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
+  const id = Number(params.id);
+  if (Number.isNaN(id)) throw new APIError({ title: 'Not Found', status: 404 });
+  void queryClient.ensureQueryData(rentQueryOptions(id));
+  return null;
+};
 
 function RentPageSuspenseBoundary() {
-  useDocumentTitle('Rent');
+  useDocumentTitle('');
   return <div>RentPageSuspenseBoundary</div>;
 }
 
 function RentPageErrorBoundary() {
-  useDocumentTitle('Rent');
-  return <div>RentPageErrorBoundary</div>;
+  useDocumentTitle('');
+  return <ErrorUI />;
 }
 
 function RentPageComponent() {
   useDocumentTitle('Rent');
 
   return (
-    <div>RentPageComponent</div>
+    <RentSwiper />
   );
 }
 
