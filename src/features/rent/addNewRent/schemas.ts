@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { isBefore, isValid } from 'date-fns';
 import isCurrency from 'validator/es/lib/isCurrency';
-import { mapValues } from 'lodash';
+import mapValues from 'lodash/mapValues';
 import { MergeOverwrite } from '@/types/utils';
 
 export const addNewRentHireSchema = z.object({
