@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
 import { Separator } from '@/ui/Separator';
 import { Card, CardTitle } from '@/ui/Card';
 import { RentHireSection } from '@/features/rent/rentHireSection/RentHireSection';
+import { DelayedSpinner } from '@/ui/Spinner';
 
 export function RentHireSwiperItem() {
   return (
@@ -8,7 +10,9 @@ export function RentHireSwiperItem() {
       <CardTitle className="text-start text-base pb-4">Hire Agreement</CardTitle>
       <div>
         <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
-        <RentHireSection />
+        <Suspense fallback={<DelayedSpinner />}>
+          <RentHireSection />
+        </Suspense>
       </div>
     </Card>
   );
