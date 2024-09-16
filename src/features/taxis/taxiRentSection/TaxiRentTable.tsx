@@ -7,12 +7,12 @@ import { useRents } from '@/features/rent/general/hooks/useRents';
 import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 import { useDriverRentsColumnVisibility } from '@/features/drivers/driverRentSection/useDriverRentsColumnVisibility';
 
-export function DriverRentTable() {
+export function TaxiRentTable() {
   const params = useParams();
-  const driver_id = Number(params.id);
+  const taxi_id = Number(params.id);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [columnVisibility, setColumnVisibility] = useDriverRentsColumnVisibility();
-  const { data, fetchNextPage, isFetchingNextPage } = useRents({ driver_id });
+  const { data, fetchNextPage, isFetchingNextPage } = useRents({ taxi_id });
 
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.data) ?? [],
