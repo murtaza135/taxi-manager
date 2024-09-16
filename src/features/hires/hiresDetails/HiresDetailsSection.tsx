@@ -28,21 +28,21 @@ export function HiresDetailsSection() {
 
   const files: FileConfig[] = useMemo(() => [
     {
-      key: 'permissionLetter',
+      key: 'permission_letter_document',
       title: 'Permission Letter',
       file: data.permission_letter_document_src ?? undefined,
       fileType: data.permission_letter_document_file_type,
       accept: 'image/*,pdf',
     },
     {
-      key: 'contract',
+      key: 'contract_document',
       title: 'Contract',
       file: data.contract_document_src ?? undefined,
       fileType: data.contract_document_file_type,
       accept: 'image/*,pdf',
     },
     {
-      key: 'depositReceipt',
+      key: 'deposit_receipt_document',
       title: 'Deposit Receipt',
       file: data.deposit_receipt_document_src ?? undefined,
       fileType: data.deposit_receipt_document_file_type,
