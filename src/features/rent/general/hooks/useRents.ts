@@ -28,12 +28,6 @@ export type Rent = Prettify<
   >
 >;
 
-// export type Rent = Prettify<
-//   Omit<SupabaseRent, 'amount'> & {
-//     amount: string,
-//   }
-// >;
-
 type RentResult = {
   data: Rent[];
   count: number;

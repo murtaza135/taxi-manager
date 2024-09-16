@@ -69,7 +69,7 @@ export const tableColumns: ColumnDef<Rent>[] = [
     header: 'Hire ID',
     cell: ({ row }) => (
       <LinkCell to={`/hire/${row.original.hire_id}`}>
-        {row.original.id}
+        {row.original.hire_id}
       </LinkCell>
     ),
   },
@@ -205,7 +205,7 @@ export const gridColumns: ColumnDef<Rent>[] = [
     header: 'Hire ID',
     cell: ({ row }) => (
       <LinkCell to={`/hire/${row.original.hire_id}`}>
-        {row.original.id}
+        {row.original.hire_id}
       </LinkCell>
     ),
   },

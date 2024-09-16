@@ -8,8 +8,6 @@ import { ReadOnlyInput } from '@/ui/form/Input';
 import { useToast } from '@/ui/toast';
 import { useAddNewHireAgreement } from '@/features/hires/general/hooks/useAddNewHireAgreement';
 
-// const addNewTaxi = (arg1: unknown, arg2: unknown) => { };
-
 export function AddNewHireAgreementFormConfirmation() {
   const { toast } = useToast();
   const navigate = useNavigate();

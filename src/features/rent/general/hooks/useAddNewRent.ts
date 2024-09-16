@@ -5,7 +5,12 @@ import { SupabaseError } from '@/errors/classes/SupabaseError';
 import { supabase } from '@/config/api/supabaseClient';
 import { AddNewRentTransformedSchema } from '@/features/rent/addNewRent/schemas';
 
-export async function addNewRent(formData: AddNewRentTransformedSchema) {
+export type AddNewRentFormData = Pick<
+  AddNewRentTransformedSchema,
+  'hire_id' | 'amount' | 'start_date' | 'end_date'
+>;
+
+export async function addNewRent(formData: AddNewRentFormData) {
   const { data, error, status } = await supabase
     .from('rent')
     .insert(formData)
@@ -25,7 +30,7 @@ export function useAddNewRent() {
   const { revalidate } = useRevalidator();
   const { toast } = useToast();
 
-  const mutation = useMutation<number, SupabaseError, AddNewRentTransformedSchema>({
+  const mutation = useMutation<number, SupabaseError, AddNewRentFormData>({
     mutationFn: addNewRent,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['rents', 'list'] });

@@ -12,6 +12,9 @@ import { AddNewRentSchema } from '@/features/rent/addNewRent/schemas';
 
 const initialFormState: AddNewRentSchema = {
   hire_id: -1,
+  driver_name: '',
+  taxi_number_plate: '',
+  taxi_licence_phc_number: '',
   amount: '',
   start_date: '',
   end_date: '',

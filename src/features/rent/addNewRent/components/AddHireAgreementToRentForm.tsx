@@ -129,6 +129,9 @@ export function AddHireAgreementToRentForm() {
     setOpen(false);
     const selected = flatData.find((hire) => hire.id === id) ?? null;
     form.setValue('hire_id', id);
+    form.setValue('driver_name', selected?.driver_name ?? '');
+    form.setValue('taxi_number_plate', selected?.taxi_number_plate ?? '');
+    form.setValue('taxi_licence_phc_number', selected?.taxi_licence_phc_number ?? '');
     setSelectedHire(selected);
   };
 
@@ -300,9 +303,9 @@ export function AddHireAgreementToRentForm() {
               ]}
               className="py-2 [&_.other-file-display]:border-primary-dark [&_.other-file-display]:dark:border-primary-light [&_.file-error-display]:border-primary-dark [&_.file-error-display]:dark:border-primary-light"
             />
-            <ReadOnlyInput title="Number Plate" value={selectedHire.taxi_number_plate} className="capitalize " />
-            <ReadOnlyInput title="PH Number" value={selectedHire.taxi_licence_phc_number ?? ''} />
-            <ReadOnlyInput title="Driver" value={selectedHire.driver_name} />
+            <ReadOnlyInput title="Number Plate" value={selectedHire.taxi_number_plate} className="uppercase" />
+            <ReadOnlyInput title="PH Number" value={selectedHire.taxi_licence_phc_number ?? ''} className="uppercase" />
+            <ReadOnlyInput title="Driver" value={selectedHire.driver_name} className="capitalize" />
             <ReadOnlyInput title="Weekly Rent" value={`£${selectedHire.rent_amount}`} />
           </FormSection>
         )}

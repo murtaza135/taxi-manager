@@ -8,6 +8,23 @@ export const addNewRentHireSchema = z.object({
   hire_id: z
     .number({ required_error: 'Hire required' })
     .positive('Hire required'),
+  taxi_number_plate: z
+    .string({ required_error: 'Number plate required' })
+    .trim()
+    .toUpperCase()
+    .min(1, 'Number plate required')
+    .transform((val) => val.replace(/\s/g, '')),
+  taxi_licence_phc_number: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .min(1, 'PHC number required')
+    .optional()
+    .or(z.literal('')),
+  driver_name: z
+    .string({ required_error: 'Driver name required' })
+    .trim()
+    .min(1, 'Driver name required'),
 });
 
 export const addNewRentDetailsSchema = z.object({
