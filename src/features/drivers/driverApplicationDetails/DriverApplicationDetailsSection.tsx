@@ -7,7 +7,7 @@ import { useDriverApplication } from '@/features/drivers/general/hooks/useDriver
 import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 import { EditableInput } from '@/ui/form/Input';
 import { toDateInputString } from '@/utils/date/toDateInputString';
-import { PhoneNumberCell, EmailCell, CopyCell } from '@/ui/dataview/Cell';
+import { PhoneNumberCell, EmailCell } from '@/ui/dataview/Cell';
 import { FileListViewer, FileConfig } from '@/ui/files/FileListViewer';
 import { Button } from '@/ui/Button';
 import { useToast } from '@/ui/toast';
