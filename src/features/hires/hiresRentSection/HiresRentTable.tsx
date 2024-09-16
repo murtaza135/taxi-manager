@@ -1,17 +1,16 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useReactTable, getCoreRowModel, RowSelectionState } from '@tanstack/react-table';
+import { useReactTable, getCoreRowModel, RowSelectionState, VisibilityState } from '@tanstack/react-table';
 import { useParams } from 'react-router-dom';
 import { DataView, DataViewTable } from '@/ui/dataview/DataView';
 import { columns } from '@/features/rent/rentTable/columns';
 import { useRents } from '@/features/rent/general/hooks/useRents';
 import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
-import { useHiresColumnVisibility } from '@/features/hires/hiresTable/hooks/useHiresColumnVisibility';
 
 export function HiresRentTable() {
   const params = useParams();
   const hire_id = Number(params.id);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-  const [columnVisibility, setColumnVisibility] = useHiresColumnVisibility();
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ 'Hire ID': false });
   const { data, fetchNextPage, isFetchingNextPage } = useRents({ hire_id });
 
   const flatData = useMemo(

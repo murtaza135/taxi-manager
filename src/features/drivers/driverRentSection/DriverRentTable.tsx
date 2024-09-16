@@ -1,17 +1,16 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useReactTable, getCoreRowModel, RowSelectionState } from '@tanstack/react-table';
+import { useReactTable, getCoreRowModel, RowSelectionState, VisibilityState } from '@tanstack/react-table';
 import { useParams } from 'react-router-dom';
 import { DataView, DataViewTable } from '@/ui/dataview/DataView';
 import { columns } from '@/features/rent/rentTable/columns';
 import { useRents } from '@/features/rent/general/hooks/useRents';
 import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
-import { useDriverRentsColumnVisibility } from '@/features/drivers/driverRentSection/useDriverRentsColumnVisibility';
 
 export function DriverRentTable() {
   const params = useParams();
   const driver_id = Number(params.id);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-  const [columnVisibility, setColumnVisibility] = useDriverRentsColumnVisibility();
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ Driver: false });
   const { data, fetchNextPage, isFetchingNextPage } = useRents({ driver_id });
 
   const flatData = useMemo(
