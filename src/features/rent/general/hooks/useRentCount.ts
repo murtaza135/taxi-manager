@@ -11,7 +11,7 @@ type NumRentObject = {
   total: number;
 };
 
-async function getNumRents(): Promise<NumRentObject> {
+async function getRentCount(): Promise<NumRentObject> {
   const session = await queryClient.ensureQueryData(sessionOptions());
   const start_date = startOfWeek(new Date(), { weekStartsOn: 1 });
   const end_date = endOfWeek(new Date(), { weekStartsOn: 1 });
@@ -32,29 +32,29 @@ async function getNumRents(): Promise<NumRentObject> {
     });
   }
 
-  const numRents = data.reduce((prev, { is_paid }) => {
+  const rentCount = data.reduce((prev, { is_paid }) => {
     if (is_paid) {
       return { ...prev, paid: prev.paid + 1, total: prev.total + 1 };
     }
     return { ...prev, unpaid: prev.unpaid + 1, total: prev.total + 1 };
   }, { unpaid: 0, paid: 0, total: 0 });
 
-  return numRents;
+  return rentCount;
 }
 
-export function numRentsQueryOptions() {
+export function rentCountQueryOptions() {
   return queryOptions<NumRentObject, SupabaseError>({
     queryKey: ['rents', 'list', 'count'],
-    queryFn: getNumRents,
+    queryFn: getRentCount,
   });
 }
 
-export function useNumRents() {
-  const query = useSuspenseQuery(numRentsQueryOptions());
+export function useRentCount() {
+  const query = useSuspenseQuery(rentCountQueryOptions());
   return query;
 }
 
-export function useNonSuspenseNumRents() {
-  const query = useQuery(numRentsQueryOptions());
+export function useNonSuspenseRentCount() {
+  const query = useQuery(rentCountQueryOptions());
   return query;
 }
