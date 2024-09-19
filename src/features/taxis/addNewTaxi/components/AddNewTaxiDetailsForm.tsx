@@ -10,6 +10,7 @@ import { Input } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { addNewTaxiDetailsSchema, AddNewTaxiDetailsSchema } from '@/features/taxis/addNewTaxi/schemas';
+import { Dropzone } from '@/ui/form/Dropzone';
 
 export function AddNewTaxiDetailsForm() {
   const {
@@ -40,6 +41,8 @@ export function AddNewTaxiDetailsForm() {
         className="w-full max-w-[32rem] space-y-4"
       >
         <FormTitle>Taxi</FormTitle>
+
+        <Dropzone onChange={(file) => { console.log(file); }} onReset={() => console.log('reset')} />
 
         <FormField
           control={form.control}

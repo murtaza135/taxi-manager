@@ -41,7 +41,7 @@ const Image = React.forwardRef<
   return (
     <ImageContext.Provider value={value}>
       <div
-        className={cn('relative', className)}
+        className={cn('relative group', className)}
         ref={ref}
         {...props}
       />
@@ -150,4 +150,24 @@ const ImageError = React.forwardRef<
 });
 ImageError.displayName = 'ImageError';
 
-export { Image, ImageView, ImageFallback, ImageLoading, ImageError };
+const ImageOptions = React.forwardRef<
+  HTMLSpanElement,
+  React.HTMLAttributes<HTMLSpanElement>
+>(({ children, className, ...props }, ref) => {
+  if (children) {
+    return (
+      <span
+        className={cn('absolute z-20 bottom-2 left-1/2 -translate-x-1/2 flex gap-4 rounded-lg px-4 py-2 bg-primary-dark dark:bg-achromatic-dark dark:border dark:border-achromatic-darker text-achromatic-lighter opacity-0 group-hover:opacity-100 transition-opacity', className)}
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </span>
+    );
+  }
+
+  return null;
+});
+ImageOptions.displayName = 'ImageOptions';
+
+export { Image, ImageView, ImageFallback, ImageLoading, ImageError, ImageOptions };
