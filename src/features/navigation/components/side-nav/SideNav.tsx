@@ -1,9 +1,9 @@
 import { FaCarSide } from 'react-icons/fa';
 import { TiHome } from 'react-icons/ti';
 import { BsPersonCircle } from 'react-icons/bs';
+import { IoDocumentText } from 'react-icons/io5';
 import { IoMdSettings } from 'react-icons/io';
 import { MdPersonAddAlt1 } from 'react-icons/md';
-import { LiaFileContractSolid } from 'react-icons/lia';
 import { RiMoneyPoundCircleFill } from 'react-icons/ri';
 import { m, AnimatePresence, PanInfo } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
@@ -56,7 +56,7 @@ export function SideNav() {
             <div className={cn('bg-achromatic-lighter dark:bg-achromatic-dark rounded-lg pt-12 sm:py-8 flex flex-col gap-4 flex-1', breakpoint && 'shadow')}>
               <NavLink to="/home" icon={<TiHome />} active={pathname === '/home'} text="Home" />
               <NavLink to="/rents" icon={<RiMoneyPoundCircleFill />} active={pathname.startsWith('/rent')} text="Rent" />
-              <NavLink to="/hires" icon={<LiaFileContractSolid />} active={pathname.startsWith('/hire')} text="Hires" />
+              <NavLink to="/hires" icon={<IoDocumentText />} active={pathname.startsWith('/hire')} text="Hires" />
               <NavLink to="/taxis" icon={<FaCarSide />} active={pathname.startsWith('/taxi')} text="Taxis" />
               <NavLink to="/drivers" icon={<BsPersonCircle />} active={pathname.startsWith('/driver') && !pathname.startsWith('/drivers/application')} text="Drivers" />
               <NavLink to="/drivers/applications" icon={<MdPersonAddAlt1 />} active={pathname.startsWith('/drivers/application')} text="Applications" className="overflow-hidden whitespace-nowrap text-ellipsis" />

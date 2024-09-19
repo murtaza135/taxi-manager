@@ -7,8 +7,8 @@ import { SupabaseError } from '@/errors/classes/SupabaseError';
 
 async function getThisWeeksPaidRentAmount(): Promise<number> {
   const session = await queryClient.ensureQueryData(sessionOptions());
-  const start_date = startOfWeek(new Date(), { weekStartsOn: 1 });
-  const end_date = endOfWeek(new Date(), { weekStartsOn: 1 });
+  const start_date = new Date(startOfWeek(new Date(), { weekStartsOn: 1 })).toDateString();
+  const end_date = new Date(endOfWeek(new Date(), { weekStartsOn: 1 })).toDateString();
 
   // TODO since supabase returns a max of 1000 rows
   // TODO this will return an incorrect answer if there are 1000+ paid rents,
@@ -18,12 +18,12 @@ async function getThisWeeksPaidRentAmount(): Promise<number> {
     .select('amount')
     .eq('auth_id', session.user.id)
     .eq('is_paid', true)
-    .eq('start_date', start_date)
-    .eq('end_date', end_date);
+    .gte('start_date', start_date)
+    .lte('end_date', end_date);
 
   if (error) {
     throw new SupabaseError(error, status, {
-      globalTitle: 'Could not load unpaid rent amount',
+      globalTitle: 'Could not load paid rent amount',
     });
   }
 

@@ -1,5 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
+import { DashboardGrid } from '@/features/dashboard/DashboardGrid';
 
 const homePageLoader = (_queryClient: QueryClient) => () => null;
 
@@ -17,7 +18,7 @@ function HomePageComponent() {
   useDocumentTitle('Home');
 
   return (
-    <div>HomePageComponent</div>
+    <DashboardGrid />
   );
 }
 

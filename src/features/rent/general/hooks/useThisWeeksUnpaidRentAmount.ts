@@ -5,24 +5,22 @@ import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { queryClient } from '@/config/api/queryClient';
 import { SupabaseError } from '@/errors/classes/SupabaseError';
 
-type NumRentObject = {
-  paid: number;
-  unpaid: number;
-  total: number;
-};
+// TODO combine with useThisWeeksPaidRentAmount.tsx
+// TODO since only difference is the line `.eq('is_paid', false/true)`
 
-async function getRentCount(): Promise<NumRentObject> {
+async function getThisWeeksUnpaidRentAmount(): Promise<number> {
   const session = await queryClient.ensureQueryData(sessionOptions());
   const start_date = new Date(startOfWeek(new Date(), { weekStartsOn: 1 })).toDateString();
   const end_date = new Date(endOfWeek(new Date(), { weekStartsOn: 1 })).toDateString();
 
   // TODO since supabase returns a max of 1000 rows
-  // TODO this will return an incorrect answer if there are 1000+ rents,
+  // TODO this will return an incorrect answer if there are 1000+ unpaid rents,
   // TODO figure out why aggregates are not working
   const { data, error, status } = await supabase
     .from('rent')
-    .select('is_paid')
+    .select('amount')
     .eq('auth_id', session.user.id)
+    .eq('is_paid', false)
     .gte('start_date', start_date)
     .lte('end_date', end_date);
 
@@ -32,29 +30,23 @@ async function getRentCount(): Promise<NumRentObject> {
     });
   }
 
-  const rentCount = data.reduce((prev, { is_paid }) => {
-    if (is_paid) {
-      return { ...prev, paid: prev.paid + 1, total: prev.total + 1 };
-    }
-    return { ...prev, unpaid: prev.unpaid + 1, total: prev.total + 1 };
-  }, { unpaid: 0, paid: 0, total: 0 });
-
-  return rentCount;
+  const unpaidAmount = data.reduce((acc, { amount }) => acc + amount, 0);
+  return unpaidAmount;
 }
 
-export function rentCountQueryOptions() {
-  return queryOptions<NumRentObject, SupabaseError>({
-    queryKey: ['rents', 'list', 'count'],
-    queryFn: getRentCount,
+export function thisWeeksUnpaidRentAmountQueryOptions() {
+  return queryOptions<number, SupabaseError>({
+    queryKey: ['rents', 'list', 'currentWeek', 'unpaid'],
+    queryFn: getThisWeeksUnpaidRentAmount,
   });
 }
 
-export function useRentCount() {
-  const query = useSuspenseQuery(rentCountQueryOptions());
+export function useThisWeeksUnpaidRentAmount() {
+  const query = useSuspenseQuery(thisWeeksUnpaidRentAmountQueryOptions());
   return query;
 }
 
-export function useNonSuspenseRentCount() {
-  const query = useQuery(rentCountQueryOptions());
+export function useNonSuspenseThisWeeksUnpaidRentAmount() {
+  const query = useQuery(thisWeeksUnpaidRentAmountQueryOptions());
   return query;
 }
