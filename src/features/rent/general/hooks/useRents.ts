@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { keepPreviousData, infiniteQueryOptions, QueryKey, useSuspenseInfiniteQuery, InfiniteData, QueryFunctionContext } from '@tanstack/react-query';
 import { Prettify, NonNullableObject } from '@/types/utils';
 import { Tables } from '@/types/database';

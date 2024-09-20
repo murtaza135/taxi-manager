@@ -14,10 +14,7 @@ const driverApplicationPageLoader: QueryLoaderFunction = (queryClient) => ({ par
 
 function DriverApplicationPageSuspenseBoundary() {
   useDocumentTitle('Driver Application');
-
-  return (
-    <Spinner />
-  );
+  return <Spinner />;
 }
 
 function DriverApplicationPageErrorBoundary() {
@@ -27,10 +24,7 @@ function DriverApplicationPageErrorBoundary() {
 
 function DriverApplicationPageComponent() {
   useDocumentTitle('Driver Application');
-
-  return (
-    <DriverApplicationAccordion />
-  );
+  return <DriverApplicationAccordion />;
 }
 
 export const loader = driverApplicationPageLoader;

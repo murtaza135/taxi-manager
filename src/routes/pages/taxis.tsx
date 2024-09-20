@@ -1,4 +1,3 @@
-import { QueryClient } from '@tanstack/react-query';
 import { useScrollLock } from 'usehooks-ts';
 import {
   DataViewContainerSkeleton,
@@ -12,8 +11,9 @@ import { TaxisTable } from '@/features/taxis/taxiTable/TaxisTable';
 import { ErrorUI } from '@/errors/components/ErrorUI';
 import { useTaxisLayout } from '@/features/taxis/taxiTable/hooks/useTaxisLayout';
 import { taxisQueryOptions } from '@/features/taxis/general/hooks/useTaxis';
+import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
 
-const taxisPageLoader = (queryClient: QueryClient) => () => {
+const taxisPageLoader: QueryLoaderFunction = (queryClient) => () => {
   void queryClient.prefetchInfiniteQuery(taxisQueryOptions());
   return null;
 };
@@ -42,10 +42,7 @@ function TaxisPageComponent() {
   useDocumentTitle('Taxis');
   useScrollToTop();
   useScrollLock();
-
-  return (
-    <TaxisTable />
-  );
+  return <TaxisTable />;
 }
 
 export const loader = taxisPageLoader;

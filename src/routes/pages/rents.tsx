@@ -1,4 +1,3 @@
-import { QueryClient } from '@tanstack/react-query';
 import { useScrollLock } from 'usehooks-ts';
 import { RentsTable } from '@/features/rent/rentTable/RentTable';
 import {
@@ -12,14 +11,15 @@ import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { ErrorUI } from '@/errors/components/ErrorUI';
 import { rentsQueryOptions } from '@/features/rent/general/hooks/useRents';
+import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
 
-const driverApplicationsPageLoader = (queryClient: QueryClient) => () => {
+const driverApplicationsPageLoader: QueryLoaderFunction = (queryClient) => () => {
   void queryClient.prefetchInfiniteQuery(rentsQueryOptions());
   return null;
 };
 
 function DriverApplicationsPageSuspenseBoundary() {
-  useDocumentTitle('Driver Applications');
+  useDocumentTitle('Rents');
   useScrollToTop();
   useScrollLock();
   const [layout] = useRentsLayout();
@@ -34,18 +34,15 @@ function DriverApplicationsPageSuspenseBoundary() {
 }
 
 function DriverApplicationsPageErrorBoundary() {
-  useDocumentTitle('Driver Applications');
+  useDocumentTitle('Rents');
   return <ErrorUI />;
 }
 
 function DriverApplicationsPageComponent() {
-  useDocumentTitle('Driver Applications');
+  useDocumentTitle('Rents');
   useScrollToTop();
   useScrollLock();
-
-  return (
-    <RentsTable />
-  );
+  return <RentsTable />;
 }
 
 export const loader = driverApplicationsPageLoader;

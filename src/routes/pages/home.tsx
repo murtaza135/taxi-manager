@@ -32,10 +32,7 @@ function HomePageErrorBoundary() {
 
 function HomePageComponent() {
   useDocumentTitle('Home');
-
-  return (
-    <DashboardGrid />
-  );
+  return <DashboardGrid />;
 }
 
 export const loader = homePageLoader;

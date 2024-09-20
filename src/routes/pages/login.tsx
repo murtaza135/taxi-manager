@@ -8,6 +8,7 @@ const loginPageLoader: QueryLoaderFunction = () => () => null;
 
 function LoginPageSuspenseBoundary() {
   useDocumentTitle('Login');
+
   return (
     <div className="min-h-[calc(100dvh-12rem)] center">
       <Spinner />
@@ -17,6 +18,7 @@ function LoginPageSuspenseBoundary() {
 
 function LoginPageErrorBoundary() {
   useDocumentTitle('Login');
+
   return (
     <div className="min-h-[calc(100dvh-4rem)] center">
       <ErrorUI />

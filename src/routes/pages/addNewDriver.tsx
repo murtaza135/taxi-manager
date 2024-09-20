@@ -3,10 +3,7 @@ import { AddNewDriverMultiStepForm } from '@/features/drivers/addNewDriver/compo
 
 function AddNewDriverPageComponent() {
   useDocumentTitle('Add New Driver');
-
-  return (
-    <AddNewDriverMultiStepForm />
-  );
+  return <AddNewDriverMultiStepForm />;
 }
 
 export const Component = AddNewDriverPageComponent;

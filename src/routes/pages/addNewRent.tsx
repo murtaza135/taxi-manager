@@ -14,10 +14,7 @@ const addNewDriverApplicationPageLoader: QueryLoaderFunction = (queryClient) => 
 
 function AddNewDriverApplicationPageSuspenseBoundary() {
   useDocumentTitle('Add New Rent');
-
-  return (
-    <Spinner />
-  );
+  return <Spinner />;
 }
 
 function AddNewDriverApplicationPageErrorBoundary() {
@@ -27,10 +24,7 @@ function AddNewDriverApplicationPageErrorBoundary() {
 
 function AddNewDriverApplicationPageComponent() {
   useDocumentTitle('Add New Rent');
-
-  return (
-    <AddNewRentMultiStepForm />
-  );
+  return <AddNewRentMultiStepForm />;
 }
 
 export const loader = addNewDriverApplicationPageLoader;

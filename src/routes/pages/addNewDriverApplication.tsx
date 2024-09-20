@@ -23,10 +23,7 @@ function AddNewDriverApplicationPageErrorBoundary() {
 
 function AddNewDriverApplicationPageComponent() {
   useDocumentTitle('Create Application for Driver');
-
-  return (
-    <AddNewDriverApplicationForm />
-  );
+  return <AddNewDriverApplicationForm />;
 }
 
 export const loader = addNewDriverApplicationPageLoader;

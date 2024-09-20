@@ -3,10 +3,7 @@ import { AddNewHireMultiStepForm } from '@/features/hires/addNewHire/components/
 
 function AddNewHireAgreementPageComponent() {
   useDocumentTitle('Add New Hire Agreement');
-
-  return (
-    <AddNewHireMultiStepForm />
-  );
+  return <AddNewHireMultiStepForm />;
 }
 
 export const Component = AddNewHireAgreementPageComponent;

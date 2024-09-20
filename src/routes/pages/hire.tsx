@@ -25,10 +25,7 @@ function HirePageErrorBoundary() {
 
 function HirePageComponent() {
   useDocumentTitle('Hire');
-
-  return (
-    <HiresSwiper />
-  );
+  return <HiresSwiper />;
 }
 
 export const loader = hirePageLoader;

@@ -42,10 +42,7 @@ function HiresPageComponent() {
   useDocumentTitle('Hires');
   useScrollToTop();
   useScrollLock();
-
-  return (
-    <HiresTable />
-  );
+  return <HiresTable />;
 }
 
 export const loader = hiresPageLoader;

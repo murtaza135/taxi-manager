@@ -1,4 +1,3 @@
-import { QueryClient } from '@tanstack/react-query';
 import { useScrollLock } from 'usehooks-ts';
 import { DriversTable } from '@/features/drivers/driverTable/DriversTable';
 import {
@@ -12,8 +11,9 @@ import { driversQueryOptions } from '@/features/drivers/general/hooks/useDrivers
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { ErrorUI } from '@/errors/components/ErrorUI';
+import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
 
-const driversPageLoader = (queryClient: QueryClient) => () => {
+const driversPageLoader: QueryLoaderFunction = (queryClient) => () => {
   void queryClient.prefetchInfiniteQuery(driversQueryOptions());
   return null;
 };
@@ -42,10 +42,7 @@ function DriversPageComponent() {
   useDocumentTitle('Drivers');
   useScrollToTop();
   useScrollLock();
-
-  return (
-    <DriversTable />
-  );
+  return <DriversTable />;
 }
 
 export const loader = driversPageLoader;

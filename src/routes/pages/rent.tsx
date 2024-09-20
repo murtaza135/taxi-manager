@@ -4,6 +4,7 @@ import { APIError } from '@/errors/classes/APIError';
 import { rentQueryOptions } from '@/features/rent/general/hooks/useRent';
 import { ErrorUI } from '@/errors/components/ErrorUI';
 import { RentSwiper } from '@/features/rent/rentSwiper/RentSwiper';
+import { Spinner } from '@/ui/Spinner';
 
 const rentPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
   const id = Number(params.id);
@@ -13,21 +14,18 @@ const rentPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
 };
 
 function RentPageSuspenseBoundary() {
-  useDocumentTitle('');
-  return <div>RentPageSuspenseBoundary</div>;
+  useDocumentTitle('Rent');
+  return <Spinner />;
 }
 
 function RentPageErrorBoundary() {
-  useDocumentTitle('');
+  useDocumentTitle('Rent');
   return <ErrorUI />;
 }
 
 function RentPageComponent() {
   useDocumentTitle('Rent');
-
-  return (
-    <RentSwiper />
-  );
+  return <RentSwiper />;
 }
 
 export const loader = rentPageLoader;

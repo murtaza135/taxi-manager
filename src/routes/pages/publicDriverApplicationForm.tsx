@@ -17,6 +17,7 @@ const publicDriverApplicationFormPageLoader: QueryLoaderFunction = (queryClient)
 
 function PublicDriverApplicationFormPageSuspenseBoundary() {
   useDocumentTitle('Apply for Taxi Vehicle');
+
   return (
     <div className="min-h-[calc(100dvh-12rem)] w-full center">
       <Spinner />
@@ -26,6 +27,7 @@ function PublicDriverApplicationFormPageSuspenseBoundary() {
 
 function PublicDriverApplicationFormPageErrorBoundary() {
   useDocumentTitle('Apply for Taxi Vehicle');
+
   return (
     <div className="min-h-[calc(100dvh-4rem)] w-full center">
       <ErrorUI />

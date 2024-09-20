@@ -3,10 +3,7 @@ import { AddNewTaxiMultiStepForm } from '@/features/taxis/addNewTaxi/components/
 
 function AddNewTaxiPageComponent() {
   useDocumentTitle('Add New Taxi');
-
-  return (
-    <AddNewTaxiMultiStepForm />
-  );
+  return <AddNewTaxiMultiStepForm />;
 }
 
 export const Component = AddNewTaxiPageComponent;

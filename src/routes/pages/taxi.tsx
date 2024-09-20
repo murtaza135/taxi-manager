@@ -4,6 +4,7 @@ import { APIError } from '@/errors/classes/APIError';
 import { taxiDetailsQueryOptions } from '@/features/taxis/general/hooks/useTaxiDetails';
 import { ErrorUI } from '@/errors/components/ErrorUI';
 import { TaxiSwiper } from '@/features/taxis/taxiSwiper/TaxiSwiper';
+import { Spinner } from '@/ui/Spinner';
 
 const taxiPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
   const id = Number(params.id);
@@ -13,24 +14,18 @@ const taxiPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
 };
 
 function TaxiPageSuspenseBoundary() {
-  useDocumentTitle('');
-
-  return (
-    <div>TaxiPageSuspenseBoundary</div>
-  );
+  useDocumentTitle('Taxi');
+  return <Spinner />;
 }
 
 function TaxiPageErrorBoundary() {
-  useDocumentTitle('');
+  useDocumentTitle('Taxi');
   return <ErrorUI />;
 }
 
 function TaxiPageComponent() {
   useDocumentTitle('Taxi');
-
-  return (
-    <TaxiSwiper />
-  );
+  return <TaxiSwiper />;
 }
 
 export const loader = taxiPageLoader;
