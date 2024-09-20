@@ -4,6 +4,7 @@ import { hireAgreementDetailsQueryOptions } from '@/features/hires/general/hooks
 import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
 import { APIError } from '@/errors/classes/APIError';
 import { ErrorUI } from '@/errors/components/ErrorUI';
+import { Spinner } from '@/ui/Spinner';
 
 const hirePageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
   const id = Number(params.id);
@@ -13,12 +14,12 @@ const hirePageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
 };
 
 function HirePageSuspenseBoundary() {
-  useDocumentTitle('');
-  return <div>HirePageSuspenseBoundary</div>;
+  useDocumentTitle('Hire');
+  return <Spinner />;
 }
 
 function HirePageErrorBoundary() {
-  useDocumentTitle('');
+  useDocumentTitle('Hire');
   return <ErrorUI />;
 }
 

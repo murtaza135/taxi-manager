@@ -5,6 +5,7 @@ import { APIError } from '@/errors/classes/APIError';
 import { ErrorUI } from '@/errors/components/ErrorUI';
 import { PublicDriverApplicationMultiStepForm } from '@/features/drivers/publicDriverApplicationForm/components/PublicDriverApplicationMultiStepForm';
 import { driverApplicationQueryOptions } from '@/features/drivers/general/hooks/useDriverApplication';
+import { Spinner } from '@/ui/Spinner';
 
 // eslint-disable-next-line max-len
 const publicDriverApplicationFormPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
@@ -16,14 +17,15 @@ const publicDriverApplicationFormPageLoader: QueryLoaderFunction = (queryClient)
 
 function PublicDriverApplicationFormPageSuspenseBoundary() {
   useDocumentTitle('Apply for Taxi Vehicle');
-
   return (
-    <div>PublicDriverApplicationFormPageSuspenseBoundary</div>
+    <div className="min-h-[calc(100dvh-12rem)] w-full center">
+      <Spinner />
+    </div>
   );
 }
 
 function PublicDriverApplicationFormPageErrorBoundary() {
-  useDocumentTitle('Apply for Taxi Vehicle | Error');
+  useDocumentTitle('Apply for Taxi Vehicle');
   return (
     <div className="min-h-[calc(100dvh-4rem)] w-full center">
       <ErrorUI />
