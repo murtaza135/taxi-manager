@@ -190,16 +190,17 @@ type DropzoneProps = Omit<
   DropzoneOptions,
   'maxFiles' | 'multiple' | 'noClick' | 'onDrop' | 'onDropAccepted' | 'onDropRejected'
 > & {
+  defaultValue?: File;
   onChange?: OnChange;
   onReset?: () => void;
 };
 
-export function Dropzone({ onChange, onReset, ...rest }: DropzoneProps) {
+export function Dropzone({ defaultValue, onChange, onReset, ...rest }: DropzoneProps) {
   const inputId = useId();
 
   // this is dumb, but react-dropzone does not let me manually change files
   // so I have store separate state for files
-  const [file, setFile] = useState<File | undefined>();
+  const [file, setFile] = useState<File | undefined>(defaultValue);
 
   const handleDrop = useCallback<OnDrop>((acceptedFiles, _fileRejections, event) => {
     const acceptedFile = acceptedFiles[0] as File | undefined;
