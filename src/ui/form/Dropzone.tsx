@@ -23,7 +23,7 @@ type DragTextProps = {
 
 function DragText({ isDragActive }: DragTextProps) {
   const text = !isDragActive
-    ? 'Drag and drop the files here'
+    ? 'Drag and drop your file here'
     : 'Drop your file here';
 
   return (
