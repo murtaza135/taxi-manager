@@ -4,6 +4,7 @@ import { isBefore, isValid } from 'date-fns';
 import isCurrency from 'validator/es/lib/isCurrency';
 import isMobilePhone from 'validator/es/lib/isMobilePhone';
 import { MergeOverwrite } from '@/types/utils';
+import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; // 5MB
 const ACCEPTED_DOCUMENT_MIME_TYPE = /image\/.+|application\/pdf/;
@@ -21,15 +22,18 @@ export const addTaxiToHireAgreementSchema = z.object({
   make: z
     .string({ required_error: 'Make required' })
     .trim()
-    .min(1, 'Make required'),
+    .min(1, 'Make required')
+    .transform((val) => capitalizeEachWord(val)),
   model: z
     .string({ required_error: 'Model required' })
     .trim()
-    .min(1, 'Model required'),
+    .min(1, 'Model required')
+    .transform((val) => capitalizeEachWord(val)),
   colour: z
     .string({ required_error: 'Colour required' })
     .trim()
-    .min(1, 'Colour required'),
+    .min(1, 'Colour required')
+    .transform((val) => capitalizeEachWord(val)),
   phc_number: z
     .string()
     .trim()
@@ -45,7 +49,8 @@ export const addDriverToHireAgreementSchema = z.object({
   name: z
     .string({ required_error: 'Driver required' })
     .trim()
-    .min(1, 'Driver required'),
+    .min(1, 'Driver required')
+    .transform((val) => capitalizeEachWord(val)),
   email: z
     .string()
     .email({ message: 'Invalid email address' })

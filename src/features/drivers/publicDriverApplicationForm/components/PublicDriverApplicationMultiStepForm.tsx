@@ -15,6 +15,7 @@ import { PublicDriverApplicationTaxiBadgeForm } from '@/features/drivers/publicD
 import { PublicDriverApplicationFormConfirmation } from '@/features/drivers/publicDriverApplicationForm/components/PublicDriverApplicationFormConfirmation';
 import { PublicDriverApplicationNullableFileListSchema } from '@/features/drivers/publicDriverApplicationForm/schemas';
 import { useDriverApplication } from '@/features/drivers/general/hooks/useDriverApplication';
+import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 
 export function PublicDriverApplicationMultiStepForm() {
   const application_id = useParams().id as string;
@@ -22,7 +23,7 @@ export function PublicDriverApplicationMultiStepForm() {
   const { name } = data;
 
   const initialFormState: PublicDriverApplicationNullableFileListSchema = useMemo(() => ({
-    name,
+    name: capitalizeEachWord(name),
     email: '',
     phone_number: '',
     national_insurance_number: '',

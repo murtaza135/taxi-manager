@@ -2,6 +2,7 @@ import { z } from 'zod';
 import mapValues from 'lodash/mapValues';
 import { isBefore, isValid } from 'date-fns';
 import { MergeOverwrite } from '@/types/utils';
+import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; // 5MB
 const ACCEPTED_IMAGE_MIME_TYPE = /image\/.+/;
@@ -17,15 +18,18 @@ export const addNewTaxiDetailsSchema = z.object({
   make: z
     .string({ required_error: 'Make required' })
     .trim()
-    .min(1, 'Make required'),
+    .min(1, 'Make required')
+    .transform((val) => capitalizeEachWord(val)),
   model: z
     .string({ required_error: 'Model required' })
     .trim()
-    .min(1, 'Model required'),
+    .min(1, 'Model required')
+    .transform((val) => capitalizeEachWord(val)),
   colour: z
     .string({ required_error: 'Colour required' })
     .trim()
-    .min(1, 'Colour required'),
+    .min(1, 'Colour required')
+    .transform((val) => capitalizeEachWord(val)),
   chassis_number: z
     .string({ required_error: 'Chassis number required' })
     .trim()
@@ -56,6 +60,7 @@ export const addNewTaxiDetailsSchema = z.object({
     .string()
     .trim()
     .min(1, 'Invalid fuel type')
+    .transform((val) => capitalizeEachWord(val))
     .optional()
     .or(z.literal('')),
   picture_path: z

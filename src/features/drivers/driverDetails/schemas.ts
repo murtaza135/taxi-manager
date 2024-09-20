@@ -3,12 +3,14 @@ import isMobilePhone from 'validator/es/lib/isMobilePhone';
 import { isValid } from 'date-fns';
 import mapValues from 'lodash/mapValues';
 import { ReplaceUndefinedWithNull } from '@/types/utils';
+import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 
 export const updateDriverDetailsSchema = z.object({
   name: z
     .string({ required_error: 'First name required' })
     .trim()
-    .min(1, 'Name required'),
+    .min(1, 'Name required')
+    .transform((val) => capitalizeEachWord(val)),
   email: z
     .string()
     .email({ message: 'Invalid email address' })

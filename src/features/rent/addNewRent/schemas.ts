@@ -3,6 +3,7 @@ import { isBefore, isValid } from 'date-fns';
 import isCurrency from 'validator/es/lib/isCurrency';
 import mapValues from 'lodash/mapValues';
 import { MergeOverwrite } from '@/types/utils';
+import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 
 export const addNewRentHireSchema = z.object({
   hire_id: z
@@ -24,7 +25,8 @@ export const addNewRentHireSchema = z.object({
   driver_name: z
     .string({ required_error: 'Driver name required' })
     .trim()
-    .min(1, 'Driver name required'),
+    .min(1, 'Driver name required')
+    .transform((val) => capitalizeEachWord(val)),
 });
 
 export const addNewRentDetailsSchema = z.object({

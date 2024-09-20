@@ -2,6 +2,7 @@ import { z } from 'zod';
 import mapValues from 'lodash/mapValues';
 import { isBefore, isValid } from 'date-fns';
 import { ReplaceUndefinedWithNull } from '@/types/utils';
+import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 
 export const updateTaxiDetailsSchema = z.object({
   number_plate: z
@@ -13,15 +14,18 @@ export const updateTaxiDetailsSchema = z.object({
   make: z
     .string({ required_error: 'Make required' })
     .trim()
-    .min(1, 'Make required'),
+    .min(1, 'Make required')
+    .transform((val) => capitalizeEachWord(val)),
   model: z
     .string({ required_error: 'Model required' })
     .trim()
-    .min(1, 'Model required'),
+    .min(1, 'Model required')
+    .transform((val) => capitalizeEachWord(val)),
   colour: z
     .string({ required_error: 'Colour required' })
     .trim()
-    .min(1, 'Colour required'),
+    .min(1, 'Colour required')
+    .transform((val) => capitalizeEachWord(val)),
   chassis_number: z
     .string({ required_error: 'Chassis number required' })
     .trim()

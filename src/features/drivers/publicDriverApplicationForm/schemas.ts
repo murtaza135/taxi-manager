@@ -4,6 +4,7 @@ import isMobilePhone from 'validator/es/lib/isMobilePhone';
 import mapValues from 'lodash/mapValues';
 import { isBefore, isValid } from 'date-fns';
 import { MergeOverwrite } from '@/types/utils';
+import { capitalizeEachWord } from '@/utils/string/capitalizeEachWord';
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; // 5MB
 const ACCEPTED_IMAGE_MIME_TYPE = /image\/.+/;
@@ -20,7 +21,8 @@ export const publicDriverApplicationDetailsSchema = z.object({
   name: z
     .string({ required_error: 'Name required' })
     .trim()
-    .min(1, 'Name required'),
+    .min(1, 'Name required')
+    .transform((val) => capitalizeEachWord(val)),
   email: z
     .string({ required_error: 'Email required' })
     .email({ message: 'Invalid email address' }),
