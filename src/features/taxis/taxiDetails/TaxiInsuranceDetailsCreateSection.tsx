@@ -13,6 +13,7 @@ import { Button } from '@/ui/Button';
 import { addNewTaxiInsuranceSchema, AddNewTaxiInsuranceSchema } from '@/features/taxis/addNewTaxi/schemas';
 import { createObjectTransformer } from '@/utils/transformer';
 import { useAttachInsuranceToTaxi } from '@/features/taxis/general/hooks/useAttachInsuranceToTaxi';
+import { Dropzone } from '@/ui/form/Dropzone';
 
 const defaultValues: AddNewTaxiInsuranceSchema = {
   policy_number: '',
@@ -32,9 +33,6 @@ export function TaxiInsuranceDetailsCreateSection() {
     schema: addNewTaxiInsuranceSchema,
     defaultValues,
   });
-
-  // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const insuranceDocumentField = form.registerFileList('insurance_document_path');
 
   const handleSubmit = form.handleSubmit((data) => {
     const transformedData = createObjectTransformer(data);
@@ -97,9 +95,14 @@ export function TaxiInsuranceDetailsCreateSection() {
             <FormField
               control={form.control}
               name="insurance_document_path"
-              render={() => (
+              render={({ field }) => (
                 <FormGroup label="Insurance Document">
-                  <Input placeholder="Insurance Document" type="file" accept="image/*,.pdf" {...insuranceDocumentField} />
+                  <Dropzone
+                    defaultValue={field.value}
+                    onChange={field.onChange}
+                    onReset={() => form.resetField(field.name)}
+                    accept="image/*,.pdf"
+                  />
                 </FormGroup>
               )}
             />

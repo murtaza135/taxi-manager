@@ -13,6 +13,7 @@ import { Button } from '@/ui/Button';
 import { addNewTaxiLicenceDetailsSchema, AddNewTaxiLicenceDetailsSchema } from '@/features/taxis/addNewTaxi/schemas';
 import { createObjectTransformer } from '@/utils/transformer';
 import { useAttachLicenceToTaxi } from '@/features/taxis/general/hooks/useAttachLicenceToTaxi';
+import { Dropzone } from '@/ui/form/Dropzone';
 
 const defaultValues: AddNewTaxiLicenceDetailsSchema = {
   compliance_certificate_licence_number: '',
@@ -33,10 +34,6 @@ export function TaxiLicenceDetailsCreateSection() {
     schema: addNewTaxiLicenceDetailsSchema,
     defaultValues,
   });
-
-  // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const complianceCertificateDocumentField = form.registerFileList('compliance_certificate_document_path');
-  const phcLicenceDocumentField = form.registerFileList('phc_licence_document_path');
 
   const handleSubmit = form.handleSubmit((data) => {
     const transformedData = createObjectTransformer(data);
@@ -109,9 +106,14 @@ export function TaxiLicenceDetailsCreateSection() {
             <FormField
               control={form.control}
               name="compliance_certificate_document_path"
-              render={() => (
+              render={({ field }) => (
                 <FormGroup label="Compliance Certificate">
-                  <Input placeholder="Compliance Certificate" type="file" accept="image/*,.pdf" {...complianceCertificateDocumentField} />
+                  <Dropzone
+                    defaultValue={field.value}
+                    onChange={field.onChange}
+                    onReset={() => form.resetField(field.name)}
+                    accept="image/*,.pdf"
+                  />
                 </FormGroup>
               )}
             />
@@ -119,9 +121,14 @@ export function TaxiLicenceDetailsCreateSection() {
             <FormField
               control={form.control}
               name="phc_licence_document_path"
-              render={() => (
+              render={({ field }) => (
                 <FormGroup label="PHC Licence (Red Letter)">
-                  <Input placeholder="PHC Licence (Red Letter)" type="file" accept="image/*,.pdf" {...phcLicenceDocumentField} />
+                  <Dropzone
+                    defaultValue={field.value}
+                    onChange={field.onChange}
+                    onReset={() => form.resetField(field.name)}
+                    accept="image/*,.pdf"
+                  />
                 </FormGroup>
               )}
             />

@@ -93,7 +93,7 @@ export function AddNewTaxiInsuranceForm() {
           control={form.control}
           name="insurance_document_path"
           render={({ field }) => (
-            <FormGroup label="Insurance Documente">
+            <FormGroup label="Insurance Document">
               <Dropzone
                 defaultValue={field.value}
                 onChange={field.onChange}
