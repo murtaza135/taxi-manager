@@ -59,6 +59,10 @@ export const publicDriverApplicationLicenceSchema = z.object({
     .instanceof(File, { message: 'Allowed file types: images or PDF' })
     .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
     .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF'),
+  licence_document2: z
+    .instanceof(File, { message: 'Allowed file types: images or PDF' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF'),
 })
   .refine(
     ({ licence_start_date, licence_end_date }) => isBefore(licence_start_date, licence_end_date),
@@ -82,6 +86,10 @@ export const publicDriverApplicationTaxiBadgeSchema = z.object({
     .string({ required_error: 'End date required' })
     .refine((val) => isValid(new Date(val)), { message: 'Invalid end date' }),
   badge_document: z
+    .instanceof(File, { message: 'Allowed file types: images or PDF' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF'),
+  badge_document2: z
     .instanceof(File, { message: 'Allowed file types: images or PDF' })
     .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
     .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF'),
@@ -123,11 +131,15 @@ export type PublicDriverApplicationSchema = z.infer<typeof publicDriverApplicati
 export type PublicDriverApplicationTransformedSchema = MergeOverwrite<PublicDriverApplicationSchema, {
   picture: File;
   licence_document: File;
+  licence_document2: File;
   badge_document: File;
+  badge_document2: File;
 }>;
 
 export type PublicDriverApplicationNullableFileListSchema = MergeOverwrite<PublicDriverApplicationSchema, {
   picture?: File | undefined;
   licence_document?: File | undefined;
+  licence_document2?: File | undefined;
   badge_document?: File | undefined;
+  badge_document2?: File | undefined;
 }>;

@@ -73,6 +73,11 @@ export const addNewTaxiDetailsSchema = z.object({
     .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
     .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
+  logbook_document2_path: z
+    .instanceof(File, { message: 'Allowed file types: images or PDF' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+    .optional(),
 });
 
 export const addNewTaxiLicenceDetailsSchema = z.object({
@@ -215,6 +220,7 @@ export type AddNewTaxiSchema = z.infer<typeof addNewTaxiSchema>;
 export type AddNewTaxiTransformedSchema = MergeOverwrite<AddNewTaxiSchema, {
   picture_path?: File | undefined;
   logbook_document_path?: File | undefined;
+  logbook_document2_path?: File | undefined;
   compliance_certificate_document_path?: File | undefined;
   phc_licence_document_path?: File | undefined;
   insurance_document_path?: File | undefined;

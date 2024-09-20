@@ -62,6 +62,11 @@ export const addNewDriversLicenceSchema = z.object({
     .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
     .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
+  licence_document2: z
+    .instanceof(File, { message: 'Allowed file types: images or PDF' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+    .optional(),
 })
   .refine(
     ({ licence_start_date, licence_end_date }) => isBefore(licence_start_date, licence_end_date),
@@ -85,6 +90,11 @@ export const addNewDriverTaxiBadgeSchema = z.object({
     .string({ required_error: 'End date required' })
     .refine((val) => isValid(new Date(val)), { message: 'Invalid end date' }),
   badge_document: z
+    .instanceof(File, { message: 'Allowed file types: images or PDF' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+    .optional(),
+  badge_document2: z
     .instanceof(File, { message: 'Allowed file types: images or PDF' })
     .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
     .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
@@ -158,5 +168,7 @@ export type AddNewDriverSchema = z.infer<typeof addNewDriverSchema>;
 export type AddNewDriverTransformedSchema = MergeOverwrite<AddNewDriverSchema, {
   picture?: File | undefined;
   licence_document?: File | undefined;
+  licence_document2?: File | undefined;
   badge_document?: File | undefined;
+  badge_document2?: File | undefined;
 }>;
