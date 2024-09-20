@@ -4,6 +4,7 @@ import { driverDetailsQueryOptions } from '@/features/drivers/general/hooks/useD
 import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
 import { APIError } from '@/errors/classes/APIError';
 import { ErrorUI } from '@/errors/components/ErrorUI';
+import { Spinner } from '@/ui/Spinner';
 
 const driverPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
   const id = Number(params.id);
@@ -13,15 +14,15 @@ const driverPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
 };
 
 function DriverPageSuspenseBoundary() {
-  useDocumentTitle('');
+  useDocumentTitle('Driver');
 
   return (
-    <div>DriverPageSuspenseBoundary</div>
+    <Spinner />
   );
 }
 
 function DriverPageErrorBoundary() {
-  useDocumentTitle('');
+  useDocumentTitle('Driver');
   return <ErrorUI />;
 }
 

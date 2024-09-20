@@ -1,26 +1,23 @@
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { AddNewDriverApplicationForm } from '@/features/drivers/addNewDriverApplication/AddNewDriverApplicationForm';
 import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
-import { APIError } from '@/errors/classes/APIError';
 import { ErrorUI } from '@/errors/components/ErrorUI';
+import { Skeleton } from '@/ui/Skeleton';
 
-const addNewDriverApplicationPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
-  // if (!params.id) throw new APIError({ title: 'Not Found', status: 404 });
-  // void queryClient.ensureQueryData(driverDetailsQueryOptions(id));
-  const temp = 1;
-  return null;
-};
+const addNewDriverApplicationPageLoader: QueryLoaderFunction = () => () => null;
 
 function AddNewDriverApplicationPageSuspenseBoundary() {
-  useDocumentTitle('');
+  useDocumentTitle('Create Application for Driver');
 
   return (
-    <div>AddNewDriverApplicationPageSuspenseBoundary</div>
+    <div className="w-full h-full flex justify-center items-start">
+      <Skeleton className="w-[32rem] h-[19.5rem]" />
+    </div>
   );
 }
 
 function AddNewDriverApplicationPageErrorBoundary() {
-  useDocumentTitle('');
+  useDocumentTitle('Create Application for Driver');
   return <ErrorUI />;
 }
 

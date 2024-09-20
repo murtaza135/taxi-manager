@@ -1,26 +1,27 @@
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { DriverApplicationAccordion } from '@/features/drivers/driverApplicationDetails/DriverApplicationAccordion';
-// import { driverDetailsQueryOptions } from '@/features/drivers/general/hooks/useDriverApplicationDetails';
 import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
 import { APIError } from '@/errors/classes/APIError';
 import { ErrorUI } from '@/errors/components/ErrorUI';
+import { driverApplicationQueryOptions } from '@/features/drivers/general/hooks/useDriverApplication';
+import { Spinner } from '@/ui/Spinner';
 
 const driverApplicationPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
   if (!params.id) throw new APIError({ title: 'Not Found', status: 404 });
-  // void queryClient.ensureQueryData(driverDetailsQueryOptions(id));
+  void queryClient.ensureQueryData(driverApplicationQueryOptions(params.id));
   return null;
 };
 
 function DriverApplicationPageSuspenseBoundary() {
-  useDocumentTitle('');
+  useDocumentTitle('Driver Application');
 
   return (
-    <div>DriverApplicationPageSuspenseBoundary</div>
+    <Spinner />
   );
 }
 
 function DriverApplicationPageErrorBoundary() {
-  useDocumentTitle('');
+  useDocumentTitle('Driver Application');
   return <ErrorUI />;
 }
 

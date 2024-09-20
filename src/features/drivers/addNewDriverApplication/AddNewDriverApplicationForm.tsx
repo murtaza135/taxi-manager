@@ -25,9 +25,11 @@ const defaultValues: CreateDriverApplicationSchema = {
 export function AddNewDriverApplicationForm() {
   const { mutateAsync: create, isPending } = useCreateDriverApplication();
   const [newApplicationId, setNewApplicationId] = useState<string>('');
+
   const link = newApplicationId
     ? urlJoin(config.env.VITE_CLIENT_URL, 'driver-application', newApplicationId)
     : '';
+
   const isCopyFieldDisbaled = !newApplicationId;
 
   const form = useZodForm({

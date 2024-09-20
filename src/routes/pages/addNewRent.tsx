@@ -4,6 +4,7 @@ import { ErrorUI } from '@/errors/components/ErrorUI';
 import { settingsQueryOptions } from '@/features/settings/hooks/useSettings';
 import { hiresQueryOptions } from '@/features/hires/general/hooks/useHires';
 import { AddNewRentMultiStepForm } from '@/features/rent/addNewRent/components/AddNewRentMultiStepForm';
+import { Spinner } from '@/ui/Spinner';
 
 const addNewDriverApplicationPageLoader: QueryLoaderFunction = (queryClient) => async () => {
   void queryClient.ensureQueryData(hiresQueryOptions());
@@ -12,20 +13,20 @@ const addNewDriverApplicationPageLoader: QueryLoaderFunction = (queryClient) => 
 };
 
 function AddNewDriverApplicationPageSuspenseBoundary() {
-  useDocumentTitle('');
+  useDocumentTitle('Add New Rent');
 
   return (
-    <div>AddNewDriverApplicationPageSuspenseBoundary</div>
+    <Spinner />
   );
 }
 
 function AddNewDriverApplicationPageErrorBoundary() {
-  useDocumentTitle('');
+  useDocumentTitle('Add New Rent');
   return <ErrorUI />;
 }
 
 function AddNewDriverApplicationPageComponent() {
-  useDocumentTitle('Create Application for Driver');
+  useDocumentTitle('Add New Rent');
 
   return (
     <AddNewRentMultiStepForm />
