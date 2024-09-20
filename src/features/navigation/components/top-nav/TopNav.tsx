@@ -1,4 +1,4 @@
-import { IoSearchOutline, IoMenu } from 'react-icons/io5';
+import { IoMenu } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { IoMdSettings } from 'react-icons/io';
 import { MdLogout } from 'react-icons/md';
@@ -29,14 +29,13 @@ export function TopNav() {
       </div>
 
       <div className="flex items-center gap-5 bg-achromatic-lighter dark:bg-achromatic-dark px-4 py-2 rounded-lg">
-        <IoSearchOutline className="text-xl cursor-pointer hover:opacity-75 transition-opacity" />
         <SimpleDarkmodeSwitch />
 
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger className="outline-none">
             <Avatar className="hover:opacity-65 transition-opacity">
               {data.logo_src && <AvatarImage src={data.logo_src} alt="user" />}
-              <AvatarFallback className="">
+              <AvatarFallback>
                 {extractInitials(data.name ?? '')}
               </AvatarFallback>
             </Avatar>
