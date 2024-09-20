@@ -7,6 +7,7 @@ import { useZodForm, FormProvider, Form, FormTitle, FormSection, FormField } fro
 import { ReadOnlyInput } from '@/ui/form/Input';
 import { useToast } from '@/ui/toast';
 import { useAddNewHireAgreement } from '@/features/hires/general/hooks/useAddNewHireAgreement';
+import { Dropzone } from '@/ui/form/Dropzone';
 
 export function AddNewHireAgreementFormConfirmation() {
   const { toast } = useToast();
@@ -24,11 +25,6 @@ export function AddNewHireAgreementFormConfirmation() {
     defaultValues: formState,
     shouldFocusError: false,
   });
-
-  // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const permissionLetterField = form.registerFileList('permission_letter_document_path');
-  const contractField = form.registerFileList('contract_document_path');
-  const depositReceiptField = form.registerFileList('deposit_receipt_document_path');
 
   const handleSubmit = form.handleSubmit(
     (data) => {
@@ -163,24 +159,51 @@ export function AddNewHireAgreementFormConfirmation() {
           <FormField
             control={form.control}
             name="permission_letter_document_path"
-            render={() => (
-              <ReadOnlyInput title="Permission Letter" type="file" accept="image/*,.pdf" {...permissionLetterField} />
+            render={({ field }) => (
+              <div>
+                <p className="font-bold">Permission Letter</p>
+                <Dropzone
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onReset={() => form.resetField(field.name)}
+                  accept="image/*,.pdf"
+                  disabled
+                />
+              </div>
             )}
           />
 
           <FormField
             control={form.control}
             name="contract_document_path"
-            render={() => (
-              <ReadOnlyInput title="Contract" type="file" accept="image/*,.pdf" {...contractField} />
+            render={({ field }) => (
+              <div>
+                <p className="font-bold">Contract</p>
+                <Dropzone
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onReset={() => form.resetField(field.name)}
+                  accept="image/*,.pdf"
+                  disabled
+                />
+              </div>
             )}
           />
 
           <FormField
             control={form.control}
             name="deposit_receipt_document_path"
-            render={() => (
-              <ReadOnlyInput title="Deposit Receipt" type="file" accept="image/*,.pdf" {...depositReceiptField} />
+            render={({ field }) => (
+              <div>
+                <p className="font-bold">Deposit Receipt</p>
+                <Dropzone
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onReset={() => form.resetField(field.name)}
+                  accept="image/*,.pdf"
+                  disabled
+                />
+              </div>
             )}
           />
         </FormSection>

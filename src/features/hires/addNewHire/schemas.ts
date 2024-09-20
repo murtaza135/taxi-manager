@@ -80,22 +80,19 @@ export const addNewHireAgreementDetailsSchema = z.object({
     .optional()
     .default('0'),
   permission_letter_document_path: z
-    .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+    .instanceof(File, { message: 'Allowed file types: images or PDF' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
   contract_document_path: z
-    .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+    .instanceof(File, { message: 'Allowed file types: images or PDF' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
   deposit_receipt_document_path: z
-    .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+    .instanceof(File, { message: 'Allowed file types: images or PDF' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
 }).refine(
   ({ start_date, end_date }) => {

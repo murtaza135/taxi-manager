@@ -11,6 +11,7 @@ import { Input } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { addNewHireAgreementDetailsSchema, AddNewHireAgreementDetailsSchema } from '@/features/hires/addNewHire/schemas';
+import { Dropzone } from '@/ui/form/Dropzone';
 
 export function AddNewHireAgreementDetailsForm() {
   const {
@@ -24,11 +25,6 @@ export function AddNewHireAgreementDetailsForm() {
     schema: addNewHireAgreementDetailsSchema,
     defaultValues: formState,
   });
-
-  // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const permissionLetterDocumentField = form.registerFileList('permission_letter_document_path');
-  const contractDocumentField = form.registerFileList('contract_document_path');
-  const depositReceiptDocumentField = form.registerFileList('deposit_receipt_document_path');
 
   const handleSubmit = form.handleSubmit((data) => {
     updateFormState(data);
@@ -102,9 +98,14 @@ export function AddNewHireAgreementDetailsForm() {
         <FormField
           control={form.control}
           name="permission_letter_document_path"
-          render={() => (
+          render={({ field }) => (
             <FormGroup label="Permission Letter">
-              <Input type="file" placeholder="Permission Letter" accept="image/*,.pdf" {...permissionLetterDocumentField} />
+              <Dropzone
+                defaultValue={field.value}
+                onChange={field.onChange}
+                onReset={() => form.resetField(field.name)}
+                accept="image/*,.pdf"
+              />
             </FormGroup>
           )}
         />
@@ -112,9 +113,14 @@ export function AddNewHireAgreementDetailsForm() {
         <FormField
           control={form.control}
           name="contract_document_path"
-          render={() => (
+          render={({ field }) => (
             <FormGroup label="Contract">
-              <Input type="file" placeholder="Contract" accept="image/*,.pdf" {...contractDocumentField} />
+              <Dropzone
+                defaultValue={field.value}
+                onChange={field.onChange}
+                onReset={() => form.resetField(field.name)}
+                accept="image/*,.pdf"
+              />
             </FormGroup>
           )}
         />
@@ -122,9 +128,14 @@ export function AddNewHireAgreementDetailsForm() {
         <FormField
           control={form.control}
           name="deposit_receipt_document_path"
-          render={() => (
+          render={({ field }) => (
             <FormGroup label="Deposit Receipt">
-              <Input type="file" placeholder="Deposit Receipt" accept="image/*,.pdf" {...depositReceiptDocumentField} />
+              <Dropzone
+                defaultValue={field.value}
+                onChange={field.onChange}
+                onReset={() => form.resetField(field.name)}
+                accept="image/*,.pdf"
+              />
             </FormGroup>
           )}
         />
