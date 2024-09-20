@@ -10,6 +10,7 @@ import { Input } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { addNewTaxiLicenceDetailsSchema, AddNewTaxiLicenceDetailsSchema } from '@/features/taxis/addNewTaxi/schemas';
+import { Dropzone } from '@/ui/form/Dropzone';
 
 export function AddNewTaxiLicenceDetailsForm() {
   const {
@@ -23,10 +24,6 @@ export function AddNewTaxiLicenceDetailsForm() {
     schema: addNewTaxiLicenceDetailsSchema,
     defaultValues: formState,
   });
-
-  // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const complianceCertificateField = form.registerFileList('compliance_certificate_document_path');
-  const phcLicenceField = form.registerFileList('phc_licence_document_path');
 
   const handleSubmit = form.handleSubmit((data) => {
     updateFormState(data);
@@ -105,9 +102,14 @@ export function AddNewTaxiLicenceDetailsForm() {
         <FormField
           control={form.control}
           name="compliance_certificate_document_path"
-          render={() => (
+          render={({ field }) => (
             <FormGroup label="Compliance Certificate">
-              <Input placeholder="Compliance Certificate" type="file" accept="image/*,.pdf" {...complianceCertificateField} />
+              <Dropzone
+                defaultValue={field.value}
+                onChange={field.onChange}
+                onReset={() => form.resetField(field.name)}
+                accept="image/*,.pdf"
+              />
             </FormGroup>
           )}
         />
@@ -115,9 +117,14 @@ export function AddNewTaxiLicenceDetailsForm() {
         <FormField
           control={form.control}
           name="phc_licence_document_path"
-          render={() => (
+          render={({ field }) => (
             <FormGroup label="PHC Licence (Red Letter)">
-              <Input placeholder="PHC Licence (Red Letter)" type="file" accept="image/*,.pdf" {...phcLicenceField} />
+              <Dropzone
+                defaultValue={field.value}
+                onChange={field.onChange}
+                onReset={() => form.resetField(field.name)}
+                accept="image/*,.pdf"
+              />
             </FormGroup>
           )}
         />

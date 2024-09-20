@@ -10,6 +10,7 @@ import { Input } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { addNewTaxiInsuranceSchema, AddNewTaxiInsuranceSchema } from '@/features/taxis/addNewTaxi/schemas';
+import { Dropzone } from '@/ui/form/Dropzone';
 
 export function AddNewTaxiInsuranceForm() {
   const {
@@ -23,9 +24,6 @@ export function AddNewTaxiInsuranceForm() {
     schema: addNewTaxiInsuranceSchema,
     defaultValues: formState,
   });
-
-  // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const insuranceDocumentField = form.registerFileList('insurance_document_path');
 
   const handleSubmit = form.handleSubmit((data) => {
     updateFormState(data);
@@ -94,9 +92,14 @@ export function AddNewTaxiInsuranceForm() {
         <FormField
           control={form.control}
           name="insurance_document_path"
-          render={() => (
-            <FormGroup label="Insurance Document">
-              <Input placeholder="Insurance Document" type="file" accept="image/*,.pdf" {...insuranceDocumentField} />
+          render={({ field }) => (
+            <FormGroup label="Insurance Documente">
+              <Dropzone
+                defaultValue={field.value}
+                onChange={field.onChange}
+                onReset={() => form.resetField(field.name)}
+                accept="image/*,.pdf"
+              />
             </FormGroup>
           )}
         />

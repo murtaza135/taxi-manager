@@ -7,6 +7,7 @@ import { useZodForm, FormProvider, Form, FormTitle, FormSection, FormField } fro
 import { ReadOnlyInput } from '@/ui/form/Input';
 import { useToast } from '@/ui/toast';
 import { useAddNewTaxi } from '@/features/taxis/general/hooks/useAddNewTaxi';
+import { Dropzone } from '@/ui/form/Dropzone';
 
 export function AddNewTaxiFormConfirmation() {
   const { toast } = useToast();
@@ -24,13 +25,6 @@ export function AddNewTaxiFormConfirmation() {
     defaultValues: formState,
     shouldFocusError: false,
   });
-
-  // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const pictureField = form.registerFileList('picture_path');
-  const logbookDocumentField = form.registerFileList('logbook_document_path');
-  const complianceCertificateDocumentField = form.registerFileList('compliance_certificate_document_path');
-  const phcLicenceDocumentField = form.registerFileList('phc_licence_document_path');
-  const insuranceDocumentField = form.registerFileList('insurance_document_path');
 
   const handleSubmit = form.handleSubmit(
     (data) => {
@@ -145,16 +139,34 @@ export function AddNewTaxiFormConfirmation() {
           <FormField
             control={form.control}
             name="picture_path"
-            render={() => (
-              <ReadOnlyInput title="Taxi Picture" type="file" accept="image/*" {...pictureField} />
+            render={({ field }) => (
+              <div>
+                <p className="font-bold">Taxi Picture</p>
+                <Dropzone
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onReset={() => form.resetField(field.name)}
+                  accept="image/*"
+                  disabled
+                />
+              </div>
             )}
           />
 
           <FormField
             control={form.control}
             name="logbook_document_path"
-            render={() => (
-              <ReadOnlyInput title="Logbook" type="file" accept="image/*,.pdf" {...logbookDocumentField} />
+            render={({ field }) => (
+              <div>
+                <p className="font-bold">Logbook</p>
+                <Dropzone
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onReset={() => form.resetField(field.name)}
+                  accept="image/*,.pdf"
+                  disabled
+                />
+              </div>
             )}
           />
         </FormSection>
@@ -195,16 +207,34 @@ export function AddNewTaxiFormConfirmation() {
           <FormField
             control={form.control}
             name="compliance_certificate_document_path"
-            render={() => (
-              <ReadOnlyInput title="Compliance Certificate" type="file" accept="image/*,.pdf" {...complianceCertificateDocumentField} />
+            render={({ field }) => (
+              <div>
+                <p className="font-bold">Compliance Certificate</p>
+                <Dropzone
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onReset={() => form.resetField(field.name)}
+                  accept="image/*,.pdf"
+                  disabled
+                />
+              </div>
             )}
           />
 
           <FormField
             control={form.control}
             name="phc_licence_document_path"
-            render={() => (
-              <ReadOnlyInput title="PHC Licence (Red Letter)" type="file" accept="image/*,.pdf" {...phcLicenceDocumentField} />
+            render={({ field }) => (
+              <div>
+                <p className="font-bold">PHC Licence (Red Letter)</p>
+                <Dropzone
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onReset={() => form.resetField(field.name)}
+                  accept="image/*,.pdf"
+                  disabled
+                />
+              </div>
             )}
           />
         </FormSection>
@@ -245,8 +275,17 @@ export function AddNewTaxiFormConfirmation() {
           <FormField
             control={form.control}
             name="insurance_document_path"
-            render={() => (
-              <ReadOnlyInput title="Insurance Document" type="file" accept="image/*,.pdf" {...insuranceDocumentField} />
+            render={({ field }) => (
+              <div>
+                <p className="font-bold">Insurance Document</p>
+                <Dropzone
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onReset={() => form.resetField(field.name)}
+                  accept="image/*,.pdf"
+                  disabled
+                />
+              </div>
             )}
           />
         </FormSection>

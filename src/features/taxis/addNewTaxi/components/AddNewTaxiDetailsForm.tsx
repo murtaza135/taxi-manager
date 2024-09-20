@@ -24,10 +24,6 @@ export function AddNewTaxiDetailsForm() {
     defaultValues: formState,
   });
 
-  // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  // const pictureField = form.registerFileList('picture_path');
-  // const logbookDocumentField = form.registerFileList('logbook_document_path');
-
   const handleSubmit = form.handleSubmit((data) => {
     updateFormState(data);
     nextStep();
@@ -157,26 +153,6 @@ export function AddNewTaxiDetailsForm() {
           )}
         />
 
-        {/* <FormField
-          control={form.control}
-          name="picture_path"
-          render={() => (
-            <FormGroup label="Taxi Picture">
-              <Input type="file" placeholder="Taxi Picture" accept="image/*" {...pictureField} />
-            </FormGroup>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="logbook_document_path"
-          render={() => (
-            <FormGroup label="Logbook">
-              <Input type="file" placeholder="Logbook" accept="image/*,.pdf" {...logbookDocumentField} />
-            </FormGroup>
-          )}
-        /> */}
-
         <FormField
           control={form.control}
           name="picture_path"
@@ -186,6 +162,7 @@ export function AddNewTaxiDetailsForm() {
                 defaultValue={field.value}
                 onChange={field.onChange}
                 onReset={() => form.resetField(field.name)}
+                accept="image/*"
               />
             </FormGroup>
           )}
@@ -200,6 +177,7 @@ export function AddNewTaxiDetailsForm() {
                 defaultValue={field.value}
                 onChange={field.onChange}
                 onReset={() => form.resetField(field.name)}
+                accept="image/*,.pdf"
               />
             </FormGroup>
           )}

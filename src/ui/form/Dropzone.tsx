@@ -35,11 +35,21 @@ function DragText({ isDragActive }: DragTextProps) {
 }
 
 type DropzonePreDropProps = {
+  disabled?: boolean;
   isDragActive: boolean;
   inputId: string;
 };
 
-function DropzonePreDrop({ isDragActive, inputId }: DropzonePreDropProps) {
+function DropzonePreDrop({ disabled, isDragActive, inputId }: DropzonePreDropProps) {
+  if (disabled) {
+    return (
+      <div className={cn('border border-transparent dark:border-transparent rounded-lg w-full h-full flex flex-col justify-center items-center gap-2 px-3 py-2 overflow-hidden', isDragActive && 'border-primary-dark dark:border-primary-light')}>
+        <MdError className="text-4xl" />
+        <p>No file available</p>
+      </div>
+    );
+  }
+
   return (
     <div className={cn('border border-transparent dark:border-transparent rounded-lg w-full h-full flex flex-col justify-center items-center gap-2 px-3 py-2 overflow-hidden', isDragActive && 'border-primary-dark dark:border-primary-light')}>
       <FaCloudArrowUp className="text-4xl" />
@@ -57,9 +67,10 @@ type DropzoneImageProps = {
   inputId: string;
   onReset: () => void;
   isDragActive: boolean;
+  disabled?: boolean;
 };
 
-function DropzoneFileView({ file, inputId, onReset, isDragActive }: DropzoneImageProps) {
+function DropzoneFileView({ file, inputId, onReset, isDragActive, disabled }: DropzoneImageProps) {
   const [zoom, setZoom] = useState<boolean>(true);
   const { src, revoke } = useFileToSrc(file);
 
@@ -104,26 +115,29 @@ function DropzoneFileView({ file, inputId, onReset, isDragActive }: DropzoneImag
             )}
           />
         </Document>
-        <span
-          className={cn('absolute z-20 bottom-2 left-1/2 -translate-x-1/2 flex gap-4 rounded-lg px-4 py-2 bg-primary-dark dark:bg-achromatic-dark dark:border dark:border-achromatic-darker text-achromatic-lighter opacity-0 group-hover:opacity-100 transition-opacity')}
-        >
-          <label
-            htmlFor={inputId}
-            aria-label="New Upload"
-            className={buttonVariants({ variant: 'ghost', className: '!p-0 cursor-pointer' })}
+
+        {!disabled && (
+          <span
+            className={cn('absolute z-20 bottom-2 left-1/2 -translate-x-1/2 flex gap-4 rounded-lg px-4 py-2 bg-primary-dark dark:bg-achromatic-dark dark:border dark:border-achromatic-darker text-achromatic-lighter opacity-0 group-hover:opacity-100 transition-opacity')}
           >
-            <FiUpload className="text-xl" />
-          </label>
-          <Button
-            type="button"
-            variant="ghost"
-            className="p-0"
-            aria-label="Reset"
-            onClick={onReset}
-          >
-            <FaTrashAlt className="text-lg" />
-          </Button>
-        </span>
+            <label
+              htmlFor={inputId}
+              aria-label="New Upload"
+              className={buttonVariants({ variant: 'ghost', className: '!p-0 cursor-pointer' })}
+            >
+              <FiUpload className="text-xl" />
+            </label>
+            <Button
+              type="button"
+              variant="ghost"
+              className="p-0"
+              aria-label="Reset"
+              onClick={onReset}
+            >
+              <FaTrashAlt className="text-lg" />
+            </Button>
+          </span>
+        )}
       </div>
     );
   }
@@ -137,22 +151,26 @@ function DropzoneFileView({ file, inputId, onReset, isDragActive }: DropzoneImag
         onLoad={() => revoke()}
       />
       <ImageOptions>
-        <label
-          htmlFor={inputId}
-          aria-label="New Upload"
-          className={buttonVariants({ variant: 'ghost', className: '!p-0 cursor-pointer' })}
-        >
-          <FiUpload className="text-xl" />
-        </label>
-        <Button
-          type="button"
-          variant="ghost"
-          className="p-0"
-          aria-label="Reset"
-          onClick={onReset}
-        >
-          <FaTrashAlt className="text-lg" />
-        </Button>
+        {!disabled && (
+          <>
+            <label
+              htmlFor={inputId}
+              aria-label="New Upload"
+              className={buttonVariants({ variant: 'ghost', className: '!p-0 cursor-pointer' })}
+            >
+              <FiUpload className="text-xl" />
+            </label>
+            <Button
+              type="button"
+              variant="ghost"
+              className="p-0"
+              aria-label="Reset"
+              onClick={onReset}
+            >
+              <FaTrashAlt className="text-lg" />
+            </Button>
+          </>
+        )}
         <Button
           type="button"
           variant="ghost"
@@ -185,14 +203,15 @@ type OnChange = (acceptedFile: File | undefined, event: DropEvent) => void;
 
 type DropzoneProps = Omit<
   DropzoneOptions,
-  'maxFiles' | 'multiple' | 'noClick' | 'onDrop' | 'onDropAccepted' | 'onDropRejected'
+  'maxFiles' | 'multiple' | 'noClick' | 'onDrop' | 'onDropAccepted' | 'onDropRejected' | 'accept'
 > & {
   defaultValue?: File;
   onChange?: OnChange;
   onReset?: () => void;
+  accept?: string;
 };
 
-export function Dropzone({ defaultValue, onChange, onReset, ...rest }: DropzoneProps) {
+export function Dropzone({ defaultValue, accept, onChange, onReset, ...rest }: DropzoneProps) {
   const inputId = useId();
 
   // this is dumb, but react-dropzone does not let me manually change files
@@ -226,7 +245,7 @@ export function Dropzone({ defaultValue, onChange, onReset, ...rest }: DropzoneP
 
   return (
     <div {...getRootProps()} className={cn('overflow-hidden border border-dashed border-primary-dark dark:border-primary-light rounded-lg p-2 center w-full min-h-40 max-h-60', isDragActive && 'border-solid', file && 'border-solid p-0')}>
-      <input id={inputId} {...getInputProps()} />
+      <input id={inputId} {...getInputProps({ accept })} />
 
       {file
         ? (
@@ -235,10 +254,11 @@ export function Dropzone({ defaultValue, onChange, onReset, ...rest }: DropzoneP
             inputId={inputId}
             onReset={handleReset}
             isDragActive={isDragActive}
+            disabled={rest.disabled}
           />
         )
         : (
-          <DropzonePreDrop isDragActive={isDragActive} inputId={inputId} />
+          <DropzonePreDrop disabled={rest.disabled} isDragActive={isDragActive} inputId={inputId} />
         )}
     </div>
   );
