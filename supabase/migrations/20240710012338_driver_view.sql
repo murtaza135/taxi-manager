@@ -16,6 +16,7 @@ create view driver_view as
     taxi.id as taxi_id,
     taxi.picture_path as taxi_picture_path,
     taxi.logbook_document_path,
+    taxi.logbook_document2_path,
     taxi.number_plate,
     taxi.colour,
     taxi.chassis_number,
