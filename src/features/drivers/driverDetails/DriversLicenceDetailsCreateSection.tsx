@@ -13,6 +13,7 @@ import { Button } from '@/ui/Button';
 import { addNewDriversLicenceSchema, AddNewDriversLicenceSchema } from '@/features/drivers/addNewDriver/schemas';
 import { createObjectTransformer } from '@/utils/transformer';
 import { useAttachLicenceToDriver } from '@/features/drivers/general/hooks/useAttachLicenceToDriver';
+import { Dropzone } from '@/ui/form/Dropzone';
 
 const defaultValues: AddNewDriversLicenceSchema = {
   licence_number: '',
@@ -31,9 +32,6 @@ export function DriversLicenceDetailsCreateSection() {
     schema: addNewDriversLicenceSchema,
     defaultValues,
   });
-
-  // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const licenceDocumentField = form.registerFileList('licence_document');
 
   const handleSubmit = form.handleSubmit((data) => {
     const transformedData = createObjectTransformer(data);
@@ -96,9 +94,14 @@ export function DriversLicenceDetailsCreateSection() {
             <FormField
               control={form.control}
               name="licence_document"
-              render={() => (
+              render={({ field }) => (
                 <FormGroup label="Drivers Licence">
-                  <Input placeholder="Drivers Licence" type="file" accept="image/*,.pdf" {...licenceDocumentField} />
+                  <Dropzone
+                    defaultValue={field.value}
+                    onChange={field.onChange}
+                    onReset={() => form.resetField(field.name)}
+                    accept="image/*,.pdf"
+                  />
                 </FormGroup>
               )}
             />

@@ -10,6 +10,7 @@ import { Input } from '@/ui/form/Input';
 import { Button } from '@/ui/Button';
 import { useMultiStepFormContext } from '@/ui/form/MultiStepForm';
 import { publicDriverApplicationTaxiBadgeSchema, PublicDriverApplicationTaxiBadgeSchema } from '@/features/drivers/publicDriverApplicationForm/schemas';
+import { Dropzone } from '@/ui/form/Dropzone';
 
 export function PublicDriverApplicationTaxiBadgeForm() {
   const {
@@ -23,9 +24,6 @@ export function PublicDriverApplicationTaxiBadgeForm() {
     schema: publicDriverApplicationTaxiBadgeSchema,
     defaultValues: formState,
   });
-
-  // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const fileField = form.registerFileList('badge_document');
 
   const handleSubmit = form.handleSubmit((data) => {
     updateFormState(data);
@@ -89,9 +87,14 @@ export function PublicDriverApplicationTaxiBadgeForm() {
         <FormField
           control={form.control}
           name="badge_document"
-          render={() => (
+          render={({ field }) => (
             <FormGroup label="* Taxi Badge">
-              <Input placeholder="Taxi Badge" type="file" accept="image/*,.pdf" {...fileField} />
+              <Dropzone
+                defaultValue={field.value}
+                onChange={field.onChange}
+                onReset={() => form.resetField(field.name)}
+                accept="image/*,.pdf"
+              />
             </FormGroup>
           )}
         />

@@ -37,10 +37,9 @@ export const addNewDriverDetailsSchema = z.object({
     .or(z.literal('')),
   // TODO convert to picture_path (i.e. make consistent with other schemas)
   picture: z
-    .instanceof(FileList, { message: 'Allowed file types: images' })
-    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images' })
-    .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_IMAGE_MIME_TYPE), 'Allowed file types: images')
+    .instanceof(File, { message: 'Allowed file types: images' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_IMAGE_MIME_TYPE), 'Allowed file types: images')
     .optional(),
 });
 
@@ -57,10 +56,9 @@ export const addNewDriversLicenceSchema = z.object({
     .string({ required_error: 'End date required' })
     .refine((val) => isValid(new Date(val)), { message: 'Invalid end date' }),
   licence_document: z
-    .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+    .instanceof(File, { message: 'Allowed file types: images or PDF' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
 })
   .refine(
@@ -85,10 +83,9 @@ export const addNewDriverTaxiBadgeSchema = z.object({
     .string({ required_error: 'End date required' })
     .refine((val) => isValid(new Date(val)), { message: 'Invalid end date' }),
   badge_document: z
-    .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+    .instanceof(File, { message: 'Allowed file types: images or PDF' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
 })
   .refine(

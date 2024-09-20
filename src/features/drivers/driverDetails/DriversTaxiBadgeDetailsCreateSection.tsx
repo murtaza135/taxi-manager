@@ -13,6 +13,7 @@ import { Button } from '@/ui/Button';
 import { addNewDriverTaxiBadgeSchema, AddNewDriverTaxiBadgeSchema } from '@/features/drivers/addNewDriver/schemas';
 import { createObjectTransformer } from '@/utils/transformer';
 import { useAttachTaxiBadgeToDriver } from '@/features/drivers/general/hooks/useAttachTaxiBadgeToDriver';
+import { Dropzone } from '@/ui/form/Dropzone';
 
 const defaultValues: AddNewDriverTaxiBadgeSchema = {
   badge_number: '',
@@ -31,9 +32,6 @@ export function DriversTaxiBadgeDetailsCreateSection() {
     schema: addNewDriverTaxiBadgeSchema,
     defaultValues,
   });
-
-  // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const badgeDocumentField = form.registerFileList('badge_document');
 
   const handleSubmit = form.handleSubmit((data) => {
     const transformedData = createObjectTransformer(data);
@@ -96,9 +94,14 @@ export function DriversTaxiBadgeDetailsCreateSection() {
             <FormField
               control={form.control}
               name="badge_document"
-              render={() => (
+              render={({ field }) => (
                 <FormGroup label="Taxi Badge">
-                  <Input placeholder="Taxi Badge" type="file" accept="image/*,.pdf" {...badgeDocumentField} />
+                  <Dropzone
+                    defaultValue={field.value}
+                    onChange={field.onChange}
+                    onReset={() => form.resetField(field.name)}
+                    accept="image/*,.pdf"
+                  />
                 </FormGroup>
               )}
             />

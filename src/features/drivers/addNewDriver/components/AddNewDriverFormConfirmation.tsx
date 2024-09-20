@@ -7,6 +7,7 @@ import { useZodForm, FormProvider, Form, FormTitle, FormSection, FormField } fro
 import { ReadOnlyInput } from '@/ui/form/Input';
 import { useToast } from '@/ui/toast';
 import { useAddNewDriver } from '@/features/drivers/general/hooks/useAddNewDriver';
+import { Dropzone } from '@/ui/form/Dropzone';
 
 export function AddNewDriverFormConfirmation() {
   const { toast } = useToast();
@@ -24,11 +25,6 @@ export function AddNewDriverFormConfirmation() {
     defaultValues: formState,
     shouldFocusError: false,
   });
-
-  // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const driverPictureFileListField = form.registerFileList('picture');
-  const driversLicenceFileListField = form.registerFileList('licence_document');
-  const taxiBadgeFileListField = form.registerFileList('badge_document');
 
   const handleSubmit = form.handleSubmit(
     (data) => {
@@ -103,8 +99,17 @@ export function AddNewDriverFormConfirmation() {
           <FormField
             control={form.control}
             name="picture"
-            render={() => (
-              <ReadOnlyInput title="Picture" type="file" accept="image/*" {...driverPictureFileListField} />
+            render={({ field }) => (
+              <div>
+                <p className="font-bold">Picture</p>
+                <Dropzone
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onReset={() => form.resetField(field.name)}
+                  accept="image/*"
+                  disabled
+                />
+              </div>
             )}
           />
         </FormSection>
@@ -137,8 +142,17 @@ export function AddNewDriverFormConfirmation() {
           <FormField
             control={form.control}
             name="licence_document"
-            render={() => (
-              <ReadOnlyInput title="Drivers Licence" type="file" accept="image/*,.pdf" {...driversLicenceFileListField} />
+            render={({ field }) => (
+              <div>
+                <p className="font-bold">Drivers Licence</p>
+                <Dropzone
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onReset={() => form.resetField(field.name)}
+                  accept="image/*,.pdf"
+                  disabled
+                />
+              </div>
             )}
           />
         </FormSection>
@@ -171,8 +185,17 @@ export function AddNewDriverFormConfirmation() {
           <FormField
             control={form.control}
             name="badge_document"
-            render={() => (
-              <ReadOnlyInput title="Taxi Badge" type="file" accept="image/*,.pdf" {...taxiBadgeFileListField} />
+            render={({ field }) => (
+              <div>
+                <p className="font-bold">Taxi Badge</p>
+                <Dropzone
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onReset={() => form.resetField(field.name)}
+                  accept="image/*,.pdf"
+                  disabled
+                />
+              </div>
             )}
           />
         </FormSection>
