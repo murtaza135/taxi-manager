@@ -1,6 +1,6 @@
 import { useCallback, useId, useState } from 'react';
 import { useDropzone, DropzoneOptions, DropEvent } from 'react-dropzone';
-import { FiUpload } from 'react-icons/fi';
+import { FiUpload, FiZoomIn, FiZoomOut } from 'react-icons/fi';
 import { FaTrashAlt } from 'react-icons/fa';
 import { FaCloudArrowUp, FaFileLines } from 'react-icons/fa6';
 import { MdError } from 'react-icons/md';
@@ -60,6 +60,7 @@ type DropzoneImageProps = {
 };
 
 function DropzoneFileView({ file, inputId, onReset, isDragActive }: DropzoneImageProps) {
+  const [zoom, setZoom] = useState<boolean>(true);
   const { src, revoke } = useFileToSrc(file);
 
   if (file.type === 'application/pdf') {
@@ -132,7 +133,7 @@ function DropzoneFileView({ file, inputId, onReset, isDragActive }: DropzoneImag
       <ImageView
         src={src}
         alt="current file"
-        className="object-cover"
+        className={cn(zoom ? 'object-cover' : 'object-contain')}
         onLoad={() => revoke()}
       />
       <ImageOptions>
@@ -151,6 +152,17 @@ function DropzoneFileView({ file, inputId, onReset, isDragActive }: DropzoneImag
           onClick={onReset}
         >
           <FaTrashAlt className="text-lg" />
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          className="p-0"
+          aria-label="Zoom"
+          onClick={() => setZoom((prev) => !prev)}
+        >
+          {!zoom
+            ? <FiZoomIn className="text-xl" />
+            : <FiZoomOut className="text-xl" />}
         </Button>
       </ImageOptions>
       <ImageFallback className="flex flex-col justify-center items-center gap-2">
