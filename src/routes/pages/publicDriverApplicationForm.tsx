@@ -1,13 +1,16 @@
+import { validate as uuidValidate } from 'uuid';
 import { useDocumentTitle } from '@/features/title/hooks/useDocumentTitle';
 import { QueryLoaderFunction } from '@/lib/react-router-dom/types';
 import { APIError } from '@/errors/classes/APIError';
 import { ErrorUI } from '@/errors/components/ErrorUI';
 import { PublicDriverApplicationMultiStepForm } from '@/features/drivers/publicDriverApplicationForm/components/PublicDriverApplicationMultiStepForm';
+import { driverApplicationQueryOptions } from '@/features/drivers/general/hooks/useDriverApplication';
 
 // eslint-disable-next-line max-len
 const publicDriverApplicationFormPageLoader: QueryLoaderFunction = (queryClient) => ({ params }) => {
   if (!params.id) throw new APIError({ title: 'Not Found', status: 404 });
-  // void queryClient.ensureQueryData(driverDetailsQueryOptions(id));
+  if (!uuidValidate(params.id)) throw new APIError({ title: 'Not Found', status: 404 });
+  void queryClient.ensureQueryData(driverApplicationQueryOptions(params.id));
   return null;
 };
 
@@ -21,7 +24,11 @@ function PublicDriverApplicationFormPageSuspenseBoundary() {
 
 function PublicDriverApplicationFormPageErrorBoundary() {
   useDocumentTitle('Apply for Taxi Vehicle | Error');
-  return <ErrorUI />;
+  return (
+    <div className="min-h-[calc(100dvh-4rem)] w-full center">
+      <ErrorUI />
+    </div>
+  );
 }
 
 function PublicDriverApplicationFormPageComponent() {
