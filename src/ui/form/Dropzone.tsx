@@ -105,7 +105,7 @@ function DropzoneFileView({ file, inputId, onReset, isDragActive }: DropzoneImag
           />
         </Document>
         <span
-          className={cn('absolute z-20 bottom-2 left-1/2 -translate-x-1/2 flex gap-4 rounded-lg px-4 py-2 bg-primary-dark dark:bg-achromatic-dark dark:border dark:border-achromatic-darker text-achromatic-lighter opacity-100 group-hover:opacity-100 transition-opacity')}
+          className={cn('absolute z-20 bottom-2 left-1/2 -translate-x-1/2 flex gap-4 rounded-lg px-4 py-2 bg-primary-dark dark:bg-achromatic-dark dark:border dark:border-achromatic-darker text-achromatic-lighter opacity-0 group-hover:opacity-100 transition-opacity')}
         >
           <label
             htmlFor={inputId}
@@ -181,10 +181,7 @@ function DropzoneFileView({ file, inputId, onReset, isDragActive }: DropzoneImag
 }
 
 type OnDrop = NonNullable<DropzoneOptions['onDrop']>;
-type OnChange = <T extends File>(
-  acceptedFile: T | undefined,
-  event: DropEvent,
-) => void;
+type OnChange = (acceptedFile: File | undefined, event: DropEvent) => void;
 
 type DropzoneProps = Omit<
   DropzoneOptions,

@@ -25,8 +25,8 @@ export function AddNewTaxiDetailsForm() {
   });
 
   // @source https://medium.com/@damien_16960/input-file-x-shadcn-x-zod-88f0472c2b81
-  const pictureField = form.registerFileList('picture_path');
-  const logbookDocumentField = form.registerFileList('logbook_document_path');
+  // const pictureField = form.registerFileList('picture_path');
+  // const logbookDocumentField = form.registerFileList('logbook_document_path');
 
   const handleSubmit = form.handleSubmit((data) => {
     updateFormState(data);
@@ -41,8 +41,6 @@ export function AddNewTaxiDetailsForm() {
         className="w-full max-w-[32rem] space-y-4"
       >
         <FormTitle>Taxi</FormTitle>
-
-        <Dropzone onChange={(file) => { console.log(file); }} onReset={() => console.log('reset')} />
 
         <FormField
           control={form.control}
@@ -159,7 +157,7 @@ export function AddNewTaxiDetailsForm() {
           )}
         />
 
-        <FormField
+        {/* <FormField
           control={form.control}
           name="picture_path"
           render={() => (
@@ -175,6 +173,34 @@ export function AddNewTaxiDetailsForm() {
           render={() => (
             <FormGroup label="Logbook">
               <Input type="file" placeholder="Logbook" accept="image/*,.pdf" {...logbookDocumentField} />
+            </FormGroup>
+          )}
+        /> */}
+
+        <FormField
+          control={form.control}
+          name="picture_path"
+          render={({ field }) => (
+            <FormGroup label="Taxi Picture">
+              <Dropzone
+                defaultValue={field.value}
+                onChange={field.onChange}
+                onReset={() => form.resetField(field.name)}
+              />
+            </FormGroup>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="logbook_document_path"
+          render={({ field }) => (
+            <FormGroup label="Logbook">
+              <Dropzone
+                defaultValue={field.value}
+                onChange={field.onChange}
+                onReset={() => form.resetField(field.name)}
+              />
             </FormGroup>
           )}
         />

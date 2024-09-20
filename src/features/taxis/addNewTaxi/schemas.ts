@@ -59,16 +59,14 @@ export const addNewTaxiDetailsSchema = z.object({
     .optional()
     .or(z.literal('')),
   picture_path: z
-    .instanceof(FileList, { message: 'Allowed file types: images' })
-    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images' })
-    .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_IMAGE_MIME_TYPE), 'Allowed file types: images')
+    .instanceof(File, { message: 'Allowed file types: images' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_IMAGE_MIME_TYPE), 'Allowed file types: images')
     .optional(),
   logbook_document_path: z
-    .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+    .instanceof(File, { message: 'Allowed file types: images or PDF' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
 });
 
@@ -91,16 +89,14 @@ export const addNewTaxiLicenceDetailsSchema = z.object({
     .string({ required_error: 'End date required' })
     .refine((val) => isValid(new Date(val)), { message: 'Invalid end date' }),
   compliance_certificate_document_path: z
-    .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+    .instanceof(File, { message: 'Allowed file types: images or PDF' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
   phc_licence_document_path: z
-    .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+    .instanceof(File, { message: 'Allowed file types: images or PDF' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
 }).refine(
   ({ taxi_licence_start_date, taxi_licence_end_date }) => {
@@ -130,10 +126,9 @@ export const addNewTaxiInsuranceSchema = z.object({
     .string({ required_error: 'End date required' })
     .refine((val) => isValid(new Date(val)), { message: 'Invalid end date' }),
   insurance_document_path: z
-    .instanceof(FileList, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => fileList.length === 0 || fileList.length === 1, { message: 'Allowed file types: images or PDF' })
-    .refine((fileList) => !fileList[0] || fileList[0].size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
-    .refine((fileList) => !fileList[0] || fileList[0].type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
+    .instanceof(File, { message: 'Allowed file types: images or PDF' })
+    .refine((file) => file.size <= MAX_UPLOAD_SIZE, 'File size must be less than 5MB')
+    .refine((file) => file.type.match(ACCEPTED_DOCUMENT_MIME_TYPE), 'Allowed file types: images or PDF')
     .optional(),
 })
   .refine(
@@ -210,6 +205,7 @@ export type AddNewTaxiLicenceDetailsSchema = z.infer<typeof addNewTaxiLicenceDet
 export type AddNewTaxiInsuranceSchema = z.infer<typeof addNewTaxiInsuranceSchema>;
 export type AddNewTaxiSchema = z.infer<typeof addNewTaxiSchema>;
 
+// TODO FileList no longer used in schemas, remove this
 // convert FileList objects to File Objects
 export type AddNewTaxiTransformedSchema = MergeOverwrite<AddNewTaxiSchema, {
   picture_path?: File | undefined;
