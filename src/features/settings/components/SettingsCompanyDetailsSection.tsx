@@ -15,7 +15,7 @@ import { useSession } from '@/features/auth/hooks/useSession';
 export function SettingsCompanyDetailsSection() {
   const { data } = useCompany();
   const { data: sessionData } = useSession();
-  const { email } = sessionData.user;
+  const { email, is_anonymous } = sessionData.user;
   const [isEditMode, setEditMode] = useState<boolean>(false);
   const { mutate: updateCompanyDetails } = useUpdateCompany();
 
@@ -192,15 +192,17 @@ export function SettingsCompanyDetailsSection() {
             )}
           />
 
-          <EmailCell email={email ?? ''} className="w-full [&>.icon]:pr-6">
-            <EditableInput
-              type="email"
-              title="Email"
-              readOnly
-              value={email ?? ''}
-              className="!cursor-pointer"
-            />
-          </EmailCell>
+          {!is_anonymous && (
+            <EmailCell email={email ?? ''} className="w-full [&>.icon]:pr-6">
+              <EditableInput
+                type="email"
+                title="Email"
+                readOnly
+                value={email ?? ''}
+                className="!cursor-pointer"
+              />
+            </EmailCell>
+          )}
         </div>
       </form>
     </FormProvider>

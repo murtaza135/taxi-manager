@@ -22,6 +22,14 @@ export async function anonymousLogin() {
     throw new SupabaseError(companyError, companyStatus, { globalTitle: 'Login Error' });
   }
 
+  const { error: settingsError, status: settingsStatus } = await supabase
+    .from('settings')
+    .insert({});
+
+  if (settingsError) {
+    throw new SupabaseError(settingsError, settingsStatus, { globalTitle: 'Login Error' });
+  }
+
   return data as AnonymousAuthResponseSuccessData;
 }
 

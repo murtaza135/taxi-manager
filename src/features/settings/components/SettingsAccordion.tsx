@@ -11,8 +11,12 @@ import { SettingsChangeEmailSection } from '@/features/settings/components/Setti
 import { SettingsChangePasswordSection } from '@/features/settings/components/SettingsChangePasswordSection';
 import { SettingsRentSection } from '@/features/settings/components/SettingsRentSection';
 import { Spinner } from '@/ui/Spinner';
+import { useSession } from '@/features/auth/hooks/useSession';
 
 export function SettingsAccordion() {
+  const { data: session } = useSession();
+  const isAnonymous = session.user.is_anonymous;
+
   return (
     <Accordion type="multiple" defaultValue={['details']} className="!flex-grow-0">
       <AccordionItem value="details">
@@ -23,25 +27,29 @@ export function SettingsAccordion() {
         </AccordionCollapsibleContent>
       </AccordionItem>
 
-      <AccordionItem value="changeEmail">
-        <AccordionTrigger>Change Email</AccordionTrigger>
-        <AccordionCollapsibleContent className="flex flex-col">
-          <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
-          <Suspense fallback={<Spinner />}>
-            <SettingsChangeEmailSection />
-          </Suspense>
-        </AccordionCollapsibleContent>
-      </AccordionItem>
+      {!isAnonymous && (
+        <AccordionItem value="changeEmail">
+          <AccordionTrigger>Change Email</AccordionTrigger>
+          <AccordionCollapsibleContent className="flex flex-col">
+            <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
+            <Suspense fallback={<Spinner />}>
+              <SettingsChangeEmailSection />
+            </Suspense>
+          </AccordionCollapsibleContent>
+        </AccordionItem>
+      )}
 
-      <AccordionItem value="changePassword">
-        <AccordionTrigger>Change Password</AccordionTrigger>
-        <AccordionCollapsibleContent className="flex flex-col">
-          <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
-          <Suspense fallback={<Spinner />}>
-            <SettingsChangePasswordSection />
-          </Suspense>
-        </AccordionCollapsibleContent>
-      </AccordionItem>
+      {!isAnonymous && (
+        <AccordionItem value="changePassword">
+          <AccordionTrigger>Change Password</AccordionTrigger>
+          <AccordionCollapsibleContent className="flex flex-col">
+            <Separator className="bg-achromatic-light dark:bg-achromatic-darker mb-3" />
+            <Suspense fallback={<Spinner />}>
+              <SettingsChangePasswordSection />
+            </Suspense>
+          </AccordionCollapsibleContent>
+        </AccordionItem>
+      )}
 
       <AccordionItem value="rentSettings">
         <AccordionTrigger>Rent Settings</AccordionTrigger>
