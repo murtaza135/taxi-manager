@@ -2,7 +2,6 @@ import { QueryClient } from '@tanstack/react-query';
 import { redirect, Outlet } from 'react-router-dom';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
 import { companyOptions } from '@/features/auth/hooks/useCompany';
-import { getLocalSession } from '@/features/auth/hooks/useLocalSession';
 import { AppError } from '@/errors/classes/AppError';
 import { logout } from '@/features/auth/hooks/useLogout';
 import { toast } from '@/ui/toast';
@@ -12,14 +11,6 @@ import { SideNav } from '@/features/navigation/components/side-nav/SideNav';
 import { MobileNav } from '@/features/navigation/components/mobile-nav/MobileNav';
 
 const privateLayoutLoader = (queryClient: QueryClient) => async () => {
-  const localSession = getLocalSession();
-  if (!localSession) {
-    await logout();
-    queryClient.clear();
-    toast({ title: 'Error', description: 'Please login again', variant: 'destructive' });
-    return redirect('/login');
-  }
-
   try {
     await queryClient.ensureQueryData(sessionOptions());
   } catch (error: unknown) {

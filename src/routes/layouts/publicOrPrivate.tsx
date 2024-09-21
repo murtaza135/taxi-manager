@@ -3,11 +3,9 @@ import { Outlet } from 'react-router-dom';
 import { BasicContainer } from '@/ui/Container';
 import { SimpleTopNav } from '@/features/navigation/components/top-nav/SimpleTopNav';
 import { sessionOptions } from '@/features/auth/hooks/useSession';
-import { getLocalSession } from '@/features/auth/hooks/useLocalSession';
 
 const publicOrPrivateLayoutLoader = (queryClient: QueryClient) => () => {
-  const session = getLocalSession();
-  if (session) void queryClient.prefetchQuery(sessionOptions());
+  void queryClient.prefetchQuery(sessionOptions());
   return null;
 };
 
