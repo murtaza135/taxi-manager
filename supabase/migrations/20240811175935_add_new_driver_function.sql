@@ -28,14 +28,14 @@ BEGIN
 
     -- Insert data into drivers_licence table
     IF licence_number IS NOT NULL THEN
-      INSERT INTO drivers_licence (driver_id, document_path, document_path2, licence_number, start_date, end_date)
+      INSERT INTO drivers_licence (driver_id, document_path, document2_path, licence_number, start_date, end_date)
       VALUES (driver_id, licence_document_path, licence_document2_path, licence_number, licence_start_date, licence_end_date)
       RETURNING id INTO licence_id;
     END IF;
 
     -- Insert data into taxi_badge table
     IF badge_number IS NOT NULL THEN
-      INSERT INTO drivers_taxi_badge (driver_id, document_path, document_path2, badge_number, start_date, end_date)
+      INSERT INTO drivers_taxi_badge (driver_id, document_path, document2_path, badge_number, start_date, end_date)
       VALUES (driver_id, badge_document_path, badge_document2_path, badge_number, badge_start_date, badge_end_date)
       RETURNING id INTO badge_id;
     END IF;

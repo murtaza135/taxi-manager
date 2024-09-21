@@ -65,7 +65,7 @@ export async function attachTaxiBadgeToDriver(variables: Variables) {
       start_date: nonFileFormData.badge_start_date,
       end_date: nonFileFormData.badge_end_date,
       document_path: documentPaths.badge_document,
-      document_path2: documentPaths.badge_document2,
+      document2_path: documentPaths.badge_document2,
     })
     .eq('auth_id', session.user.id)
     .select('id')
