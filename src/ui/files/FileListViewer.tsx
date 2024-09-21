@@ -233,7 +233,7 @@ function FileListViewer({ files, initial, onChange, onDelete, className }: Props
           {files.map((config, index) => (
             <Button
               key={config.key}
-              type="submit"
+              type="button"
               variant="ghost"
               className={cn('rounded-lg p-0 overflow-hidden w-12 h-12 flex-shrink-0 bg-achromatic-lighter border border-solid border-achromatic-darker hover:opacity-100', currentFileIndex !== index && 'opacity-50')}
               onMouseEnter={() => handleChange(index)}
