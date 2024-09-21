@@ -1,4 +1,5 @@
 // @source https://stackoverflow.com/questions/67540150/upload-compressed-image-file-from-client-side-using-javascript
+
 export type Options = {
   maxWidth?: number;
   maxHeight?: number;

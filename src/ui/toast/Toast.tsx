@@ -4,6 +4,9 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
+// TODO change design to look like the banners on hire agreement add form
+// TODO or similar to this design: https://getjustd.com/docs/components/statuses/note
+
 const ToastProvider = ToastPrimitives.Provider;
 
 const ToastViewport = React.forwardRef<

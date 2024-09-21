@@ -4,7 +4,7 @@ import { IoMdSettings } from 'react-icons/io';
 import { MdLogout } from 'react-icons/md';
 import { useNavActions } from '@/features/navigation/state/navStore';
 import { useTitle } from '@/features/title/state/titleStore';
-import { Avatar, AvatarFallback, AvatarImage } from '@/ui/Avatar';
+import { Avatar, AvatarImage, AvatarPersistentFallback } from '@/ui/Avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/ui/DropdownMenu';
 import { useLogout } from '@/features/auth/hooks/useLogout';
 import { useCompany } from '@/features/auth/hooks/useCompany';
@@ -35,9 +35,9 @@ export function TopNav() {
           <DropdownMenuTrigger className="outline-none">
             <Avatar className="hover:opacity-65 transition-opacity">
               {data.logo_src && <AvatarImage src={data.logo_src} alt="user" />}
-              <AvatarFallback>
+              <AvatarPersistentFallback>
                 {extractInitials(data.name ?? '')}
-              </AvatarFallback>
+              </AvatarPersistentFallback>
             </Avatar>
           </DropdownMenuTrigger>
 

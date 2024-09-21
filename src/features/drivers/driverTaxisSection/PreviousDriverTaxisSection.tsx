@@ -6,10 +6,13 @@ import { List, ListItem } from '@/ui/List';
 import { Avatar, AvatarImage, AvatarPersistentFallback } from '@/ui/Avatar';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { useHires } from '@/features/hires/general/hooks/useHires';
+import { useDriverDetails } from '@/features/drivers/general/hooks/useDriverDetails';
 
 export function PreviousDriverTaxisSection() {
   const params = useParams();
   const driver_id = Number(params.id);
+  const { data: driver } = useDriverDetails(driver_id);
+  const { taxi_id } = driver;
 
   const {
     data,
@@ -17,12 +20,23 @@ export function PreviousDriverTaxisSection() {
     isFetchingNextPage,
   } = useHires({ driver_id });
 
-  const flatData = useMemo(
-    () => uniqBy(data?.pages?.flatMap((page) => page.data) ?? [], 'taxi_id'),
+  const unfilteredFlatData = useMemo(
+    () => data?.pages?.flatMap((page) => page.data) ?? [],
     [data],
   );
 
-  const fetchedCount = flatData.length;
+  // this removes taxi that is currently linked to this driver
+  const unfilteredFlatData2 = useMemo(
+    () => unfilteredFlatData.filter((hire) => hire.taxi_id !== taxi_id),
+    [unfilteredFlatData, taxi_id],
+  );
+
+  const flatData = useMemo(
+    () => uniqBy(unfilteredFlatData2, 'taxi_id'),
+    [unfilteredFlatData2],
+  );
+
+  const fetchedCount = unfilteredFlatData.length;
   const fetchableCount = data.pages[0].count;
 
   const { ref, fetchOnScroll } = useFetchOnScroll<React.ElementRef<typeof List>>({
@@ -36,7 +50,7 @@ export function PreviousDriverTaxisSection() {
     void fetchOnScroll();
   }, [fetchOnScroll]);
 
-  if (!fetchedCount) return <div>No previous taxis.</div>;
+  if (flatData.length <= 0) return <div>No previous taxis.</div>;
 
   return (
     <List ref={ref} onScroll={fetchOnScroll}>

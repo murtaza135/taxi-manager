@@ -151,7 +151,7 @@ export const gridColumns: ColumnDef<Hire>[] = [
   {
     id: 'Hire Agreement ID',
     accessorKey: 'id',
-    header: 'Hire Agreement ID',
+    header: 'Hire ID',
   },
   {
     id: 'Driver Name',
@@ -274,7 +274,6 @@ export const gridColumns: ColumnDef<Hire>[] = [
 ];
 
 export const mapper: DataViewCardMainDataMapper = {
-  title: 'Hire Agreement ID',
   optionsTop: 'Options Top',
   optionsBottom: 'Options Bottom',
 } as const;

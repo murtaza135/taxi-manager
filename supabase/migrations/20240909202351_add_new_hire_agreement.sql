@@ -20,14 +20,12 @@ BEGIN
     -- Update hire agreement of taxi
     UPDATE taxi
     SET active_hire_agreement_id = hire_id
-    WHERE id = driver_id
-    AND auth_id = auth.uid();
+    WHERE id = taxi_id;
 
     -- Update hire agreement of driver
     UPDATE driver
     SET active_hire_agreement_id = hire_id
-    WHERE id = taxi_id
-    AND auth_id = auth.uid();
+    WHERE id = driver_id;
 
     RETURN hire_id;
 END;

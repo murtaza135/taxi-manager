@@ -5,10 +5,13 @@ import { List, ListItem } from '@/ui/List';
 import { Avatar, AvatarImage, AvatarPersistentFallback } from '@/ui/Avatar';
 import { extractInitials } from '@/utils/string/extractInitials';
 import { useHires } from '@/features/hires/general/hooks/useHires';
+import { useDriverDetails } from '@/features/drivers/general/hooks/useDriverDetails';
 
 export function PreviousDriverHiresSection() {
   const params = useParams();
   const driver_id = Number(params.id);
+  const { data: driver } = useDriverDetails(driver_id);
+  const { hire_agreement_id } = driver;
 
   const {
     data,
@@ -16,12 +19,18 @@ export function PreviousDriverHiresSection() {
     isFetchingNextPage,
   } = useHires({ driver_id });
 
-  const flatData = useMemo(
+  const unfilteredFlatData = useMemo(
     () => data?.pages?.flatMap((page) => page.data) ?? [],
     [data],
   );
 
-  const fetchedCount = flatData.length;
+  // this removes hire that is currently linked to this taxi
+  const flatData = useMemo(
+    () => unfilteredFlatData.filter((hire) => hire.id !== hire_agreement_id),
+    [unfilteredFlatData, hire_agreement_id],
+  );
+
+  const fetchedCount = unfilteredFlatData.length;
   const fetchableCount = data.pages[0].count;
 
   const { ref, fetchOnScroll } = useFetchOnScroll<React.ElementRef<typeof List>>({
@@ -35,7 +44,7 @@ export function PreviousDriverHiresSection() {
     void fetchOnScroll();
   }, [fetchOnScroll]);
 
-  if (!fetchedCount) return <div>No previous hire agreements.</div>;
+  if (flatData.length <= 0) return <div>No previous hire agreements.</div>;
 
   return (
     <List ref={ref} onScroll={fetchOnScroll}>
