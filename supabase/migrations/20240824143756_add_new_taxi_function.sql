@@ -11,6 +11,7 @@ CREATE FUNCTION add_new_taxi (
   fuel_type text default null,
   picture_path text default null,
   logbook_document_path text default null,
+  logbook_document2_path text default null,
   compliance_certificate_licence_number text default null,
   phc_number text default null,
   taxi_licence_start_date date default null,
@@ -29,8 +30,8 @@ DECLARE
     insurance_id bigint;
 BEGIN
     -- Insert data into taxi table
-    INSERT INTO taxi (number_plate, make, model, colour, chassis_number, registration_date, expected_expiry_date, road_tax_expiry_date, cc, fuel_type, picture_path, logbook_document_path)
-    VALUES (number_plate, make, model, colour, chassis_number, registration_date, expected_expiry_date, road_tax_expiry_date, cc, fuel_type, picture_path, logbook_document_path)
+    INSERT INTO taxi (number_plate, make, model, colour, chassis_number, registration_date, expected_expiry_date, road_tax_expiry_date, cc, fuel_type, picture_path, logbook_document_path, logbook_document2_path)
+    VALUES (number_plate, make, model, colour, chassis_number, registration_date, expected_expiry_date, road_tax_expiry_date, cc, fuel_type, picture_path, logbook_document_path, logbook_document2_path)
     RETURNING id INTO taxi_id;
 
     -- Insert data into taxi_licence table

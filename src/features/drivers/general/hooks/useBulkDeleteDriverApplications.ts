@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRevalidator } from 'react-router-dom';
 import { supabase } from '@/config/api/supabaseClient';
@@ -11,7 +12,7 @@ export async function bulkDeleteDriverApplications(ids: string[]) {
 
   const { data, error: selectError, status: selectStatus } = await supabase
     .from('driver_application')
-    .select('picture_path, drivers_licence_path, taxi_badge_path')
+    .select('picture_path, drivers_licence_path, drivers_licence2_path, taxi_badge_path, taxi_badge2_path')
     .eq('auth_id', session.user.id)
     .in('id', ids);
 
@@ -22,7 +23,7 @@ export async function bulkDeleteDriverApplications(ids: string[]) {
   }
 
   const files = data
-    .flatMap((obj) => [obj.picture_path, obj.drivers_licence_path, obj.taxi_badge_path])
+    .flatMap((obj) => [obj.picture_path, obj.drivers_licence_path, obj.taxi_badge_path, obj.drivers_licence2_path, obj.taxi_badge2_path])
     .filter((file) => !!file) as string[];
 
   if (files.length > 0) {

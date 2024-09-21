@@ -12,13 +12,23 @@ import { extname } from '@/utils/path/extname';
 type DriverDocumentPathsObject = {
   picture_path?: string,
   licence_document_path?: string,
+  licence_document2_path?: string,
   badge_document_path?: string;
+  badge_document2_path?: string;
 };
 
 export async function addNewDriver(formData: AddNewDriverTransformedSchema) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
   const documentPaths: DriverDocumentPathsObject = {};
-  const { badge_document, licence_document, picture, ...nonFileFormData } = formData;
+
+  const {
+    badge_document,
+    badge_document2,
+    licence_document,
+    licence_document2,
+    picture,
+    ...nonFileFormData
+  } = formData;
 
   // TODO add storage rollback on error
   if (picture) {
@@ -51,6 +61,21 @@ export async function addNewDriver(formData: AddNewDriverTransformedSchema) {
     }
   }
 
+  if (licence_document2) {
+    const { data: storageData } = await supabase
+      .storage
+      .from('main')
+      .upload(
+        `${session.user.id}/drivers-licences/${uuidv4()}${extname(licence_document2.name)}`,
+        licence_document2,
+        { upsert: true },
+      );
+
+    if (storageData) {
+      documentPaths.licence_document2_path = storageData.path;
+    }
+  }
+
   if (badge_document) {
     const { data: storageData } = await supabase
       .storage
@@ -63,6 +88,21 @@ export async function addNewDriver(formData: AddNewDriverTransformedSchema) {
 
     if (storageData) {
       documentPaths.badge_document_path = storageData.path;
+    }
+  }
+
+  if (badge_document2) {
+    const { data: storageData } = await supabase
+      .storage
+      .from('main')
+      .upload(
+        `${session.user.id}/taxi-badges/${uuidv4()}${extname(badge_document2.name)}`,
+        badge_document2,
+        { upsert: true },
+      );
+
+    if (storageData) {
+      documentPaths.badge_document2_path = storageData.path;
     }
   }
 

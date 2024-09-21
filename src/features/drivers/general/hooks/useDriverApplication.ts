@@ -21,8 +21,12 @@ type DriverApplication = Prettify<
     picture_file_type: FileType;
     drivers_licence_src: string | null;
     drivers_licence_file_type: FileType;
+    drivers_licence2_src: string | null;
+    drivers_licence2_file_type: FileType;
     taxi_badge_src: string | null;
     taxi_badge_file_type: FileType;
+    taxi_badge2_src: string | null;
+    taxi_badge2_file_type: FileType;
   }
 >;
 
@@ -81,10 +85,20 @@ async function getDriverApplication(id: string): Promise<DriverApplication> {
   );
   const drivers_licence_file_type = extractFileType(data.drivers_licence_path ?? undefined);
 
+  const drivers_licence2_src = await queryClient.ensureQueryData(
+    driverApplicationPictureQueryOptions({ id, path: data.drivers_licence2_path }),
+  );
+  const drivers_licence2_file_type = extractFileType(data.drivers_licence2_path ?? undefined);
+
   const taxi_badge_src = await queryClient.ensureQueryData(
     driverApplicationPictureQueryOptions({ id, path: data.taxi_badge_path }),
   );
   const taxi_badge_file_type = extractFileType(data.taxi_badge_path ?? undefined);
+
+  const taxi_badge2_src = await queryClient.ensureQueryData(
+    driverApplicationPictureQueryOptions({ id, path: data.taxi_badge2_path }),
+  );
+  const taxi_badge2_file_type = extractFileType(data.taxi_badge2_path ?? undefined);
 
   // eslint-disable-next-line max-len
   const mappedData = mapValues(data, (val) => val ?? undefined) as ReplaceNullWithUndefined<typeof data>;
@@ -97,6 +111,10 @@ async function getDriverApplication(id: string): Promise<DriverApplication> {
     drivers_licence_file_type,
     taxi_badge_src,
     taxi_badge_file_type,
+    drivers_licence2_src,
+    drivers_licence2_file_type,
+    taxi_badge2_src,
+    taxi_badge2_file_type,
   };
 }
 

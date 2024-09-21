@@ -14,10 +14,13 @@ export type Variables = Prettify<
     Tables<'driver_application'>,
     | 'company_name' | 'auth_id' | 'created_at' | 'is_submitted'
     | 'picture_path' | 'drivers_licence_path' | 'taxi_badge_path'
+    | 'drivers_licence2_path' | 'taxi_badge2_path'
   > & {
     picture?: File | null | undefined;
     drivers_licence?: File | null | undefined;
     taxi_badge?: File | null | undefined;
+    drivers_licence2?: File | null | undefined;
+    taxi_badge2?: File | null | undefined;
   }
 >;
 
@@ -25,13 +28,17 @@ type DocumentPathsObject = {
   picture_path?: string,
   drivers_licence_path?: string,
   taxi_badge_path?: string;
+  drivers_licence2_path?: string,
+  taxi_badge2_path?: string;
 };
 
 export async function submitDriverApplication({
   id,
   picture,
   drivers_licence,
+  drivers_licence2,
   taxi_badge,
+  taxi_badge2,
   ...vars
 }: Variables) {
   const documentPaths: DocumentPathsObject = {};
@@ -66,6 +73,21 @@ export async function submitDriverApplication({
     }
   }
 
+  if (drivers_licence2) {
+    const { data: storageData } = await supabase
+      .storage
+      .from('main')
+      .upload(
+        `guest/drivers-licences/${uuidv4()}${extname(drivers_licence2.name)}`,
+        drivers_licence2,
+        { upsert: true },
+      );
+
+    if (storageData) {
+      documentPaths.drivers_licence2_path = storageData.path;
+    }
+  }
+
   if (taxi_badge) {
     const { data: storageData } = await supabase
       .storage
@@ -78,6 +100,21 @@ export async function submitDriverApplication({
 
     if (storageData) {
       documentPaths.taxi_badge_path = storageData.path;
+    }
+  }
+
+  if (taxi_badge2) {
+    const { data: storageData } = await supabase
+      .storage
+      .from('main')
+      .upload(
+        `guest/taxi-badges/${uuidv4()}${extname(taxi_badge2.name)}`,
+        taxi_badge2,
+        { upsert: true },
+      );
+
+    if (storageData) {
+      documentPaths.taxi_badge2_path = storageData.path;
     }
   }
 

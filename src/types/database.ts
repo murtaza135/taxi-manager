@@ -362,6 +362,7 @@ export type Database = {
           drivers_licence_number: string | null;
           drivers_licence_path: string | null;
           drivers_licence_start_date: string | null;
+          drivers_licence2_path: string | null;
           email: string | null;
           id: string;
           is_submitted: boolean;
@@ -373,6 +374,7 @@ export type Database = {
           taxi_badge_number: string | null;
           taxi_badge_path: string | null;
           taxi_badge_start_date: string | null;
+          taxi_badge2_path: string | null;
         };
         Insert: {
           auth_id?: string;
@@ -383,6 +385,7 @@ export type Database = {
           drivers_licence_number?: string | null;
           drivers_licence_path?: string | null;
           drivers_licence_start_date?: string | null;
+          drivers_licence2_path?: string | null;
           email?: string | null;
           id?: string;
           is_submitted?: boolean;
@@ -394,6 +397,7 @@ export type Database = {
           taxi_badge_number?: string | null;
           taxi_badge_path?: string | null;
           taxi_badge_start_date?: string | null;
+          taxi_badge2_path?: string | null;
         };
         Update: {
           auth_id?: string;
@@ -404,6 +408,7 @@ export type Database = {
           drivers_licence_number?: string | null;
           drivers_licence_path?: string | null;
           drivers_licence_start_date?: string | null;
+          drivers_licence2_path?: string | null;
           email?: string | null;
           id?: string;
           is_submitted?: boolean;
@@ -415,6 +420,7 @@ export type Database = {
           taxi_badge_number?: string | null;
           taxi_badge_path?: string | null;
           taxi_badge_start_date?: string | null;
+          taxi_badge2_path?: string | null;
         };
         Relationships: [
           {
@@ -431,6 +437,7 @@ export type Database = {
           auth_id: string;
           created_at: string;
           document_path: string | null;
+          document2_path: string | null;
           driver_id: number;
           end_date: string;
           id: number;
@@ -441,6 +448,7 @@ export type Database = {
           auth_id?: string;
           created_at?: string;
           document_path?: string | null;
+          document2_path?: string | null;
           driver_id: number;
           end_date: string;
           id?: number;
@@ -451,6 +459,7 @@ export type Database = {
           auth_id?: string;
           created_at?: string;
           document_path?: string | null;
+          document2_path?: string | null;
           driver_id?: number;
           end_date?: string;
           id?: number;
@@ -508,6 +517,7 @@ export type Database = {
           badge_number: string;
           created_at: string;
           document_path: string | null;
+          document2_path: string | null;
           driver_id: number;
           end_date: string;
           id: number;
@@ -518,6 +528,7 @@ export type Database = {
           badge_number: string;
           created_at?: string;
           document_path?: string | null;
+          document2_path?: string | null;
           driver_id: number;
           end_date: string;
           id?: number;
@@ -528,6 +539,7 @@ export type Database = {
           badge_number?: string;
           created_at?: string;
           document_path?: string | null;
+          document2_path?: string | null;
           driver_id?: number;
           end_date?: string;
           id?: number;
@@ -1063,6 +1075,7 @@ export type Database = {
           id: number;
           is_retired: boolean;
           logbook_document_path: string | null;
+          logbook_document2_path: string | null;
           make: string;
           model: string;
           number_plate: string;
@@ -1084,6 +1097,7 @@ export type Database = {
           id?: number;
           is_retired?: boolean;
           logbook_document_path?: string | null;
+          logbook_document2_path?: string | null;
           make: string;
           model: string;
           number_plate: string;
@@ -1105,6 +1119,7 @@ export type Database = {
           id?: number;
           is_retired?: boolean;
           logbook_document_path?: string | null;
+          logbook_document2_path?: string | null;
           make?: string;
           model?: string;
           number_plate?: string;
@@ -1282,11 +1297,13 @@ export type Database = {
           created_at: string | null;
           date_of_birth: string | null;
           drivers_licence_document_path: string | null;
+          drivers_licence_document2_path: string | null;
           drivers_licence_end_date: string | null;
           drivers_licence_id: number | null;
           drivers_licence_number: string | null;
           drivers_licence_start_date: string | null;
           drivers_taxi_badge_document_path: string | null;
+          drivers_taxi_badge_document2_path: string | null;
           drivers_taxi_badge_end_date: string | null;
           drivers_taxi_badge_id: number | null;
           drivers_taxi_badge_number: string | null;
@@ -1401,6 +1418,7 @@ export type Database = {
           insurance_start_date: string | null;
           is_retired: boolean | null;
           logbook_document_path: string | null;
+          logbook_document2_path: string | null;
           make: string | null;
           model: string | null;
           number_plate: string | null;
@@ -1439,7 +1457,9 @@ export type Database = {
           date_of_birth?: string;
           national_insurance_number?: string;
           licence_document_path?: string;
+          licence_document2_path?: string;
           badge_document_path?: string;
+          badge_document2_path?: string;
           badge_start_date?: string;
         };
         Returns: number;
@@ -1472,6 +1492,7 @@ export type Database = {
           fuel_type?: string;
           picture_path?: string;
           logbook_document_path?: string;
+          logbook_document2_path?: string;
           compliance_certificate_licence_number?: string;
           phc_number?: string;
           taxi_licence_start_date?: string;

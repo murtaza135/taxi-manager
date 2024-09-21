@@ -12,6 +12,7 @@ import { CreateObjectTransformer } from '@/utils/transformer';
 
 type DriverDocumentPathsObject = {
   badge_document?: string;
+  badge_document2?: string;
 };
 
 type Variables = CreateObjectTransformer<AddNewDriverTaxiBadgeSchema> & {
@@ -24,6 +25,7 @@ export async function attachTaxiBadgeToDriver(variables: Variables) {
   const documentPaths: DriverDocumentPathsObject = {};
   const {
     badge_document,
+    badge_document2,
     driver_id,
     ...nonFileFormData
   } = variables;
@@ -42,6 +44,19 @@ export async function attachTaxiBadgeToDriver(variables: Variables) {
     }
   }
 
+  if (badge_document2) {
+    const fileName = `${session.user.id}/taxi-badges/${uuidv4()}${extname(badge_document2.name)}`;
+
+    const { data: storageData } = await supabase
+      .storage
+      .from('main')
+      .upload(fileName, badge_document2, { upsert: true });
+
+    if (storageData) {
+      documentPaths.badge_document2 = storageData.path;
+    }
+  }
+
   const { data: badgeData, error: badgeError, status: badgeStatus } = await supabase
     .from('drivers_taxi_badge')
     .insert({
@@ -50,6 +65,7 @@ export async function attachTaxiBadgeToDriver(variables: Variables) {
       start_date: nonFileFormData.badge_start_date,
       end_date: nonFileFormData.badge_end_date,
       document_path: documentPaths.badge_document,
+      document_path2: documentPaths.badge_document2,
     })
     .eq('auth_id', session.user.id)
     .select('id')

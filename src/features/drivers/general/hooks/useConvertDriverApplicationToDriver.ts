@@ -37,7 +37,9 @@ export async function convertDriverApplicationToDriver(formData: Variables) {
   const { id, ...restFormData } = formData;
   const picture_path = await moveDocumentToUserFolder(formData.picture_path, userId);
   const licence_document_path = await moveDocumentToUserFolder(formData.licence_document_path, userId);
+  const licence_document2_path = await moveDocumentToUserFolder(formData.licence_document2_path, userId);
   const badge_document_path = await moveDocumentToUserFolder(formData.badge_document_path, userId);
+  const badge_document2_path = await moveDocumentToUserFolder(formData.badge_document2_path, userId);
 
   const submissionData = pick(restFormData, [
     'badge_end_date',
@@ -55,7 +57,7 @@ export async function convertDriverApplicationToDriver(formData: Variables) {
 
   const { data: driverId, error, status } = await supabase.rpc(
     'add_new_driver',
-    { ...submissionData, picture_path, licence_document_path, badge_document_path },
+    { ...submissionData, picture_path, licence_document_path, licence_document2_path, badge_document_path, badge_document2_path },
   );
 
   if (error) {

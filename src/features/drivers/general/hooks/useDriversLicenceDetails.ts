@@ -17,7 +17,7 @@ type SupabaseDriversLicenceDetails = Prettify<
       | 'drivers_licence_start_date' | 'drivers_licence_end_date'
     >
   > & Partial<NonNullableObject<
-    Pick<Tables<'driver_view'>, 'drivers_licence_document_path'>
+    Pick<Tables<'driver_view'>, 'drivers_licence_document_path' | 'drivers_licence_document2_path'>
   >>
 >;
 
@@ -26,12 +26,14 @@ export type DriversLicenceDetails = Prettify<
     Pick<
       Tables<'drivers_licence'>,
       | 'id' | 'licence_number' | 'start_date'
-      | 'end_date' | 'document_path'
+      | 'end_date' | 'document_path' | 'document2_path'
     >
   > & {
     driver_id: number;
     document_src: string | null;
     document_file_type: FileType;
+    document2_src: string | null;
+    document2_file_type: FileType;
   }
 >;
 
@@ -53,7 +55,7 @@ async function getDriversLicenceDetails(driver_id: number): Promise<DriversLicen
 
   const { data, error, status } = await supabase
     .from('driver_view')
-    .select('drivers_licence_id, drivers_licence_number, drivers_licence_start_date, drivers_licence_end_date, drivers_licence_document_path')
+    .select('drivers_licence_id, drivers_licence_number, drivers_licence_start_date, drivers_licence_end_date, drivers_licence_document_path, drivers_licence_document2_path')
     .eq('id', driver_id)
     .eq('auth_id', session.user.id)
     .returns<SupabaseDriversLicenceDetails[]>()
@@ -70,8 +72,12 @@ async function getDriversLicenceDetails(driver_id: number): Promise<DriversLicen
   const drivers_licence_document_src = await queryClient.ensureQueryData(
     driversLicenceDocumentQueryOptions({ driver_id, path: data.drivers_licence_document_path }),
   );
-
   const document_file_type = extractFileType(data.drivers_licence_document_path);
+
+  const drivers_licence_document2_src = await queryClient.ensureQueryData(
+    driversLicenceDocumentQueryOptions({ driver_id, path: data.drivers_licence_document2_path }),
+  );
+  const document2_file_type = extractFileType(data.drivers_licence_document2_path);
 
   const mappedData = mapValues(data, (val) => val ?? undefined) as SupabaseDriversLicenceDetails;
 
@@ -83,6 +89,9 @@ async function getDriversLicenceDetails(driver_id: number): Promise<DriversLicen
     document_path: mappedData.drivers_licence_document_path,
     document_src: drivers_licence_document_src,
     document_file_type,
+    document2_path: mappedData.drivers_licence_document2_path,
+    document2_src: drivers_licence_document2_src,
+    document2_file_type,
     driver_id,
   };
 }

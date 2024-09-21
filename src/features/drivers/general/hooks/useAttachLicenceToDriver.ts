@@ -12,6 +12,7 @@ import { CreateObjectTransformer } from '@/utils/transformer';
 
 type DriverDocumentPathsObject = {
   licence_document?: string;
+  licence_document2?: string;
 };
 
 type Variables = CreateObjectTransformer<AddNewDriversLicenceSchema> & {
@@ -24,6 +25,7 @@ export async function attachLicenceToDriver(variables: Variables) {
   const documentPaths: DriverDocumentPathsObject = {};
   const {
     licence_document,
+    licence_document2,
     driver_id,
     ...nonFileFormData
   } = variables;
@@ -42,6 +44,19 @@ export async function attachLicenceToDriver(variables: Variables) {
     }
   }
 
+  if (licence_document2) {
+    const fileName = `${session.user.id}/drivers-licences/${uuidv4()}${extname(licence_document2.name)}`;
+
+    const { data: storageData } = await supabase
+      .storage
+      .from('main')
+      .upload(fileName, licence_document2, { upsert: true });
+
+    if (storageData) {
+      documentPaths.licence_document2 = storageData.path;
+    }
+  }
+
   const { data: licenceData, error: licenceError, status: licenceStatus } = await supabase
     .from('drivers_licence')
     .insert({
@@ -50,6 +65,7 @@ export async function attachLicenceToDriver(variables: Variables) {
       start_date: nonFileFormData.licence_start_date,
       end_date: nonFileFormData.licence_end_date,
       document_path: documentPaths.licence_document,
+      document2_path: documentPaths.licence_document,
     })
     .eq('auth_id', session.user.id)
     .select('id')

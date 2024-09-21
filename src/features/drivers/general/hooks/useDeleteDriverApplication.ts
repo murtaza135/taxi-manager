@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRevalidator } from 'react-router-dom';
 import { supabase } from '@/config/api/supabaseClient';
@@ -11,8 +12,8 @@ export async function deleteDriverApplication(id: string) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
 
   const data = await globalQueryClient.ensureQueryData(driverApplicationQueryOptions(id));
-  const { picture_path, taxi_badge_path, drivers_licence_path } = data;
-  const files = [picture_path, taxi_badge_path, drivers_licence_path]
+  const { picture_path, taxi_badge_path, drivers_licence_path, drivers_licence2_path, taxi_badge2_path } = data;
+  const files = [picture_path, taxi_badge_path, drivers_licence_path, drivers_licence2_path, taxi_badge2_path]
     .filter((file) => !!file) as string[];
 
   if (files.length > 0) {

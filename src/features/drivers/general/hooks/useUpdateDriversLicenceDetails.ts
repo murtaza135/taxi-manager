@@ -23,10 +23,11 @@ export type Variables = Prettify<
     id: number;
     driver_id: number;
     document?: File | null | undefined;
+    document2?: File | null | undefined;
   }
 >;
 
-export async function updateDriversLicenceDetails({ id, document, ...vars }: Variables) {
+export async function updateDriversLicenceDetails({ id, document, document2, ...vars }: Variables) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
 
   if (!isEmpty(vars)) {
@@ -49,7 +50,7 @@ export async function updateDriversLicenceDetails({ id, document, ...vars }: Var
     status: documentSelectStatus,
   } = await supabase
     .from('drivers_licence')
-    .select('document_path')
+    .select('document_path, document2_path')
     .eq('auth_id', session.user.id)
     .eq('id', id)
     .limit(1)
@@ -116,6 +117,66 @@ export async function updateDriversLicenceDetails({ id, document, ...vars }: Var
 
     if (documentPathError) {
       throw new SupabaseError(documentPathError, documentPathStatus, {
+        globalTitle: 'Could not update drivers licence',
+      });
+    }
+  }
+
+  if (document2) {
+    /* add document2 */
+    const document2_path = `${session.user.id}/drivers-licences/${uuidv4()}${extname(document2.name)}`;
+
+    const { error: document2Error } = await supabase
+      .storage
+      .from('main')
+      .upload(document2_path, document2, { upsert: true });
+
+    if (document2Error) {
+      throw new SupabaseError(document2Error, null, {
+        globalTitle: 'Could not update drivers licence',
+      });
+    }
+
+    const { error: document2PathError, status: document2PathStatus } = await supabase
+      .from('drivers_licence')
+      .update({ document2_path })
+      .eq('auth_id', session.user.id)
+      .eq('id', id);
+
+    if (document2PathError) {
+      throw new SupabaseError(document2PathError, document2PathStatus, {
+        globalTitle: 'Could not update drivers licence',
+      });
+    }
+
+    // delete old file if it exists
+    if (documentSelectData.document2_path) {
+      await supabase
+        .storage
+        .from('main')
+        .remove([documentSelectData.document2_path]);
+    }
+  } else if (document2 === null && documentSelectData.document2_path) {
+    /* delete document2 */
+    const { error: document2Error } = await supabase
+      .storage
+      .from('main')
+      .remove([documentSelectData.document2_path]);
+
+    if (document2Error) {
+      throw new SupabaseError(document2Error, null, {
+        globalTitle: 'Could not update drivers licence',
+      });
+    }
+
+    const { error: document2PathError, status: document2PathStatus } = await supabase
+      .from('drivers_licence')
+      .update({ document2_path: null })
+      .eq('auth_id', session.user.id)
+      .eq('id', id);
+
+    if (document2PathError) {
+      throw new SupabaseError(document2PathError, document2PathStatus, {
         globalTitle: 'Could not update drivers licence',
       });
     }
