@@ -12,6 +12,7 @@ import { extname } from '@/utils/path/extname';
 type TaxiDocumentPathsObject = {
   picture_path?: string;
   logbook_document_path?: string;
+  logbook_document2_path?: string;
   compliance_certificate_document_path?: string;
   phc_licence_document_path?: string;
   insurance_document_path?: string;
@@ -23,6 +24,7 @@ export async function addNewTaxi(formData: AddNewTaxiTransformedSchema) {
   const {
     picture_path: picture,
     logbook_document_path: logbook_document,
+    logbook_document2_path: logbook_document2,
     compliance_certificate_document_path: compliance_certificate_document,
     phc_licence_document_path: phc_licence_document,
     insurance_document_path: insurance_document,
@@ -53,6 +55,19 @@ export async function addNewTaxi(formData: AddNewTaxiTransformedSchema) {
 
     if (storageData) {
       documentPaths.logbook_document_path = storageData.path;
+    }
+  }
+
+  if (logbook_document2) {
+    const fileName = `${session.user.id}/logbooks/${uuidv4()}${extname(logbook_document2.name)}`;
+
+    const { data: storageData } = await supabase
+      .storage
+      .from('main')
+      .upload(fileName, logbook_document2, { upsert: true });
+
+    if (storageData) {
+      documentPaths.logbook_document2_path = storageData.path;
     }
   }
 

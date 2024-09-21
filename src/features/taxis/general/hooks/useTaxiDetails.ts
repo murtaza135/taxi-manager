@@ -14,7 +14,7 @@ type SupabaseTaxiDetails = Prettify<
     Pick<
       Tables<'taxi_view'>,
       | 'registration_date' | 'expected_expiry_date' | 'road_tax_expiry_date'
-      | 'picture_path' | 'logbook_document_path' | 'cc' | 'fuel_type'
+      | 'picture_path' | 'logbook_document_path' | 'logbook_document2_path' | 'cc' | 'fuel_type'
       | 'driver_id' | 'hire_agreement_id'
     >
   >> & NonNullableObject<
@@ -33,6 +33,8 @@ type TaxiDetails = Prettify<
     picture_file_type: FileType;
     logbook_document_src: string | null;
     logbook_document_file_type: FileType;
+    logbook_document2_src: string | null;
+    logbook_document2_file_type: FileType;
   }
 >;
 
@@ -62,7 +64,7 @@ async function getTaxiDetails(id: number): Promise<TaxiDetails> {
 
   const { data, error, status } = await supabase
     .from('taxi_view')
-    .select('number_plate, colour, chassis_number, is_retired, make, model, created_at, registration_date, expected_expiry_date, road_tax_expiry_date, picture_path, logbook_document_path, cc, fuel_type, driver_id, hire_agreement_id')
+    .select('number_plate, colour, chassis_number, is_retired, make, model, created_at, registration_date, expected_expiry_date, road_tax_expiry_date, picture_path, logbook_document_path, logbook_document2_path, cc, fuel_type, driver_id, hire_agreement_id')
     .eq('id', id)
     .eq('auth_id', session.user.id)
     .returns<SupabaseTaxiDetails[]>()
@@ -84,18 +86,25 @@ async function getTaxiDetails(id: number): Promise<TaxiDetails> {
     taxiLogbookQueryOptions({ id, path: data.logbook_document_path }),
   );
 
+  const logbook_document2_src = await queryClient.ensureQueryData(
+    taxiLogbookQueryOptions({ id, path: data.logbook_document2_path }),
+  );
+
   const picture_file_type = extractFileType(data.picture_path);
   const logbook_document_file_type = extractFileType(data.logbook_document_path);
+  const logbook_document2_file_type = extractFileType(data.logbook_document2_path);
 
   const mappedData = mapValues(data, (val) => val ?? undefined) as SupabaseTaxiDetails;
 
   return {
     ...mappedData,
-    picture_src,
-    logbook_document_src,
     id,
+    picture_src,
     picture_file_type,
+    logbook_document_src,
     logbook_document_file_type,
+    logbook_document2_src,
+    logbook_document2_file_type,
   };
 }
 

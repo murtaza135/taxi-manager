@@ -25,10 +25,11 @@ export type Variables = Prettify<
     id: number;
     picture?: File | null | undefined;
     logbook?: File | null | undefined;
+    logbook2?: File | null | undefined;
   }
 >;
 
-export async function updateTaxiDetails({ id, picture, logbook, ...vars }: Variables) {
+export async function updateTaxiDetails({ id, picture, logbook, logbook2, ...vars }: Variables) {
   const session = await globalQueryClient.ensureQueryData(sessionOptions());
 
   if (!isEmpty(vars)) {
@@ -51,7 +52,7 @@ export async function updateTaxiDetails({ id, picture, logbook, ...vars }: Varia
     status: documentsSelectStatus,
   } = await supabase
     .from('taxi')
-    .select('picture_path, logbook_document_path')
+    .select('picture_path, logbook_document_path, logbook_document2_path')
     .eq('auth_id', session.user.id)
     .eq('id', id)
     .limit(1)
@@ -178,6 +179,66 @@ export async function updateTaxiDetails({ id, picture, logbook, ...vars }: Varia
 
     if (logbookPathError) {
       throw new SupabaseError(logbookPathError, logbookPathStatus, {
+        globalTitle: 'Could not update taxi',
+      });
+    }
+  }
+
+  if (logbook2) {
+    /* add logbook2 */
+    const logbook_document2_path = `${session.user.id}/taxi-pictures/${uuidv4()}${extname(logbook2.name)}`;
+
+    const { error: logbook2Error } = await supabase
+      .storage
+      .from('main')
+      .upload(logbook_document2_path, logbook2, { upsert: true });
+
+    if (logbook2Error) {
+      throw new SupabaseError(logbook2Error, null, {
+        globalTitle: 'Could not update taxi',
+      });
+    }
+
+    const { error: logbook2PathError, status: logbook2PathStatus } = await supabase
+      .from('taxi')
+      .update({ logbook_document2_path })
+      .eq('auth_id', session.user.id)
+      .eq('id', id);
+
+    if (logbook2PathError) {
+      throw new SupabaseError(logbook2PathError, logbook2PathStatus, {
+        globalTitle: 'Could not update taxi',
+      });
+    }
+
+    // delete old file if it exists
+    if (documentsSelectData.logbook_document2_path) {
+      await supabase
+        .storage
+        .from('main')
+        .remove([documentsSelectData.logbook_document2_path]);
+    }
+  } else if (logbook2 === null && documentsSelectData.logbook_document2_path) {
+    /* delete logbook2 */
+    const { error: logbook2Error } = await supabase
+      .storage
+      .from('main')
+      .remove([documentsSelectData.logbook_document2_path]);
+
+    if (logbook2Error) {
+      throw new SupabaseError(logbook2Error, null, {
+        globalTitle: 'Could not update taxi',
+      });
+    }
+
+    const { error: logbook2PathError, status: logbook2PathStatus } = await supabase
+      .from('taxi')
+      .update({ logbook_document2_path: null })
+      .eq('auth_id', session.user.id)
+      .eq('id', id);
+
+    if (logbook2PathError) {
+      throw new SupabaseError(logbook2PathError, logbook2PathStatus, {
         globalTitle: 'Could not update taxi',
       });
     }
