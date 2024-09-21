@@ -40,7 +40,6 @@ export function TaxisTable() {
   const [layout, setLayout] = useTaxisLayout();
   const [rowFilter, setRowFilter] = useTaxisRowFilter();
   const globalFilter = globalFilterBase ?? '';
-
   const { mutateAsync: setTaxisRetirements } = useSetTaxisRetirements();
 
   const {

@@ -19,7 +19,7 @@ import { Hire } from '@/features/hires/general/hooks/useHires';
 import { NoDataCell, LinkCell, CopyCell } from '@/ui/dataview/Cell';
 import { useReactTableContext } from '@/lib/tanstack-table/ReactTable';
 import { HiresRowFilterState } from '@/features/hires/general/types';
-// import { useUpdateHireDetails } from '@/features/hires/general/hooks/useUpdateHireDetails';
+import { useUpdateHireAgreementDetails } from '@/features/hires/general/hooks/useUpdateHireAgreement';
 
 // ColumnDef for the table layout
 export const tableColumns: ColumnDef<Hire>[] = [
@@ -113,10 +113,10 @@ export const tableColumns: ColumnDef<Hire>[] = [
     cell: function ActionsCell({ row }) {
       const table = useReactTableContext();
       const rowFilter = table.options.meta?.rowFilter as HiresRowFilterState | undefined;
-      // const { mutateAsync: update } = useUpdateHireDetails();
+      const { mutateAsync: update } = useUpdateHireAgreementDetails();
 
-      const handleSetHireRetirement = (is_retired: boolean) => {
-        // await update({ id: row.original.id, is_retired });
+      const handleSetHireRetirement = async (is_retired: boolean) => {
+        await update({ id: row.original.id, is_retired });
         table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
       };
 
@@ -220,10 +220,10 @@ export const gridColumns: ColumnDef<Hire>[] = [
     cell: function ActionsCell({ row }) {
       const table = useReactTableContext();
       const rowFilter = table.options.meta?.rowFilter as HiresRowFilterState | undefined;
-      // const { mutateAsync: update } = useUpdateHireDetails();
+      const { mutateAsync: update } = useUpdateHireAgreementDetails();
 
-      const handleSetHireRetirement = (is_retired: boolean) => {
-        // await update({ id: row.original.id, is_retired });
+      const handleSetHireRetirement = async (is_retired: boolean) => {
+        await update({ id: row.original.id, is_retired });
         table.setRowSelection((old) => ({ ...old, [row.original.id]: false }));
       };
 

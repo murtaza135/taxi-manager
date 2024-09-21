@@ -9,7 +9,6 @@ import {
   DataViewTable,
   DataViewGrid,
   DataViewLayoutDropdown,
-  DataViewDeleteSelectedRowsButton,
   DataViewRowSelectionCount,
   DataViewSearchPopover,
   DataViewRowFilterDropdown,
@@ -22,16 +21,10 @@ import { useFetchOnScroll } from '@/hooks/useFetchOnScroll';
 import { useSearchParam } from '@/hooks/useSearchParam';
 import { useHiresColumnVisibility } from '@/features/hires/hiresTable/hooks/useHiresColumnVisibility';
 import { useHiresLayout } from '@/features/hires/hiresTable/hooks/useHiresLayout';
-// import { useSetHiresRetirements } from '@/features/hires/general/hooks/useSetHiresRetirements';
 import { useHiresRowFilter } from '@/features/hires/hiresTable/hooks/useHiresRowFilter';
 import { HiresRowFilterState } from '@/features/hires/general/types';
 
 const rowFilters: HiresRowFilterState[] = ['inProgress', 'terminated'];
-
-type HandleSetHiresRetirementsAttributes = {
-  ids: string[];
-  isRetired: boolean;
-};
 
 export function HiresTable() {
   const [globalFilterBase, setGlobalFilter] = useSearchParam<string>('search');
@@ -40,8 +33,6 @@ export function HiresTable() {
   const [layout, setLayout] = useHiresLayout();
   const [rowFilter, setRowFilter] = useHiresRowFilter();
   const globalFilter = globalFilterBase ?? '';
-
-  // const { mutateAsync: setHiresRetirements } = useSetHiresRetirements();
 
   const {
     data,
@@ -91,18 +82,6 @@ export function HiresTable() {
     void fetchOnScroll();
   }, [fetchOnScroll]);
 
-  const handleSetHiresRetirements = ({
-    ids,
-    isRetired,
-  }: HandleSetHiresRetirementsAttributes) => {
-    const idNumbers = ids
-      .map((id) => Number(id))
-      .filter((id) => !Number.isNaN(id));
-
-    // await setHiresRetirements({ ids: idNumbers, isRetired });
-    table.resetRowSelection();
-  };
-
   return (
     <DataView table={table}>
       <DataViewTopBar>
@@ -117,11 +96,6 @@ export function HiresTable() {
           <Button variant="ghost" size="auto" className="text-xl center" onClick={() => refetch()}>
             <IoReload />
           </Button>
-          {rowFilter === 'inProgress' && (
-            <DataViewDeleteSelectedRowsButton
-              onDelete={(ids) => handleSetHiresRetirements({ ids, isRetired: true })}
-            />
-          )}
         </DataViewTopBarSection>
         <DataViewTopBarSection>
           <DataViewRowSelectionCount />
