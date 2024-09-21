@@ -1058,7 +1058,15 @@ export type Database = {
           id?: number;
           rent_day?: Database["public"]["Enums"]["day"];
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "settings_auth_id_fkey";
+            columns: ["auth_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       taxi: {
         Row: {

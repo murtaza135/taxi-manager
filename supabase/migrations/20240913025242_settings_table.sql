@@ -16,6 +16,11 @@ create table "public"."settings" (
 
 alter table "public"."settings" enable row level security;
 
+CREATE INDEX settings_auth_id_index ON public.settings USING btree (auth_id);
+CREATE UNIQUE INDEX settings_pkey ON public.settings USING btree (id);
+alter table "public"."settings" add constraint "settings_pkey" PRIMARY KEY using index "settings_pkey";
+alter table "public"."settings" add constraint "settings_auth_id_fkey" FOREIGN KEY (auth_id) REFERENCES auth.users(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
+
 create policy "Enable all functionality for users based on auth_id"
 on "public"."settings"
 as permissive
