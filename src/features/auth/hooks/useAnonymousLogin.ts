@@ -13,6 +13,15 @@ export type AnonymousAuthResponseSuccessData = {
 export async function anonymousLogin() {
   const { data, error } = await supabase.auth.signInAnonymously();
   if (error) throw new SupabaseError(error, null, { globalTitle: 'Login Error' });
+
+  const { error: companyError, status: companyStatus } = await supabase
+    .from('company')
+    .insert({ name: 'Unknown' });
+
+  if (companyError) {
+    throw new SupabaseError(companyError, companyStatus, { globalTitle: 'Login Error' });
+  }
+
   return data as AnonymousAuthResponseSuccessData;
 }
 

@@ -3,8 +3,8 @@ create table "public"."company" (
     "auth_id" uuid not null default auth.uid(),
     "logo_path" text,
     "name" text not null,
-    "company_number" text not null,
-    "address" text not null,
+    "company_number" text,
+    "address" text,
     "phone_number" text,
     "created_at" timestamp with time zone not null default now()
 );

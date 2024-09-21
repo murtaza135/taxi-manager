@@ -14,11 +14,15 @@ export const companyDetailsSchema = z.object({
     .string({ required_error: 'Company number required' })
     .trim()
     .toUpperCase()
-    .min(1, 'Company number required'),
+    .min(1, 'Company number required')
+    .optional()
+    .or(z.literal('')),
   address: z
     .string({ required_error: 'Address required' })
     .trim()
-    .min(1, 'Address required'),
+    .min(1, 'Address required')
+    .optional()
+    .or(z.literal('')),
   phone_number: z
     .string()
     .refine((val) => isMobilePhone(val), 'Invalid phone number')

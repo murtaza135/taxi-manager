@@ -36,9 +36,9 @@ export type Database = {
     Tables: {
       company: {
         Row: {
-          address: string;
+          address: string | null;
           auth_id: string;
-          company_number: string;
+          company_number: string | null;
           created_at: string;
           id: number;
           logo_path: string | null;
@@ -46,9 +46,9 @@ export type Database = {
           phone_number: string | null;
         };
         Insert: {
-          address: string;
+          address?: string | null;
           auth_id?: string;
-          company_number: string;
+          company_number?: string | null;
           created_at?: string;
           id?: number;
           logo_path?: string | null;
@@ -56,9 +56,9 @@ export type Database = {
           phone_number?: string | null;
         };
         Update: {
-          address?: string;
+          address?: string | null;
           auth_id?: string;
-          company_number?: string;
+          company_number?: string | null;
           created_at?: string;
           id?: number;
           logo_path?: string | null;
