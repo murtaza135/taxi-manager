@@ -25,9 +25,16 @@ export function CurrentDriverTaxiDisplaySection({ id }: Props) {
     },
     {
       key: 'logbook',
-      title: 'Logbook',
+      title: 'Logbook (Front)',
       file: taxi_details.logbook_document_src ?? undefined,
       fileType: taxi_details.logbook_document_file_type,
+      accept: 'image/*,.pdf',
+    },
+    {
+      key: 'logbook2',
+      title: 'Logbook (Back)',
+      file: taxi_details.logbook_document2_src ?? undefined,
+      fileType: taxi_details.logbook_document2_file_type,
       accept: 'image/*,.pdf',
     },
   ], [
@@ -35,6 +42,8 @@ export function CurrentDriverTaxiDisplaySection({ id }: Props) {
     taxi_details.picture_file_type,
     taxi_details.logbook_document_src,
     taxi_details.logbook_document_file_type,
+    taxi_details.logbook_document2_src,
+    taxi_details.logbook_document2_file_type,
   ]);
 
   return (

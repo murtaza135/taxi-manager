@@ -26,7 +26,9 @@ export function DriverApplicationConverterSection() {
       badge_number: nonNullableData.taxi_badge_number,
       badge_end_date: nonNullableData.taxi_badge_end_date,
       licence_document_path: nonNullableData.drivers_licence_path,
+      licence_document2_path: nonNullableData.drivers_licence2_path,
       badge_document_path: nonNullableData.taxi_badge_path,
+      badge_document2_path: nonNullableData.taxi_badge2_path,
       badge_start_date: nonNullableData.taxi_badge_start_date,
     }, {
       onSuccess: (driverId) => navigate(`/driver/${driverId}`, { preventScrollReset: false }),

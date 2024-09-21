@@ -22,10 +22,12 @@ const initialFormState: AddNewDriverSchema = {
   licence_start_date: '',
   licence_end_date: '',
   licence_document: undefined,
+  licence_document2: undefined,
   badge_number: '',
   badge_start_date: '',
   badge_end_date: '',
   badge_document: undefined,
+  badge_document2: undefined,
 };
 
 export function AddNewDriverMultiStepForm() {

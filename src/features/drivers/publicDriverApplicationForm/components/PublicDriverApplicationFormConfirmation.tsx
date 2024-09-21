@@ -42,7 +42,9 @@ export function PublicDriverApplicationFormConfirmation() {
         taxi_badge_end_date: transformedData.badge_end_date,
         picture: transformedData.picture,
         drivers_licence: transformedData.licence_document,
+        drivers_licence2: transformedData.licence_document2,
         taxi_badge: transformedData.badge_document,
+        taxi_badge2: transformedData.badge_document2,
       };
 
       submitDriverApplication(submissionData, {
@@ -160,7 +162,24 @@ export function PublicDriverApplicationFormConfirmation() {
             name="licence_document"
             render={({ field }) => (
               <div>
-                <p className="font-bold">Drivers Licence</p>
+                <p className="font-bold">Drivers Licence (Front)</p>
+                <Dropzone
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onReset={() => form.resetField(field.name)}
+                  accept="image/*,.pdf"
+                  disabled
+                />
+              </div>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="licence_document2"
+            render={({ field }) => (
+              <div>
+                <p className="font-bold">Drivers Licence (Back)</p>
                 <Dropzone
                   defaultValue={field.value}
                   onChange={field.onChange}
@@ -203,7 +222,24 @@ export function PublicDriverApplicationFormConfirmation() {
             name="badge_document"
             render={({ field }) => (
               <div>
-                <p className="font-bold">Taxi Badge</p>
+                <p className="font-bold">Taxi Badge (Front)</p>
+                <Dropzone
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onReset={() => form.resetField(field.name)}
+                  accept="image/*,.pdf"
+                  disabled
+                />
+              </div>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="badge_document2"
+            render={({ field }) => (
+              <div>
+                <p className="font-bold">Taxi Badge (Back)</p>
                 <Dropzone
                   defaultValue={field.value}
                   onChange={field.onChange}

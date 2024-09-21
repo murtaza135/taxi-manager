@@ -12,12 +12,24 @@ export function DriverApplicationTaxiBadgeDetailsSection() {
   const files: FileConfig[] = useMemo(() => [
     {
       key: 'taxiBadge',
-      title: 'Taxi Badge',
+      title: 'Taxi Badge (Front)',
       file: data.taxi_badge_src ?? undefined,
       fileType: data.taxi_badge_file_type,
       accept: 'image/*,.pdf',
     },
-  ], [data.taxi_badge_src, data.taxi_badge_file_type]);
+    {
+      key: 'taxiBadge2',
+      title: 'Taxi Badge (Back)',
+      file: data.taxi_badge2_src ?? undefined,
+      fileType: data.taxi_badge2_file_type,
+      accept: 'image/*,.pdf',
+    },
+  ], [
+    data.taxi_badge_src,
+    data.taxi_badge_file_type,
+    data.taxi_badge2_src,
+    data.taxi_badge2_file_type,
+  ]);
 
   return (
     <form className="flex justify-start items-start gap-8 sm:gap-14 flex-col sm:flex-row py-3 px-2">

@@ -26,12 +26,24 @@ export function DriversTaxiBadgeDetailsUpdateSection() {
   const files: FileConfig[] = useMemo(() => [
     {
       key: 'document',
-      title: 'Taxi Badge',
+      title: 'Taxi Badge (Front)',
       file: data.document_src ?? undefined,
       fileType: data.document_file_type,
       accept: 'image/*,.pdf',
     },
-  ], [data.document_src, data.document_file_type]);
+    {
+      key: 'document2',
+      title: 'Taxi Badge (Back)',
+      file: data.document2_src ?? undefined,
+      fileType: data.document2_file_type,
+      accept: 'image/*,.pdf',
+    },
+  ], [
+    data.document_src,
+    data.document_file_type,
+    data.document2_src,
+    data.document2_file_type,
+  ]);
 
   const handleSubmitUpdate = form.handleSubmit((formData) => {
     setEditMode(false);

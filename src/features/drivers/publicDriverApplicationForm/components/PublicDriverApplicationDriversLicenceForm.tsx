@@ -88,7 +88,22 @@ export function PublicDriverApplicationDriversLicenceForm() {
           control={form.control}
           name="licence_document"
           render={({ field }) => (
-            <FormGroup label="* Drivers Licence">
+            <FormGroup label="* Drivers Licence (Front)">
+              <Dropzone
+                defaultValue={field.value}
+                onChange={field.onChange}
+                onReset={() => form.resetField(field.name)}
+                accept="image/*,.pdf"
+              />
+            </FormGroup>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="licence_document2"
+          render={({ field }) => (
+            <FormGroup label="* Drivers Licence (Back)">
               <Dropzone
                 defaultValue={field.value}
                 onChange={field.onChange}

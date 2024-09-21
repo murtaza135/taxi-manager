@@ -12,12 +12,24 @@ export function DriverApplicationLicenceDetailsSection() {
   const files: FileConfig[] = useMemo(() => [
     {
       key: 'licence',
-      title: 'Drivers Licence',
+      title: 'Drivers Licence (Front)',
       file: data.drivers_licence_src ?? undefined,
       fileType: data.drivers_licence_file_type,
       accept: 'image/*,.pdf',
     },
-  ], [data.drivers_licence_src, data.drivers_licence_file_type]);
+    {
+      key: 'licence2',
+      title: 'Drivers Licence (Back)',
+      file: data.drivers_licence2_src ?? undefined,
+      fileType: data.drivers_licence2_file_type,
+      accept: 'image/*,.pdf',
+    },
+  ], [
+    data.drivers_licence_src,
+    data.drivers_licence_file_type,
+    data.drivers_licence2_src,
+    data.drivers_licence2_file_type,
+  ]);
 
   return (
     <form className="flex justify-start items-start gap-8 sm:gap-14 flex-col sm:flex-row py-3 px-2">

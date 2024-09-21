@@ -20,6 +20,7 @@ const defaultValues: AddNewDriverTaxiBadgeSchema = {
   badge_start_date: '',
   badge_end_date: '',
   badge_document: undefined,
+  badge_document2: undefined,
 };
 
 export function DriversTaxiBadgeDetailsCreateSection() {
@@ -95,7 +96,22 @@ export function DriversTaxiBadgeDetailsCreateSection() {
               control={form.control}
               name="badge_document"
               render={({ field }) => (
-                <FormGroup label="Taxi Badge">
+                <FormGroup label="Taxi Badge (Front)">
+                  <Dropzone
+                    defaultValue={field.value}
+                    onChange={field.onChange}
+                    onReset={() => form.resetField(field.name)}
+                    accept="image/*,.pdf"
+                  />
+                </FormGroup>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="badge_document2"
+              render={({ field }) => (
+                <FormGroup label="Taxi Badge (Back)">
                   <Dropzone
                     defaultValue={field.value}
                     onChange={field.onChange}

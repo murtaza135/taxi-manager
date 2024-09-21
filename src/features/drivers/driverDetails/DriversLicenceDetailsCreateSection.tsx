@@ -20,6 +20,7 @@ const defaultValues: AddNewDriversLicenceSchema = {
   licence_start_date: '',
   licence_end_date: '',
   licence_document: undefined,
+  licence_document2: undefined,
 };
 
 export function DriversLicenceDetailsCreateSection() {
@@ -41,7 +42,7 @@ export function DriversLicenceDetailsCreateSection() {
   return (
     <div className="flex flex-row flex-wrap gap-x-14 gap-y-6">
       <div className="flex flex-col gap-2 items-start py-2">
-        <p className="">Add new drivers licence?</p>
+        <p>Add new drivers licence?</p>
         <BoxSwitch value={showForm} onValueChange={setShowForm} />
       </div>
 
@@ -95,7 +96,22 @@ export function DriversLicenceDetailsCreateSection() {
               control={form.control}
               name="licence_document"
               render={({ field }) => (
-                <FormGroup label="Drivers Licence">
+                <FormGroup label="Drivers Licence (Front)">
+                  <Dropzone
+                    defaultValue={field.value}
+                    onChange={field.onChange}
+                    onReset={() => form.resetField(field.name)}
+                    accept="image/*,.pdf"
+                  />
+                </FormGroup>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="licence_document2"
+              render={({ field }) => (
+                <FormGroup label="Drivers Licence (Back)">
                   <Dropzone
                     defaultValue={field.value}
                     onChange={field.onChange}
