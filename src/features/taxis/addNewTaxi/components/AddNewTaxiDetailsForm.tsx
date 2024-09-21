@@ -172,7 +172,22 @@ export function AddNewTaxiDetailsForm() {
           control={form.control}
           name="logbook_document_path"
           render={({ field }) => (
-            <FormGroup label="Logbook">
+            <FormGroup label="Logbook (Front)">
+              <Dropzone
+                defaultValue={field.value}
+                onChange={field.onChange}
+                onReset={() => form.resetField(field.name)}
+                accept="image/*,.pdf"
+              />
+            </FormGroup>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="logbook_document2_path"
+          render={({ field }) => (
+            <FormGroup label="Logbook (Back)">
               <Dropzone
                 defaultValue={field.value}
                 onChange={field.onChange}

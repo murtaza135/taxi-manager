@@ -24,6 +24,7 @@ const initialFormState: AddNewTaxiSchema = {
   fuel_type: '',
   picture_path: undefined,
   logbook_document_path: undefined,
+  logbook_document2_path: undefined,
   compliance_certificate_licence_number: '',
   phc_number: '',
   taxi_licence_start_date: '',

@@ -158,7 +158,24 @@ export function AddNewTaxiFormConfirmation() {
             name="logbook_document_path"
             render={({ field }) => (
               <div>
-                <p className="font-bold">Logbook</p>
+                <p className="font-bold">Logbook (Front)</p>
+                <Dropzone
+                  defaultValue={field.value}
+                  onChange={field.onChange}
+                  onReset={() => form.resetField(field.name)}
+                  accept="image/*,.pdf"
+                  disabled
+                />
+              </div>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="logbook_document2_path"
+            render={({ field }) => (
+              <div>
+                <p className="font-bold">Logbook (Back)</p>
                 <Dropzone
                   defaultValue={field.value}
                   onChange={field.onChange}

@@ -33,9 +33,16 @@ export function TaxiDetailsSection() {
     },
     {
       key: 'logbook',
-      title: 'Logbook',
+      title: 'Logbook (Front)',
       file: data.logbook_document_src ?? undefined,
       fileType: data.logbook_document_file_type,
+      accept: 'image/*,.pdf',
+    },
+    {
+      key: 'logbook2',
+      title: 'Logbook (Back)',
+      file: data.logbook_document2_src ?? undefined,
+      fileType: data.logbook_document2_file_type,
       accept: 'image/*,.pdf',
     },
   ], [
@@ -43,6 +50,8 @@ export function TaxiDetailsSection() {
     data.picture_file_type,
     data.logbook_document_src,
     data.logbook_document_file_type,
+    data.logbook_document2_src,
+    data.logbook_document2_file_type,
   ]);
 
   const handleSubmitUpdate = form.handleSubmit((formData) => {
